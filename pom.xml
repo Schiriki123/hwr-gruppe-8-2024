@@ -140,7 +140,7 @@
             <configuration>
               <archive>
                 <manifest>
-                  <mainClass>hwr.oop.MainKt</mainClass>
+                  <mainClass>hwr.oop.chess.MainKt</mainClass>
                 </manifest>
               </archive>
               <descriptorRefs>
