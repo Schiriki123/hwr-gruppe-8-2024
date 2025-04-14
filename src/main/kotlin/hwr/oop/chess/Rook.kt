@@ -4,21 +4,19 @@ data class Rook(
   override val isWhite: Boolean,
   override val isCaptured: Boolean = false
 ): Piece {
-    override fun move(position: Position): Set<Position> {
+    override fun move(startPosition: Position): Set<Position> {
       val possibleMoves = mutableSetOf<Position>()
-      val currentRank = position.rank
-      val currentFile = position.file
       // Add all possible moves to set
       for (rank in 1..8) {
-          if (rank != currentRank) {
-              possibleMoves.add(Position(currentFile, rank))
-          }
+        if (rank != startPosition.rank) { // Exclude the current position
+          possibleMoves.add(Position(startPosition.file, rank))
+        }
       }
       for (file in 'a'..'h') {
-          if (file != currentFile) {
-              possibleMoves.add(Position(file, currentRank))
-          }
+        if (file != startPosition.file) { // Exclude the current position
+          possibleMoves.add(Position(file, startPosition.rank))
+        }
       }
-      return possibleMoves.toSet()
+      return possibleMoves
     }
 }
