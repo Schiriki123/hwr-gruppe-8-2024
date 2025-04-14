@@ -3,17 +3,17 @@ package hwr.oop.chess
 import io.kotest.core.spec.style.AnnotationSpec
 import org.assertj.core.api.Assertions.assertThat
 
-class ChessboardTest : AnnotationSpec() {
+class BoardTest : AnnotationSpec() {
   @Test
   fun `Test square init`() {
     val filePosition = 'a'
-    val square = Chessboard.Square(filePosition)
+    val square = Board.Square(filePosition)
     assertThat(square.file).isEqualTo(filePosition)
   }
 
   @Test
   fun `Test square name population, should be a, b, c, d, e, f, g, h`() {
-    val rank = Chessboard.Rank(1)
+    val rank = Board.Rank(1)
     val squareA = rank.squares[0]
     val squareB = rank.squares[1]
     val squareC = rank.squares[2]
@@ -37,8 +37,8 @@ class ChessboardTest : AnnotationSpec() {
 
   @Test
   fun `Ask for square`(){
-    val board = Chessboard()
-    val square: Chessboard.Square = board.getSquare('a', 1)
+    val board = Board()
+    val square: Board.Square = board.getSquare('a', 1)
     assertThat(square.file).isEqualTo(' ')
   }
 }
