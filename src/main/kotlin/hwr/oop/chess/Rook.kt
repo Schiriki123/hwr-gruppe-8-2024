@@ -1,7 +1,24 @@
 package hwr.oop.chess
 
-class Rook(isWhite: Boolean): Piece(isWhite) {
-    override fun move(): Set<Position> {
-      TODO()
+data class Rook(
+  override val isWhite: Boolean,
+  override val isCaptured: Boolean = false
+): Piece {
+    override fun move(position: Position): Set<Position> {
+      val possibleMoves = mutableSetOf<Position>()
+      val currentRank = position.rank
+      val currentFile = position.file
+      // Add all possible moves to set
+      for (rank in 1..8) {
+          if (rank != currentRank) {
+              possibleMoves.add(Position(rank, currentFile))
+          }
+      }
+      for (file in 'a'..'h') {
+          if (file != currentFile) {
+              possibleMoves.add(Position(currentRank, file))
+          }
+      }
+      return possibleMoves.toSet()
     }
 }

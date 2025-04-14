@@ -1,5 +1,7 @@
 package hwr.oop.chess
 
-abstract class Piece(val isWhite: Boolean, val isCaptured: Boolean = false) {
-  abstract fun move(): Set<Position>
+interface Piece {
+  val isWhite: Boolean
+  val isCaptured: Boolean
+  fun move(position: Position): Set<Position>
 }
