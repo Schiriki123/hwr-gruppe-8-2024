@@ -1,9 +1,11 @@
 package hwr.oop.chess
 
-class Chessboard() {
-  val ranks: Array<Rank> = Array<Rank>(8) { Rank(0) }
+class Board() {
 
+  val board: HashMap<Int, Rank> = HashMap<Int, Rank>();
+  val ranks: Array<Rank> = Array<Rank> (8){Rank(0)}
   fun getSquare(file: Char, rank: Int): Square {
+
     return ranks[rank].squares[Utils.covertFileToNumber(file)]
   }
 
