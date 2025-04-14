@@ -16,14 +16,14 @@ class PawnTest : AnnotationSpec() {
   fun `Test pawn movement form b2`() {
     val isWhite = true
     val pawn = Pawn(isWhite)
-    val position = Position(2, 'b')
+    val position = Position('b', 2)
     val moves = pawn.move(position)
 
     assertThat(moves).containsExactlyInAnyOrder(
-      Position(3, 'b'), // Move forward one square
-      Position(4, 'b'), // Move forward two squares
-      Position(3, 'a'), // Capture diagonally to the right
-      Position(3, 'c')  // Capture diagonally to the left
+      Position('b', 3), // Move forward one square
+      Position('b', 4), // Move forward two squares
+      Position('a', 3), // Capture diagonally to the right
+      Position('c', 3)  // Capture diagonally to the left
     )
   }
 }

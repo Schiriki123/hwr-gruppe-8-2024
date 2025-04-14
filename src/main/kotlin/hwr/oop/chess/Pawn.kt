@@ -11,12 +11,12 @@ data class Pawn(
     // Add all possible moves to set
     if (isWhite) {
       // White pawn moves up
-      possibleMoves.add(Position(currentRank + 1, currentFile))
+      possibleMoves.add(Position(currentFile, currentRank + 1))
       if (currentRank == 2) {
-        possibleMoves.add(Position(currentRank + 2, currentFile))
+        possibleMoves.add(Position(currentFile, currentRank + 2))
       }
-      possibleMoves.add(Position(currentRank + 1, currentFile + 1)) // Capture diagonally to the right
-      possibleMoves.add(Position(currentRank + 1, currentFile - 1)) // Capture diagonally to the left
+      possibleMoves.add(Position(currentFile + 1, currentRank + 1)) // Capture diagonally to the right
+      possibleMoves.add(Position(currentFile - 1, currentRank + 1)) // Capture diagonally to the left
     } else {
       TODO("Implement black pawn movement")
     }

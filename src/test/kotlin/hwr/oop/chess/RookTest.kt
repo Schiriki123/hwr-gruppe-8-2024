@@ -16,24 +16,24 @@ class RookTest : AnnotationSpec() {
   fun `Test rook movement`() {
     val isWhite = true
     val rook = Rook(isWhite)
-    val position = Position(4, 'd')
+    val position = Position('d', 4)
     val moves = rook.move(position)
 
     assertThat(moves).containsExactlyInAnyOrder(
-      Position(1, 'd'),
-      Position(2, 'd'),
-      Position(3, 'd'),
-      Position(5, 'd'),
-      Position(6, 'd'),
-      Position(7, 'd'),
-      Position(8, 'd'),
-      Position(4, 'a'),
-      Position(4, 'b'),
-      Position(4, 'c'),
-      Position(4, 'e'),
-      Position(4, 'f'),
-      Position(4, 'g'),
-      Position(4, 'h')
+      Position('d', 1),
+      Position('d', 2),
+      Position('d', 3),
+      Position('d', 5),
+      Position('d', 6),
+      Position('d', 7),
+      Position('d', 8),
+      Position('a', 4),
+      Position('b', 4),
+      Position('c', 4),
+      Position('e', 4),
+      Position('f', 4),
+      Position('g', 4),
+      Position('h', 4)
     )
   }
 }

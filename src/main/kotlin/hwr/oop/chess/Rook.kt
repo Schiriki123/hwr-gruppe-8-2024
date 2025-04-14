@@ -11,12 +11,12 @@ data class Rook(
       // Add all possible moves to set
       for (rank in 1..8) {
           if (rank != currentRank) {
-              possibleMoves.add(Position(rank, currentFile))
+              possibleMoves.add(Position(currentFile, rank))
           }
       }
       for (file in 'a'..'h') {
           if (file != currentFile) {
-              possibleMoves.add(Position(currentRank, file))
+              possibleMoves.add(Position(file, currentRank))
           }
       }
       return possibleMoves.toSet()
