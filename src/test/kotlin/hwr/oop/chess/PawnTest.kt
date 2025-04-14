@@ -9,7 +9,7 @@ class PawnTest : AnnotationSpec() {
     val isWhite = true
     val pawn = Pawn(isWhite)
     assertThat(pawn.isWhite).isEqualTo(isWhite)
-    assertThat(pawn.eliminated).isFalse()
+    assertThat(pawn.isCaptured).isFalse()
   }
 
   @Test
