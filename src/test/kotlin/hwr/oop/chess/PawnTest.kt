@@ -28,7 +28,7 @@ class PawnTest : AnnotationSpec() {
   }
 
   @Test
-  fun `Test black pawn movement from f7`(){
+  fun `Test black pawn movement from f7`() {
     val isWhite = false
     val pawn = Pawn(isWhite)
     val position = Position('f', 7)
@@ -42,17 +42,30 @@ class PawnTest : AnnotationSpec() {
     )
   }
 
-//  @Test
-//  fun `Test Black pawn movement from 7a`(){
-//    val isWhite = false
-//    val pawn = Pawn(isWhite)
-//    val position = Position('a', 7)
-//    val moves = pawn.move(position)
-//
-//    assertThat(moves).containsExactlyInAnyOrder(
-//      Position('a', 6), // Move forward one square
-//      Position('a', 5), // Move forward two squares
-//      Position('b', 6)  // Capture diagonally to the right
-//    )
-//  }
+  @Test
+  fun `Test Black pawn movement from 7a`() {
+    val isWhite = false
+    val pawn = Pawn(isWhite)
+    val position = Position('a', 7)
+    val moves = pawn.move(position)
+
+    assertThat(moves).containsExactlyInAnyOrder(
+      Position('a', 6), // Move forward one square
+      Position('a', 5), // Move forward two squares
+      Position('b', 6)  // Capture diagonally to the right
+    )
+  }
+
+  @Test
+  fun `Test white pawn movement from h6`() {
+    val isWhite = true
+    val pawn = Pawn(isWhite)
+    val position = Position('h', 6)
+    val moves = pawn.move(position)
+
+    assertThat(moves).containsExactlyInAnyOrder(
+      Position('h', 7),
+      Position('g', 7)
+    )
+  }
 }
