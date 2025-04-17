@@ -7,15 +7,8 @@ data class Position(val file: Char, val rank: Int) {
   }
 
   companion object {
-    private fun isValid(file: Char, rank: Int): Boolean {
+    fun isValid(file: Char, rank: Int): Boolean {
       return file in 'a'..'h' && rank in 1..8
-    }
-    fun createPositionIfValid(file: Char, rank: Int): Position? {
-      return if (isValid(file, rank)) {
-        Position(file, rank)
-      } else {
-        null
-      }
     }
   }
 }
