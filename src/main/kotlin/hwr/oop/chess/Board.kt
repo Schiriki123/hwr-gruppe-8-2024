@@ -25,7 +25,7 @@ class Board(val board: HashMap<Position, Square> = HashMap<Position, Square>()) 
 
   fun makeMove(move: Move, isWhite: Boolean): Boolean {
 
-    return validateMove(move,isWhite);
+    return validateMove(move, isWhite);
   }
 
 }

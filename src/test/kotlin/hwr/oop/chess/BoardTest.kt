@@ -9,9 +9,7 @@ class BoardTest : AnnotationSpec() {
     val filePosition = 'a'
     val rankPosition = 1
     val piece= Pawn(false)
-    val square = Square(filePosition,rankPosition,piece)
-    assertThat(square.file).isEqualTo(filePosition)
-    assertThat(square.rank).isEqualTo(rankPosition)
+    val square = Square(piece)
     assertThat(square.piece).isEqualTo(piece)
 
   }
