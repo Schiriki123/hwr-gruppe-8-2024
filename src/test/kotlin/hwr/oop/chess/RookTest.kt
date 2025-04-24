@@ -13,7 +13,7 @@ class RookTest : AnnotationSpec() {
   }
 
   @Test
-  fun `Test rook movement`() {
+  fun `Test rook movement from d4`() {
     val isWhite = true
     val rook = Rook(isWhite)
     val position = Position('d', 4)
