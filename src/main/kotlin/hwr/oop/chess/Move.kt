@@ -12,7 +12,7 @@ class Move(val start: Position, val end: Position) {
     }
 
     // Check if goal is already occupied by a piece of the same color
-    if (targetSquare.piece.isWhite == piece.isWhite) {
+    if (targetSquare.piece?.isWhite == piece.isWhite) {
       return false
     }
 
