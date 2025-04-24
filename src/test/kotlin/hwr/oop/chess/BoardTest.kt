@@ -3,6 +3,7 @@ package hwr.oop.chess
 import io.kotest.core.spec.style.AnnotationSpec
 import io.kotest.matchers.types.shouldBeInstanceOf
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 
 class BoardTest : AnnotationSpec() {
   @Test
@@ -21,7 +22,7 @@ class BoardTest : AnnotationSpec() {
   }
 
   @Test
-  fun `Test getSquare method`() {
+  fun `Test get square based on position object`() {
     val board = Board()
     val position = Position('a', 1)
 
@@ -41,11 +42,11 @@ class BoardTest : AnnotationSpec() {
   }
 
   @Test
-  fun `Test piece move to empty square`() {
+  fun `Test rook move to empty square`() {
     val board = Board()
     val testPiece = Rook(true)
     val startPos = Position('g', 8)
-    val endPos = Position('a', 1)
+    val endPos = Position('g', 1)
     val move = Move(startPos, endPos)
 
     board.putPiece(startPos, testPiece)
@@ -58,10 +59,34 @@ class BoardTest : AnnotationSpec() {
     assertThat(board.isItWhitesMove).isFalse
   }
 
-//  @Test
-//  fun `Ask for square`(){
-//    val board = Board()
-//    val square: Board.Square = board.getSquare('a', 1)
-//    assertThat(square.file).isEqualTo(' ')
-//  }
+  @Test
+  fun `Test move exception for empty start square`() {
+    val board = Board()
+    val startPos = Position('a', 1)
+    val endPos = Position('g', 1)
+    val move = Move(startPos, endPos)
+
+    assertThatThrownBy {
+      board.makeMove(move)
+    }.message().isEqualTo("Start square does not contain any piece")
+  }
+
+  @Test
+  fun `Test move exception for target with ally piece`() {
+    val board = Board()
+    val testRook = Rook(true)
+    val testPawn = Pawn(true)
+    val startPos = Position('a', 1)
+    val endPos = Position('a', 2)
+    val move = Move(startPos, endPos)
+
+    // Setup board
+    board.putPiece(startPos, testRook)
+    board.putPiece(endPos, testPawn)
+
+    // Try to make move
+    assertThatThrownBy {
+      board.makeMove(move) // Try to move rook to position of pawn
+    }.message().isEqualTo("Target square is occupied by ally piece")
+  }
 }

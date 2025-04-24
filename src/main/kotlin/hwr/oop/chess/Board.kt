@@ -23,16 +23,21 @@ class Board(
     return boardMap.getValue(position)
   }
 
-  private fun validateMove(move: Move): Boolean {
-    val startSquare = this.boardMap[move.start]
-    val endSquare = this.boardMap[move.end]
-    if (endSquare?.piece?.isWhite != isItWhitesMove) {
-      return false
-    }
-    if (startSquare?.piece?.isWhite == isItWhitesMove) {
+  private fun validateMove(move: Move) {
+    val movedPiece: Piece? = getSquare(move.start).piece
+    val targetSquare = getSquare(move.end)
 
+    // Validate that start square contains piece
+    if (movedPiece == null) throw IllegalArgumentException("Start square does not contain any piece")
+
+    // Check if target is already occupied by a piece of the same color
+    if (targetSquare.piece?.isWhite == movedPiece.isWhite) throw IllegalArgumentException("Target square is occupied by ally piece")
+
+    // Check if the target position is a valid move for the piece
+    val possibleMoves = movedPiece.move(move.start)
+    if (!possibleMoves.contains(move.end)) {
+      throw IllegalArgumentException("Impossible move")
     }
-    return false
   }
 
   fun makeMove(move: Move): Boolean {/* TODO Validate movement
@@ -42,10 +47,10 @@ class Board(
     - Is path blocked
     - Check for mate
     */
+    validateMove(move)
+
     val startSquare = getSquare(move.start)
     val endSquare = getSquare(move.end)
-
-    if (startSquare.piece == null) return false
 
     val movedPiece = startSquare.piece
     endSquare.piece = movedPiece
