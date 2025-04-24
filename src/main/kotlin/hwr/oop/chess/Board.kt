@@ -6,24 +6,31 @@ class Board(val board: HashMap<Position, Square> = HashMap<Position, Square>()) 
   init {
     for (i  in 'a'..'h') {
       for (j  in 1..8) {
-        var tempPosition= Position(j,i)
+        val tempPosition= Position(i,j)
         val tempPiece = Pawn(true)
-        var tempSquare= Square(j,i,tempPiece)
+        val tempSquare= Square(i,j,tempPiece)
 
         board[tempPosition] = tempSquare
       }
     }
   }
 
-  fun validateMove(move: Move, board: Board, isWhite:Boolean):Boolean {
-    val currentBoard = board.board
-    if(currentBoard[move.start]?.piece?.isWhite ==isWhite) {
-      if(currentBoard[move.end]?.piece?.isWhite != isWhite) {
-
+   private fun validateMove(move: Move, isWhite:Boolean):Boolean {
+      if(this.board[move.start]?.piece?.isWhite ==isWhite && this.board[move.end]?.piece?.isWhite != isWhite) {
+        val possibleMoves= this.board[move.start]?.piece?.move(move.start)
+        if(possibleMoves != null && possibleMoves.contains(move.end)) {
+          return true
+        }
       }
+      return false
     }
-    return false
+
+  fun makeMove(move: Move, isWhite: Boolean): Boolean {
+
+    return validateMove(move,isWhite);
   }
 
 }
+
+
 

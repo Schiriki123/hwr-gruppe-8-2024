@@ -9,7 +9,7 @@ class BoardTest : AnnotationSpec() {
     val filePosition = 'a'
     val rankPosition = 1
     val piece= Pawn(false)
-    val square = Square(rankPosition,filePosition,piece)
+    val square = Square(filePosition,rankPosition,piece)
     assertThat(square.file).isEqualTo(filePosition)
     assertThat(square.rank).isEqualTo(rankPosition)
     assertThat(square.piece).isEqualTo(piece)
@@ -18,7 +18,7 @@ class BoardTest : AnnotationSpec() {
 
   @Test
   fun `Test square name population, should be a, b, c, d, e, f, g, h`() {
-    val position =Position(1,'a')
+    val position =Position('a',1)
 
     assertThat(position.getPosition()).isEqualTo("a1")
 
@@ -27,7 +27,7 @@ class BoardTest : AnnotationSpec() {
   @Test
   fun `Test board initialization`() {
     val board = Board()
-    val position= Position(5,'g')
+    val position= Position('g',5)
     val square= board.board.get(position)
     val result = "g5"
     if (square != null) {
@@ -37,10 +37,10 @@ class BoardTest : AnnotationSpec() {
   }
 
 
-  @Test
-  fun `Ask for square`(){
+//  @Test
+//  fun `Ask for square`(){
 //    val board = Board()
 //    val square: Board.Square = board.getSquare('a', 1)
 //    assertThat(square.file).isEqualTo(' ')
-  }
+//  }
 }
