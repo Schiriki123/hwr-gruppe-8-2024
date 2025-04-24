@@ -1,4 +1,7 @@
 package hwr.oop.chess
 
-class Square(val rank: Int, val file: String, val piece : Piece) {
+class Square(val rank: Int, val file: Char, val piece : Piece) {
+    fun getPosition(): String{
+        return "${file}${rank}"
+    }
 }

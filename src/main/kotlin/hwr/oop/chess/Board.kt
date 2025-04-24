@@ -1,20 +1,29 @@
 package hwr.oop.chess
 
-class Board() {
+import com.sun.org.apache.xpath.internal.operations.Bool
 
-  val board: HashMap<Int, Rank> = HashMap<Int, Rank>();
-  val ranks: Array<Rank> = Array<Rank> (8){Rank(0)}
-  fun getSquare(file: Char, rank: Int): Square {
+class Board(val board: HashMap<Position, Square> = HashMap<Position, Square>()) {
+  init {
+    for (i  in 'a'..'h') {
+      for (j  in 1..8) {
+        var tempPosition= Position(j,i)
+        val tempPiece = Pawn(true)
+        var tempSquare= Square(j,i,tempPiece)
 
-    return ranks[rank].squares[Utils.covertFileToNumber(file)]
+        board[tempPosition] = tempSquare
+      }
+    }
   }
 
-  class Rank(rankPosition: Int) {
-    val squares: Array<Square> = Array<Square>(8) { Square(' ') }
+  fun validateMove(move: Move, board: Board, isWhite:Boolean):Boolean {
+    val currentBoard = board.board
+    if(currentBoard[move.start]?.piece?.isWhite ==isWhite) {
+      if(currentBoard[move.end]?.piece?.isWhite != isWhite) {
+
+      }
+    }
+    return false
   }
 
-  class Square(val file: Char) {
-
-  }
 }
 
