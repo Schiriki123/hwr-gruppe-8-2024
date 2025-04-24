@@ -44,9 +44,9 @@ class Board(
   }
 
   fun makeMove(move: Move): Boolean {/* TODO Validate movement
-    - Player
-    - Same color on end square
-    - Is end position contained in move set
+    - Player [x]
+    - Same color on end square [x]
+    - Is end position contained in move set [x]
     - Is path blocked
     - Check for mate
     */
