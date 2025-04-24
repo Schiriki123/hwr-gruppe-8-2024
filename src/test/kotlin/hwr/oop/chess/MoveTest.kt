@@ -13,14 +13,4 @@ class MoveTest : AnnotationSpec() {
     assertThat(start).isEqualTo(move.start)
     assertThat(end).isEqualTo(move.end)
   }
-
-  @Test
-  fun `test move validation`() {
-    val start = Position('a', 2)
-    val end = Position('a', 3)
-    val move = Move(start, end)
-
-    assertThat(start).isEqualTo(move.start)
-    assertThat(end).isEqualTo(move.end)
-  }
 }

@@ -16,16 +16,14 @@ data class Pawn(
       if (Position.isValid(startPosition.file - 1, startPosition.rank + 1)) {
         possibleMoves.add(
           Position(
-            startPosition.file - 1,
-            startPosition.rank + 1
+            startPosition.file - 1, startPosition.rank + 1
           )
         )
       }
       if (Position.isValid(startPosition.file + 1, startPosition.rank + 1)) {
         possibleMoves.add(
           Position(
-            startPosition.file + 1,
-            startPosition.rank + 1
+            startPosition.file + 1, startPosition.rank + 1
           )
         )
       }
@@ -38,16 +36,14 @@ data class Pawn(
       if (Position.isValid(startPosition.file - 1, startPosition.rank - 1)) {
         possibleMoves.add(
           Position(
-            startPosition.file - 1,
-            startPosition.rank - 1
+            startPosition.file - 1, startPosition.rank - 1
           )
         )
       }
       if (Position.isValid(startPosition.file + 1, startPosition.rank - 1)) {
         possibleMoves.add(
           Position(
-            startPosition.file + 1,
-            startPosition.rank - 1
+            startPosition.file + 1, startPosition.rank - 1
           )
         )
       }

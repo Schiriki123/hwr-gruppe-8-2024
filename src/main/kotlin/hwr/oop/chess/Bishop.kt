@@ -2,7 +2,7 @@ package hwr.oop.chess
 
 import kotlin.math.abs
 
-class Bishop(
+data class Bishop(
   override val isWhite: Boolean,
   override val isCaptured: Boolean = false,
 ) : Piece {
