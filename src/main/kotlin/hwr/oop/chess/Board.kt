@@ -30,6 +30,9 @@ class Board(
     // Validate that start square contains piece
     if (movedPiece == null) throw IllegalArgumentException("Start square does not contain any piece")
 
+    // Check if piece belongs to player
+    if (movedPiece.isWhite != isItWhitesMove) throw IllegalArgumentException("Piece belongs to opponent")
+
     // Check if target is already occupied by a piece of the same color
     if (targetSquare.piece?.isWhite == movedPiece.isWhite) throw IllegalArgumentException("Target square is occupied by ally piece")
 

@@ -89,4 +89,22 @@ class BoardTest : AnnotationSpec() {
       board.makeMove(move) // Try to move rook to position of pawn
     }.message().isEqualTo("Target square is occupied by ally piece")
   }
+
+  @Test
+  fun `Test move exception for moving piece from opponent`() {
+    val board = Board()
+    val testRook = Rook(false) // Black rook
+    val startPos = Position('a', 1)
+    val endPos = Position('a', 2)
+    val move = Move(startPos, endPos)
+
+    // Setup board
+    board.isItWhitesMove = true
+    board.putPiece(startPos, testRook)
+
+    // Try to make move
+    assertThatThrownBy {
+      board.makeMove(move)
+    }.message().isEqualTo("Piece belongs to opponent")
+  }
 }
