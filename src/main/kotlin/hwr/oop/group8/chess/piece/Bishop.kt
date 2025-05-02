@@ -6,21 +6,16 @@ import hwr.oop.group8.chess.Move
 
 class Bishop(override val color: Color) : Piece {
   override fun isMoveValid(move: Move, board: Board): Boolean {
-    val from = move.from
+    var from = move.from
     val to = move.to
-    if (from != to) {
-      val direction = move.getMoveDirection()
-
-      // Check that the move is diagonal
-      check(move.isMoveDiagonal()) { "Invalid move for piece Bishop from $from to $to" }
-
-      val nextField = from.getAdjacentPosition(direction)
-      if (board.getSquare(nextField).getPiece() != null) {
+    val direction = move.getMoveDirection()
+    check(move.isMoveDiagonal()) { "Invalid move for piece Bishop from $from to $to" }
+    from = from.getAdjacentPosition(direction) // Skip current square
+    while (from != to) {
+      if (board.getSquare(from).getPiece() != null) {
         return false
       }
-      return isMoveValid(
-        Move(nextField, to), board
-      )
+      from = from.getAdjacentPosition(direction)
     }
     return true
   }
