@@ -7,17 +7,33 @@ import hwr.oop.group8.chess.Move
 
 class Pawn(override val color: Color) : Piece {
   override fun isMoveValid(move: Move, board: Board): Boolean {
-    var from = move.from
+    val from = move.from
     val to = move.to
     val direction = move.getMoveDirection()
     val forwardDirection =
       if (color == Color.WHITE) Direction.TOP else Direction.BOTTOM
 
+
     if (move.isMoveStraight()) {
-      TODO("Implement pawn straight movement")
+      val nextField = from.getAdjacentPosition(forwardDirection)
+      if (nextField != to) {
+        return false
+      }
+      if (board.getSquare(nextField).getPiece() != null) {
+        return false
+      }
     } else if (move.isMoveDiagonal()) {
-      TODO("Implement pawn diagonal movement")
+      val nextField = from.getAdjacentPosition(direction)
+      if (nextField != to) {
+        return false
+      }
+      if(board.getSquare(nextField).getPiece() == null) {
+        return false
+      }
+
     } else return false
+
+    return true
   }
 
   override fun getChar(): Char {

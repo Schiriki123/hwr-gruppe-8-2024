@@ -32,7 +32,7 @@ class RookTest : AnnotationSpec() {
     val board = Board(FENData("R7/8/8/8/8/8/8/8"))
     val move = Move(Position('a', 8), Position('b', 2))
     assertThatThrownBy { board.makeMove(move) }
-      .hasMessageContaining("Invalid move for piece Rook from a8 to b2")
+      .hasMessageContaining("Invalid move: Is not straight or diagonal")
   }
 
   @Test

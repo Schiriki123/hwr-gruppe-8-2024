@@ -7,7 +7,7 @@ class Board(fenData: FENData) {
   val halfmoveClock: Int
   val fullmoveClock: Int
 
-  init {
+  init { // Creation of Board in Map based on FEN String
     for (rank in 1..8) {
       var counter = 'a'
       fenData.getRank(rank).forEach { fileChar ->
@@ -19,7 +19,7 @@ class Board(fenData: FENData) {
         } else {
           map.put(
             Position(counter, 9 - rank),
-            Square(FENData.Companion.createPiece(fileChar))
+            Square(FENData.createPiece(fileChar))
           )
           counter++
         }
