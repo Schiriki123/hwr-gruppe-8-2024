@@ -8,7 +8,7 @@ class Move(val from: Position, val to: Position) {
     val fileDiff = to.file - from.file
     val rankDiff = to.rank - from.rank
     require(from != to) { "From and to positions must be different" }
-    require(isMoveDiagonal() || isMoveStraight()){"Invalid move: Is not straight or diagonal"}
+    require(isMoveDiagonal() || isMoveStraight()) { "Invalid move: Is not straight or diagonal" }
 
     return when {
       fileDiff > 0 && rankDiff > 0 -> Direction.TOP_RIGHT

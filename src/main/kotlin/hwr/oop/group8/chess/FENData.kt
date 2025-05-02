@@ -24,11 +24,7 @@ data class FENData(
   }
 
   fun getTurn(): Color {
-    return when (turn) {
-      'w' -> Color.WHITE
-      'b' -> Color.BLACK
-      else -> throw IllegalArgumentException("Invalid turn character: $turn")
-    }
+    return if (turn == 'w') Color.WHITE else Color.BLACK
   }
 
   companion object {

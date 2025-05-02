@@ -12,6 +12,7 @@ class Pawn(override val color: Color) : Piece {
     val direction = move.getMoveDirection()
     val forwardDirection: Direction
     val startRank: Int
+
     if (color == Color.WHITE) {
       forwardDirection = Direction.TOP
       startRank = 2
@@ -20,37 +21,43 @@ class Pawn(override val color: Color) : Piece {
       startRank = 7
     }
 
-
+    // Handle straight moves
     if (move.isMoveStraight()) {
       val nextField = from.getAdjacentPosition(forwardDirection)
-      if (nextField != to) {
-        if (from.rank == startRank) {
-          val nextNextField = nextField.getAdjacentPosition(forwardDirection)
-          if (board.getSquare(nextField).getPiece() != null && board.getSquare(
-              nextNextField
-            ).getPiece() != null
-          ) {
-            return false
-          }
-        } else {
-          return false
+
+      // Check if target square is occupied
+      if (board.getSquare(to).getPiece() != null) {
+        return false
+      }
+
+      // Single square forward move
+      if (nextField == to) {
+        return true
+      }
+
+      // Double square forward move from start position
+      if (from.rank == startRank) {
+        val twoSquaresForward =
+          nextField.getAdjacentPosition(forwardDirection)
+        if (twoSquaresForward == to) {
+          // Path must be clear for double move
+          return board.getSquare(nextField).getPiece() == null
         }
       }
-      if (board.getSquare(nextField).getPiece() != null) {
-        return false
-      }
-    } else if (move.isMoveDiagonal()) {
-      val nextField = from.getAdjacentPosition(direction)
-      if (nextField != to) {
-        return false
-      }
-      if (board.getSquare(nextField).getPiece() == null) {
+
+      return false
+    }
+    // Handle diagonal captures
+    else {
+      // Must be exactly one square diagonally
+      if (to != from.getAdjacentPosition(direction)) {
         return false
       }
 
-    } else return false
-
-    return true
+      // Must capture piece
+      val targetPiece = board.getSquare(to).getPiece()
+      return targetPiece != null
+    }
   }
 
   override fun getChar(): Char {
