@@ -1,0 +1,29 @@
+package hwr.oop.group8.chess.piece
+
+import hwr.oop.group8.chess.Board
+import hwr.oop.group8.chess.Color
+import hwr.oop.group8.chess.Move
+
+class Rook(override val color: Color) : Piece {
+  override fun isMoveValid(move: Move, board: Board): Boolean {
+    var from = move.from
+    val to = move.to
+    val direction = move.getMoveDirection()
+    check(move.isMoveStraight()) { "Invalid move for piece Rook from $from to $to" }
+    from = from.getAdjacentPosition(direction) // Skip current square
+    while (from != to) {
+      if (board.getSquare(from).getPiece() != null) {
+        return false
+      }
+      from = from.getAdjacentPosition(direction)
+    }
+    return true
+  }
+
+  override fun getChar(): Char {
+    return when (color) {
+      Color.WHITE -> 'R'
+      Color.BLACK -> 'r'
+    }
+  }
+}
