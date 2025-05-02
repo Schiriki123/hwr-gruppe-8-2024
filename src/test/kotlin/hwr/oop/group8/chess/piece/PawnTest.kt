@@ -44,7 +44,7 @@ class PawnTest : AnnotationSpec() {
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/p7/8/8/8/8/8")
   }
   @Test
-  fun `Test multiple pawn square move`() {
+  fun `Test invalid double move`() {
     val board = Board(FENData("8/8/p7/8/8/8/8/8"))
     val move = Move(Position('a', 6), Position('a', 4))
 
@@ -67,5 +67,22 @@ class PawnTest : AnnotationSpec() {
     board.makeMove(move)
 
     assertThat(board.generateFENBoardString()).isEqualTo("8/P7/8/8/8/8/8/8")
+  }
+
+  @Test
+  fun `Test valid double move`() {
+    val board = Board(FENData("8/8/8/8/8/8/P7/8"))
+    val move = Move(Position('a', 2), Position('a', 4))
+    board.makeMove(move)
+
+    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/P7/8/8/8")
+  }
+  @Test
+  fun `Test valid double move with blocked path`() {
+    val board = Board(FENData("8/8/8/8/8/b7/P7/8"))
+    val move = Move(Position('a', 2), Position('a', 4))
+
+    assertThatThrownBy { board.makeMove(move) }
+    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/b7/P7/8")
   }
 }
