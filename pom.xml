@@ -104,7 +104,7 @@
           </descriptorRefs>
           <archive>
             <manifest>
-              <mainClass>hwr.oop.MainKt</mainClass>
+              <mainClass>hwr.oop.group8.chess.MainKt</mainClass>
             </manifest>
           </archive>
         </configuration>
