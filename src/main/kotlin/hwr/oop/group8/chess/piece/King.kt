@@ -6,7 +6,17 @@ import hwr.oop.group8.chess.Move
 
 class King(override val color: Color) : Piece {
   override fun isMoveValid(move: Move, board: Board): Boolean {
-    TODO("Not yet implemented")
+
+    val from = move.from
+    val to = move.to
+    val direction = move.getMoveDirection()
+    val nextField = from.getAdjacentPosition(direction)
+
+    // Single square move
+    if (to != nextField) {
+      return false
+    }
+    return true
   }
 
   override fun getChar(): Char {
