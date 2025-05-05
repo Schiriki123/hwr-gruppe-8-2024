@@ -9,6 +9,7 @@ class KnightTest : AnnotationSpec() {
 
   @Test
   fun `Test char representation`() {
+    //test kommentar
     val whiteKnight = Knight(Color.WHITE)
     val blackKnight = Knight(Color.BLACK)
     assertThat(whiteKnight.getChar()).isEqualTo('N')
