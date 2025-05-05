@@ -30,11 +30,7 @@ class Knight(override val color: Color) : Piece {
             return false
 
         val targetPiece = board.getSquare(to).getPiece()
-        if (targetPiece != null && targetPiece.color == color) {
-            return false
-        }
-
-        return true
+        return !(targetPiece != null && targetPiece.color == color)
     }
 
     override fun getChar(): Char {

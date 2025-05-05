@@ -12,23 +12,17 @@ class Queen(override val color: Color) : Piece {
 
     if (move.isMoveStraight()) {
       check(move.isMoveStraight()) { "Invalid move for piece Queen from $from to $to" }
-      from = from.getAdjacentPosition(direction) // Skip current square
-      while (from != to) {
-        if (board.getSquare(from).getPiece() != null) {
-          return false
-        }
-        from = from.getAdjacentPosition(direction)
-      }
+      from = from.getAdjacentPosition(direction)
     }
     else {
       check(move.isMoveDiagonal()) { "Invalid move for piece Queen from $from to $to" }
-      from = from.getAdjacentPosition(direction) // Skip current square
-      while (from != to) {
-        if (board.getSquare(from).getPiece() != null) {
-          return false
-        }
-        from = from.getAdjacentPosition(direction)
+      from = from.getAdjacentPosition(direction)
+    }
+    while (from != to) {
+      if (board.getSquare(from).getPiece() != null) {
+        return false
       }
+      from = from.getAdjacentPosition(direction)
     }
     return true
   }
