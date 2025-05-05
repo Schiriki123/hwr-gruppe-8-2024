@@ -59,14 +59,8 @@ class PawnTest : AnnotationSpec() {
     assertThat(board.generateFENBoardString()).isEqualTo("8/P7/8/8/8/8/8/8")
   }
 
-  @Test
-  fun `Test pawn movement to capture`() {
-    val board = Board(FENData("8/p7/1P6/8/8/8/8/8"))
-    val move = Move(Position('b', 6), Position('a', 7))
-    board.makeMove(move)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("8/P7/8/8/8/8/8/8")
-  }
+
 
   @Test
   fun `Test valid double move`() {

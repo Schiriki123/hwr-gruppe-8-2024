@@ -6,7 +6,25 @@ import hwr.oop.group8.chess.Move
 
 class Queen(override val color: Color) : Piece {
   override fun isMoveValid(move: Move, board: Board): Boolean {
-    TODO("Not yet implemented")
+    var from = move.from
+    val to = move.to
+    val direction = move.getMoveDirection()
+
+    if (move.isMoveStraight()) {
+      check(move.isMoveStraight()) { "Invalid move for piece Queen from $from to $to" }
+      from = from.getAdjacentPosition(direction)
+    }
+    else {
+      check(move.isMoveDiagonal()) { "Invalid move for piece Queen from $from to $to" }
+      from = from.getAdjacentPosition(direction)
+    }
+    while (from != to) {
+      if (board.getSquare(from).getPiece() != null) {
+        return false
+      }
+      from = from.getAdjacentPosition(direction)
+    }
+    return true
   }
 
   override fun getChar(): Char {
