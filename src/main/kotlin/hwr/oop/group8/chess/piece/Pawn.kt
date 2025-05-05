@@ -23,7 +23,7 @@ class Pawn(override val color: Color) : Piece {
 
     // Handle straight moves
     if (move.isMoveStraight()) {
-      val nextField = from.getAdjacentPosition(forwardDirection)
+      val nextField = forwardDirection.nextPosition(from)
 
       // Check if target square is occupied
       if (board.getSquare(to).getPiece() != null) {
@@ -37,8 +37,7 @@ class Pawn(override val color: Color) : Piece {
 
       // Double square forward move from start position
       if (from.rank == startRank) {
-        val twoSquaresForward =
-          nextField.getAdjacentPosition(forwardDirection)
+        val twoSquaresForward = forwardDirection.nextPosition(nextField)
         if (twoSquaresForward == to) {
           // Path must be clear for double move
           return board.getSquare(nextField).getPiece() == null
@@ -50,7 +49,7 @@ class Pawn(override val color: Color) : Piece {
     // Handle diagonal captures
     else {
       // Must be exactly one square diagonally
-      if (to != from.getAdjacentPosition(direction)) {
+      if (to != direction.nextPosition(from)) {
         return false
       }
 

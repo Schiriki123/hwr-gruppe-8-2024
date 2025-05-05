@@ -6,6 +6,7 @@ data class Position(val file: Char, val rank: Int) {
     require(rank in 1..8) { "Rank must be between 1 and 8" }
   }
 
+  @Deprecated("Use direction.nextPosition() instead")
   fun getAdjacentPosition(direction: Direction): Position {
     return when (direction) {
       Direction.TOP -> Position(file, rank + 1)

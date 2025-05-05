@@ -10,18 +10,18 @@ class Bishop(override val color: Color) : Piece {
     val to = move.to
     val direction = move.getMoveDirection()
     check(move.isMoveDiagonal()) { "Invalid move for piece Bishop from $from to $to" }
-    from = from.getAdjacentPosition(direction) // Skip current square
+    from = direction.nextPosition(from) // Skip start square
     while (from != to) {
       if (board.getSquare(from).getPiece() != null) {
         return false
       }
-      from = from.getAdjacentPosition(direction)
+      from = direction.nextPosition(from)
     }
     return true
   }
 
   override fun getChar(): Char {
-    return when(color){
+    return when (color) {
       Color.WHITE -> 'B'
       Color.BLACK -> 'b'
     }

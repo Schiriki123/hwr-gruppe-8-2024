@@ -10,12 +10,12 @@ class Rook(override val color: Color) : Piece {
     val to = move.to
     val direction = move.getMoveDirection()
     check(move.isMoveStraight()) { "Invalid move for piece Rook from $from to $to" }
-    from = from.getAdjacentPosition(direction) // Skip current square
+    from = direction.nextPosition(from) // Skip current
     while (from != to) {
       if (board.getSquare(from).getPiece() != null) {
         return false
       }
-      from = from.getAdjacentPosition(direction)
+      from = direction.nextPosition(from)
     }
     return true
   }
