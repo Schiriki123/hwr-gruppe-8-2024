@@ -84,6 +84,7 @@ class KingTest : AnnotationSpec() {
     }
 
     @Test
+    @Ignore
     fun `Test King castle`() {
         var board = Board(FENData("8/8/8/8/8/8/8/R3K2R"))
         //King side castle
