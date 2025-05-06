@@ -1,11 +1,14 @@
 package hwr.oop.group8.chess.piece
 
 import hwr.oop.group8.chess.Board
+import hwr.oop.group8.chess.BoardInspector
 import hwr.oop.group8.chess.Color
 import hwr.oop.group8.chess.Direction
 import hwr.oop.group8.chess.Move
 
-class Pawn(override val color: Color) : Piece {
+class Pawn(override val color: Color,
+           override val boardInspector: BoardInspector
+) : Piece {
   override fun isMoveValid(move: Move, board: Board): Boolean {
     val from = move.from
     val to = move.to

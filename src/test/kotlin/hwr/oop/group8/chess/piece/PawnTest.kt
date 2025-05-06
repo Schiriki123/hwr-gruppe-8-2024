@@ -8,8 +8,9 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 class PawnTest : AnnotationSpec() {
   @Test
   fun `Test char representation`() {
-    val whitePawn = Pawn(Color.WHITE)
-    val blackPawn = Pawn(Color.BLACK)
+    val boardInspector = BoardInspector { null }
+    val whitePawn = Pawn(Color.WHITE, boardInspector)
+    val blackPawn = Pawn(Color.BLACK, boardInspector)
     assertThat(whitePawn.getChar()).isEqualTo('P')
     assertThat(blackPawn.getChar()).isEqualTo('p')
   }

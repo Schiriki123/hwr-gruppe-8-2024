@@ -35,10 +35,11 @@ class FENDataTest : AnnotationSpec() {
 
   @Test
   fun `test piece object creation`() {
+    val board = Board(FENData("8/8/8/8/8/8/8/8"))
     val pieceChars =
       listOf('r', 'n', 'b', 'q', 'k', 'p', 'R', 'N', 'B', 'Q', 'K', 'P')
     assertThat(pieceChars).allSatisfy { pieceChar ->
-      val piece = FENData.createPiece(pieceChar)
+      val piece = FENData.createPieceOnBoard(pieceChar, board)
       when (pieceChar) {
         'r', 'R' -> piece.shouldBeInstanceOf<Rook>()
         'n', 'N' -> piece.shouldBeInstanceOf<Knight>()
@@ -49,7 +50,7 @@ class FENDataTest : AnnotationSpec() {
       }
     }
     assertThatThrownBy {
-      FENData.createPiece('x')
+      FENData.createPieceOnBoard('x', board)
     }.message().isEqualTo("Invalid piece character: x")
   }
 
