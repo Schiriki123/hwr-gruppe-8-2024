@@ -28,23 +28,20 @@ data class FENData(
   }
 
   companion object {
-    fun createPieceOnBoard(pieceChar: Char, board: Board): Piece {
-      val boardInspector = BoardInspector {
-        board.getSquare(it).getPiece()
-      }
+    fun createPiece(pieceChar: Char): Piece {
       return when (pieceChar) {
-        'r' -> Rook(Color.BLACK, boardInspector)
-        'n' -> Knight(Color.BLACK, boardInspector)
-        'b' -> Bishop(Color.BLACK, boardInspector)
-        'q' -> Queen(Color.BLACK, boardInspector)
-        'k' -> King(Color.BLACK, boardInspector)
-        'p' -> Pawn(Color.BLACK, boardInspector)
-        'R' -> Rook(Color.WHITE, boardInspector)
-        'N' -> Knight(Color.WHITE, boardInspector)
-        'B' -> Bishop(Color.WHITE, boardInspector)
-        'Q' -> Queen(Color.WHITE, boardInspector)
-        'K' -> King(Color.WHITE, boardInspector)
-        'P' -> Pawn(Color.WHITE, boardInspector)
+        'r' -> Rook(Color.BLACK)
+        'n' -> Knight(Color.BLACK)
+        'b' -> Bishop(Color.BLACK)
+        'q' -> Queen(Color.BLACK)
+        'k' -> King(Color.BLACK)
+        'p' -> Pawn(Color.BLACK)
+        'R' -> Rook(Color.WHITE)
+        'N' -> Knight(Color.WHITE)
+        'B' -> Bishop(Color.WHITE)
+        'Q' -> Queen(Color.WHITE)
+        'K' -> King(Color.WHITE)
+        'P' -> Pawn(Color.WHITE)
         else -> throw IllegalArgumentException("Invalid piece character: $pieceChar")
       }
     }

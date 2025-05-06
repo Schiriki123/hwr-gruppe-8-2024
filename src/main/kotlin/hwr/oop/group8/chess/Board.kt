@@ -19,7 +19,7 @@ class Board(fenData: FENData) {
         } else {
           map.put(
             Position(counter, 9 - rank),
-            Square(FENData.createPieceOnBoard(fileChar, this))
+            Square(FENData.createPiece(fileChar))
           )
           counter++
         }
