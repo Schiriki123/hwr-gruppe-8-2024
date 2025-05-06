@@ -4,12 +4,14 @@ import hwr.oop.group8.chess.Board
 import hwr.oop.group8.chess.BoardInspector
 import hwr.oop.group8.chess.Color
 import hwr.oop.group8.chess.Move
+import hwr.oop.group8.chess.Position
 import kotlin.math.abs
 
 class Knight(
-    override val color: Color,
-    override val boardInspector: BoardInspector,
+  override val color: Color,
+  override val boardInspector: BoardInspector,
 ) : Piece {
+  @Deprecated("Use BoardInspector instead to reference the board")
   override fun isMoveValid(move: Move, board: Board): Boolean {
     val from = move.from
     val to = move.to
@@ -37,6 +39,33 @@ class Knight(
     val targetPiece = board.getSquare(to).getPiece()
     // Check if the target square is empty or occupied by an opponent's piece
     return targetPiece == null || targetPiece.color != color
+  }
+
+  override fun getValidMoveDestinations(): Set<Position> {
+    val validDestinations: MutableSet<Position> = mutableSetOf()
+    val currentPosition = myPosition()
+    val possibleDestination = listOf(
+      Pair(2, 1),
+      Pair(2, -1),
+      Pair(-2, 1),
+      Pair(-2, -1),
+      Pair(1, 2),
+      Pair(1, -2),
+      Pair(-1, 2),
+      Pair(-1, -2)
+    )
+    for (pair in possibleDestination) {
+      val newFile = currentPosition.file + pair.first
+      val newRank = currentPosition.rank + pair.second
+      if (newFile in 'a'..'h' && newRank in 1..8) {
+        val nextPiece = boardInspector.getPieceAt(Position(newFile, newRank))
+        // Check if the next position is empty or occupied by an opponent's piece
+        if (nextPiece == null || nextPiece.color != color) {
+          validDestinations.add(Position(newFile, newRank))
+        }
+      }
+    }
+    return validDestinations
   }
 
   override fun getChar(): Char {

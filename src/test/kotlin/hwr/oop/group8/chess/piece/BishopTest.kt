@@ -1,7 +1,6 @@
 package hwr.oop.group8.chess.piece
 
 import hwr.oop.group8.chess.Board
-import hwr.oop.group8.chess.BoardInspector
 import hwr.oop.group8.chess.Color
 import hwr.oop.group8.chess.FENData
 import hwr.oop.group8.chess.Move
@@ -13,7 +12,7 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 class BishopTest : AnnotationSpec() {
   @Test
   fun `Test char representation`() {
-    val boardInspector = BoardInspector { null }
+    val boardInspector = Board(FENData("8/8/8/8/8/8/8/8"))
     val whiteBishop = Bishop(Color.WHITE, boardInspector)
     val blackBishop = Bishop(Color.BLACK, boardInspector)
     assertThat(whiteBishop.getChar()).isEqualTo('B')

@@ -7,7 +7,7 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 
 class QueenTest : AnnotationSpec() {
   fun `Test char representation`() {
-    val boardInspector = BoardInspector { null }
+    val boardInspector = Board(FENData("8/8/8/8/8/8/8/8"))
     val whiteQueen = Rook(Color.WHITE, boardInspector)
     val blackQueen = Rook(Color.BLACK, boardInspector)
     assertThat(whiteQueen.getChar()).isEqualTo('R')
@@ -52,7 +52,7 @@ class QueenTest : AnnotationSpec() {
     val board = Board(FENData("Q7/8/8/8/8/8/8/8"))
     val move = Move(Position('a', 8), Position('b', 2))
     assertThatThrownBy { board.makeMove(move) }
-      .hasMessageContaining("Invalid move: Is not straight or diagonal")
+      .hasMessageContaining("Invalid move for piece Queen from a8 to b2")
   }
 
   @Test

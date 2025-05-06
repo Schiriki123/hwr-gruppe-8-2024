@@ -9,7 +9,7 @@ class KnightTest : AnnotationSpec() {
 
   @Test
   fun `Test char representation`() {
-    val boardInspector = BoardInspector { null }
+    val boardInspector = Board(FENData("8/8/8/8/8/8/8/8"))
     val whiteKnight = Knight(Color.WHITE, boardInspector)
     val blackKnight = Knight(Color.BLACK, boardInspector)
     assertThat(whiteKnight.getChar()).isEqualTo('N')
@@ -73,6 +73,13 @@ class KnightTest : AnnotationSpec() {
     board.makeMove(move)
 
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/5N2/8/8")
+
+    // Knight move from a3 to b5
+    board = Board(FENData("8/8/8/8/8/N7/8/8"))
+    move = Move(Position('a', 3), Position('b', 5))
+    board.makeMove(move)
+
+    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/1N6/8/8/8/8")
   }
 
   @Test
