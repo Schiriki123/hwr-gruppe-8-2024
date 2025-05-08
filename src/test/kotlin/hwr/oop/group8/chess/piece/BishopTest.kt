@@ -29,6 +29,24 @@ class BishopTest : AnnotationSpec() {
   }
 
   @Test
+  fun `Test bishop capture move set generation`() {
+    val board = Board(FENData("8/8/8/2B5/8/P3p3/8/8"))
+    val validMoveDestinationsOfBishop =
+      board.getPieceAt(Position('c', 5))!!.getValidMoveDestinations()
+
+    assertThat(validMoveDestinationsOfBishop).containsExactlyInAnyOrder(
+      Position('a', 7),
+      Position('b', 6),
+      Position('d', 6),
+      Position('e', 7),
+      Position('f', 8),
+      Position('b', 4),
+      Position('d', 4),
+      Position('e', 3)
+    )
+  }
+
+  @Test
   fun `Test bishop movement with blocked path`() {
     val board = Board(FENData("B7/8/8/8/4r3/8/8/8"))
     val move = Move(Position('a', 8), Position('g', 2))

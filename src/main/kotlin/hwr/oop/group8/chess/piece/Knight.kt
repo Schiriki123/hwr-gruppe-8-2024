@@ -1,46 +1,13 @@
 package hwr.oop.group8.chess.piece
 
-import hwr.oop.group8.chess.Board
 import hwr.oop.group8.chess.BoardInspector
 import hwr.oop.group8.chess.Color
-import hwr.oop.group8.chess.Move
 import hwr.oop.group8.chess.Position
-import kotlin.math.abs
 
 class Knight(
   override val color: Color,
   override val boardInspector: BoardInspector,
 ) : Piece {
-  @Deprecated("Use BoardInspector instead to reference the board")
-  override fun isMoveValid(move: Move, board: Board): Boolean {
-    val from = move.from
-    val to = move.to
-    /*
-        val direction = listOf(
-          listOf(Direction.TOP, Direction.TOP_RIGHT),
-          listOf(Direction.TOP, Direction.TOP_LEFT),
-          listOf(Direction.BOTTOM, Direction.BOTTOM_RIGHT),
-          listOf(Direction.BOTTOM, Direction.BOTTOM_LEFT),
-          listOf(Direction.RIGHT, Direction.BOTTOM_RIGHT),
-          listOf(Direction.RIGHT, Direction.TOP_RIGHT),
-          listOf(Direction.LEFT, Direction.BOTTOM_LEFT),
-          listOf(Direction.LEFT, Direction.TOP_LEFT)
-        )
-        // Kombination von moves als ein Path bzw eine Strecke speichern
-    */
-
-    if (!((abs(to.file - from.file) == 2 && abs(to.rank - from.rank) == 1) || (abs(
-        to.file - from.file
-      ) == 1 && abs(
-        to.rank - from.rank
-      ) == 2))
-    )
-      return false
-    val targetPiece = board.getSquare(to).getPiece()
-    // Check if the target square is empty or occupied by an opponent's piece
-    return targetPiece == null || targetPiece.color != color
-  }
-
   override fun getValidMoveDestinations(): Set<Position> {
     val validDestinations: MutableSet<Position> = mutableSetOf()
     val currentPosition = myPosition()
@@ -57,11 +24,13 @@ class Knight(
     for (pair in possibleDestination) {
       val newFile = currentPosition.file + pair.first
       val newRank = currentPosition.rank + pair.second
-      if (newFile in 'a'..'h' && newRank in 1..8) {
-        val nextPiece = boardInspector.getPieceAt(Position(newFile, newRank))
-        // Check if the next position is empty or occupied by an opponent's piece
-        if (nextPiece == null || nextPiece.color != color) {
-          validDestinations.add(Position(newFile, newRank))
+      if (newFile in 'a'..'h') {
+        if (newRank in 1..8) {
+          val nextPiece = boardInspector.getPieceAt(Position(newFile, newRank))
+          // Check if the next position is empty or occupied by an opponent's piece
+          if (nextPiece == null || nextPiece.color != color) {
+            validDestinations.add(Position(newFile, newRank))
+          }
         }
       }
     }

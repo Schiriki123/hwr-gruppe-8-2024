@@ -116,4 +116,32 @@ class KnightTest : AnnotationSpec() {
     assertThatThrownBy { board.makeMove(move) }
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/3N4/8/8/8")
   }
+
+  @Test
+  fun `Test knight movement set generation with overflow for rank & file`() {
+    val board = Board(FENData("8/6n1/8/7p/8/8/8/8", 'b'))
+    val validMoveDestinationsOfKnight =
+      board.getPieceAt(Position('g', 7))!!.getValidMoveDestinations()
+
+    assertThat(validMoveDestinationsOfKnight).containsExactly(
+      Position('e', 8),
+      Position('e', 6),
+      Position('f', 5)
+    )
+  }
+
+  @Test
+  fun `Test knight movement set generation with lower overflow for rank & file`() {
+    val board = Board(FENData("8/8/8/8/3p4/8/2N5/R7"))
+    val validMoveDestinationOfKnight =
+      board.getPieceAt(Position('c', 2))!!.getValidMoveDestinations()
+
+    assertThat(validMoveDestinationOfKnight).containsExactly(
+      Position('e', 3),
+      Position('e', 1),
+      Position('a', 3),
+      Position('d', 4),
+      Position('b', 4)
+    )
+  }
 }
