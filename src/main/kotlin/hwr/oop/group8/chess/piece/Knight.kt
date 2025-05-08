@@ -24,13 +24,11 @@ class Knight(
     for (pair in possibleDestination) {
       val newFile = currentPosition.file + pair.first
       val newRank = currentPosition.rank + pair.second
-      if (newFile in 'a'..'h') {
-        if (newRank in 1..8) {
-          val nextPiece = boardInspector.getPieceAt(Position(newFile, newRank))
-          // Check if the next position is empty or occupied by an opponent's piece
-          if (nextPiece == null || nextPiece.color != color) {
-            validDestinations.add(Position(newFile, newRank))
-          }
+      if (newFile in 'a'..'h' && newRank in 1..8) {
+        val nextPiece = boardInspector.getPieceAt(Position(newFile, newRank))
+        // Check if the next position is empty or occupied by an opponent's piece
+        if (nextPiece == null || nextPiece.color != color) {
+          validDestinations.add(Position(newFile, newRank))
         }
       }
     }
