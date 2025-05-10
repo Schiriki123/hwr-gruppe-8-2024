@@ -7,7 +7,7 @@ import hwr.oop.group8.chess.Position
 
 class Bishop(
   override val color: Color,
-  override val boardInspector: BoardInspector,
+  val boardInspector: BoardInspector,
 ) : Piece {
   override fun getValidMoveDestinations(): Set<Position> {
     val validDestinations: MutableSet<Position> = mutableSetOf()
@@ -19,7 +19,7 @@ class Bishop(
     )
 
     for (dir in directions) {
-      var nextPosition = myPosition()
+      var nextPosition = boardInspector.findPositionOfPiece(this)
       while (dir.hasNextPosition(nextPosition)) {
         nextPosition = dir.nextPosition(nextPosition)
         val nextPiece = boardInspector.getPieceAt(nextPosition)

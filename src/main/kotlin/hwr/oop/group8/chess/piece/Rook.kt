@@ -5,8 +5,9 @@ import hwr.oop.group8.chess.Color
 import hwr.oop.group8.chess.Direction
 import hwr.oop.group8.chess.Position
 
-class Rook(override val color: Color,
-           override val boardInspector: BoardInspector
+class Rook(
+  override val color: Color,
+  val boardInspector: BoardInspector,
 ) : Piece {
   override fun getValidMoveDestinations(): Set<Position> {
     val validDestinations: MutableSet<Position> = mutableSetOf()
@@ -18,7 +19,7 @@ class Rook(override val color: Color,
     )
 
     for (dir in directions) {
-      var nextPosition = myPosition()
+      var nextPosition = boardInspector.findPositionOfPiece(this)
       while (dir.hasNextPosition(nextPosition)) {
         nextPosition = dir.nextPosition(nextPosition)
         val nextPiece = boardInspector.getPieceAt(nextPosition)

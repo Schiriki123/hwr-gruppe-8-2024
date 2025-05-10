@@ -6,11 +6,11 @@ import hwr.oop.group8.chess.Position
 
 class Knight(
   override val color: Color,
-  override val boardInspector: BoardInspector,
+  val boardInspector: BoardInspector,
 ) : Piece {
   override fun getValidMoveDestinations(): Set<Position> {
     val validDestinations: MutableSet<Position> = mutableSetOf()
-    val currentPosition = myPosition()
+    val currentPosition = boardInspector.findPositionOfPiece(this)
     val possibleDestination = listOf(
       Pair(2, 1),
       Pair(2, -1),

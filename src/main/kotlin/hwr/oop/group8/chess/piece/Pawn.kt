@@ -7,8 +7,13 @@ import hwr.oop.group8.chess.Position
 
 class Pawn(
   override val color: Color,
-  override val boardInspector: BoardInspector,
+  val boardInspector: BoardInspector,
 ) : Piece {
+
+  fun myPosition(): Position {
+    return boardInspector.findPositionOfPiece(this)
+  }
+
   override fun getValidMoveDestinations(): Set<Position> {
     val validDestinations: MutableSet<Position> = mutableSetOf()
     val forwardDirection: Direction
@@ -23,7 +28,8 @@ class Pawn(
     }
 
     // Check for straight move
-    val nextField = forwardDirection.nextPosition(myPosition())
+    val nextField =
+      forwardDirection.nextPosition(myPosition())
     if (boardInspector.getPieceAt(nextField) == null) {
       validDestinations.add(nextField)
       // Check for double move from starting position

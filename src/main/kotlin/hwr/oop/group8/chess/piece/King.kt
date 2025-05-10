@@ -7,13 +7,13 @@ import hwr.oop.group8.chess.Position
 
 class King(
   override val color: Color,
-  override val boardInspector: BoardInspector,
+  val boardInspector: BoardInspector,
 ) : Piece {
   override fun getValidMoveDestinations(): Set<Position> {
     val validDestinations: MutableSet<Position> = mutableSetOf()
     val directions = Direction.entries // All possible directions
 
-    val myPosition = myPosition()
+    val myPosition = boardInspector.findPositionOfPiece(this)
     for (dir in directions) {
       if (dir.hasNextPosition(myPosition)) {
         val nextPosition = dir.nextPosition(myPosition)
