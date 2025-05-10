@@ -22,7 +22,7 @@ class Board(fenData: FENData) : BoardInspector {
         } else {
           map.put(
             Position(counter, 9 - rank),
-            Square(FENData.createPieceOnBoard(fileChar, this))
+            Square(FENData.createPiece(fileChar))
           )
           counter++
         }
