@@ -1,10 +1,11 @@
 package hwr.oop.group8.chess
 
+import hwr.oop.group8.chess.piece.King
 import hwr.oop.group8.chess.piece.Piece
 
-class Board(fenData: FENData): BoardInspector {
+class Board(fenData: FENData) : BoardInspector {
   private val map = HashMap<Position, Square>()
-  val turn: Color
+  var turn: Color
   val castle: String
   val halfmoveClock: Int
   val fullmoveClock: Int
@@ -59,8 +60,39 @@ class Board(fenData: FENData): BoardInspector {
     check(piece.getValidMoveDestinations().contains(move.to))
     { "Invalid move for piece ${piece::class.simpleName} from ${move.from} to ${move.to}" }
 
+    check(checkForCheck(move))
+    { "Move would put player in check" }
+
     toSquare.setPiece(piece)
     fromSquare.setPiece(null)
+    turn = turn.invert()
+  }
+
+  private fun checkForCheck(move: Move): Boolean {
+    // Simulate the move
+    val fromSquare = getSquare(move.from)
+    val toSquare = getSquare(move.to)
+    val movedPiece = fromSquare.getPiece()
+    val pieceOnTargetSquare = toSquare.getPiece()
+    toSquare.setPiece(movedPiece)
+    fromSquare.setPiece(null)
+
+    // Check if the move puts the player in check
+    val allPieces: Set<Piece> = map.values.mapNotNull { it.getPiece() }.toSet()
+    val possibleMovesOfOpponent: Set<Position> = allPieces
+      .filter { it.color != turn }
+      .flatMap { it.getValidMoveDestinations() }
+      .toSet()
+    val kingPosition: Position = allPieces.filter { it.color == turn }
+      .first { it is King }
+      .let { findPositionOfPiece(it) }
+
+    // Restore original board state
+    fromSquare.setPiece(movedPiece)
+    toSquare.setPiece(pieceOnTargetSquare)
+
+    // Check if the king is in check
+    return !possibleMovesOfOpponent.contains(kingPosition)
   }
 
   fun getCapturedPieces(): String {
