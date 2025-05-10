@@ -34,36 +34,43 @@ class KingTest : AnnotationSpec() {
 
     //King moves right
     move = Move(Position('c', 5), Position('d', 5))
+    board.turn = Color.WHITE
     board.makeMove(move)
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/3K4/8/8/8/8")
 
     //King moves down
     move = Move(Position('d', 5), Position('d', 4))
+    board.turn = Color.WHITE
     board.makeMove(move)
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/3K4/8/8/8")
 
     //King moves up
     move = Move(Position('d', 4), Position('d', 5))
+    board.turn = Color.WHITE
     board.makeMove(move)
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/3K4/8/8/8/8")
 
     //King moves top right
     move = Move(Position('d', 5), Position('e', 6))
+    board.turn = Color.WHITE
     board.makeMove(move)
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/4K3/8/8/8/8/8")
 
     //King moves top left
     move = Move(Position('e', 6), Position('d', 7))
+    board.turn = Color.WHITE
     board.makeMove(move)
     assertThat(board.generateFENBoardString()).isEqualTo("8/3K4/8/8/8/8/8/8")
 
     //King moves bottom left
     move = Move(Position('d', 7), Position('c', 6))
+    board.turn = Color.WHITE
     board.makeMove(move)
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/2K5/8/8/8/8/8")
 
     //King moves bottom right
     move = Move(Position('c', 6), Position('d', 5))
+    board.turn = Color.WHITE
     board.makeMove(move)
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/3K4/8/8/8/8")
   }

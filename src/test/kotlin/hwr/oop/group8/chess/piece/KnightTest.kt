@@ -19,76 +19,76 @@ class KnightTest : AnnotationSpec() {
   @Test
   fun `Test Knight movement`() {
     //Knight move from d4 to f5
-    var board = Board(FENData("8/8/8/8/3N4/8/8/8"))
+    var board = Board(FENData("8/8/8/8/3N4/8/8/K7"))
     var move = Move(Position('d', 4), Position('f', 5))
     board.makeMove(move)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/5N2/8/8/8/8")
+    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/5N2/8/8/8/K7")
 
     //Knight move from d4 to e6
-    board = Board(FENData("8/8/8/8/3N4/8/8/8"))
+    board = Board(FENData("8/8/8/8/3N4/8/8/K7"))
     move = Move(Position('d', 4), Position('e', 6))
     board.makeMove(move)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/4N3/8/8/8/8/8")
+    assertThat(board.generateFENBoardString()).isEqualTo("8/8/4N3/8/8/8/8/K7")
 
     //Knight move from d4 to e2
-    board = Board(FENData("8/8/8/8/3N4/8/8/8"))
+    board = Board(FENData("8/8/8/8/3N4/8/8/K7"))
     move = Move(Position('d', 4), Position('e', 2))
     board.makeMove(move)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/4N3/8")
+    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/4N3/K7")
 
     //Knight move from d4 to b3
-    board = Board(FENData("8/8/8/8/3N4/8/8/8"))
+    board = Board(FENData("8/8/8/8/3N4/8/8/K7"))
     move = Move(Position('d', 4), Position('b', 3))
     board.makeMove(move)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/1N6/8/8")
+    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/1N6/8/K7")
 
     //Knight move from d4 to c2
-    board = Board(FENData("8/8/8/8/3N4/8/8/8"))
+    board = Board(FENData("8/8/8/8/3N4/8/8/K7"))
     move = Move(Position('d', 4), Position('c', 2))
     board.makeMove(move)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/2N5/8")
+    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/2N5/K7")
 
     //Knight move from d4 to b5
-    board = Board(FENData("8/8/8/8/3N4/8/8/8"))
+    board = Board(FENData("8/8/8/8/3N4/8/8/K7"))
     move = Move(Position('d', 4), Position('b', 5))
     board.makeMove(move)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/1N6/8/8/8/8")
+    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/1N6/8/8/8/K7")
 
     //Knight move from d4 to c6
-    board = Board(FENData("8/8/8/8/3N4/8/8/8"))
+    board = Board(FENData("8/8/8/8/3N4/8/8/K7"))
     move = Move(Position('d', 4), Position('c', 6))
     board.makeMove(move)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/2N5/8/8/8/8/8")
+    assertThat(board.generateFENBoardString()).isEqualTo("8/8/2N5/8/8/8/8/K7")
 
     //Knight move from d4 to f3
-    board = Board(FENData("8/8/8/8/3N4/8/8/8"))
+    board = Board(FENData("8/8/8/8/3N4/8/8/K7"))
     move = Move(Position('d', 4), Position('f', 3))
     board.makeMove(move)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/5N2/8/8")
+    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/5N2/8/K7")
 
     // Knight move from a3 to b5
-    board = Board(FENData("8/8/8/8/8/N7/8/8"))
+    board = Board(FENData("8/8/8/8/8/N7/8/K7"))
     move = Move(Position('a', 3), Position('b', 5))
     board.makeMove(move)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/1N6/8/8/8/8")
+    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/1N6/8/8/8/K7")
   }
 
   @Test
   fun `Test Knight capture`() {
-    val board = Board(FENData("8/8/8/5n2/3N4/8/8/8"))
+    val board = Board(FENData("8/8/8/5n2/3N4/8/8/K7"))
     val move = Move(Position('d', 4), Position('f', 5))
     board.makeMove(move)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/5N2/8/8/8/8")
+    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/5N2/8/8/8/K7")
   }
 
   @Test

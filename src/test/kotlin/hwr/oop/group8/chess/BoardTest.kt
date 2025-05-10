@@ -149,7 +149,7 @@ class BoardTest : AnnotationSpec() {
 
   @Test
   fun `Test piece movement`() {
-    val board = Board(FENData("8/8/8/8/4R3/8/8/8"))
+    val board = Board(FENData("8/8/8/8/4R3/8/8/K7"))
     val startPosition = Position('e', 4)
     val endPosition = Position('e', 8)
     val testMove = Move(startPosition, endPosition)
@@ -194,12 +194,12 @@ class BoardTest : AnnotationSpec() {
 
   @Test
   fun `Test capture`() {
-    val board = Board(FENData("8/8/8/8/8/p7/8/R7"))
+    val board = Board(FENData("K7/8/8/8/8/p7/8/R7"))
     val move = Move(Position('a', 1), Position('a', 3))
-    assertThat(board.getCapturedPieces()).isEqualTo("White's captures: rnbqkbnrppppppp\nBlack's captures: NBQKBNRPPPPPPPP")
+    assertThat(board.getCapturedPieces()).isEqualTo("White's captures: rnbqkbnrppppppp\nBlack's captures: NBQBNRPPPPPPPP")
     board.makeMove(move)
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/R7/8/8")
-    assertThat(board.getCapturedPieces()).isEqualTo("White's captures: rnbqkbnrpppppppp\nBlack's captures: NBQKBNRPPPPPPPP")
+    assertThat(board.generateFENBoardString()).isEqualTo("K7/8/8/8/8/R7/8/8")
+    assertThat(board.getCapturedPieces()).isEqualTo("White's captures: rnbqkbnrpppppppp\nBlack's captures: NBQBNRPPPPPPPP")
   }
 
   @Test

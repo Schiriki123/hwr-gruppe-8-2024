@@ -26,11 +26,11 @@ class PawnTest : AnnotationSpec() {
 
   @Test
   fun `Test pawn movement on empty board`() {
-    val board = Board(FENData("8/p7/8/8/8/8/8/8"))
+    val board = Board(FENData("8/p7/8/8/8/8/8/K7"))
     val move = Move(Position('a', 7), Position('a', 6))
     board.makeMove(move)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/p7/8/8/8/8/8")
+    assertThat(board.generateFENBoardString()).isEqualTo("8/8/p7/8/8/8/8/K7")
   }
 
   @Test
@@ -53,20 +53,20 @@ class PawnTest : AnnotationSpec() {
 
   @Test
   fun `Test white pawn movement on empty board`() {
-    val board = Board(FENData("8/8/P7/8/8/8/8/8"))
+    val board = Board(FENData("8/8/P7/8/8/8/8/K7"))
     val move = Move(Position('a', 6), Position('a', 7))
     board.makeMove(move)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("8/P7/8/8/8/8/8/8")
+    assertThat(board.generateFENBoardString()).isEqualTo("8/P7/8/8/8/8/8/K7")
   }
 
   @Test
   fun `Test valid double move`() {
-    val board = Board(FENData("8/8/8/8/8/8/P7/8"))
+    val board = Board(FENData("8/8/8/8/8/8/P7/K7"))
     val move = Move(Position('a', 2), Position('a', 4))
     board.makeMove(move)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/P7/8/8/8")
+    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/P7/8/8/K7")
   }
 
   @Test
@@ -98,11 +98,11 @@ class PawnTest : AnnotationSpec() {
 
   @Test
   fun `Test pawn capture`() {
-    val board = Board(FENData("8/8/8/8/8/r7/1P6/8"))
+    val board = Board(FENData("8/8/8/8/8/r7/1P6/K7"))
     val move = Move(Position('b', 2), Position('a', 3))
 
     board.makeMove(move)
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/P7/8/8")
+    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/P7/8/K7")
   }
 
   @Test

@@ -16,35 +16,40 @@ class QueenTest : AnnotationSpec() {
 
   @Test
   fun `Test Queen movement on empty board`() {
-    val board = Board(FENData("Q7/8/8/8/8/8/8/8"))
+    val board = Board(FENData("Q6K/8/8/8/8/8/8/8"))
     // Queen moves multiple squares down
     var move = Move(Position('a', 8), Position('a', 2))
     board.makeMove(move)
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/Q7/8")
+    assertThat(board.generateFENBoardString()).isEqualTo("7K/8/8/8/8/8/Q7/8")
 
     //Queen moves multiple squares up
     move = Move(Position('a', 2), Position('a', 8))
+    board.turn = Color.WHITE
     board.makeMove(move)
-    assertThat(board.generateFENBoardString()).isEqualTo("Q7/8/8/8/8/8/8/8")
+    assertThat(board.generateFENBoardString()).isEqualTo("Q6K/8/8/8/8/8/8/8")
     //Queen moves multiple squares down right
     move = Move(Position('a', 8), Position('h', 1))
+    board.turn = Color.WHITE
     board.makeMove(move)
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/8/7Q")
+    assertThat(board.generateFENBoardString()).isEqualTo("7K/8/8/8/8/8/8/7Q")
 
     //Queen moves multiple squares up left
     move = Move(Position('h', 1), Position('d', 5))
+    board.turn = Color.WHITE
     board.makeMove(move)
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/3Q4/8/8/8/8")
+    assertThat(board.generateFENBoardString()).isEqualTo("7K/8/8/3Q4/8/8/8/8")
 
     //Queen moves multiple squares up right
     move = Move(Position('d', 5), Position('g', 8))
+    board.turn = Color.WHITE
     board.makeMove(move)
-    assertThat(board.generateFENBoardString()).isEqualTo("6Q1/8/8/8/8/8/8/8")
+    assertThat(board.generateFENBoardString()).isEqualTo("6QK/8/8/8/8/8/8/8")
 
     //Queen moves multiple squares down left
     move = Move(Position('g', 8), Position('a', 2))
+    board.turn = Color.WHITE
     board.makeMove(move)
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/Q7/8")
+    assertThat(board.generateFENBoardString()).isEqualTo("7K/8/8/8/8/8/Q7/8")
   }
 
   @Test
@@ -65,11 +70,11 @@ class QueenTest : AnnotationSpec() {
 
   @Test
   fun `Test Queen capture with straight moves`() {
-    val board = Board(FENData("Q7/8/8/8/8/8/p7/8"))
+    val board = Board(FENData("Q7/8/8/8/8/8/p7/K7"))
     val move = Move(Position('a', 8), Position('a', 2))
     board.makeMove(move)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/Q7/8")
+    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/Q7/K7")
   }
 
   @Test
@@ -82,11 +87,11 @@ class QueenTest : AnnotationSpec() {
 
   @Test
   fun `Test Queen capture with diagonal moves`() {
-    val board = Board(FENData("Q7/8/8/8/8/8/6p1/8"))
+    val board = Board(FENData("Q7/8/8/8/8/8/6p1/K7"))
     val move = Move(Position('a', 8), Position('g', 2))
     board.makeMove(move)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/6Q1/8")
+    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/6Q1/K7")
   }
 
   @Test

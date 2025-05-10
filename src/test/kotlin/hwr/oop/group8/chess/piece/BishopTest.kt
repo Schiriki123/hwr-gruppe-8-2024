@@ -21,11 +21,11 @@ class BishopTest : AnnotationSpec() {
 
   @Test
   fun `Test bishop movement on empty board`() {
-    val board = Board(FENData("B7/8/8/8/8/8/8/8"))
+    val board = Board(FENData("B7/8/8/8/8/8/8/K7"))
     val move = Move(Position('a', 8), Position('e', 4))
     board.makeMove(move)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/4B3/8/8/8")
+    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/4B3/8/8/K7")
   }
 
   @Test

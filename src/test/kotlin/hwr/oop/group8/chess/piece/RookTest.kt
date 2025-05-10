@@ -21,11 +21,11 @@ class RookTest : AnnotationSpec() {
 
   @Test
   fun `Test rook movement on empty board`() {
-    val board = Board(FENData("R7/8/8/8/8/8/8/8"))
+    val board = Board(FENData("R7/8/8/8/8/8/8/K7"))
     val move = Move(Position('a', 8), Position('a', 2))
     board.makeMove(move)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/R7/8")
+    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/R7/K7")
   }
 
   @Test
@@ -46,10 +46,10 @@ class RookTest : AnnotationSpec() {
 
   @Test
   fun `Test rook capture`() {
-    val board = Board(FENData("R7/8/8/8/8/8/p7/8"))
+    val board = Board(FENData("R7/8/8/8/8/8/p7/K7"))
     val move = Move(Position('a', 8), Position('a', 2))
     board.makeMove(move)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/R7/8")
+    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/R7/K7")
   }
 }
