@@ -56,7 +56,8 @@ class FENDataTest : AnnotationSpec() {
 
   @Test
   fun `Test invalid initialization`() {
-    assertThatThrownBy { FENData("t") }
+    assertThatThrownBy { FENData("8/8/8/8/8/8/8/8") }.message()
+      .isEqualTo("Board string must be 16 or higher")
     assertThatThrownBy { FENData(turn = 'q') }
     assertThatThrownBy { FENData(castle = "KQkb") }
     assertThatThrownBy { FENData(halfmoveClock = -1) }

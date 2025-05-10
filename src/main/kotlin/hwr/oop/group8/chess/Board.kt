@@ -34,7 +34,9 @@ class Board(fenData: FENData) : BoardInspector {
     castle = fenData.castle
     halfmoveClock = fenData.halfmoveClock
     fullmoveClock = fenData.fullmoveClock
-    check(!isCheckmate())
+    check(!isCheckmate()) {
+      "Game is over, checkmate!"
+    }
   }
 
   fun getSquare(position: Position): Square {

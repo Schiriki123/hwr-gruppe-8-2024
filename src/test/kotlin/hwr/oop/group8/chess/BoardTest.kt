@@ -247,9 +247,23 @@ class BoardTest : AnnotationSpec() {
     assertThat(board.generateFENBoardString()).isEqualTo("k7/8/r7/8/8/8/R7/8")
     assertThat(board.turn).isEqualTo(Color.BLACK)
   }
+  @Test
+  fun `Test for checkmate with valid capture move for escape`() {
+    Board(FENData("8/8/8/7R/8/8/5r2/1K5r"))
+  }
+  @Test
+  fun `Test for checkmate with valid move for escape`() {
+    Board(FENData("8/8/8/2R5/8/8/5r2/1K5r"))
+  }
+  @Test
+  fun `Test for checkmate with valid King move for escape`() {
+    Board(FENData("8/8/8/8/8/8/1r6/1K5r"))
+  }
 
   @Test
   fun `Test for checkmate`() {
-    val board = Board(FENData("8/8/8/8/8/8/8/1K6"))
+    assertThatThrownBy {
+      Board(FENData("8/8/8/8/8/8/5r2/1K5r"))
+    }.message().isEqualTo("Game is over, checkmate!")
   }
 }

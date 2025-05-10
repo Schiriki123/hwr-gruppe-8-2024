@@ -10,8 +10,8 @@ data class FENData(
   val fullmoveClock: Int = 1,
 ) {
   init {
-    // boardString length 8 ranks + 7 slashes
-    require(boardString.length >= 8 + 7) { "Board string must be 15 or higher" }
+    // boardString length 8 ranks + 7 slashes + 1 king
+    require(boardString.length >= 8 + 7 + 1) { "Board string must be 16 or higher" }
     require(turn == 'w' || turn == 'b') { "Turn must be either 'w' or 'b'" }
     require(castle.all { it in "KQkq" }) { "Castle string can only contain 'K', 'Q', 'k', or 'q'" }
     require(halfmoveClock >= 0) { "Halfmove clock must be non-negative." }
