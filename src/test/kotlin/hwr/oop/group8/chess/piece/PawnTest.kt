@@ -26,11 +26,11 @@ class PawnTest : AnnotationSpec() {
 
   @Test
   fun `Test pawn movement on empty board`() {
-    val board = Board(FENData("8/p7/8/8/8/8/8/K7"))
+    val board = Board(FENData("8/p7/8/8/8/8/8/k7", 'b'))
     val move = Move(Position('a', 7), Position('a', 6))
     board.makeMove(move)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/p7/8/8/8/8/K7")
+    assertThat(board.generateFENBoardString()).isEqualTo("8/8/p7/8/8/8/8/k7")
   }
 
   @Test
@@ -110,6 +110,6 @@ class PawnTest : AnnotationSpec() {
     val board = Board(FENData("8/8/8/8/8/p7/P7/K7"))
     val move = Move(Position('a', 2), Position('a', 3))
 
-    assertThatThrownBy { board.makeMove(move)}
+    assertThatThrownBy { board.makeMove(move) }
   }
 }

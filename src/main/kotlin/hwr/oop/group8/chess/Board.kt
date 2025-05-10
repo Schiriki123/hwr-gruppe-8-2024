@@ -57,6 +57,9 @@ class Board(fenData: FENData) : BoardInspector {
     val piece = fromSquare.getPiece()
 
     checkNotNull(piece)
+    check(piece.color == turn)
+    { "It's not your turn" }
+
     require(piece.color != toSquare.getPiece()?.color)
     { "Cannot move to a square occupied by the same color" }
 
