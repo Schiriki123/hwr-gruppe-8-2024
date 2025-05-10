@@ -8,8 +8,9 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 class PawnTest : AnnotationSpec() {
   @Test
   fun `Test char representation`() {
-    val whitePawn = Pawn(Color.WHITE)
-    val blackPawn = Pawn(Color.BLACK)
+    val boardInspector = Board(FENData("8/8/8/8/8/8/8/8"))
+    val whitePawn = Pawn(Color.WHITE, boardInspector)
+    val blackPawn = Pawn(Color.BLACK, boardInspector)
     assertThat(whitePawn.getChar()).isEqualTo('P')
     assertThat(blackPawn.getChar()).isEqualTo('p')
   }
@@ -93,5 +94,22 @@ class PawnTest : AnnotationSpec() {
 
     assertThatThrownBy { board.makeMove(move) }
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/1P6/8")
+  }
+
+  @Test
+  fun `Test pawn capture`() {
+    val board = Board(FENData("8/8/8/8/8/r7/1P6/8"))
+    val move = Move(Position('b', 2), Position('a', 3))
+
+    board.makeMove(move)
+    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/P7/8/8")
+  }
+
+  @Test
+  fun `Test pawn movement with blocked path`() {
+    val board = Board(FENData("8/8/8/8/8/p7/P7/8"))
+    val move = Move(Position('a', 2), Position('a', 3))
+
+    assertThatThrownBy { board.makeMove(move)}
   }
 }

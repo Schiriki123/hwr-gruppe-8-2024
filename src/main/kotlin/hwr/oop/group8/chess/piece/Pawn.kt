@@ -1,15 +1,21 @@
 package hwr.oop.group8.chess.piece
 
-import hwr.oop.group8.chess.Board
+import hwr.oop.group8.chess.BoardInspector
 import hwr.oop.group8.chess.Color
 import hwr.oop.group8.chess.Direction
-import hwr.oop.group8.chess.Move
+import hwr.oop.group8.chess.Position
 
-class Pawn(override val color: Color) : Piece {
-  override fun isMoveValid(move: Move, board: Board): Boolean {
-    val from = move.from
-    val to = move.to
-    val direction = move.getMoveDirection()
+class Pawn(
+  override val color: Color,
+  val boardInspector: BoardInspector,
+) : Piece {
+
+  fun myPosition(): Position {
+    return boardInspector.findPositionOfPiece(this)
+  }
+
+  override fun getValidMoveDestinations(): Set<Position> {
+    val validDestinations: MutableSet<Position> = mutableSetOf()
     val forwardDirection: Direction
     val startRank: Int
 
@@ -21,42 +27,35 @@ class Pawn(override val color: Color) : Piece {
       startRank = 7
     }
 
-    // Handle straight moves
-    if (move.isMoveStraight()) {
-      val nextField = forwardDirection.nextPosition(from)
-
-      // Check if target square is occupied
-      if (board.getSquare(to).getPiece() != null) {
-        return false
-      }
-
-      // Single square forward move
-      if (nextField == to) {
-        return true
-      }
-
-      // Double square forward move from start position
-      if (from.rank == startRank) {
+    // Check for straight move
+    val nextField =
+      forwardDirection.nextPosition(myPosition())
+    if (boardInspector.getPieceAt(nextField) == null) {
+      validDestinations.add(nextField)
+      // Check for double move from starting position
+      if (myPosition().rank == startRank) {
         val twoSquaresForward = forwardDirection.nextPosition(nextField)
-        if (twoSquaresForward == to) {
-          // Path must be clear for double move
-          return board.getSquare(nextField).getPiece() == null
+        if (boardInspector.getPieceAt(twoSquaresForward) == null) {
+          validDestinations.add(twoSquaresForward)
         }
       }
-
-      return false
     }
-    // Handle diagonal captures
-    else {
-      // Must be exactly one square diagonally
-      if (to != direction.nextPosition(from)) {
-        return false
+
+    // Check for diagonal captures
+    for (direction in setOf(
+      Direction.LEFT.combine(forwardDirection),
+      Direction.RIGHT.combine(forwardDirection)
+    )) {
+      if (direction.hasNextPosition(myPosition())) {
+        val nextPosition = direction.nextPosition(myPosition())
+        val nextPiece = boardInspector.getPieceAt(nextPosition)
+        if (nextPiece != null && nextPiece.color != color) {
+          validDestinations.add(nextPosition)
+        }
       }
-
-      // Must capture piece
-      val targetPiece = board.getSquare(to).getPiece()
-      return targetPiece != null
     }
+
+    return validDestinations.toSet()
   }
 
   override fun getChar(): Char {

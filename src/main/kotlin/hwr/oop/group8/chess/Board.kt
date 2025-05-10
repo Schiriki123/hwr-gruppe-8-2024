@@ -1,6 +1,8 @@
 package hwr.oop.group8.chess
 
-class Board(fenData: FENData) {
+import hwr.oop.group8.chess.piece.Piece
+
+class Board(fenData: FENData): BoardInspector {
   private val map = HashMap<Position, Square>()
   val turn: Color
   val castle: String
@@ -37,6 +39,14 @@ class Board(fenData: FENData) {
     return map.getValue(position)
   }
 
+  override fun getPieceAt(position: Position): Piece? {
+    return getSquare(position).getPiece()
+  }
+
+  override fun findPositionOfPiece(piece: Piece): Position {
+    return map.filterValues { it.getPiece() === piece }.keys.first()
+  }
+
   fun makeMove(move: Move) {
     val fromSquare = getSquare(move.from)
     val toSquare = getSquare(move.to)
@@ -46,7 +56,7 @@ class Board(fenData: FENData) {
     require(piece.color != toSquare.getPiece()?.color)
     { "Cannot move to a square occupied by the same color" }
 
-    check(piece.isMoveValid(move, this))
+    check(piece.getValidMoveDestinations().contains(move.to))
     { "Invalid move for piece ${piece::class.simpleName} from ${move.from} to ${move.to}" }
 
     toSquare.setPiece(piece)

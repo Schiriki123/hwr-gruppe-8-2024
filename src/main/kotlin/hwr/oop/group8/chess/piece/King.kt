@@ -1,22 +1,32 @@
 package hwr.oop.group8.chess.piece
 
-import hwr.oop.group8.chess.Board
+import hwr.oop.group8.chess.BoardInspector
 import hwr.oop.group8.chess.Color
-import hwr.oop.group8.chess.Move
+import hwr.oop.group8.chess.Direction
+import hwr.oop.group8.chess.Position
 
-class King(override val color: Color) : Piece {
-  override fun isMoveValid(move: Move, board: Board): Boolean {
+class King(
+  override val color: Color,
+  val boardInspector: BoardInspector,
+) : Piece {
+  override fun getValidMoveDestinations(): Set<Position> {
+    val validDestinations: MutableSet<Position> = mutableSetOf()
+    val directions = Direction.entries // All possible directions
 
-    val from = move.from
-    val to = move.to
-    val direction = move.getMoveDirection()
-    val nextField = from.getAdjacentPosition(direction)
+    val myPosition = boardInspector.findPositionOfPiece(this)
+    for (dir in directions) {
+      if (dir.hasNextPosition(myPosition)) {
+        val nextPosition = dir.nextPosition(myPosition)
+        val nextPiece = boardInspector.getPieceAt(nextPosition)
 
-    // Single square move
-    if (to != nextField) {
-      return false
+        // Check if the next position is empty or occupied by an opponent's piece
+        if (nextPiece == null || nextPiece.color != color) {
+          validDestinations.add(nextPosition)
+        }
+      }
     }
-    return true
+
+    return validDestinations.toSet()
   }
 
   override fun getChar(): Char {
