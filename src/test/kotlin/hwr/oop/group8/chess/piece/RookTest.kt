@@ -12,7 +12,7 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 class RookTest : AnnotationSpec() {
   @Test
   fun `Test char representation`() {
-    val boardInspector = Board(FENData("8/8/8/8/8/8/8/8"))
+    val boardInspector = Board(FENData("8/8/8/8/8/8/8/K7"))
     val whiteRook = Rook(Color.WHITE, boardInspector)
     val blackRook = Rook(Color.BLACK, boardInspector)
     assertThat(whiteRook.getChar()).isEqualTo('R')
@@ -30,7 +30,7 @@ class RookTest : AnnotationSpec() {
 
   @Test
   fun `Test invalid rook movement`() {
-    val board = Board(FENData("R7/8/8/8/8/8/8/8"))
+    val board = Board(FENData("R7/8/8/8/8/8/8/K7"))
     val move = Move(Position('a', 8), Position('b', 2))
     assertThatThrownBy { board.makeMove(move) }
       .hasMessageContaining("Invalid move for piece Rook from a8 to b2")
@@ -38,7 +38,7 @@ class RookTest : AnnotationSpec() {
 
   @Test
   fun `Test rook movement with path blocked by pawn`() {
-    val board = Board(FENData("R7/8/8/8/8/8/P7/8"))
+    val board = Board(FENData("R7/8/8/8/8/8/P7/1K6"))
     val move = Move(Position('a', 8), Position('a', 1))
     assertThatThrownBy { board.makeMove(move) }
       .hasMessageContaining("Invalid move for piece Rook from a8 to a1")

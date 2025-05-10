@@ -8,7 +8,7 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 class KingTest : AnnotationSpec() {
   @Test
   fun `Test char representation`() {
-    val boardInspector = Board(FENData("8/8/8/8/8/8/8/8"))
+    val boardInspector = Board(FENData("8/8/8/8/8/8/8/K7"))
     val whiteKing = King(Color.WHITE, boardInspector)
     val blackKing = King(Color.BLACK, boardInspector)
     assertThat(whiteKing.getChar()).isEqualTo('K')

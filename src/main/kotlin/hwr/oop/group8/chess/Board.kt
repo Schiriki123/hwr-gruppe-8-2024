@@ -34,6 +34,7 @@ class Board(fenData: FENData) : BoardInspector {
     castle = fenData.castle
     halfmoveClock = fenData.halfmoveClock
     fullmoveClock = fenData.fullmoveClock
+    check(!isCheckmate())
   }
 
   fun getSquare(position: Position): Square {
@@ -60,7 +61,7 @@ class Board(fenData: FENData) : BoardInspector {
     check(piece.getValidMoveDestinations().contains(move.to))
     { "Invalid move for piece ${piece::class.simpleName} from ${move.from} to ${move.to}" }
 
-    check(checkForCheck(move))
+    check(isCheck(move))
     { "Move would put player in check" }
 
     toSquare.setPiece(piece)
@@ -68,7 +69,33 @@ class Board(fenData: FENData) : BoardInspector {
     turn = turn.invert()
   }
 
-  private fun checkForCheck(move: Move): Boolean {
+  private fun isCheckmate(): Boolean {
+    val allPiecesCurrentPlayer: Set<Piece> =
+      map.values.mapNotNull { it.getPiece() }.filter { it.color == turn }
+        .toSet()
+    allPiecesCurrentPlayer.forEach { piece ->
+      val possibleMoves: Set<Position> = piece.getValidMoveDestinations()
+      val startPosition = findPositionOfPiece(piece)
+      // Check if any of the possible moves would put the player in check
+      possibleMoves.forEach { destination ->
+        if (
+          isCheck(
+            Move(
+              startPosition,
+              destination
+            )
+          )
+        ) {
+          // If any move is valid and does not put the player in check, return false
+          return false
+        }
+      }
+    }
+    // If no valid moves are found, return true
+    return true
+  }
+
+  private fun isCheck(move: Move): Boolean {
     // Simulate the move
     val fromSquare = getSquare(move.from)
     val toSquare = getSquare(move.to)

@@ -35,7 +35,7 @@ class FENDataTest : AnnotationSpec() {
 
   @Test
   fun `test piece object creation`() {
-    val board = Board(FENData("8/8/8/8/8/8/8/8"))
+    val board = Board(FENData("K7/8/8/8/8/8/8/8"))
     val pieceChars =
       listOf('r', 'n', 'b', 'q', 'k', 'p', 'R', 'N', 'B', 'Q', 'K', 'P')
     assertThat(pieceChars).allSatisfy { pieceChar ->

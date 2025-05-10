@@ -11,16 +11,20 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 class BoardTest : AnnotationSpec() {
   @Test
   fun `Test empty board creation`() {
-    val board = Board(FENData("8/8/8/8/8/8/8/8"))
+    val board = Board(FENData("K7/8/8/8/8/8/8/8"))
     for (rank in 1..8) {
       for (file in 'a'..'h') {
         val position = Position(file, rank)
         val square = board.getSquare(position)
-        assertThat(square.getPiece()).isNull()
+        if (rank == 8 && file == 'a') {
+          square.getPiece().shouldBeInstanceOf<King>()
+        } else {
+          assertThat(square.getPiece()).isNull()
+        }
       }
     }
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/8/8")
-    assertThat(board.getCapturedPieces()).isEqualTo("White's captures: rnbqkbnrpppppppp\nBlack's captures: RNBQKBNRPPPPPPPP")
+    assertThat(board.generateFENBoardString()).isEqualTo("K7/8/8/8/8/8/8/8")
+    assertThat(board.getCapturedPieces()).isEqualTo("White's captures: rnbqkbnrpppppppp\nBlack's captures: RNBQBNRPPPPPPPP")
   }
 
   @Test
@@ -115,9 +119,14 @@ class BoardTest : AnnotationSpec() {
 
   @Test
   fun `Test custom board initialization`() {
-    val board = Board(FENData("8/2R4B/8/8/1q6/8/8/2Q4N", 'b', "", 4, 25))
+    val board = Board(FENData("k7/2R4B/8/8/1q6/8/8/2Q4N", 'b', "", 4, 25))
     board.getSquare(Position('b', 4)).getPiece()
       .shouldBeInstanceOf<Queen>().color.shouldBe(
+        Color.BLACK
+      )
+
+    board.getSquare(Position('a', 8)).getPiece()
+      .shouldBeInstanceOf<King>().color.shouldBe(
         Color.BLACK
       )
 
@@ -177,7 +186,7 @@ class BoardTest : AnnotationSpec() {
 
   @Test
   fun `Test FEN board string with custom setup`() {
-    val testString = "q4b2/8/8/1Q6/3B4/1PP5/8/n1n1n1n1"
+    val testString = "q4b2/8/8/1Q6/3B4/1PP4K/8/n1n1n1n1"
     val board = Board(FENData(testString))
     val fenBoardString = board.generateFENBoardString()
     assertThat(fenBoardString).isEqualTo(testString)
@@ -185,11 +194,11 @@ class BoardTest : AnnotationSpec() {
 
   @Test
   fun `Test to move piece on own ally`() {
-    val board = Board(FENData("8/8/8/8/8/P7/8/R7"))
+    val board = Board(FENData("K7/8/8/8/8/P7/8/R7"))
     val move = Move(Position('a', 1), Position('a', 3))
     assertThatThrownBy { board.makeMove(move) }.message()
       .isEqualTo("Cannot move to a square occupied by the same color")
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/P7/8/R7") // That board has not changed
+    assertThat(board.generateFENBoardString()).isEqualTo("K7/8/8/8/8/P7/8/R7") // That board has not changed
   }
 
   @Test
@@ -217,7 +226,8 @@ class BoardTest : AnnotationSpec() {
   fun `Test king in check`() {
     val board = Board(FENData("k7/8/R7/8/8/8/K7/8", turn = 'b'))
     val moveToCheck = Move(Position('a', 8), Position('a', 7))
-    assertThatThrownBy { board.makeMove(moveToCheck) }.message().isEqualTo("Move would put player in check")
+    assertThatThrownBy { board.makeMove(moveToCheck) }.message()
+      .isEqualTo("Move would put player in check")
 
     assertThat(board.generateFENBoardString()).isEqualTo("k7/8/R7/8/8/8/K7/8")
     assertThat(board.turn).isEqualTo(Color.BLACK)
@@ -226,5 +236,20 @@ class BoardTest : AnnotationSpec() {
     board.makeMove(validMove)
     assertThat(board.generateFENBoardString()).isEqualTo("8/1k6/R7/8/8/8/K7/8")
     assertThat(board.turn).isEqualTo(Color.WHITE)
+  }
+
+  @Test
+  fun `Test move that sets king in check`() {
+    val board = Board(FENData("k7/8/r7/8/8/8/R7/8", turn = 'b'))
+    val move = Move(Position('a', 6), Position('c', 6))
+    assertThatThrownBy { board.makeMove(move) }.message()
+      .isEqualTo("Move would put player in check")
+    assertThat(board.generateFENBoardString()).isEqualTo("k7/8/r7/8/8/8/R7/8")
+    assertThat(board.turn).isEqualTo(Color.BLACK)
+  }
+
+  @Test
+  fun `Test for checkmate`() {
+    val board = Board(FENData("8/8/8/8/8/8/8/1K6"))
   }
 }

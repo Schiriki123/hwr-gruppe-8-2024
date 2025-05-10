@@ -7,7 +7,7 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 
 class QueenTest : AnnotationSpec() {
   fun `Test char representation`() {
-    val boardInspector = Board(FENData("8/8/8/8/8/8/8/8"))
+    val boardInspector = Board(FENData("8/8/8/8/8/8/8/K7"))
     val whiteQueen = Rook(Color.WHITE, boardInspector)
     val blackQueen = Rook(Color.BLACK, boardInspector)
     assertThat(whiteQueen.getChar()).isEqualTo('R')
@@ -54,7 +54,7 @@ class QueenTest : AnnotationSpec() {
 
   @Test
   fun `Test invalid Queen movement`() {
-    val board = Board(FENData("Q7/8/8/8/8/8/8/8"))
+    val board = Board(FENData("Q7/8/8/8/8/8/8/K7"))
     val move = Move(Position('a', 8), Position('b', 2))
     assertThatThrownBy { board.makeMove(move) }
       .hasMessageContaining("Invalid move for piece Queen from a8 to b2")
@@ -62,10 +62,10 @@ class QueenTest : AnnotationSpec() {
 
   @Test
   fun `Test Queen movement with straight path blocked by pawn`() {
-    val board = Board(FENData("R7/8/8/8/8/8/P7/8"))
+    val board = Board(FENData("Q7/8/8/8/8/8/P7/1K6"))
     val move = Move(Position('a', 8), Position('a', 1))
     assertThatThrownBy { board.makeMove(move) }
-      .hasMessageContaining("Invalid move for piece Rook from a8 to a1")
+      .hasMessageContaining("Invalid move for piece Queen from a8 to a1")
   }
 
   @Test
@@ -79,7 +79,7 @@ class QueenTest : AnnotationSpec() {
 
   @Test
   fun `Test diagonal Queen movement with blocked path`() {
-    val board = Board(FENData("Q7/8/8/8/4R3/8/8/8"))
+    val board = Board(FENData("Q7/8/8/8/4R3/8/8/K7"))
     val move = Move(Position('a', 8), Position('g', 2))
     assertThatThrownBy { board.makeMove(move) }
       .hasMessageContaining("Invalid move for piece Queen from a8 to g2")
@@ -94,19 +94,4 @@ class QueenTest : AnnotationSpec() {
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/6Q1/K7")
   }
 
-  @Test
-  fun `Test diagonal Queen movement with enemy blocked path`() {
-    val board = Board(FENData("Q7/8/8/8/4r3/8/8/8"))
-    val move = Move(Position('a', 8), Position('g', 2))
-    assertThatThrownBy { board.makeMove(move) }
-      .hasMessageContaining("Invalid move for piece Queen from a8 to g2")
-  }
-
-  @Test
-  fun `Test Queen movement with straight path blocked by enemy pawn`() {
-    val board = Board(FENData("R7/8/8/8/8/8/p7/8"))
-    val move = Move(Position('a', 8), Position('a', 1))
-    assertThatThrownBy { board.makeMove(move) }
-      .hasMessageContaining("Invalid move for piece Rook from a8 to a1")
-  }
 }

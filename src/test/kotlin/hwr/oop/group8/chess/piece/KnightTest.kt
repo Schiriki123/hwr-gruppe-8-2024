@@ -9,7 +9,7 @@ class KnightTest : AnnotationSpec() {
 
   @Test
   fun `Test char representation`() {
-    val boardInspector = Board(FENData("8/8/8/8/8/8/8/8"))
+    val boardInspector = Board(FENData("8/8/8/8/8/8/8/K7"))
     val whiteKnight = Knight(Color.WHITE, boardInspector)
     val blackKnight = Knight(Color.BLACK, boardInspector)
     assertThat(whiteKnight.getChar()).isEqualTo('N')
@@ -93,33 +93,33 @@ class KnightTest : AnnotationSpec() {
 
   @Test
   fun `Test Knight end-position blocked`() {
-    val board = Board(FENData("8/8/8/5N2/3N4/8/8/8"))
+    val board = Board(FENData("8/8/8/5N2/3N4/8/8/K7"))
     val move = Move(Position('d', 4), Position('f', 5))
 
     assertThatThrownBy { board.makeMove(move) }
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/5N2/3N4/8/8/8")
+    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/5N2/3N4/8/8/K7")
   }
 
   @Test
   fun `Test Knight invalid moves`() {
     // Knight move from d4 to d2
-    var board = Board(FENData("8/8/8/8/3N4/8/8/8"))
+    var board = Board(FENData("8/8/8/8/3N4/8/8/K7"))
     var move = Move(Position('d', 4), Position('d', 2))
 
     assertThatThrownBy { board.makeMove(move) }
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/3N4/8/8/8")
+    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/3N4/8/8/K7")
 
     // Knight move from d4 to e5
-    board = Board(FENData("8/8/8/8/3N4/8/8/8"))
+    board = Board(FENData("8/8/8/8/3N4/8/8/K7"))
     move = Move(Position('d', 4), Position('f', 6))
 
     assertThatThrownBy { board.makeMove(move) }
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/3N4/8/8/8")
+    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/3N4/8/8/K7")
   }
 
   @Test
   fun `Test knight movement set generation with overflow for rank & file`() {
-    val board = Board(FENData("8/6n1/8/7p/8/8/8/8", 'b'))
+    val board = Board(FENData("8/6n1/8/7p/8/8/8/k7", 'b'))
     val validMoveDestinationsOfKnight =
       board.getPieceAt(Position('g', 7))!!.getValidMoveDestinations()
 
@@ -132,7 +132,7 @@ class KnightTest : AnnotationSpec() {
 
   @Test
   fun `Test knight movement set generation with lower overflow for rank & file`() {
-    val board = Board(FENData("8/8/8/8/3p4/8/2N5/R7"))
+    val board = Board(FENData("K7/8/8/8/3p4/8/2N5/R7"))
     val validMoveDestinationOfKnight =
       board.getPieceAt(Position('c', 2))!!.getValidMoveDestinations()
 
