@@ -3,12 +3,23 @@ package hwr.oop.group8.chess.piece
 import hwr.oop.group8.chess.BoardInspector
 import hwr.oop.group8.chess.Color
 import hwr.oop.group8.chess.Direction
+import hwr.oop.group8.chess.Move
 import hwr.oop.group8.chess.Position
 
 class King(
   override val color: Color,
   val boardInspector: BoardInspector,
+  var hasMoved: Boolean = false,
 ) : Piece {
+
+  override fun hasMoved(): Boolean {
+    return hasMoved
+  }
+
+  override fun moved() {
+    hasMoved = true
+  }
+
   override fun getValidMoveDestinations(): Set<Position> {
     val validDestinations: MutableSet<Position> = mutableSetOf()
     val directions = Direction.entries // All possible directions

@@ -69,6 +69,7 @@ class Board(fenData: FENData) : BoardInspector {
     check(isCheck(move))
     { "Move would put player in check" }
 
+    piece.moved()
     toSquare.setPiece(piece)
     fromSquare.setPiece(null)
     turn = turn.invert()
@@ -125,6 +126,33 @@ class Board(fenData: FENData) : BoardInspector {
 
     // Check if the king is in check
     return !possibleMovesOfOpponent.contains(kingPosition)
+  }
+
+  override fun isCastlingAllowed(color: Color): Pair<Boolean, Boolean> {
+    val homeRank = if (color == Color.WHITE) 1 else 8
+    val kingPosition = Position('e', homeRank)
+    val rookPositionKingSide = Position('h', homeRank)
+    val rookPositionQueenSide = Position('a', homeRank)
+
+    // King side castle
+    val kingSide: Boolean =
+      getPieceAt(Position('f', homeRank)) == null &&
+          getPieceAt(Position('g', homeRank)) == null &&
+          getPieceAt(rookPositionKingSide)?.hasMoved() == false &&
+          isCheck(Move(kingPosition, Position('f', homeRank))) &&
+          isCheck(Move(kingPosition, Position('g', homeRank))
+          )
+
+    // Queen side castle
+    val queenSide: Boolean =
+      getPieceAt(Position('d', homeRank)) == null &&
+          getPieceAt(Position('c', homeRank)) == null &&
+          getPieceAt(Position('b', homeRank)) == null &&
+          getPieceAt(rookPositionKingSide)?.hasMoved() == false &&
+          isCheck(Move(kingPosition, Position('d', homeRank))) &&
+          isCheck(Move(kingPosition, Position('c', homeRank)))
+
+    return Pair(queenSide, kingSide)
   }
 
   fun getCapturedPieces(): String {

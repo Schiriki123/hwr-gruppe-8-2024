@@ -8,7 +8,16 @@ import hwr.oop.group8.chess.Position
 class Rook(
   override val color: Color,
   val boardInspector: BoardInspector,
+  var hasMoved: Boolean = false,
 ) : Piece {
+  override fun hasMoved(): Boolean {
+    return hasMoved
+  }
+
+  override fun moved() {
+    hasMoved = true
+  }
+
   override fun getValidMoveDestinations(): Set<Position> {
     val validDestinations: MutableSet<Position> = mutableSetOf()
     val directions = setOf(

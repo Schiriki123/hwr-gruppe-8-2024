@@ -93,22 +93,34 @@ class KingTest : AnnotationSpec() {
 
   @Test
   @Ignore
-  fun `Test King castle`() {
-    var board = Board(FENData("8/8/8/8/8/8/8/R3K2R"))
+  fun `Test castle king side`() {
+    val board = Board(FENData("8/8/8/8/8/8/8/R3K2R"))
     //King side castle
-    var move = Move(Position('e', 6), Position('g', 1))
+    val move = Move(Position('e', 1), Position('g', 1))
     board.makeMove(move)
-    move = Move(Position('h', 1), Position('f', 1))
-    board.makeMove(move)
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/8/R5RK1")
 
-    //Queen side castle
-    board = Board(FENData("8/8/8/8/8/8/8/R3K2R"))
-    move = Move(Position('e', 6), Position('c', 1))
+    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/8/R4RK1")
+
+  }
+
+  @Test
+  @Ignore
+  fun `Test castle queen side`() {
+    val board = Board(FENData("8/8/8/8/8/8/8/R3K2R"))
+    val move = Move(Position('e', 1), Position('c', 1))
     board.makeMove(move)
-    move = Move(Position('a', 1), Position('d', 1))
-    board.makeMove(move)
+
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/8/2KR3R")
+  }
+
+  @Test
+  @Ignore
+  fun `Test invalid castle with movement through check`() {
+    val board = Board(FENData("8/8/2r5/8/8/8/8/R3K2R"))
+    val move = Move(Position('e', 1), Position('g', 1))
+    assertThatThrownBy {
+      board.makeMove(move)
+    }
   }
 
 }
