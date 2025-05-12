@@ -1,5 +1,6 @@
 package hwr.oop.group8.chess
 
+import hwr.oop.group8.chess.persistence.FENData
 import hwr.oop.group8.chess.piece.King
 import hwr.oop.group8.chess.piece.Piece
 
@@ -7,24 +8,25 @@ class Board(fenData: FENData) : BoardInspector {
   private val map = HashMap<Position, Square>()
   var turn: Color
   val castle: String
+  val enPassant: String
   val halfmoveClock: Int
   val fullmoveClock: Int
 
   init { // Creation of Board in Map based on FEN String
     for (rank in 1..8) {
-      var counter = 'a'
+      var fileCounter = 'a'
       fenData.getRank(rank).forEach { fileChar ->
         if (fileChar.isDigit()) {
           repeat(fileChar.digitToInt()) {
-            map.put(Position(counter, 9 - rank), Square(null))
-            counter++
+            map.put(Position(fileCounter, rank), Square(null))
+            fileCounter++
           }
         } else {
           map.put(
-            Position(counter, 9 - rank),
+            Position(fileCounter, rank),
             Square(FENData.createPieceOnBoard(fileChar, this))
           )
-          counter++
+          fileCounter++
         }
       }
     }
@@ -32,6 +34,7 @@ class Board(fenData: FENData) : BoardInspector {
 
     turn = fenData.getTurn()
     castle = fenData.castle
+    enPassant = fenData.enPassant
     halfmoveClock = fenData.halfmoveClock
     fullmoveClock = fenData.fullmoveClock
     check(!isCheckmate()) {

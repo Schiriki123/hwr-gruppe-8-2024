@@ -1,5 +1,6 @@
 package hwr.oop.group8.chess
 
+import hwr.oop.group8.chess.cli.main
 import io.kotest.core.spec.style.AnnotationSpec
 import io.kotest.extensions.system.captureStandardOut
 import org.assertj.core.api.Assertions.assertThat

@@ -1,6 +1,7 @@
 package hwr.oop.group8.chess.piece
 
 import hwr.oop.group8.chess.*
+import hwr.oop.group8.chess.persistence.FENData
 import io.kotest.core.spec.style.AnnotationSpec
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy

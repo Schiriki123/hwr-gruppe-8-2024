@@ -2,7 +2,7 @@ package hwr.oop.group8.chess.piece
 
 import hwr.oop.group8.chess.Board
 import hwr.oop.group8.chess.Color
-import hwr.oop.group8.chess.FENData
+import hwr.oop.group8.chess.persistence.FENData
 import hwr.oop.group8.chess.Move
 import hwr.oop.group8.chess.Position
 import io.kotest.core.spec.style.AnnotationSpec

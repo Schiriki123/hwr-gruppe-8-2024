@@ -1,5 +1,6 @@
 package hwr.oop.group8.chess
 
+import hwr.oop.group8.chess.persistence.FENData
 import hwr.oop.group8.chess.piece.*
 import io.kotest.assertions.throwables.shouldNotThrowAny
 import io.kotest.core.spec.style.AnnotationSpec
@@ -12,7 +13,7 @@ class BoardTest : AnnotationSpec() {
   @Test
   fun `Test empty board creation`() {
     val board = Board(FENData("K7/8/8/8/8/8/8/8"))
-    for (rank in 1..8) {
+    for (rank in 8 downTo 1) {
       for (file in 'a'..'h') {
         val position = Position(file, rank)
         val square = board.getSquare(position)
@@ -111,6 +112,7 @@ class BoardTest : AnnotationSpec() {
 
     assertThat(board.turn).isEqualTo(Color.WHITE)
     assertThat(board.castle).isEqualTo("KQkq")
+    assertThat(board.enPassant).isEqualTo("-")
     assertThat(board.halfmoveClock).isEqualTo(0)
     assertThat(board.fullmoveClock).isEqualTo(1)
 
@@ -119,7 +121,7 @@ class BoardTest : AnnotationSpec() {
 
   @Test
   fun `Test custom board initialization`() {
-    val board = Board(FENData("k7/2R4B/8/8/1q6/8/8/2Q4N", 'b', "", 4, 25))
+    val board = Board(FENData("k7/2R4B/8/8/1q6/8/8/2Q4N", 'b', "", "-", 4, 25))
     board.getSquare(Position('b', 4)).getPiece()
       .shouldBeInstanceOf<Queen>().color.shouldBe(
         Color.BLACK
@@ -247,14 +249,17 @@ class BoardTest : AnnotationSpec() {
     assertThat(board.generateFENBoardString()).isEqualTo("k7/8/r7/8/8/8/R7/8")
     assertThat(board.turn).isEqualTo(Color.BLACK)
   }
+
   @Test
   fun `Test for checkmate with valid capture move for escape`() {
     Board(FENData("8/8/8/7R/8/8/5r2/1K5r"))
   }
+
   @Test
   fun `Test for checkmate with valid move for escape`() {
     Board(FENData("8/8/8/2R5/8/8/5r2/1K5r"))
   }
+
   @Test
   fun `Test for checkmate with valid King move for escape`() {
     Board(FENData("8/8/8/8/8/8/1r6/1K5r"))
