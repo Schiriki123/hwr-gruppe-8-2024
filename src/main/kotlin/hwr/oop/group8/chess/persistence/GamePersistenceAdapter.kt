@@ -1,41 +1,42 @@
 package hwr.oop.group8.chess.persistence
 
+import hwr.oop.group8.chess.Game
 import java.io.File
 
-class GamePersistenceAdapter(val file: File, val id: Int) {
-  fun load(): FENData {
+class GamePersistenceAdapter(val file: File): InitGameInterface {
+  fun loadGame(id: Int): Game {
     val games: List<Pair<Int, String>> = file.readLines().map { line ->
       val parts = line.split(",")
       Pair(parts.first().toInt(), parts.last())
     }
     val data = games.find { it.first == id }?.second
       ?: throw CouldNotLoadGameException("Could not load game with id $id")
-    return createFENDataObject(data)
+    return Game(id, createFENDataObject(data))
   }
 
-  fun save(data: FENData) {
+  fun saveGame(game: Game) {
     val lines = file.readLines()
-    val gameFenString = data.toString()
-    val gameLineContent = "$id,$gameFenString"
+    val gameFenString = game.fenData.toString()
+    val gameLineContent = "${game.id},$gameFenString"
 
-    val updatedLines = if (lines.any { it.startsWith("$id") }) {
+    val updatedLines = if (lines.any { it.startsWith("${game.id}") }) {
       lines.map { lines ->
-        if (lines.startsWith("$id")) {
+        if (lines.startsWith("${game.id}")) {
           gameLineContent
         } else {
           lines
         }
       }
     } else {
-      throw CouldNotSaveGameException("Game with id $id does not exist")
+      throw CouldNotSaveGameException("Game with id ${game.id} does not exist")
     }
 
     file.writeText(updatedLines.joinToString("\n"))
   }
 
-  fun initGame(fenData: FENData = FENData()) {
+  override fun initGame(id: Int) {
     val lines = file.readLines()
-    val gameFenString = fenData.toString()
+    val gameFenString = FENData().toString()
     val gameLineContent = "$id,$gameFenString"
 
     if (lines.any { it.startsWith("$id") }) {

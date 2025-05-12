@@ -1,6 +1,7 @@
 package hwr.oop.group8.chess.persistence
 
 import hwr.oop.group8.chess.Color
+import hwr.oop.group8.chess.Game
 import io.kotest.core.spec.style.AnnotationSpec
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
@@ -14,10 +15,8 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
 
   @Test
   fun `Test that Adapter has right id and file name`() {
-    val id = 1
     val tempFile = createTempFile()
-    val sut = GamePersistenceAdapter(tempFile.toFile(), id)
-    assertThat(sut.id).isEqualTo(id)
+    val sut = GamePersistenceAdapter(tempFile.toFile())
     assertThat(sut.file.name).isEqualTo(tempFile.name)
   }
 
@@ -26,8 +25,8 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
     val tempFile = createTempFile()
     tempFile.writeText("1,rnbqkb1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKB1R w KQkq - 0 1\n")
 
-    val sut = GamePersistenceAdapter(tempFile.toFile(), 1)
-    val result: FENData = sut.load()
+    val sut = GamePersistenceAdapter(tempFile.toFile())
+    val result: FENData = sut.loadGame(1).fenData
 
     assertThat(result.getRank(8)).isEqualTo("rnbqkb1r")
     assertThat(result.getRank(7)).isEqualTo("pppppppp")
@@ -50,10 +49,10 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
     val tempFile = createTempFile()
     tempFile.writeText("1,rnbqkb1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKB1R w KQkq - 0 1\n")
 
-    val sut = GamePersistenceAdapter(tempFile.toFile(), 2)
+    val sut = GamePersistenceAdapter(tempFile.toFile())
 
     assertThatThrownBy {
-      sut.load()
+      sut.loadGame(2)
     }.message().contains("Could not load game with id 2")
 
     tempFile.deleteExisting()
@@ -68,8 +67,8 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
           "3,rnbqkb1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKB1R w KQkq - 0 1\n"
     )
 
-    val sut = GamePersistenceAdapter(tempFile.toFile(), 2)
-    val result: FENData = sut.load()
+    val sut = GamePersistenceAdapter(tempFile.toFile())
+    val result: FENData = sut.loadGame(2).fenData
 
     assertThat(result.getRank(8)).isEqualTo("r3k2r")
     assertThat(result.getRank(7)).isEqualTo("p1ppqpb1")
@@ -92,10 +91,10 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
     val tempFile = createTempFile()
     tempFile.writeText("")
 
-    val sut = GamePersistenceAdapter(tempFile.toFile(), 1)
+    val sut = GamePersistenceAdapter(tempFile.toFile())
 
     assertThatThrownBy {
-      sut.load()
+      sut.loadGame(1)
     }.message().contains("Could not load game with id 1")
 
     tempFile.deleteExisting()
@@ -106,9 +105,9 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
     val tempFile = createTempFile()
     tempFile.writeText("")
 
-    val sut = GamePersistenceAdapter(tempFile.toFile(), 1)
+    val sut = GamePersistenceAdapter(tempFile.toFile())
 
-    sut.initGame()
+    sut.initGame(1)
 
     val result = tempFile.readText()
     assertThat(result).isEqualTo("1,rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
@@ -124,7 +123,7 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
           "2,r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b KQkq - 0 12\n"
     )
 
-    val sut = GamePersistenceAdapter(tempFile.toFile(), 1)
+    val sut = GamePersistenceAdapter(tempFile.toFile())
     val fenData = FENData(
       "rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR",
       'b',
@@ -134,7 +133,7 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
       1
     )
 
-    sut.save(fenData)
+    sut.saveGame(Game(1, fenData))
 
     val result = tempFile.readText()
     assertThat(result).isEqualTo(
@@ -153,7 +152,7 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
           "2,r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b KQkq - 0 12\n"
     )
 
-    val sut = GamePersistenceAdapter(tempFile.toFile(), 3)
+    val sut = GamePersistenceAdapter(tempFile.toFile())
     val fenData = FENData(
       "rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR",
       'b',
@@ -164,7 +163,7 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
     )
 
     assertThatThrownBy {
-      sut.save(fenData)
+      sut.saveGame(Game(3, fenData))
     }.message().contains("Game with id 3 does not exist")
 
     tempFile.deleteExisting()
@@ -178,10 +177,10 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
           "2,r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b KQkq - 0 12\n"
     )
 
-    val sut = GamePersistenceAdapter(tempFile.toFile(), 1)
+    val sut = GamePersistenceAdapter(tempFile.toFile())
 
     assertThatThrownBy {
-      sut.initGame()
+      sut.initGame(1)
     }.message().contains("Game with id 1 already exists")
 
     tempFile.deleteExisting()
