@@ -43,7 +43,8 @@ class GamePersistenceAdapter(val file: File) : InitGameInterface,
     if (lines.any { it.startsWith("$id") }) {
       throw CouldNotSaveGameException("Game with id $id already exists")
     } else {
-      file.appendText(gameLineContent)
+      val updatedLines = lines + gameLineContent
+      file.writeText(updatedLines.joinToString("\n"))
     }
   }
 
