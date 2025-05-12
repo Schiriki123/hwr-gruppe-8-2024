@@ -1,6 +1,6 @@
 # HWR OOP Student Project Group 8: Chess
 
-[TODO]: # (Change README.md Headline to better fit to your project!)
+
 
 This repository contains a student project created for an ongoing lecture on object-oriented
 programming with Kotlin at HWR Berlin (summer term 2025).
@@ -41,14 +41,14 @@ just build
 
 ## Abstract
 
-[TODO]: # (Write a short description of your project.)
+
 Our project is program that simulates the popular board game known as chess. Our intended goal is, that  
 two players can play against each other with the use of the command line interface. 
-[TODO]: # (State most important features.)
+
 The game features all possible rules found in chess, like en passante, castling and pawn promotion. You can play
 together with another player and every move you make the current board is saved, so you can resume the game
 at any point.
-[TODO]: # (State the most interesting problems you encountered during the project.)
+
 The problem that gave us the most headache was the game logic. Especially how we implement how every piece
 moves. A big help was a clue given by our teachers, that we can use directions. With this we had a better time to wrap
 our heads around the problem and it was much easier to "move" the pieces.
