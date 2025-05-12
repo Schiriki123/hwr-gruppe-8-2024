@@ -2,7 +2,7 @@ package hwr.oop.group8.chess.cli
 
 import hwr.oop.group8.chess.persistence.InitGameInterface
 
-class NewGameCommand(private val persistenceAdapter: InitGameInterface) :
+class NewGameCommand(private val initGameInterface: InitGameInterface) :
   CliCommand {
   override fun matches(args: List<String>): Boolean {
     val firstTwoArgsMatch = args.subList(0, 2) == listOf("new", "game")
@@ -13,11 +13,7 @@ class NewGameCommand(private val persistenceAdapter: InitGameInterface) :
 
   override fun handle(args: List<String>) {
     val gameId = args[2].toInt()
-    try {
-      persistenceAdapter.initGame(gameId)
-      println("New game with id $gameId created.")
-    } catch (e: Exception) {
-      println("Error creating new game: ${e.message}")
-    }
+    initGameInterface.initGame(gameId)
+    println("New game with id $gameId created.")
   }
 }

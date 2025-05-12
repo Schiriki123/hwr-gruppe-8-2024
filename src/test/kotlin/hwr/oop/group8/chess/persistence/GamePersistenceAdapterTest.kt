@@ -26,7 +26,7 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
     tempFile.writeText("1,rnbqkb1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKB1R w KQkq - 0 1\n")
 
     val sut = GamePersistenceAdapter(tempFile.toFile())
-    val result: FENData = sut.loadGame(1).fenData
+    val result: FENData = sut.loadGame(1).getFenData()
 
     assertThat(result.getRank(8)).isEqualTo("rnbqkb1r")
     assertThat(result.getRank(7)).isEqualTo("pppppppp")
@@ -68,7 +68,7 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
     )
 
     val sut = GamePersistenceAdapter(tempFile.toFile())
-    val result: FENData = sut.loadGame(2).fenData
+    val result: FENData = sut.loadGame(2).getFenData()
 
     assertThat(result.getRank(8)).isEqualTo("r3k2r")
     assertThat(result.getRank(7)).isEqualTo("p1ppqpb1")

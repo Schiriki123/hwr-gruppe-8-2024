@@ -170,4 +170,15 @@ class Board(fenData: FENData) : BoardInspector {
     }
     return builder.toString().dropLast(1)
   }
+
+  fun getFENData(): FENData {
+    return FENData(
+      generateFENBoardString(),
+      if (turn == Color.WHITE) 'w' else 'b',
+      castle,
+      enPassant,
+      halfmoveClock,
+      fullmoveClock
+    )
+  }
 }

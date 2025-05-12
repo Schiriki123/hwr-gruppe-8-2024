@@ -3,8 +3,9 @@ package hwr.oop.group8.chess.persistence
 import hwr.oop.group8.chess.Game
 import java.io.File
 
-class GamePersistenceAdapter(val file: File): InitGameInterface {
-  fun loadGame(id: Int): Game {
+class GamePersistenceAdapter(val file: File) : InitGameInterface,
+  LoadGameInterface, SaveGameInterface {
+  override fun loadGame(id: Int): Game {
     val games: List<Pair<Int, String>> = file.readLines().map { line ->
       val parts = line.split(",")
       Pair(parts.first().toInt(), parts.last())
@@ -14,9 +15,9 @@ class GamePersistenceAdapter(val file: File): InitGameInterface {
     return Game(id, createFENDataObject(data))
   }
 
-  fun saveGame(game: Game) {
+  override fun saveGame(game: Game) {
     val lines = file.readLines()
-    val gameFenString = game.fenData.toString()
+    val gameFenString = game.getFenData().toString()
     val gameLineContent = "${game.id},$gameFenString"
 
     val updatedLines = if (lines.any { it.startsWith("${game.id}") }) {

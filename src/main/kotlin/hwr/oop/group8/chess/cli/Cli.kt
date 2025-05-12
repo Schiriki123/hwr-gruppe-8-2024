@@ -1,15 +1,22 @@
 package hwr.oop.group8.chess.cli
 
 import hwr.oop.group8.chess.persistence.InitGameInterface
+import hwr.oop.group8.chess.persistence.LoadGameInterface
+import hwr.oop.group8.chess.persistence.SaveGameInterface
 
-class Cli(initGameInterface: InitGameInterface) {
+class Cli(
+  initGameInterface: InitGameInterface,
+  loadGameInterface: LoadGameInterface,
+  saveGameInterface: SaveGameInterface,
+) {
   val commands = listOf(
     NewGameCommand(initGameInterface),
+    MakeMoveCommand(loadGameInterface, saveGameInterface),
   )
 
   fun handle(args: List<String>) {
-    val command = commands.find { it.matches(args)}
-    requireNotNull(command) {"No command found for arguments: $args"}
+    val command = commands.find { it.matches(args) }
+    requireNotNull(command) { "No command found for arguments: $args" }
     command.handle(args)
   }
 }
