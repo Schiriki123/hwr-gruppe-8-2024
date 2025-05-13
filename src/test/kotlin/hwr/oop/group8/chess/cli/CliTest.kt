@@ -3,18 +3,40 @@ package hwr.oop.group8.chess.cli
 import hwr.oop.group8.chess.Game
 import hwr.oop.group8.chess.persistence.FENData
 import hwr.oop.group8.chess.persistence.InitGameInterface
+import hwr.oop.group8.chess.persistence.LoadAllGamesInterface
 import hwr.oop.group8.chess.persistence.LoadGameInterface
 import hwr.oop.group8.chess.persistence.SaveGameInterface
 import io.kotest.core.spec.style.AnnotationSpec
 import io.kotest.extensions.system.captureStandardOut
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 
 class CliTest : AnnotationSpec() {
+
+  @Test
+  fun `Test that commands exists`() {
+    // given
+    val adapterMock = PersistentGameAdapterMock()
+    val cli = Cli(
+      adapterMock,
+      adapterMock,
+      adapterMock,
+      adapterMock
+    )
+
+    // when
+    val command = cli.commands
+
+    // then
+    assertThat(command).hasSize(4)
+  }
+
   @Test
   fun `Use cli to create new game`() {
     // given
     val adapterMock = PersistentGameAdapterMock()
     val cli = Cli(
+      adapterMock,
       adapterMock,
       adapterMock,
       adapterMock
@@ -41,6 +63,7 @@ class CliTest : AnnotationSpec() {
     val cli = Cli(
       adapterMock,
       adapterMock,
+      adapterMock,
       adapterMock
     )
 
@@ -64,10 +87,33 @@ class CliTest : AnnotationSpec() {
   }
 
   @Test
+  fun `Try to make move with invalid coordinates`() {
+    // given
+    val adapterMock = PersistentGameAdapterMock()
+    val cli = Cli(
+      adapterMock,
+      adapterMock,
+      adapterMock,
+      adapterMock
+    )
+
+    // when
+    val args = listOf("make", "move", "1", "e2", "invalid")
+
+    // then
+    assertThatThrownBy {
+      cli.handle(args)
+    }.isInstanceOf(IllegalArgumentException::class.java).message().isEqualTo(
+      "No command found for arguments: $args"
+    )
+  }
+
+  @Test
   fun `print board via cli`() {
     // given
     val adapterMock = PersistentGameAdapterMock()
     val cli = Cli(
+      adapterMock,
       adapterMock,
       adapterMock,
       adapterMock
@@ -95,8 +141,78 @@ class CliTest : AnnotationSpec() {
     )
   }
 
+  @Test
+  fun `Test to list all games on cli`() {
+    // given
+    val adapterMock = PersistentGameAdapterMock()
+    val cli = Cli(
+      adapterMock,
+      adapterMock,
+      adapterMock,
+      adapterMock
+    )
+
+    // when
+    val output = captureStandardOut {
+      val args = listOf("list", "games")
+      cli.handle(args)
+    }.trim()
+
+    // then
+    assertThat(output).isEqualTo(
+      "Loading all games...\n" +
+          "List of games:\n" +
+          "Game ID: 1, Current turn: WHITE\n" +
+          "Game ID: 2, Current turn: BLACK"
+    )
+  }
+
+  @Test
+  fun `Try to list games with invalid additional arguments`() {
+    // given
+    val adapterMock = PersistentGameAdapterMock()
+    val cli = Cli(
+      adapterMock,
+      adapterMock,
+      adapterMock,
+      adapterMock
+    )
+
+    // when
+    val args = listOf("list", "games", "extra")
+
+    // then
+    assertThatThrownBy {
+      cli.handle(args)
+    }.isInstanceOf(IllegalArgumentException::class.java).message().isEqualTo(
+      "No command found for arguments: $args"
+    )
+  }
+
+  @Test
+  fun `Test input with no matching command`() {
+    // given
+    val adapterMock = PersistentGameAdapterMock()
+    val cli = Cli(
+      adapterMock,
+      adapterMock,
+      adapterMock,
+      adapterMock
+    )
+
+    // when
+    val args = listOf("invalid", "command")
+
+    // then
+    assertThatThrownBy {
+      cli.handle(args)
+    }.isInstanceOf(IllegalArgumentException::class.java).message().isEqualTo(
+      "No command found for arguments: $args"
+    )
+  }
+
   private class PersistentGameAdapterMock : InitGameInterface,
-    LoadGameInterface, SaveGameInterface {
+    LoadGameInterface, SaveGameInterface, LoadAllGamesInterface {
     private var game: Game? = null
 
     fun savedGame(): Game? {
@@ -117,6 +233,13 @@ class CliTest : AnnotationSpec() {
     override fun saveGame(game: Game) {
       // Mock implementation
       this.game = game
+    }
+
+    override fun loadAllGames(): List<Game> {
+      return listOf(
+        Game(1, FENData()),
+        Game(2, FENData("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR", 'b')),
+      )
     }
   }
 }

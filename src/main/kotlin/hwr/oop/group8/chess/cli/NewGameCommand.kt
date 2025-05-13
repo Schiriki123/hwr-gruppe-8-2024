@@ -5,6 +5,7 @@ import hwr.oop.group8.chess.persistence.InitGameInterface
 class NewGameCommand(private val initGameInterface: InitGameInterface) :
   CliCommand {
   override fun matches(args: List<String>): Boolean {
+    if (args.size != 3) return false
     val firstTwoArgsMatch = args.subList(0, 2) == listOf("new", "game")
     val thirdArgIsNumber = args[2].toIntOrNull() != null
 

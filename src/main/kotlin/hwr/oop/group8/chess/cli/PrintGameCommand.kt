@@ -5,6 +5,7 @@ import hwr.oop.group8.chess.persistence.LoadGameInterface
 class PrintGameCommand(private val loadGameInterface: LoadGameInterface) :
   CliCommand {
   override fun matches(args: List<String>): Boolean {
+    if (args.size != 3) return false
     val firstTwoArgsMatch = args.subList(0, 2) == listOf("show", "game")
     val thirdArgIsNumber = args[2].toIntOrNull() != null
 

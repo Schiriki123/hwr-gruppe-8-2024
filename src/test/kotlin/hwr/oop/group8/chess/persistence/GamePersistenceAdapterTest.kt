@@ -185,4 +185,24 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
 
     tempFile.deleteExisting()
   }
+
+  @Test
+  fun `list games should print all saved game with id and turn`() {
+    val tempFile = createTempFile()
+    tempFile.writeText(
+      "1,rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR w KQkq - 0 1\n" +
+          "3,r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b KQkq - 0 12\n"
+    )
+
+    val sut = GamePersistenceAdapter(tempFile.toFile())
+    val games = sut.loadAllGames()
+
+    assertThat(games).hasSize(2)
+    assertThat(games[0].id).isEqualTo(1)
+    assertThat(games[0].getFenData().getTurn()).isEqualTo(Color.WHITE)
+    assertThat(games[1].id).isEqualTo(3)
+    assertThat(games[1].getFenData().getTurn()).isEqualTo(Color.BLACK)
+
+    tempFile.deleteExisting()
+  }
 }

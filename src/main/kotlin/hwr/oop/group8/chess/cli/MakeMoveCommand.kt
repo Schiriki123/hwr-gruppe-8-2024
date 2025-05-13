@@ -10,6 +10,7 @@ class MakeMoveCommand(
   private val saveGameInterface: SaveGameInterface,
 ) : CliCommand {
   override fun matches(args: List<String>): Boolean {
+    if (args.size != 5) return false
     val firstTwoArgsMatch = args.subList(0, 2) == listOf("make", "move")
     val thirdArgIsNumber = args[2].toIntOrNull() != null
     val fourthArgIsValid = args[3].matches(Regex("[a-h][1-8]"))
