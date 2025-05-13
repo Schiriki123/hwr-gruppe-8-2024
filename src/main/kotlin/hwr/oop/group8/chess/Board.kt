@@ -181,4 +181,16 @@ class Board(fenData: FENData) : BoardInspector {
       fullmoveClock
     )
   }
+
+  fun printBoard() {
+    val builder = StringBuilder()
+    for (rank in 8 downTo 1) {
+      for (file in 'a'..'h') {
+        val piece = map.getValue(Position(file, rank)).getPiece()
+        builder.append(piece?.getChar() ?: '.')
+      }
+      builder.append("\n")
+    }
+    println(builder.toString().trim())
+  }
 }

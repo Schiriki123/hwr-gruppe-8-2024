@@ -11,6 +11,7 @@ class Cli(
 ) {
   val commands = listOf(
     NewGameCommand(initGameInterface),
+    PrintGameCommand(loadGameInterface),
     MakeMoveCommand(loadGameInterface, saveGameInterface),
   )
 

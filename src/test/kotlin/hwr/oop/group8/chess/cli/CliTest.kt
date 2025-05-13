@@ -63,6 +63,38 @@ class CliTest : AnnotationSpec() {
     assertThat(output).contains("Move made from e2 to e4.")
   }
 
+  @Test
+  fun `print board via cli`() {
+    // given
+    val adapterMock = PersistentGameAdapterMock()
+    val cli = Cli(
+      adapterMock,
+      adapterMock,
+      adapterMock
+    )
+
+    // when
+    val output = captureStandardOut {
+      val args = listOf("show", "game", "1")
+      cli.handle(args)
+    }.trim()
+
+    // then
+    assertThat(output).isEqualTo(
+      "Loading game with id 1...\n" +
+          "Current board:\n" +
+          "rnbqkbnr\n" +
+          "pppppppp\n" +
+          "........\n" +
+          "........\n" +
+          "........\n" +
+          "........\n" +
+          "PPPPPPPP\n" +
+          "RNBQKBNR\n" +
+          "Current turn: WHITE"
+    )
+  }
+
   private class PersistentGameAdapterMock : InitGameInterface,
     LoadGameInterface, SaveGameInterface {
     private var game: Game? = null
