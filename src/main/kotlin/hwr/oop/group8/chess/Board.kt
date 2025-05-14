@@ -146,7 +146,7 @@ class Board(fenData: FENData) : BoardInspector {
         }
       }
     }
-    return "White's captures: $blackPieces\nBlack's captures: $whitePieces"
+    return "White's captures: $blackPieces${System.lineSeparator()}Black's captures: $whitePieces"
   }
 
   fun generateFENBoardString(): String {
@@ -189,7 +189,7 @@ class Board(fenData: FENData) : BoardInspector {
         val piece = map.getValue(Position(file, rank)).getPiece()
         builder.append(piece?.getChar() ?: '.')
       }
-      builder.append("\n")
+      builder.append("${System.lineSeparator()}")
     }
     println(builder.toString().trim())
   }

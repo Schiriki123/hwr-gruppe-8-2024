@@ -35,7 +35,7 @@ class GamePersistenceAdapter(val file: File) :
       }
     }
 
-    file.writeText(updatedLines.joinToString("\n"))
+    file.writeText(updatedLines.joinToString("${System.lineSeparator()}"))
   }
 
   override fun initGame(id: Int) {
@@ -47,7 +47,7 @@ class GamePersistenceAdapter(val file: File) :
       throw CouldNotSaveGameException("Game with id $id already exists")
     } else {
       val updatedLines = lines + gameLineContent
-      file.writeText(updatedLines.joinToString("\n"))
+      file.writeText(updatedLines.joinToString("${System.lineSeparator()}"))
     }
   }
 

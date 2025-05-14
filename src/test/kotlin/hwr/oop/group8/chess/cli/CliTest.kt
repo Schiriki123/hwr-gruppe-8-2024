@@ -127,16 +127,16 @@ class CliTest : AnnotationSpec() {
 
     // then
     assertThat(output).isEqualTo(
-      "Loading game with id 1...\n" +
-          "Current board:\n" +
-          "rnbqkbnr\n" +
-          "pppppppp\n" +
-          "........\n" +
-          "........\n" +
-          "........\n" +
-          "........\n" +
-          "PPPPPPPP\n" +
-          "RNBQKBNR\n" +
+      "Loading game with id 1...${System.lineSeparator()}" +
+          "Current board:${System.lineSeparator()}" +
+          "rnbqkbnr${System.lineSeparator()}" +
+          "pppppppp${System.lineSeparator()}" +
+          "........${System.lineSeparator()}" +
+          "........${System.lineSeparator()}" +
+          "........${System.lineSeparator()}" +
+          "........${System.lineSeparator()}" +
+          "PPPPPPPP${System.lineSeparator()}" +
+          "RNBQKBNR${System.lineSeparator()}" +
           "Current turn: WHITE"
     )
   }
@@ -160,9 +160,9 @@ class CliTest : AnnotationSpec() {
 
     // then
     assertThat(output).isEqualTo(
-      "Loading all games...\n" +
-          "List of games:\n" +
-          "Game ID: 1, Current turn: WHITE\n" +
+      "Loading all games...${System.lineSeparator()}" +
+          "List of games:${System.lineSeparator()}" +
+          "Game ID: 1, Current turn: WHITE${System.lineSeparator()}" +
           "Game ID: 2, Current turn: BLACK"
     )
   }
