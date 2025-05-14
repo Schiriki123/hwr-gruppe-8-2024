@@ -122,6 +122,27 @@ class KingTest : AnnotationSpec() {
   }
 
   @Test
+  fun `Check that castling is not allowed if piece was moved`() {
+    val board = Board(FENData("8/k7/8/8/8/8/8/R3K2R"))
+    // Move the rook
+    board.makeMove(Move(Position('a', 1), Position('a', 2)))
+    // Move opponent piece
+    board.makeMove(Move(Position('a', 7), Position('b', 7)))
+
+    assertThat(board.castle).isEqualTo("K")
+    assertThat(
+      board.getPieceAt(Position('e', 1))?.getValidMoveDestinations()
+    ).containsExactlyInAnyOrder(
+      Position('d', 1),
+      Position('d', 2),
+      Position('e', 2),
+      Position('f', 1),
+      Position('f', 2),
+      Position('g', 1),
+    )
+  }
+
+  @Test
   fun `Try to castle from chess`() {
     val board = Board(FENData("8/1k6/4r3/8/8/8/8/R3K2R"))
     val move = Move(Position('e', 1), Position('g', 1))
@@ -134,7 +155,7 @@ class KingTest : AnnotationSpec() {
 
   @Test
   fun `Test castling king side for black`() {
-    val board = Board(FENData("r3k2r/8/8/8/8/8/1K6/8",'b'))
+    val board = Board(FENData("r3k2r/8/8/8/8/8/1K6/8", 'b'))
     val move = Move(Position('e', 8), Position('g', 8))
     board.makeMove(move)
 
