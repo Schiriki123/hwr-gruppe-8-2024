@@ -69,6 +69,16 @@ class Board(fenData: FENData) : BoardInspector {
     check(isCheck(move))
     { "Move would put player in check" }
 
+    // Check for castle move and update rook position
+    if (move == Move(Position('e', 1), Position('g', 1)) && isCastlingAllowed(
+        turn
+      ).second
+    ) {
+      val rook = getPieceAt(Position('h', 1))
+      map.getValue(Position('f', 1)).setPiece(rook)
+      map.getValue(Position('h', 1)).setPiece(null)
+    }
+
     piece.moved()
     toSquare.setPiece(piece)
     fromSquare.setPiece(null)
@@ -183,9 +193,9 @@ class Board(fenData: FENData) : BoardInspector {
       getPieceAt(Position('d', homeRank)) == null &&
           getPieceAt(Position('c', homeRank)) == null &&
           getPieceAt(Position('b', homeRank)) == null &&
-          castle.contains(if (color == Color.WHITE) "Q" else "q") /*&&
+          castle.contains(if (color == Color.WHITE) "Q" else "q") &&
           isCheck(Move(kingPosition, Position('d', homeRank))) &&
-          isCheck(Move(kingPosition, Position('c', homeRank)))*/
+          isCheck(Move(kingPosition, Position('c', homeRank)))
 
     return Pair(queenSide, kingSide)
   }

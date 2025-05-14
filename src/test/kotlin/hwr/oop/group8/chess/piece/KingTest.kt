@@ -92,7 +92,6 @@ class KingTest : AnnotationSpec() {
   }
 
   @Test
-  @Ignore
   fun `Test castle king side`() {
     val board = Board(FENData("8/8/8/8/8/8/8/R3K2R"))
     //King side castle

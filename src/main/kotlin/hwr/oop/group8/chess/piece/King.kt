@@ -40,10 +40,10 @@ class King(
       val castling = boardInspector.isCastlingAllowed(color)
       if (castling.first) {
         if (color == Color.WHITE) {
-          validDestinations.add(Position('b', 1))
+          validDestinations.add(Position('c', 1))
         }
         if (color == Color.BLACK) {
-          validDestinations.add(Position('b', 8))
+          validDestinations.add(Position('c', 8))
         }
       }
       if (castling.second) {
