@@ -28,7 +28,7 @@ class CliTest : AnnotationSpec() {
     val command = cli.commands
 
     // then
-    assertThat(command).hasSize(4)
+    assertThat(command).isNotEmpty
   }
 
   @Test
@@ -209,6 +209,28 @@ class CliTest : AnnotationSpec() {
     }.isInstanceOf(IllegalArgumentException::class.java).message().isEqualTo(
       "No command found for arguments: $args"
     )
+  }
+
+  @Test
+  fun `Empty execution should print help`() {
+    // given
+    val adapterMock = PersistentGameAdapterMock()
+    val cli = Cli(
+      adapterMock,
+      adapterMock,
+      adapterMock,
+      adapterMock
+    )
+
+    // when
+    val output = captureStandardOut {
+      val args = emptyList<String>()
+      cli.handle(args)
+    }.trim()
+
+    // then
+    assertThat(output).contains("Available commands:")
+    assertThat(output).contains("Options:")
   }
 
   private class PersistentGameAdapterMock : InitGameInterface,

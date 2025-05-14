@@ -16,6 +16,7 @@ class Cli(
     PrintGameCommand(loadGameInterface),
     MakeMoveCommand(loadGameInterface, saveGameInterface),
     ListGamesCommand(loadAllGamesInterface),
+    HelpCommand()
   )
 
   fun handle(args: List<String>) {
