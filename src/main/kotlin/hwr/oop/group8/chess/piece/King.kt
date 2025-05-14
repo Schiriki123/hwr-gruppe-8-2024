@@ -3,7 +3,6 @@ package hwr.oop.group8.chess.piece
 import hwr.oop.group8.chess.BoardInspector
 import hwr.oop.group8.chess.Color
 import hwr.oop.group8.chess.Direction
-import hwr.oop.group8.chess.Move
 import hwr.oop.group8.chess.Position
 
 class King(
@@ -36,7 +35,23 @@ class King(
         }
       }
     }
-
+    val castling = boardInspector.isCastlingAllowed(color)
+    if (castling.first) {
+      if (color == Color.WHITE) {
+        validDestinations.add(Position('b', 1))
+      }
+      if (color == Color.BLACK) {
+        validDestinations.add(Position('b', 8))
+      }
+    }
+    if (castling.second) {
+      if (color == Color.WHITE) {
+        validDestinations.add(Position('g', 1))
+      }
+      if (color == Color.BLACK) {
+        validDestinations.add(Position('g', 8))
+      }
+    }
     return validDestinations.toSet()
   }
 
