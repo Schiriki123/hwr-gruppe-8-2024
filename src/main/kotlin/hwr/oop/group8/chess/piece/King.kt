@@ -35,21 +35,24 @@ class King(
         }
       }
     }
-    val castling = boardInspector.isCastlingAllowed(color)
-    if (castling.first) {
-      if (color == Color.WHITE) {
-        validDestinations.add(Position('b', 1))
+
+    if (boardInspector.getCurrentTurn() == color) {
+      val castling = boardInspector.isCastlingAllowed(color)
+      if (castling.first) {
+        if (color == Color.WHITE) {
+          validDestinations.add(Position('b', 1))
+        }
+        if (color == Color.BLACK) {
+          validDestinations.add(Position('b', 8))
+        }
       }
-      if (color == Color.BLACK) {
-        validDestinations.add(Position('b', 8))
-      }
-    }
-    if (castling.second) {
-      if (color == Color.WHITE) {
-        validDestinations.add(Position('g', 1))
-      }
-      if (color == Color.BLACK) {
-        validDestinations.add(Position('g', 8))
+      if (castling.second) {
+        if (color == Color.WHITE) {
+          validDestinations.add(Position('g', 1))
+        }
+        if (color == Color.BLACK) {
+          validDestinations.add(Position('g', 8))
+        }
       }
     }
     return validDestinations.toSet()

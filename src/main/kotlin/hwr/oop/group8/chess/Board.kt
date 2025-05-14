@@ -128,37 +128,37 @@ class Board(fenData: FENData) : BoardInspector {
     return !possibleMovesOfOpponent.contains(kingPosition)
   }
 
-  fun castleMoved(color : Color) {
-    val homeRank= if(color== Color.WHITE) 1 else 8
+  fun castleMoved(color: Color) {
+    val homeRank = if (color == Color.WHITE) 1 else 8
     val kingRookPosition = getPieceAt(Position('h', homeRank))
     val queenRookPosition = getPieceAt(Position('a', homeRank))
     val kingPosition = getPieceAt(Position('e', homeRank))
 
     if (kingPosition == null || kingPosition.color != color.invert()
     ) {
-      if(color == Color.WHITE) {
+      if (color == Color.WHITE) {
         castle.replace("K", "")
         castle.replace("Q", "")
       }
-      if(color == Color.BLACK) {
+      if (color == Color.BLACK) {
         castle.replace("k", "")
         castle.replace("q", "")
       }
 
     }
-    if (kingRookPosition == null || kingRookPosition.color != color.invert() ){
-      if(color == Color.WHITE) {
+    if (kingRookPosition == null || kingRookPosition.color != color.invert()) {
+      if (color == Color.WHITE) {
         castle.replace("K", "")
       }
-      if(color == Color.BLACK) {
+      if (color == Color.BLACK) {
         castle.replace("k", "")
       }
     }
-    if (queenRookPosition == null || queenRookPosition.color != color.invert() ){
-      if(color == Color.WHITE) {
+    if (queenRookPosition == null || queenRookPosition.color != color.invert()) {
+      if (color == Color.WHITE) {
         castle.replace("Q", "")
       }
-      if(color == Color.BLACK) {
+      if (color == Color.BLACK) {
         castle.replace("q", "")
       }
     }
@@ -174,22 +174,24 @@ class Board(fenData: FENData) : BoardInspector {
     val kingSide: Boolean =
       getPieceAt(Position('f', homeRank)) == null &&
           getPieceAt(Position('g', homeRank)) == null &&
-          getPieceAt(rookPositionKingSide)?.hasMoved() == false &&
+          castle.contains(if (color == Color.WHITE) "K" else "k") &&
           isCheck(Move(kingPosition, Position('f', homeRank))) &&
-          isCheck(
-            Move(kingPosition, Position('g', homeRank))
-          )
+          isCheck(Move(kingPosition, Position('g', homeRank)))
 
     // Queen side castle
     val queenSide: Boolean =
       getPieceAt(Position('d', homeRank)) == null &&
           getPieceAt(Position('c', homeRank)) == null &&
           getPieceAt(Position('b', homeRank)) == null &&
-          getPieceAt(rookPositionQueenSide)?.hasMoved() == false &&
+          castle.contains(if (color == Color.WHITE) "Q" else "q") /*&&
           isCheck(Move(kingPosition, Position('d', homeRank))) &&
-          isCheck(Move(kingPosition, Position('c', homeRank)))
+          isCheck(Move(kingPosition, Position('c', homeRank)))*/
 
     return Pair(queenSide, kingSide)
+  }
+
+  override fun getCurrentTurn(): Color {
+    return turn
   }
 
   fun getCapturedPieces(): String {

@@ -114,9 +114,8 @@ class KingTest : AnnotationSpec() {
   }
 
   @Test
-  @Ignore
   fun `Test invalid castle with movement through check`() {
-    val board = Board(FENData("8/8/2r5/8/8/8/8/R3K2R"))
+    val board = Board(FENData("8/8/5r2/8/8/8/8/R3K2R"))
     val move = Move(Position('e', 1), Position('g', 1))
     assertThatThrownBy {
       board.makeMove(move)
