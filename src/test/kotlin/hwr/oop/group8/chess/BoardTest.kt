@@ -266,4 +266,13 @@ class BoardTest : AnnotationSpec() {
       Board(FENData("8/8/8/8/8/8/5r2/1K5r"))
     }.message().isEqualTo("Game is over, checkmate!")
   }
+
+  @Test
+  fun `Move king side tower should remove K from castle`() {
+    val board = Board(FENData("8/1k6/8/8/8/8/8/R3K2R"))
+    val move = Move(Position('h', 1), Position('g', 1))
+    board.makeMove(move)
+    assertThat(board.generateFENBoardString()).isEqualTo("8/1k6/8/8/8/8/8/R3K1R1")
+    assertThat(board.castle).isEqualTo("Qkq")
+  }
 }

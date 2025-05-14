@@ -92,24 +92,24 @@ class KingTest : AnnotationSpec() {
   }
 
   @Test
-  fun `Test castle king side`() {
+  fun `Test castle king side for white`() {
     val board = Board(FENData("8/8/8/8/8/8/8/R3K2R"))
     //King side castle
     val move = Move(Position('e', 1), Position('g', 1))
     board.makeMove(move)
 
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/8/R4RK1")
-
+    assertThat(board.castle).isEqualTo("kq")
   }
 
   @Test
-  @Ignore
-  fun `Test castle queen side`() {
+  fun `Test castle queen side for white`() {
     val board = Board(FENData("8/8/8/8/8/8/8/R3K2R"))
     val move = Move(Position('e', 1), Position('c', 1))
     board.makeMove(move)
 
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/8/2KR3R")
+    assertThat(board.castle).isEqualTo("kq")
   }
 
   @Test
@@ -119,6 +119,27 @@ class KingTest : AnnotationSpec() {
     assertThatThrownBy {
       board.makeMove(move)
     }
+  }
+
+  @Test
+  fun `Try to castle from chess`() {
+    val board = Board(FENData("8/1k6/4r3/8/8/8/8/R3K2R"))
+    val move = Move(Position('e', 1), Position('g', 1))
+    assertThatThrownBy {
+      board.makeMove(move)
+    }.message().isEqualTo("Invalid move for piece King from e1 to g1")
+    assertThat(board.generateFENBoardString()).isEqualTo("8/1k6/4r3/8/8/8/8/R3K2R")
+    assertThat(board.castle).isEqualTo("KQkq")
+  }
+
+  @Test
+  fun `Test castling king side for black`() {
+    val board = Board(FENData("r3k2r/8/8/8/8/8/1K6/8",'b'))
+    val move = Move(Position('e', 8), Position('g', 8))
+    board.makeMove(move)
+
+    assertThat(board.generateFENBoardString()).isEqualTo("r4rk1/8/8/8/8/8/1K6/8")
+    assertThat(board.castle).isEqualTo("KQ")
   }
 
 }
