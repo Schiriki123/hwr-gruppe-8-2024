@@ -143,7 +143,6 @@ class Board(fenData: FENData) : BoardInspector {
   }
 
   private fun isCheck(): Boolean {
-
     val allPieces: Set<Piece> = map.values.mapNotNull { it.getPiece() }.toSet()
     val possibleMovesOfOpponent: Set<Position> = allPieces
       .filter { it.color != turn }

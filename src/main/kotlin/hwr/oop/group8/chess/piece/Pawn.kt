@@ -8,21 +8,11 @@ import hwr.oop.group8.chess.Position
 class Pawn(
   override val color: Color,
   val boardInspector: BoardInspector,
-  var hasMoved: Boolean = false,
 ) : Piece {
 
   fun myPosition(): Position {
     return boardInspector.findPositionOfPiece(this)
   }
-
-  override fun hasMoved(): Boolean {
-    return hasMoved
-  }
-
-  override fun moved() {
-    hasMoved = true
-  }
-
   override fun getValidMoveDestinations(): Set<Position> {
     val validDestinations: MutableSet<Position> = mutableSetOf()
     val forwardDirection: Direction
