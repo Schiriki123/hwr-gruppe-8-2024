@@ -1,30 +1,32 @@
 package hwr.oop.group8.chess
 
+import hwr.oop.group8.chess.persistence.FENData
 import hwr.oop.group8.chess.piece.King
 import hwr.oop.group8.chess.piece.Piece
 
 class Board(fenData: FENData) : BoardInspector {
   private val map = HashMap<Position, Square>()
   var turn: Color
+  val enPassant: String
   var castle: String
   val halfmoveClock: Int
   val fullmoveClock: Int
 
   init { // Creation of Board in Map based on FEN String
     for (rank in 1..8) {
-      var counter = 'a'
+      var fileCounter = 'a'
       fenData.getRank(rank).forEach { fileChar ->
         if (fileChar.isDigit()) {
           repeat(fileChar.digitToInt()) {
-            map.put(Position(counter, 9 - rank), Square(null))
-            counter++
+            map.put(Position(fileCounter, rank), Square(null))
+            fileCounter++
           }
         } else {
           map.put(
-            Position(counter, 9 - rank),
+            Position(fileCounter, rank),
             Square(FENData.createPieceOnBoard(fileChar, this))
           )
-          counter++
+          fileCounter++
         }
       }
     }
@@ -32,6 +34,7 @@ class Board(fenData: FENData) : BoardInspector {
 
     turn = fenData.getTurn()
     castle = fenData.castle
+    enPassant = fenData.enPassant
     halfmoveClock = fenData.halfmoveClock
     fullmoveClock = fenData.fullmoveClock
     check(!isCheckmate()) {
@@ -227,7 +230,7 @@ class Board(fenData: FENData) : BoardInspector {
         }
       }
     }
-    return "White's captures: $blackPieces\nBlack's captures: $whitePieces"
+    return "White's captures: $blackPieces${System.lineSeparator()}Black's captures: $whitePieces"
   }
 
   fun generateFENBoardString(): String {
@@ -250,5 +253,28 @@ class Board(fenData: FENData) : BoardInspector {
       builder.append('/')
     }
     return builder.toString().dropLast(1)
+  }
+
+  fun getFENData(): FENData {
+    return FENData(
+      generateFENBoardString(),
+      if (turn == Color.WHITE) 'w' else 'b',
+      castle,
+      enPassant,
+      halfmoveClock,
+      fullmoveClock
+    )
+  }
+
+  fun printBoard() {
+    val builder = StringBuilder()
+    for (rank in 8 downTo 1) {
+      for (file in 'a'..'h') {
+        val piece = map.getValue(Position(file, rank)).getPiece()
+        builder.append(piece?.getChar() ?: '.')
+      }
+      builder.append("${System.lineSeparator()}")
+    }
+    println(builder.toString().trim())
   }
 }

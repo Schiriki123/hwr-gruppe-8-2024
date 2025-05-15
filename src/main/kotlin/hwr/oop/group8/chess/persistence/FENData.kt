@@ -1,11 +1,20 @@
-package hwr.oop.group8.chess
+package hwr.oop.group8.chess.persistence
 
-import hwr.oop.group8.chess.piece.*
+import hwr.oop.group8.chess.BoardInspector
+import hwr.oop.group8.chess.Color
+import hwr.oop.group8.chess.piece.Bishop
+import hwr.oop.group8.chess.piece.King
+import hwr.oop.group8.chess.piece.Knight
+import hwr.oop.group8.chess.piece.Pawn
+import hwr.oop.group8.chess.piece.Piece
+import hwr.oop.group8.chess.piece.Queen
+import hwr.oop.group8.chess.piece.Rook
 
 data class FENData(
   private val boardString: String = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR",
   private val turn: Char = 'w',
   val castle: String = "KQkq",
+  val enPassant: String = "-",
   val halfmoveClock: Int = 0,
   val fullmoveClock: Int = 1,
 ) {
@@ -20,7 +29,7 @@ data class FENData(
 
   fun getRank(rank: Int): String {
     require(rank in 1..8) { "Rank must be between 1 and 8" }
-    return boardString.split("/")[rank - 1]
+    return boardString.split("/")[8 - rank]
   }
 
   fun getTurn(): Color {
@@ -46,5 +55,8 @@ data class FENData(
       }
     }
   }
-}
 
+  override fun toString(): String {
+    return "$boardString $turn $castle $enPassant $halfmoveClock $fullmoveClock"
+  }
+}
