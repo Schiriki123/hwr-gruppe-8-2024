@@ -1,10 +1,17 @@
 ## Todos
 - [ ] Readme
-- [ ] castling
+- [x] castling
 - [ ] Pawn promotion
-- [ ] en passante
+- [ ] en passant
 - [ ] draw
-- [ ] Persistence
-- [ ] CLI
-  - [ ] Create new game
-  - [ ] Print board
+- [x] Persistence
+- [x] CLI
+  - [x] Create new game
+  - [x] Print board
+
+### Nice to have
+- [ ] Players
+- [ ] Tournaments 
+- [ ] Elo rating
+- [ ] Resign (Aufgeben)
+- [ ] Draw by agreement

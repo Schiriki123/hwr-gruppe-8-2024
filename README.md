@@ -56,14 +56,13 @@ our heads around the problem and it was much easier to "move" the pieces.
 
 [TODO]: # (For each feature implemented, add a row to the table!)
 
-| Number | Feature         | Tests |
-|--------|-----------------|-------|
-| 1      | /board creation | /     |
-| 2      | /movement       | /     |
-| 3      | /game logic     | /     |
-| 4      | /fen            | /     |
-| 5      | /cli            | /     |
-| 6      | /persistance    | /     |   
+| Number | Feature                                             | Tests |
+|--------|-----------------------------------------------------|-------|
+| 1      | create new game                                     | /     |
+| 2      | make moves based on piece logic (except En Passant) | /     |
+| 3      | Detect checkmate                                    | /     |
+| 4      | save & load multiple games as fen string            | /     |
+| 5      | cli for user input                                  | /     |
 
 
 ## Additional Dependencies
