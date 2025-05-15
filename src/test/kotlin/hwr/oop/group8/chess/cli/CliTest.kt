@@ -229,8 +229,10 @@ class CliTest : AnnotationSpec() {
     }.trim()
 
     // then
+    assertThat(output).contains("Usage: chess <command> [options]")
     assertThat(output).contains("Available commands:")
     assertThat(output).contains("Options:")
+    assertThat(output).contains("  -h, --help - Show this help message.")
   }
 
   private class PersistentGameAdapterMock : InitGameInterface,

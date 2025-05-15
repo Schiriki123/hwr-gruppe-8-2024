@@ -10,7 +10,7 @@ class HelpCommand : CliCommand {
     println()
     println("Available commands:")
     println("  new game <id> - Create a new game with the given ID.")
-    println("  print game <id> - Print the current state of the game with the given ID.")
+    println("  show game <id> - Print the current state of the game with the given ID.")
     println("  make move <id> <start> <end> - Make a move in the game with the given ID.")
     println("  list games - List all saved games.")
     println()
