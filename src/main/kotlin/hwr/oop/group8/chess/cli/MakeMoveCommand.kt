@@ -1,7 +1,7 @@
 package hwr.oop.group8.chess.cli
 
-import hwr.oop.group8.chess.Move
-import hwr.oop.group8.chess.Position
+import hwr.oop.group8.chess.core.Move
+import hwr.oop.group8.chess.core.Position
 import hwr.oop.group8.chess.persistence.LoadGameInterface
 import hwr.oop.group8.chess.persistence.SaveGameInterface
 

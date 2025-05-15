@@ -1,4 +1,4 @@
-package hwr.oop.group8.chess
+package hwr.oop.group8.chess.core
 
 data class Position(val file: Char, val rank: Int) {
   init {

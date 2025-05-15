@@ -1,6 +1,9 @@
 package hwr.oop.group8.chess.piece
 
-import hwr.oop.group8.chess.*
+import hwr.oop.group8.chess.core.Board
+import hwr.oop.group8.chess.core.Color
+import hwr.oop.group8.chess.core.Move
+import hwr.oop.group8.chess.core.Position
 import hwr.oop.group8.chess.persistence.FENData
 import io.kotest.core.spec.style.AnnotationSpec
 import org.assertj.core.api.Assertions.assertThat

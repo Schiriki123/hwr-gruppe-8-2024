@@ -1,4 +1,4 @@
-package hwr.oop.group8.chess
+package hwr.oop.group8.chess.core
 
 import hwr.oop.group8.chess.persistence.FENData
 import hwr.oop.group8.chess.piece.King
@@ -161,8 +161,6 @@ class Board(fenData: FENData) : BoardInspector {
   override fun isCastlingAllowed(color: Color): Pair<Boolean, Boolean> {
     val homeRank = if (color == Color.WHITE) 1 else 8
     val kingPosition = Position('e', homeRank)
-    val rookPositionKingSide = Position('h', homeRank)
-    val rookPositionQueenSide = Position('a', homeRank)
 
     if (isCheck()) {
       return Pair(false, false)

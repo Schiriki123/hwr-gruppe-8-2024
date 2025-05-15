@@ -1,4 +1,4 @@
-package hwr.oop.group8.chess
+package hwr.oop.group8.chess.core
 
 import hwr.oop.group8.chess.piece.Piece
 

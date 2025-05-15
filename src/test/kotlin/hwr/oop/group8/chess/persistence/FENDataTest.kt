@@ -1,6 +1,6 @@
 package hwr.oop.group8.chess.persistence
 
-import hwr.oop.group8.chess.Board
+import hwr.oop.group8.chess.core.Board
 import hwr.oop.group8.chess.piece.Bishop
 import hwr.oop.group8.chess.piece.King
 import hwr.oop.group8.chess.piece.Knight

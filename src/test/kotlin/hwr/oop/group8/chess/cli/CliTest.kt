@@ -1,6 +1,6 @@
 package hwr.oop.group8.chess.cli
 
-import hwr.oop.group8.chess.Game
+import hwr.oop.group8.chess.core.Game
 import hwr.oop.group8.chess.persistence.FENData
 import hwr.oop.group8.chess.persistence.InitGameInterface
 import hwr.oop.group8.chess.persistence.LoadAllGamesInterface

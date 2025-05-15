@@ -1,8 +1,8 @@
 package hwr.oop.group8.chess.piece
 
-import hwr.oop.group8.chess.BoardInspector
-import hwr.oop.group8.chess.Color
-import hwr.oop.group8.chess.Position
+import hwr.oop.group8.chess.core.BoardInspector
+import hwr.oop.group8.chess.core.Color
+import hwr.oop.group8.chess.core.Position
 
 class Knight(
   override val color: Color,

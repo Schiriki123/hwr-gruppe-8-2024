@@ -1,7 +1,7 @@
 package hwr.oop.group8.chess.persistence
 
-import hwr.oop.group8.chess.Color
-import hwr.oop.group8.chess.Game
+import hwr.oop.group8.chess.core.Color
+import hwr.oop.group8.chess.core.Game
 import io.kotest.core.spec.style.AnnotationSpec
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy

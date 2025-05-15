@@ -1,7 +1,7 @@
 package hwr.oop.group8.chess.persistence
 
-import hwr.oop.group8.chess.BoardInspector
-import hwr.oop.group8.chess.Color
+import hwr.oop.group8.chess.core.BoardInspector
+import hwr.oop.group8.chess.core.Color
 import hwr.oop.group8.chess.piece.Bishop
 import hwr.oop.group8.chess.piece.King
 import hwr.oop.group8.chess.piece.Knight

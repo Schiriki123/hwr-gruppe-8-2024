@@ -1,4 +1,4 @@
-package hwr.oop.group8.chess
+package hwr.oop.group8.chess.core
 
 enum class Direction(private val fileShift: Int, private val rankShift: Int) {
   TOP(0, 1),
