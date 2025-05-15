@@ -160,7 +160,7 @@ class BoardTest : AnnotationSpec() {
 
   @Test
   fun `Test piece movement`() {
-    val board = Board(FENData("8/8/8/8/4R3/8/8/K7"))
+    val board = Board(FENData("8/8/8/8/4R3/8/8/K7", 'w', ""))
     val startPosition = Position('e', 4)
     val endPosition = Position('e', 8)
     val testMove = Move(startPosition, endPosition)

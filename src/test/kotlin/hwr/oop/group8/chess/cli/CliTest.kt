@@ -10,6 +10,7 @@ import io.kotest.core.spec.style.AnnotationSpec
 import io.kotest.extensions.system.captureStandardOut
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
+import org.junit.jupiter.api.assertAll
 
 class CliTest : AnnotationSpec() {
 
@@ -229,10 +230,16 @@ class CliTest : AnnotationSpec() {
     }.trim()
 
     // then
-    assertThat(output).contains("Usage: chess <command> [options]")
-    assertThat(output).contains("Available commands:")
-    assertThat(output).contains("Options:")
-    assertThat(output).contains("  -h, --help - Show this help message.")
+    assertAll(
+      { assertThat(output).contains("Usage: chess <command> [options]") },
+      { assertThat(output).contains("Available commands:") },
+      { assertThat(output).contains("new game <id>") },
+      { assertThat(output).contains("show game <id>") },
+      { assertThat(output).contains("make move <id> <start> <end>") },
+      { assertThat(output).contains("list games") },
+      { assertThat(output).contains("Options:")},
+      { assertThat(output).contains(" -h, --help")}
+    )
   }
 
   private class PersistentGameAdapterMock : InitGameInterface,

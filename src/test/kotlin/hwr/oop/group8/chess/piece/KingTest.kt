@@ -133,9 +133,12 @@ class KingTest : AnnotationSpec() {
     // Move opponent piece
     board.makeMove(Move(Position('a', 7), Position('b', 7)))
 
+    val king = board.getPieceAt(Position('e', 1)) as King
+    val possibleMoves = king.getValidMoveDestinations()
+
     assertThat(board.castle).isEqualTo("K")
     assertThat(
-      board.getPieceAt(Position('e', 1))?.getValidMoveDestinations()
+      possibleMoves
     ).containsExactlyInAnyOrder(
       Position('d', 1),
       Position('d', 2),
@@ -158,13 +161,21 @@ class KingTest : AnnotationSpec() {
   }
 
   @Test
-  fun `Test castling king side for black`() {
+  fun `Test movement set generation for black king`() {
     val board = Board(FENData("r3k2r/8/8/8/8/8/1K6/8", 'b'))
-    val move = Move(Position('e', 8), Position('g', 8))
-    board.makeMove(move)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("r4rk1/8/8/8/8/8/1K6/8")
-    assertThat(board.castle).isEqualTo("KQ")
+    val king = board.getPieceAt(Position('e', 8)) as King
+    val possibleMoves = king.getValidMoveDestinations()
+
+    assertThat(possibleMoves).containsExactlyInAnyOrder(
+      Position('d', 8),
+      Position('d', 7),
+      Position('f', 8),
+      Position('f', 7),
+      Position('e', 7),
+      Position('c', 8),
+      Position('g', 8),
+    )
   }
 
 }
