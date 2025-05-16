@@ -273,11 +273,36 @@ class BoardTest : AnnotationSpec() {
   }
 
   @Test
+  fun `Test that castling permission is read correctly from castle string for white`() {
+    val board = Board(FENData(boardString = "r3k2r/8/8/8/8/8/8/R3K2R", castle = "Qkq", turn = 'w'))
+    val allowedCastlingForWhite = board.isCastlingAllowed(Color.WHITE)
+    assertThat(allowedCastlingForWhite.first).isTrue
+    assertThat(allowedCastlingForWhite.second).isFalse
+  }
+
+  @Test
+  fun `Test that castling permission is read correctly from castle string for black`() {
+    val board = Board(FENData(boardString = "r3k2r/8/8/8/8/8/8/R3K2R", castle = "Qk", turn = 'b'))
+    val allowedCastlingForBlack = board.isCastlingAllowed(Color.BLACK)
+    assertThat(allowedCastlingForBlack.first).isFalse
+    assertThat(allowedCastlingForBlack.second).isTrue
+  }
+
+  @Test
   fun `Move king side tower should remove K from castle`() {
-    val board = Board(FENData("8/1k6/8/8/8/8/8/R3K2R"))
+    val board = Board(FENData("r3k2r/8/8/8/8/8/8/R3K2R"))
     val move = Move(Position('h', 1), Position('g', 1))
     board.makeMove(move)
-    assertThat(board.generateFENBoardString()).isEqualTo("8/1k6/8/8/8/8/8/R3K1R1")
+    assertThat(board.generateFENBoardString()).isEqualTo("r3k2r/8/8/8/8/8/8/R3K1R1")
     assertThat(board.castle).isEqualTo("Qkq")
+  }
+
+  @Test
+  fun `Move queen side tower should remove Q from castle`() {
+    val board = Board(FENData("r3k2r/8/8/8/8/8/8/R3K2R"))
+    val move = Move(Position('a', 1), Position('b', 1))
+    board.makeMove(move)
+    assertThat(board.generateFENBoardString()).isEqualTo("r3k2r/8/8/8/8/8/8/1R2K2R")
+    assertThat(board.castle).isEqualTo("Kkq")
   }
 }
