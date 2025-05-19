@@ -2,7 +2,6 @@ package hwr.oop.group8.chess.cli
 
 import hwr.oop.group8.chess.core.Game
 import hwr.oop.group8.chess.persistence.FENData
-import hwr.oop.group8.chess.persistence.InitGameInterface
 import hwr.oop.group8.chess.persistence.LoadAllGamesInterface
 import hwr.oop.group8.chess.persistence.LoadGameInterface
 import hwr.oop.group8.chess.persistence.SaveGameInterface
@@ -22,7 +21,6 @@ class CliTest : AnnotationSpec() {
       adapterMock,
       adapterMock,
       adapterMock,
-      adapterMock
     )
 
     // when
@@ -40,7 +38,6 @@ class CliTest : AnnotationSpec() {
       adapterMock,
       adapterMock,
       adapterMock,
-      adapterMock
     )
 
     // when
@@ -65,7 +62,6 @@ class CliTest : AnnotationSpec() {
       adapterMock,
       adapterMock,
       adapterMock,
-      adapterMock
     )
 
     // when
@@ -95,7 +91,6 @@ class CliTest : AnnotationSpec() {
       adapterMock,
       adapterMock,
       adapterMock,
-      adapterMock
     )
 
     // when
@@ -117,7 +112,6 @@ class CliTest : AnnotationSpec() {
       adapterMock,
       adapterMock,
       adapterMock,
-      adapterMock
     )
 
     // when
@@ -150,7 +144,6 @@ class CliTest : AnnotationSpec() {
       adapterMock,
       adapterMock,
       adapterMock,
-      adapterMock
     )
 
     // when
@@ -175,7 +168,6 @@ class CliTest : AnnotationSpec() {
     val cli = Cli(
       adapterMock,
       adapterMock,
-      adapterMock,
       adapterMock
     )
 
@@ -198,7 +190,6 @@ class CliTest : AnnotationSpec() {
       adapterMock,
       adapterMock,
       adapterMock,
-      adapterMock
     )
 
     // when
@@ -220,7 +211,6 @@ class CliTest : AnnotationSpec() {
       adapterMock,
       adapterMock,
       adapterMock,
-      adapterMock
     )
 
     // when
@@ -237,12 +227,12 @@ class CliTest : AnnotationSpec() {
       { assertThat(output).contains("show game <id>") },
       { assertThat(output).contains("make move <id> <start> <end>") },
       { assertThat(output).contains("list games") },
-      { assertThat(output).contains("Options:")},
-      { assertThat(output).contains(" -h, --help")}
+      { assertThat(output).contains("Options:") },
+      { assertThat(output).contains(" -h, --help") }
     )
   }
 
-  private class PersistentGameAdapterMock : InitGameInterface,
+  private class PersistentGameAdapterMock :
     LoadGameInterface, SaveGameInterface, LoadAllGamesInterface {
     private var game: Game? = null
 
@@ -250,18 +240,12 @@ class CliTest : AnnotationSpec() {
       return game
     }
 
-    override fun initGame(id: Int) {
-      // Mock implementation
-      game = Game(id, FENData())
-      println("Mock game with id $id created.")
-    }
-
     override fun loadGame(id: Int): Game {
       // Mock implementation
       return game ?: Game(id, FENData())
     }
 
-    override fun saveGame(game: Game) {
+    override fun saveGame(game: Game, createNewGame: Boolean) {
       // Mock implementation
       this.game = game
     }

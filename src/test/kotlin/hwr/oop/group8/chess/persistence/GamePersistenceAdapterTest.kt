@@ -5,11 +5,7 @@ import hwr.oop.group8.chess.core.Game
 import io.kotest.core.spec.style.AnnotationSpec
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
-import kotlin.io.path.createTempFile
-import kotlin.io.path.deleteExisting
-import kotlin.io.path.name
-import kotlin.io.path.readText
-import kotlin.io.path.writeText
+import kotlin.io.path.*
 
 class GamePersistenceAdapterTest : AnnotationSpec() {
 
@@ -104,10 +100,11 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
   fun `Game create new game`() {
     val tempFile = createTempFile()
     tempFile.writeText("")
+    val initialGame = Game(1, FENData())
 
     val sut = GamePersistenceAdapter(tempFile.toFile())
 
-    sut.initGame(1)
+    sut.saveGame(initialGame, true)
 
     val result = tempFile.readText()
     assertThat(result).isEqualTo("1,rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
@@ -176,11 +173,12 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
       "1,rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR w KQkq - 0 1${System.lineSeparator()}" +
           "2,r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b KQkq - 0 12${System.lineSeparator()}"
     )
+    val initialBoard = Game(1, FENData())
 
     val sut = GamePersistenceAdapter(tempFile.toFile())
 
     assertThatThrownBy {
-      sut.initGame(1)
+      sut.saveGame(initialBoard, true)
     }.message().contains("Game with id 1 already exists")
 
     tempFile.deleteExisting()
