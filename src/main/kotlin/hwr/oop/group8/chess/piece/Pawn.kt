@@ -10,9 +10,10 @@ class Pawn(
   val boardInspector: BoardInspector,
 ) : Piece {
 
-  fun myPosition(): Position {
+  fun getPosition(): Position {
     return boardInspector.findPositionOfPiece(this)
   }
+
   override fun getValidMoveDestinations(): Set<Position> {
     val validDestinations: MutableSet<Position> = mutableSetOf()
     val forwardDirection: Direction
@@ -28,12 +29,12 @@ class Pawn(
 
     // Check for straight move
     val nextField =
-      forwardDirection.nextPosition(myPosition())
+      getPosition().nextPosition(forwardDirection)
     if (boardInspector.getPieceAt(nextField) == null) {
       validDestinations.add(nextField)
       // Check for double move from starting position
-      if (myPosition().rank == startRank) {
-        val twoSquaresForward = forwardDirection.nextPosition(nextField)
+      if (getPosition().rank == startRank) {
+        val twoSquaresForward = nextField.nextPosition(forwardDirection)
         if (boardInspector.getPieceAt(twoSquaresForward) == null) {
           validDestinations.add(twoSquaresForward)
         }
@@ -45,8 +46,8 @@ class Pawn(
       Direction.LEFT.combine(forwardDirection),
       Direction.RIGHT.combine(forwardDirection)
     )) {
-      if (direction.hasNextPosition(myPosition())) {
-        val nextPosition = direction.nextPosition(myPosition())
+      if (getPosition().hasNextPosition(direction)) {
+        val nextPosition = getPosition().nextPosition(direction)
         val nextPiece = boardInspector.getPieceAt(nextPosition)
         if (nextPiece != null && nextPiece.color != color) {
           validDestinations.add(nextPosition)

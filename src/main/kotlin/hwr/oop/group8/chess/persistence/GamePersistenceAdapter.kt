@@ -4,7 +4,6 @@ import hwr.oop.group8.chess.core.Game
 import java.io.File
 
 class GamePersistenceAdapter(val file: File) :
-  InitGameInterface,
   LoadGameInterface,
   SaveGameInterface,
   LoadAllGamesInterface {
@@ -18,7 +17,11 @@ class GamePersistenceAdapter(val file: File) :
     return Game(id, createFENDataObject(data))
   }
 
-  override fun saveGame(game: Game) {
+  override fun saveGame(game: Game, createNewGame: Boolean) {
+    if (createNewGame) initGame(game.id) else updateExistingGame(game)
+  }
+
+  private fun updateExistingGame(game: Game) {
     val lines = file.readLines()
     val gameFenString = game.getFenData().toString()
     val gameLineContent = "${game.id},$gameFenString"
@@ -38,7 +41,7 @@ class GamePersistenceAdapter(val file: File) :
     file.writeText(updatedLines.joinToString("${System.lineSeparator()}"))
   }
 
-  override fun initGame(id: Int) {
+  private fun initGame(id: Int) {
     val lines = file.readLines()
     val gameFenString = FENData().toString()
     val gameLineContent = "$id,$gameFenString"

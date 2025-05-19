@@ -15,8 +15,8 @@ class Queen(
 
     for (dir in directions) {
       var nextPosition = boardInspector.findPositionOfPiece(this)
-      while (dir.hasNextPosition(nextPosition)) {
-        nextPosition = dir.nextPosition(nextPosition)
+      while (nextPosition.hasNextPosition(dir)) {
+        nextPosition = nextPosition.nextPosition(dir)
         val nextPiece = boardInspector.getPieceAt(nextPosition)
         if (nextPiece == null) {
           validDestinations.add(nextPosition)

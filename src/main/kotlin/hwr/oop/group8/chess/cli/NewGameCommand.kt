@@ -1,8 +1,10 @@
 package hwr.oop.group8.chess.cli
 
-import hwr.oop.group8.chess.persistence.InitGameInterface
+import hwr.oop.group8.chess.core.Game
+import hwr.oop.group8.chess.persistence.FENData
+import hwr.oop.group8.chess.persistence.SaveGameInterface
 
-class NewGameCommand(private val initGameInterface: InitGameInterface) :
+class NewGameCommand(private val saveGameInterface: SaveGameInterface) :
   CliCommand {
   override fun matches(args: List<String>): Boolean {
     if (args.size != 3) return false
@@ -14,7 +16,9 @@ class NewGameCommand(private val initGameInterface: InitGameInterface) :
 
   override fun handle(args: List<String>) {
     val gameId = args[2].toInt()
-    initGameInterface.initGame(gameId)
+    val initialFENData = FENData()
+    val initialGame = Game(gameId, initialFENData)
+    saveGameInterface.saveGame(initialGame, true)
     println("New game with id $gameId created.")
   }
 }

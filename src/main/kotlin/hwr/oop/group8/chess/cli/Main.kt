@@ -13,7 +13,6 @@ fun main(args: Array<String>) {
       gamePersistenceAdapter,
       gamePersistenceAdapter,
       gamePersistenceAdapter,
-      gamePersistenceAdapter,
     )
   cli.handle(args.toList())
 }

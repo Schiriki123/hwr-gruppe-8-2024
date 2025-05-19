@@ -15,8 +15,8 @@ class King(
 
     val myPosition = boardInspector.findPositionOfPiece(this)
     for (dir in directions) {
-      if (dir.hasNextPosition(myPosition)) {
-        val nextPosition = dir.nextPosition(myPosition)
+      if (myPosition.hasNextPosition(dir)) {
+        val nextPosition = myPosition.nextPosition(dir)
         val nextPiece = boardInspector.getPieceAt(nextPosition)
 
         // Check if the next position is empty or occupied by an opponent's piece

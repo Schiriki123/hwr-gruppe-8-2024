@@ -10,14 +10,6 @@ enum class Direction( val fileShift: Int,  val rankShift: Int) {
   BOTTOM_LEFT(-1, -1),
   BOTTOM_RIGHT(1, -1);
 
-  fun nextPosition(position: Position): Position {
-    return Position(position.file + fileShift, position.rank + rankShift)
-  }
-
-  fun hasNextPosition(position: Position): Boolean {
-    return position.file + fileShift in 'a'..'h' && position.rank + rankShift in 1..8
-  }
-
   fun combine(other: Direction): Direction {
     val combinedFileShift = this.fileShift + other.fileShift
     val combinedRankShift = this.rankShift + other.rankShift
