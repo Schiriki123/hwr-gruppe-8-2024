@@ -245,7 +245,7 @@ class CliTest : AnnotationSpec() {
       return game ?: Game(id, FENData())
     }
 
-    override fun saveGame(game: Game, createNewGame: Boolean) {
+    override fun saveGame(game: Game, isNewGame: Boolean) {
       // Mock implementation
       this.game = game
     }

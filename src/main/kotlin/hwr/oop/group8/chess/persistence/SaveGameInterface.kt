@@ -3,5 +3,5 @@ package hwr.oop.group8.chess.persistence
 import hwr.oop.group8.chess.core.Game
 
 interface SaveGameInterface {
-  fun saveGame(game: Game, createNewGame: Boolean = false)
+  fun saveGame(game: Game, isNewGame: Boolean = false)
 }

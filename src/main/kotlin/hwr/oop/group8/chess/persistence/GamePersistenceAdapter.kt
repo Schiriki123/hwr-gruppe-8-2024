@@ -17,8 +17,8 @@ class GamePersistenceAdapter(val file: File) :
     return Game(id, createFENDataObject(data))
   }
 
-  override fun saveGame(game: Game, createNewGame: Boolean) {
-    if (createNewGame) initGame(game.id) else updateExistingGame(game)
+  override fun saveGame(game: Game, isNewGame: Boolean) {
+    if (isNewGame) initGame(game.id) else updateExistingGame(game)
   }
 
   private fun updateExistingGame(game: Game) {
