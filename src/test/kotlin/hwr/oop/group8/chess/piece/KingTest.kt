@@ -99,7 +99,14 @@ class KingTest : AnnotationSpec() {
   fun `Test castle king side for white`() {
     val board = Board(FENData("8/8/8/8/8/8/8/R3K2R"))
     //King side castle
-    val move = Move(Position('e', 1), Position('g', 1))
+    val move = Move(
+      Position('e', 1), Position('g', 1), listOf(
+        Move(
+          Position('h', 1),
+          Position('f', 1)
+        )
+      )
+    )
     board.makeMove(move)
 
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/8/R4RK1")
@@ -109,7 +116,14 @@ class KingTest : AnnotationSpec() {
   @Test
   fun `Test castle queen side for white`() {
     val board = Board(FENData("8/8/8/8/8/8/8/R3K2R"))
-    val move = Move(Position('e', 1), Position('c', 1))
+    val move = Move(
+      Position('e', 1), Position('c', 1), listOf(
+        Move(
+          Position('a', 1),
+          Position('d', 1)
+        )
+      )
+    )
     board.makeMove(move)
 
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/8/2KR3R")
@@ -127,7 +141,7 @@ class KingTest : AnnotationSpec() {
 
   @Test
   fun `Check that castling is not allowed if piece was moved`() {
-    val board = Board(FENData("8/k7/8/8/8/8/8/R3K2R"))
+    val board = Board(FENData("8/k7/8/8/8/8/8/R3K2R", 'w'))
     // Move the rook
     board.makeMove(Move(Position('a', 1), Position('a', 2)))
     // Move opponent piece

@@ -2,18 +2,17 @@ package hwr.oop.group8.chess.piece
 
 import hwr.oop.group8.chess.core.Board
 import hwr.oop.group8.chess.core.Color
-import hwr.oop.group8.chess.persistence.FENData
 import hwr.oop.group8.chess.core.Move
 import hwr.oop.group8.chess.core.Position
+import hwr.oop.group8.chess.persistence.FENData
 import io.kotest.core.spec.style.AnnotationSpec
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
-import kotlin.collections.filter
 
 class BishopTest : AnnotationSpec() {
   @Test
   fun `Test char representation`() {
-    val boardInspector = Board(FENData("8/8/8/8/8/8/8/K7"))
+    val boardInspector = Board(FENData("8/8/8/8/8/8/8/K7", 'w', ""))
     val whiteBishop = Bishop(Color.WHITE, boardInspector)
     val blackBishop = Bishop(Color.BLACK, boardInspector)
     assertThat(whiteBishop.getChar()).isEqualTo('B')
@@ -22,7 +21,7 @@ class BishopTest : AnnotationSpec() {
 
   @Test
   fun `Test bishop movement on empty board`() {
-    val board = Board(FENData("B7/8/8/8/8/8/8/K7"))
+    val board = Board(FENData("B7/8/8/8/8/8/8/K7", 'w', ""))
     val move = Move(Position('a', 8), Position('e', 4))
     board.makeMove(move)
 
@@ -36,7 +35,6 @@ class BishopTest : AnnotationSpec() {
     val validMoveDestinationsOfBishop =
       board.getPieceAt(startPosition)!!.getValidMoveDestinations()
 
-    val newMove = Move(startPosition, Position('a', 7))
     assertThat(validMoveDestinationsOfBishop).containsExactlyInAnyOrder(
       Move(startPosition, Position('b', 6)),
       Move(startPosition, Position('d', 6)),
@@ -51,7 +49,7 @@ class BishopTest : AnnotationSpec() {
 
   @Test
   fun `Test bishop movement with blocked path`() {
-    val board = Board(FENData("B7/8/8/8/4r3/8/8/K7"))
+    val board = Board(FENData("B7/8/8/8/4r3/8/8/K7", 'w', ""))
     val move = Move(Position('a', 8), Position('g', 2))
     assertThatThrownBy { board.makeMove(move) }
       .hasMessageContaining("Invalid move for piece Bishop from a8 to g2")
@@ -59,7 +57,7 @@ class BishopTest : AnnotationSpec() {
 
   @Test
   fun `Test invalid move`() {
-    val board = Board(FENData("B7/8/8/8/4r3/8/8/K7"))
+    val board = Board(FENData("B7/8/8/8/4r3/8/8/K7", 'w', ""))
     val move = Move(Position('a', 8), Position('a', 2))
     assertThatThrownBy { board.makeMove(move) }
       .hasMessageContaining("Invalid move for piece Bishop from a8 to a2")

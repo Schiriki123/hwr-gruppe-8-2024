@@ -1,10 +1,6 @@
 package hwr.oop.group8.chess.piece
 
-import hwr.oop.group8.chess.core.BoardInspector
-import hwr.oop.group8.chess.core.Color
-import hwr.oop.group8.chess.core.Direction
-import hwr.oop.group8.chess.core.Position
-import hwr.oop.group8.chess.core.Move
+import hwr.oop.group8.chess.core.*
 
 class King(
   override val color: Color,
@@ -49,7 +45,7 @@ class King(
           )
         )
       }
-      if (castling.first) {
+      if (castling.second) {
         validMoves.add(
           Move(
             currentPosition, kingCastlePosition,
