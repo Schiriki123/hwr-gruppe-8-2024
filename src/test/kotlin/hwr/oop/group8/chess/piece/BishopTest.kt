@@ -8,6 +8,7 @@ import hwr.oop.group8.chess.core.Position
 import io.kotest.core.spec.style.AnnotationSpec
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
+import kotlin.collections.filter
 
 class BishopTest : AnnotationSpec() {
   @Test
@@ -31,18 +32,20 @@ class BishopTest : AnnotationSpec() {
   @Test
   fun `Test bishop capture move set generation`() {
     val board = Board(FENData("8/8/8/2B5/8/P3p3/8/K7"))
+    val startPosition = Position('c', 5)
     val validMoveDestinationsOfBishop =
-      board.getPieceAt(Position('c', 5))!!.getValidMoveDestinations()
+      board.getPieceAt(startPosition)!!.getValidMoveDestinations()
 
+    val newMove = Move(startPosition, Position('a', 7))
     assertThat(validMoveDestinationsOfBishop).containsExactlyInAnyOrder(
-      Position('a', 7),
-      Position('b', 6),
-      Position('d', 6),
-      Position('e', 7),
-      Position('f', 8),
-      Position('b', 4),
-      Position('d', 4),
-      Position('e', 3)
+      Move(startPosition, Position('b', 6)),
+      Move(startPosition, Position('d', 6)),
+      Move(startPosition, Position('b', 4)),
+      Move(startPosition, Position('d', 4)),
+      Move(startPosition, Position('e', 3)),
+      Move(startPosition, Position('f', 8)),
+      Move(startPosition, Position('a', 7)),
+      Move(startPosition, Position('e', 7)),
     )
   }
 

@@ -4,14 +4,16 @@ import hwr.oop.group8.chess.core.BoardInspector
 import hwr.oop.group8.chess.core.Color
 import hwr.oop.group8.chess.core.Direction
 import hwr.oop.group8.chess.core.Position
+import hwr.oop.group8.chess.core.Move
 
 class Queen(
   override val color: Color,
   val boardInspector: BoardInspector,
 ) : Piece {
-  override fun getValidMoveDestinations(): Set<Position> {
-    val validDestinations: MutableSet<Position> = mutableSetOf()
+  override fun getValidMoveDestinations(): Set<Move> {
+    val validMoves: MutableSet<Move> = mutableSetOf()
     val directions = Direction.entries
+    val currentPosition = boardInspector.findPositionOfPiece(this)
 
     for (dir in directions) {
       var nextPosition = boardInspector.findPositionOfPiece(this)
@@ -19,9 +21,9 @@ class Queen(
         nextPosition = nextPosition.nextPosition(dir)
         val nextPiece = boardInspector.getPieceAt(nextPosition)
         if (nextPiece == null) {
-          validDestinations.add(nextPosition)
+          validMoves.add(Move(currentPosition, nextPosition))
         } else if (nextPiece.color != color) {
-          validDestinations.add(nextPosition)
+          validMoves.add(Move(currentPosition, nextPosition))
           break
         } else {
           break
@@ -29,7 +31,7 @@ class Queen(
       }
     }
 
-    return validDestinations.toSet()
+    return validMoves.toSet()
   }
 
   override fun getChar(): Char {

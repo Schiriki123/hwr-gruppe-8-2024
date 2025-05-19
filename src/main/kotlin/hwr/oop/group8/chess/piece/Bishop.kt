@@ -3,14 +3,16 @@ package hwr.oop.group8.chess.piece
 import hwr.oop.group8.chess.core.BoardInspector
 import hwr.oop.group8.chess.core.Color
 import hwr.oop.group8.chess.core.Direction
-import hwr.oop.group8.chess.core.Position
+import hwr.oop.group8.chess.core.Move
 
 class Bishop(
   override val color: Color,
   val boardInspector: BoardInspector,
 ) : Piece {
-  override fun getValidMoveDestinations(): Set<Position> {
-    val validDestinations: MutableSet<Position> = mutableSetOf()
+  override fun getValidMoveDestinations(): Set<Move> {
+    val validDestinations: MutableSet<Move> = mutableSetOf()
+    val currentPosition = boardInspector.findPositionOfPiece(this)
+
     val directions = setOf(
       Direction.BOTTOM_RIGHT,
       Direction.BOTTOM_LEFT,
@@ -24,9 +26,9 @@ class Bishop(
         nextPosition = nextPosition.nextPosition(dir)
         val nextPiece = boardInspector.getPieceAt(nextPosition)
         if (nextPiece == null) {
-          validDestinations.add(nextPosition)
+          validDestinations.add(Move(currentPosition, nextPosition))
         } else if (nextPiece.color != color) {
-          validDestinations.add(nextPosition)
+          validDestinations.add(Move(currentPosition, nextPosition))
           break
         } else {
           break

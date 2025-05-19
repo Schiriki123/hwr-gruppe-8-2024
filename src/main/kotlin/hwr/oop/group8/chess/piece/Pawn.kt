@@ -3,6 +3,7 @@ package hwr.oop.group8.chess.piece
 import hwr.oop.group8.chess.core.BoardInspector
 import hwr.oop.group8.chess.core.Color
 import hwr.oop.group8.chess.core.Direction
+import hwr.oop.group8.chess.core.Move
 import hwr.oop.group8.chess.core.Position
 
 class Pawn(
@@ -14,10 +15,11 @@ class Pawn(
     return boardInspector.findPositionOfPiece(this)
   }
 
-  override fun getValidMoveDestinations(): Set<Position> {
-    val validDestinations: MutableSet<Position> = mutableSetOf()
+  override fun getValidMoveDestinations(): Set<Move> {
+    val validMoves: MutableSet<Move> = mutableSetOf()
     val forwardDirection: Direction
     val startRank: Int
+    val currentPosition = boardInspector.findPositionOfPiece(this)
 
     if (color == Color.WHITE) {
       forwardDirection = Direction.TOP
@@ -31,12 +33,12 @@ class Pawn(
     val nextField =
       getPosition().nextPosition(forwardDirection)
     if (boardInspector.getPieceAt(nextField) == null) {
-      validDestinations.add(nextField)
+      validMoves.add(Move(currentPosition, nextField))
       // Check for double move from starting position
       if (getPosition().rank == startRank) {
         val twoSquaresForward = nextField.nextPosition(forwardDirection)
         if (boardInspector.getPieceAt(twoSquaresForward) == null) {
-          validDestinations.add(twoSquaresForward)
+          validMoves.add(Move(currentPosition, twoSquaresForward))
         }
       }
     }
@@ -50,12 +52,12 @@ class Pawn(
         val nextPosition = getPosition().nextPosition(direction)
         val nextPiece = boardInspector.getPieceAt(nextPosition)
         if (nextPiece != null && nextPiece.color != color) {
-          validDestinations.add(nextPosition)
+          validMoves.add(Move(currentPosition, nextPosition))
         }
       }
     }
 
-    return validDestinations.toSet()
+    return validMoves.toSet()
   }
 
   override fun getChar(): Char {
