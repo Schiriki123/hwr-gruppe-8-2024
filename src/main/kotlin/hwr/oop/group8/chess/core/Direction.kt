@@ -1,6 +1,6 @@
 package hwr.oop.group8.chess.core
 
-enum class Direction(private val fileShift: Int, private val rankShift: Int) {
+enum class Direction( val fileShift: Int,  val rankShift: Int) {
   TOP(0, 1),
   BOTTOM(0, -1),
   LEFT(-1, 0),
