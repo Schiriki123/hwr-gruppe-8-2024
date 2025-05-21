@@ -3,7 +3,6 @@ package hwr.oop.group8.chess.piece
 import hwr.oop.group8.chess.core.BoardInspector
 import hwr.oop.group8.chess.core.Color
 import hwr.oop.group8.chess.core.Direction
-import hwr.oop.group8.chess.core.Position
 import hwr.oop.group8.chess.core.Move
 
 class Queen(
@@ -11,27 +10,14 @@ class Queen(
   val boardInspector: BoardInspector,
 ) : Piece {
   override fun getValidMoveDestinations(): Set<Move> {
-    val validMoves: MutableSet<Move> = mutableSetOf()
-    val directions = Direction.entries
+    val directions = Direction.entries.toSet()
     val currentPosition = boardInspector.findPositionOfPiece(this)
 
-    for (dir in directions) {
-      var nextPosition = boardInspector.findPositionOfPiece(this)
-      while (nextPosition.hasNextPosition(dir)) {
-        nextPosition = nextPosition.nextPosition(dir)
-        val nextPiece = boardInspector.getPieceAt(nextPosition)
-        if (nextPiece == null) {
-          validMoves.add(Move(currentPosition, nextPosition))
-        } else if (nextPiece.color != color) {
-          validMoves.add(Move(currentPosition, nextPosition))
-          break
-        } else {
-          break
-        }
-      }
-    }
+    val queenMovement =
+      MultiDirectionalPiece(color, boardInspector, directions, currentPosition)
+    val validDestinations = queenMovement.getValidMoveDestinations().toSet()
 
-    return validMoves.toSet()
+    return validDestinations.toSet()
   }
 
   override fun getChar(): Char {

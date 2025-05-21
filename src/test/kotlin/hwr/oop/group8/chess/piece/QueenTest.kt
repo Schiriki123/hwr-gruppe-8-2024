@@ -20,7 +20,7 @@ class QueenTest : AnnotationSpec() {
 
   @Test
   fun `Test Queen movement on empty board`() {
-    val board = Board(FENData("Q6K/8/8/8/8/8/8/8"))
+    val board = Board(FENData("Q6K/8/8/8/8/8/8/8", 'w', ""))
     // Queen moves multiple squares down
     var move = Move(Position('a', 8), Position('a', 2))
     board.makeMove(move)
@@ -58,7 +58,7 @@ class QueenTest : AnnotationSpec() {
 
   @Test
   fun `Test invalid Queen movement`() {
-    val board = Board(FENData("Q7/8/8/8/8/8/8/K7"))
+    val board = Board(FENData("Q7/8/8/8/8/8/8/K7", 'w', ""))
     val move = Move(Position('a', 8), Position('b', 2))
     assertThatThrownBy { board.makeMove(move) }
       .hasMessageContaining("Invalid move for piece Queen from a8 to b2")
@@ -66,7 +66,7 @@ class QueenTest : AnnotationSpec() {
 
   @Test
   fun `Test Queen movement with straight path blocked by pawn`() {
-    val board = Board(FENData("Q7/8/8/8/8/8/P7/1K6"))
+    val board = Board(FENData("Q7/8/8/8/8/8/P7/1K6", 'w', ""))
     val move = Move(Position('a', 8), Position('a', 1))
     assertThatThrownBy { board.makeMove(move) }
       .hasMessageContaining("Invalid move for piece Queen from a8 to a1")
@@ -74,7 +74,7 @@ class QueenTest : AnnotationSpec() {
 
   @Test
   fun `Test Queen capture with straight moves`() {
-    val board = Board(FENData("Q7/8/8/8/8/8/p7/K7"))
+    val board = Board(FENData("Q7/8/8/8/8/8/p7/K7", 'w', ""))
     val move = Move(Position('a', 8), Position('a', 2))
     board.makeMove(move)
 
@@ -91,7 +91,7 @@ class QueenTest : AnnotationSpec() {
 
   @Test
   fun `Test Queen capture with diagonal moves`() {
-    val board = Board(FENData("Q7/8/8/8/8/8/6p1/K7"))
+    val board = Board(FENData("Q7/8/8/8/8/8/6p1/K7", 'w', ""))
     val move = Move(Position('a', 8), Position('g', 2))
     board.makeMove(move)
 

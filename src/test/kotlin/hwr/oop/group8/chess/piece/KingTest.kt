@@ -12,7 +12,7 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 class KingTest : AnnotationSpec() {
   @Test
   fun `Test char representation`() {
-    val boardInspector = Board(FENData("8/8/8/8/8/8/8/K7"))
+    val boardInspector = Board(FENData("8/8/8/8/8/8/8/K7", 'w', ""))
     val whiteKing = King(Color.WHITE, boardInspector)
     val blackKing = King(Color.BLACK, boardInspector)
     assertThat(whiteKing.getChar()).isEqualTo('K')
@@ -21,7 +21,7 @@ class KingTest : AnnotationSpec() {
 
   @Test
   fun `Test king movement block path`() {
-    val board = Board(FENData("8/B7/K7/8/8/8/8/8"))
+    val board = Board(FENData("8/B7/K7/8/8/8/8/8", 'w', ""))
     val move = Move(Position('a', 6), Position('a', 7))
 
     assertThatThrownBy { board.makeMove(move) }
@@ -30,7 +30,7 @@ class KingTest : AnnotationSpec() {
 
   @Test
   fun `Test king movement on empty board`() {
-    val board = Board(FENData("8/8/8/3K4/8/8/8/8"))
+    val board = Board(FENData("8/8/8/3K4/8/8/8/8", 'w', ""))
     // King moves left
     var move = Move(Position('d', 5), Position('c', 5))
     board.makeMove(move)
@@ -81,7 +81,7 @@ class KingTest : AnnotationSpec() {
 
   @Test
   fun `Test invalid double move`() {
-    val board = Board(FENData("8/8/K7/8/8/8/8/8"))
+    val board = Board(FENData("8/8/K7/8/8/8/8/8", 'w', ""))
     val move = Move(Position('a', 6), Position('a', 4))
     assertThatThrownBy { board.makeMove(move) }
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/K7/8/8/8/8/8")
@@ -89,7 +89,7 @@ class KingTest : AnnotationSpec() {
 
   @Test
   fun `Test King movement to capture`() {
-    val board = Board(FENData("8/p7/1K6/8/8/8/8/8"))
+    val board = Board(FENData("8/p7/1K6/8/8/8/8/8", 'w', ""))
     val move = Move(Position('b', 6), Position('a', 7))
     board.makeMove(move)
     assertThat(board.generateFENBoardString()).isEqualTo("8/K7/8/8/8/8/8/8")
@@ -128,6 +128,41 @@ class KingTest : AnnotationSpec() {
 
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/8/2KR3R")
     assertThat(board.castle).isEqualTo("kq")
+  }
+
+  @Test
+  fun ` castle king side for black`() {
+    val board = Board(FENData("r3k2r/8/8/8/8/8/8/8", 'b'))
+    //King side castle
+    val move = Move(
+      Position('e', 8), Position('g', 8), listOf(
+        Move(
+          Position('h', 8),
+          Position('f', 8)
+        )
+      )
+    )
+    board.makeMove(move)
+
+    assertThat(board.generateFENBoardString()).isEqualTo("r4rk1/8/8/8/8/8/8/8")
+    assertThat(board.castle).isEqualTo("KQ")
+  }
+
+  @Test
+  fun `Test castle queen side for black`() {
+    val board = Board(FENData("r3k2r/8/8/8/8/8/8/8", 'b'))
+    val move = Move(
+      Position('e', 8), Position('c', 8), listOf(
+        Move(
+          Position('a', 8),
+          Position('d', 8)
+        )
+      )
+    )
+    board.makeMove(move)
+
+    assertThat(board.generateFENBoardString()).isEqualTo("2kr3r/8/8/8/8/8/8/8")
+    assertThat(board.castle).isEqualTo("KQ")
   }
 
   @Test
