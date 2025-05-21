@@ -42,16 +42,16 @@ just build
 ## Abstract
 
 
-Our project is program that simulates the popular board game known as chess. Our intended goal is, that  
-two players can play against each other with the use of the command line interface. 
+Our project is a program that simulates the popular board game known as chess. Our intended goal is, that  
+two players can play against each other only using the command line interface (cli). 
 
 The game features all possible rules found in chess, like en passante, castling and pawn promotion. You can play
 together with another player and every move you make the current board is saved, so you can resume the game
 at any point.
 
-The problem that gave us the most headache was the game logic. Especially how we implement how every piece
-moves. A big help was a clue given by our teachers, that we can use directions. With this we had a better time to wrap
-our heads around the problem and it was much easier to "move" the pieces.
+One of our biggest difficulties was the game logic which at some points was misleading. Especially the implementation of the movement for every piece. 
+To bring us right on track, our teacher hinted towards a better solution using the implementation of 'direction'. This helped us understand the misconception, thus facilitating the process
+of "move"-ing the pieces.
 ## Feature List
 
 [TODO]: # (For each feature implemented, add a row to the table!)
