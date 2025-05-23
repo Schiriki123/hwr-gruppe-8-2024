@@ -1,51 +1,65 @@
 package hwr.oop.group8.chess.piece
 
-import hwr.oop.group8.chess.core.BoardInspector
-import hwr.oop.group8.chess.core.Color
-import hwr.oop.group8.chess.core.Direction
-import hwr.oop.group8.chess.core.Position
+import hwr.oop.group8.chess.core.*
 
 class King(
   override val color: Color,
   val boardInspector: BoardInspector,
 ) : Piece {
-  override fun getValidMoveDestinations(): Set<Position> {
-    val validDestinations: MutableSet<Position> = mutableSetOf()
+  override fun getValidMoveDestinations(): Set<Move> {
+    val validMoves: MutableSet<Move> = mutableSetOf()
     val directions = Direction.entries // All possible directions
 
-    val myPosition = boardInspector.findPositionOfPiece(this)
+    val currentPosition = boardInspector.findPositionOfPiece(this)
     for (dir in directions) {
-      if (myPosition.hasNextPosition(dir)) {
-        val nextPosition = myPosition.nextPosition(dir)
+      if (currentPosition.hasNextPosition(dir)) {
+        val nextPosition = currentPosition.nextPosition(dir)
         val nextPiece = boardInspector.getPieceAt(nextPosition)
 
         // Check if the next position is empty or occupied by an opponent's piece
         if (nextPiece == null || nextPiece.color != color) {
-          validDestinations.add(nextPosition)
+          validMoves.add(Move(currentPosition, nextPosition))
         }
       }
     }
 
     if (boardInspector.getCurrentTurn() == color) {
       val castling = boardInspector.isCastlingAllowed(color)
+      val homeRank = if (color == Color.WHITE) 1 else 8
+      val queenCastlePosition = Position('c', homeRank)
+      val kingCastlePosition = Position('g', homeRank)
+
+      val rookQueenSidePosition = Position('a', homeRank)
+      val rookKingSidePosition = Position('h', homeRank)
+
       if (castling.first) {
-        if (color == Color.WHITE) {
-          validDestinations.add(Position('c', 1))
-        }
-        if (color == Color.BLACK) {
-          validDestinations.add(Position('c', 8))
-        }
+        validMoves.add(
+          Move(
+            currentPosition, queenCastlePosition,
+            listOf(
+              Move(
+                rookQueenSidePosition,
+                currentPosition.nextPosition(Direction.LEFT)
+              )
+            )
+          )
+        )
       }
       if (castling.second) {
-        if (color == Color.WHITE) {
-          validDestinations.add(Position('g', 1))
-        }
-        if (color == Color.BLACK) {
-          validDestinations.add(Position('g', 8))
-        }
+        validMoves.add(
+          Move(
+            currentPosition, kingCastlePosition,
+            listOf(
+              Move(
+                rookKingSidePosition,
+                currentPosition.nextPosition(Direction.RIGHT)
+              )
+            )
+          )
+        )
       }
     }
-    return validDestinations.toSet()
+    return validMoves.toSet()
   }
 
   override fun getChar(): Char {

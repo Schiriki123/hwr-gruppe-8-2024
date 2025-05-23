@@ -3,13 +3,15 @@ package hwr.oop.group8.chess.piece
 import hwr.oop.group8.chess.core.BoardInspector
 import hwr.oop.group8.chess.core.Color
 import hwr.oop.group8.chess.core.Position
+import hwr.oop.group8.chess.core.Move
+
 
 class Knight(
   override val color: Color,
   val boardInspector: BoardInspector,
 ) : Piece {
-  override fun getValidMoveDestinations(): Set<Position> {
-    val validDestinations: MutableSet<Position> = mutableSetOf()
+  override fun getValidMoveDestinations(): Set<Move> {
+    val validDestinations: MutableSet<Move> = mutableSetOf()
     val currentPosition = boardInspector.findPositionOfPiece(this)
     val possibleDestination = listOf(
       Pair(2, 1),
@@ -28,7 +30,12 @@ class Knight(
         val nextPiece = boardInspector.getPieceAt(Position(newFile, newRank))
         // Check if the next position is empty or occupied by an opponent's piece
         if (nextPiece == null || nextPiece.color != color) {
-          validDestinations.add(Position(newFile, newRank))
+          validDestinations.add(
+            Move(
+              currentPosition,
+              Position(newFile, newRank)
+            )
+          )
         }
       }
     }

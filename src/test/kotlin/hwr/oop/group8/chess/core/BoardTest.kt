@@ -11,8 +11,9 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 
 class BoardTest : AnnotationSpec() {
   @Test
-  fun `Test empty board creation`() {
-    val board = Board(FENData("K7/8/8/8/8/8/8/8"))
+  fun `empty board creation, return standard fen notation-string`() {
+    val board = Board(FENData("K7/8/8/8/8/8/8/8", 'w', ""))
+    val capturedPieces = CapturedPieces(board.getMap())
     for (rank in 8 downTo 1) {
       for (file in 'a'..'h') {
         val position = Position(file, rank)
@@ -25,12 +26,27 @@ class BoardTest : AnnotationSpec() {
       }
     }
     assertThat(board.generateFENBoardString()).isEqualTo("K7/8/8/8/8/8/8/8")
-    assertThat(board.getCapturedPieces()).isEqualTo("White's captures: rnbqkbnrpppppppp${System.lineSeparator()}Black's captures: RNBQBNRPPPPPPPP")
+    assertThat(capturedPieces.getCapturedPieces()).isEqualTo("White's captures: rnbqkbnrpppppppp${System.lineSeparator()}Black's captures: RNBQBNRPPPPPPPP")
   }
 
   @Test
-  fun `Test board with default setup`() {
+  fun `create map with size 64, return map`() {
+    val board = Board(FENData("K7/8/8/8/8/8/8/8", 'w', ""))
+    val map = board.getMap()
+
+    for (rank in 1..8) {
+      for (file in 'a'..'h') {
+        val position = Position(file, rank)
+        assertThat(map[position]).isNotNull
+      }
+    }
+    assertThat(map.size).isEqualTo(64)
+  }
+
+  @Test
+  fun `create board with default setup, return board with start arrangement`() {
     val board = Board(FENData())
+    val capturedPieces = CapturedPieces(board.getMap())
     board.getSquare(Position('a', 1)).getPiece()
       .shouldBeInstanceOf<Rook>().color.shouldBe(
         Color.WHITE
@@ -116,11 +132,11 @@ class BoardTest : AnnotationSpec() {
     assertThat(board.halfmoveClock).isEqualTo(0)
     assertThat(board.fullmoveClock).isEqualTo(1)
 
-    assertThat(board.getCapturedPieces()).isEqualTo("White's captures: ${System.lineSeparator()}Black's captures: ")
+    assertThat(capturedPieces.getCapturedPieces()).isEqualTo("White's captures: ${System.lineSeparator()}Black's captures: ")
   }
 
   @Test
-  fun `Test custom board initialization`() {
+  fun `custom board initialization`() {
     val board = Board(FENData("k7/2R4B/8/8/1q6/8/8/2Q4N", 'b', "", "-", 4, 25))
     board.getSquare(Position('b', 4)).getPiece()
       .shouldBeInstanceOf<Queen>().color.shouldBe(
@@ -206,16 +222,17 @@ class BoardTest : AnnotationSpec() {
   @Test
   fun `Test capture`() {
     val board = Board(FENData("K7/8/8/8/8/p7/8/R7"))
+    val capturedPieces = CapturedPieces(board.getMap())
     val move = Move(Position('a', 1), Position('a', 3))
-    assertThat(board.getCapturedPieces()).isEqualTo("White's captures: rnbqkbnrppppppp${System.lineSeparator()}Black's captures: NBQBNRPPPPPPPP")
+    assertThat(capturedPieces.getCapturedPieces()).isEqualTo("White's captures: rnbqkbnrppppppp${System.lineSeparator()}Black's captures: NBQBNRPPPPPPPP")
     board.makeMove(move)
     assertThat(board.generateFENBoardString()).isEqualTo("K7/8/8/8/8/R7/8/8")
-    assertThat(board.getCapturedPieces()).isEqualTo("White's captures: rnbqkbnrpppppppp${System.lineSeparator()}Black's captures: NBQBNRPPPPPPPP")
+    assertThat(capturedPieces.getCapturedPieces()).isEqualTo("White's captures: rnbqkbnrpppppppp${System.lineSeparator()}Black's captures: NBQBNRPPPPPPPP")
   }
 
   @Test
   fun `Test move in check`() {
-    val board = Board(FENData("k7/1R6/8/8/8/8/K7/8", turn = 'b'))
+    val board = Board(FENData("k7/1R6/8/8/8/8/K7/8", turn = 'b', ""))
     val move = Move(Position('a', 8), Position('b', 8))
     assertThatThrownBy {
       board.makeMove(move)
@@ -274,7 +291,13 @@ class BoardTest : AnnotationSpec() {
 
   @Test
   fun `Test that castling permission is read correctly from castle string for white`() {
-    val board = Board(FENData(boardString = "r3k2r/8/8/8/8/8/8/R3K2R", castle = "Qkq", turn = 'w'))
+    val board = Board(
+      FENData(
+        boardString = "r3k2r/8/8/8/8/8/8/R3K2R",
+        castle = "Qkq",
+        turn = 'w'
+      )
+    )
     val allowedCastlingForWhite = board.isCastlingAllowed(Color.WHITE)
     assertThat(allowedCastlingForWhite.first).isTrue
     assertThat(allowedCastlingForWhite.second).isFalse
@@ -282,7 +305,13 @@ class BoardTest : AnnotationSpec() {
 
   @Test
   fun `Test that castling permission is read correctly from castle string for black`() {
-    val board = Board(FENData(boardString = "r3k2r/8/8/8/8/8/8/R3K2R", castle = "Qk", turn = 'b'))
+    val board = Board(
+      FENData(
+        boardString = "r3k2r/8/8/8/8/8/8/R3K2R",
+        castle = "Qk",
+        turn = 'b'
+      )
+    )
     val allowedCastlingForBlack = board.isCastlingAllowed(Color.BLACK)
     assertThat(allowedCastlingForBlack.first).isFalse
     assertThat(allowedCastlingForBlack.second).isTrue

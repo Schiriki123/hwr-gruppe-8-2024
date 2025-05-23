@@ -50,6 +50,10 @@ class Board(fenData: FENData) : BoardInspector {
     return getSquare(position).getPiece()
   }
 
+  override fun isSquareEmpty(position: Position): Boolean {
+    return getSquare(position).getPiece() == null
+  }
+
   override fun findPositionOfPiece(piece: Piece): Position {
     return map.filterValues { it.getPiece() === piece }.keys.first()
   }
@@ -57,6 +61,7 @@ class Board(fenData: FENData) : BoardInspector {
   fun makeMove(move: Move) {
     val fromSquare = getSquare(move.from)
     val toSquare = getSquare(move.to)
+    val specialMove = move.specialMove
     val piece = fromSquare.getPiece()
 
     checkNotNull(piece)
@@ -66,34 +71,20 @@ class Board(fenData: FENData) : BoardInspector {
     require(piece.color != toSquare.getPiece()?.color)
     { "Cannot move to a square occupied by the same color" }
 
-    check(piece.getValidMoveDestinations().contains(move.to))
+    check(piece.getValidMoveDestinations().contains(move))
     { "Invalid move for piece ${piece::class.simpleName} from ${move.from} to ${move.to}" }
 
     check(isMoveCheck(move))
     { "Move would put player in check" }
-
-    // Check for castle move and update rook position
-    val homeRank = if (piece.color == Color.WHITE) 1 else 8
-    if (move == Move(
-        Position('e', homeRank),
-        Position('g', homeRank)
-      ) && isCastlingAllowed(
-        turn
-      ).second
-    ) {
-      val rook = getPieceAt(Position('h', homeRank))
-      map.getValue(Position('f', homeRank)).setPiece(rook)
-      map.getValue(Position('h', homeRank)).setPiece(null)
-    } else if (move == Move(
-        Position('e', homeRank),
-        Position('c', homeRank)
-      ) && isCastlingAllowed(turn).second
-    ) {
-      val rook = getPieceAt(Position('a', homeRank))
-      map.getValue(Position('d', homeRank)).setPiece(rook)
-      map.getValue(Position('a', homeRank)).setPiece(null)
+    //apply specialmove
+    if (!move.specialMove.isEmpty()) {
+      val specialToSquare = getSquare(specialMove.first().to)
+      val specialFromSquare = getSquare(specialMove.first().from)
+      val specialMovePiece = getPieceAt(specialMove.first().from)
+      specialToSquare.setPiece(specialMovePiece)
+      specialFromSquare.setPiece(null)
     }
-
+    // apply standardmove
     toSquare.setPiece(piece)
     fromSquare.setPiece(null)
     updateCastlingPermission()
@@ -105,16 +96,12 @@ class Board(fenData: FENData) : BoardInspector {
       map.values.mapNotNull { it.getPiece() }.filter { it.color == turn }
         .toSet()
     allPiecesCurrentPlayer.forEach { piece ->
-      val possibleMoves: Set<Position> = piece.getValidMoveDestinations()
-      val startPosition = findPositionOfPiece(piece)
+      val possibleMoves: Set<Move> = piece.getValidMoveDestinations()
       // Check if any of the possible moves would put the player in check
       possibleMoves.forEach { destination ->
         if (
           isMoveCheck(
-            Move(
-              startPosition,
-              destination
-            )
+            destination
           )
         ) {
           // If any move is valid and does not put the player in check, return false
@@ -147,46 +134,52 @@ class Board(fenData: FENData) : BoardInspector {
 
   private fun isCheck(): Boolean {
     val allPieces: Set<Piece> = map.values.mapNotNull { it.getPiece() }.toSet()
-    val possibleMovesOfOpponent: Set<Position> = allPieces
-      .filter { it.color != turn }
-      .flatMap { it.getValidMoveDestinations() }
-      .toSet()
+
     val kingPosition: Position = allPieces.filter { it.color == turn }
       .first { it is King }
       .let { findPositionOfPiece(it) }
 
-    return possibleMovesOfOpponent.contains(kingPosition)
+    return isPositionThreatened(turn, kingPosition)
   }
 
   override fun isCastlingAllowed(color: Color): Pair<Boolean, Boolean> {
     val homeRank = if (color == Color.WHITE) 1 else 8
-    val kingPosition = Position('e', homeRank)
 
     if (isCheck()) {
       return Pair(false, false)
     }
-    // King side castle
     val kingSide: Boolean =
-      getPieceAt(Position('f', homeRank)) == null &&
-          getPieceAt(Position('g', homeRank)) == null &&
+      isSquareEmpty(Position('f', homeRank)) &&
+          isSquareEmpty(Position('g', homeRank)) &&
           castle.contains(if (color == Color.WHITE) "K" else "k") &&
-          isMoveCheck(Move(kingPosition, Position('f', homeRank))) &&
-          isMoveCheck(Move(kingPosition, Position('g', homeRank)))
+          !isPositionThreatened(color, Position('f', homeRank)) &&
+          !isPositionThreatened(color, Position('g', homeRank))
 
     // Queen side castle
     val queenSide: Boolean =
-      getPieceAt(Position('d', homeRank)) == null &&
-          getPieceAt(Position('c', homeRank)) == null &&
-          getPieceAt(Position('b', homeRank)) == null &&
+      isSquareEmpty(Position('d', homeRank)) &&
+          isSquareEmpty(Position('c', homeRank)) &&
+          isSquareEmpty(Position('b', homeRank)) &&
           castle.contains(if (color == Color.WHITE) "Q" else "q") &&
-          isMoveCheck(Move(kingPosition, Position('d', homeRank))) &&
-          isMoveCheck(Move(kingPosition, Position('c', homeRank)))
-
+          !isPositionThreatened(color, Position('d', homeRank)) &&
+          !isPositionThreatened(color, Position('c', homeRank))
     return Pair(queenSide, kingSide)
   }
 
   override fun getCurrentTurn(): Color {
     return turn
+  }
+
+  override fun isPositionThreatened(
+    currentPlayer: Color,
+    position: Position,
+  ): Boolean {
+    val allPieces: Set<Piece> = map.values.mapNotNull { it.getPiece() }.toSet()
+    val possibleMovesOfOpponent: Set<Move> = allPieces
+      .filter { it.color != currentPlayer }
+      .flatMap { it.getValidMoveDestinations() }
+      .toSet()
+    return possibleMovesOfOpponent.any { it.to == position }
   }
 
   private fun updateCastlingPermission() {
@@ -212,23 +205,8 @@ class Board(fenData: FENData) : BoardInspector {
     }
   }
 
-  fun getCapturedPieces(): String {
-    val whitePieces = StringBuilder()
-    whitePieces.append("RNBQKBNR")
-    whitePieces.append("PPPPPPPP")
-    val blackPieces = StringBuilder()
-    blackPieces.append("rnbqkbnr")
-    blackPieces.append("pppppppp")
-    for (square in map.values) {
-      square.getPiece()?.let { piece ->
-        if (piece.color == Color.WHITE) {
-          whitePieces.deleteAt(whitePieces.indexOf(piece.getChar()))
-        } else {
-          blackPieces.deleteAt(blackPieces.indexOf(piece.getChar()))
-        }
-      }
-    }
-    return "White's captures: $blackPieces${System.lineSeparator()}Black's captures: $whitePieces"
+  fun getMap(): HashMap<Position, Square> {
+    return map
   }
 
   fun generateFENBoardString(): String {

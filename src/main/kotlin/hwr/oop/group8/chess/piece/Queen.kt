@@ -3,31 +3,19 @@ package hwr.oop.group8.chess.piece
 import hwr.oop.group8.chess.core.BoardInspector
 import hwr.oop.group8.chess.core.Color
 import hwr.oop.group8.chess.core.Direction
-import hwr.oop.group8.chess.core.Position
+import hwr.oop.group8.chess.core.Move
 
 class Queen(
   override val color: Color,
   val boardInspector: BoardInspector,
 ) : Piece {
-  override fun getValidMoveDestinations(): Set<Position> {
-    val validDestinations: MutableSet<Position> = mutableSetOf()
-    val directions = Direction.entries
+  override fun getValidMoveDestinations(): Set<Move> {
+    val directions = Direction.entries.toSet()
+    val currentPosition = boardInspector.findPositionOfPiece(this)
 
-    for (dir in directions) {
-      var nextPosition = boardInspector.findPositionOfPiece(this)
-      while (nextPosition.hasNextPosition(dir)) {
-        nextPosition = nextPosition.nextPosition(dir)
-        val nextPiece = boardInspector.getPieceAt(nextPosition)
-        if (nextPiece == null) {
-          validDestinations.add(nextPosition)
-        } else if (nextPiece.color != color) {
-          validDestinations.add(nextPosition)
-          break
-        } else {
-          break
-        }
-      }
-    }
+    val queenMovement =
+      MultiDirectionalPiece(color, boardInspector, directions, currentPosition)
+    val validDestinations = queenMovement.getValidMoveDestinations().toSet()
 
     return validDestinations.toSet()
   }

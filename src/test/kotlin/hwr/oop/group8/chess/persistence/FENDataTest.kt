@@ -1,12 +1,7 @@
 package hwr.oop.group8.chess.persistence
 
 import hwr.oop.group8.chess.core.Board
-import hwr.oop.group8.chess.piece.Bishop
-import hwr.oop.group8.chess.piece.King
-import hwr.oop.group8.chess.piece.Knight
-import hwr.oop.group8.chess.piece.Piece
-import hwr.oop.group8.chess.piece.Queen
-import hwr.oop.group8.chess.piece.Rook
+import hwr.oop.group8.chess.piece.*
 import io.kotest.core.spec.style.AnnotationSpec
 import io.kotest.matchers.types.shouldBeInstanceOf
 import org.assertj.core.api.Assertions
@@ -36,7 +31,7 @@ class FENDataTest : AnnotationSpec() {
 
   @Test
   fun `test piece object creation`() {
-    val board = Board(FENData("K7/8/8/8/8/8/8/8"))
+    val board = Board(FENData("K7/8/8/8/8/8/8/8", 'w', ""))
     val pieceChars =
       listOf('r', 'n', 'b', 'q', 'k', 'p', 'R', 'N', 'B', 'Q', 'K', 'P')
     Assertions.assertThat(pieceChars).allSatisfy { pieceChar ->
