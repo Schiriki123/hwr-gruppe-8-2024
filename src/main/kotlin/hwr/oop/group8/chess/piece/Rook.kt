@@ -8,14 +8,9 @@ import hwr.oop.group8.chess.core.Move
 class Rook(
   override val color: Color,
   val boardInspector: BoardInspector,
-  override val moveHistory: MutableList<Move> = mutableListOf(),
 ) : Piece {
   override fun getValidMoveDestinations(): Set<Move> {
-    val currentPosition = if (!moveHistory.isEmpty()) {
-      moveHistory.last().to
-    } else {
-      boardInspector.findPositionOfPiece(this)
-    }
+    val currentPosition = boardInspector.findPositionOfPiece(this)
 
     val directions = setOf(
       Direction.BOTTOM,
@@ -30,9 +25,7 @@ class Rook(
     return validDestinations.toSet()
   }
 
-  override fun saveMoveToHistory(move: Move) {
-    moveHistory.add(move)
-  }
+  override fun moveCallback(move: Move) {}
 
   override fun getChar(): Char {
     return when (color) {

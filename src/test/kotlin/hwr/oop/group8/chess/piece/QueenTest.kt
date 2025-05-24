@@ -97,14 +97,4 @@ class QueenTest : AnnotationSpec() {
 
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/6Q1/K7")
   }
-
-  @Test
-  fun ` Queen adds to move history`() {
-    val board = Board(FENData("Q7/8/8/8/8/8/6p1/K7", 'w', ""))
-    val move = Move(Position('a', 8), Position('g', 2))
-    val queen = Queen(Color.WHITE, board)
-    queen.moveHistory.add(move)
-
-    assertThat(queen.moveHistory.last()).isEqualTo(move)
-  }
 }

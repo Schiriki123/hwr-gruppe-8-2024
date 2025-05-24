@@ -258,21 +258,4 @@ class KingTest : AnnotationSpec() {
 
       )
   }
-
-  @Test
-  fun ` kings adds move to history`() {
-    val board = Board(FENData("r3k2r/8/8/8/8/8/8/8", 'b'))
-    val king = King(Color.BLACK, board)
-    val move = Move(
-      Position('e', 8), Position('c', 8), listOf(
-        Move(
-          Position('a', 8),
-          Position('d', 8)
-        )
-      )
-    )
-    king.saveMoveToHistory(move)
-    assertThat(king.moveHistory.last()).isEqualTo(move)
-  }
-
 }

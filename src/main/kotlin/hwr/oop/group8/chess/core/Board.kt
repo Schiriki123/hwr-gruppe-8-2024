@@ -42,7 +42,7 @@ class Board(val fenData: FENData) : BoardInspector {
     }
   }
 
-  fun getSquare(position: Position): Square {
+  override fun getSquare(position: Position): Square {
     return map.getValue(position)
   }
 
@@ -76,8 +76,10 @@ class Board(val fenData: FENData) : BoardInspector {
 
     check(isMoveCheck(move))
     { "Move would put player in check" }
+
     if (!isSquareEmpty(move.to)) resetHalfMoveClock()
-    //apply specialmove
+
+    //apply special move
     if (!move.specialMove.isEmpty()) {
       val specialToSquare = getSquare(specialMove.first().to)
       val specialFromSquare = getSquare(specialMove.first().from)
@@ -86,11 +88,18 @@ class Board(val fenData: FENData) : BoardInspector {
       specialFromSquare.setPiece(null)
     }
 
-    // apply standardmove
+    // apply standard move
     toSquare.setPiece(piece)
     fromSquare.setPiece(null)
     updateCastlingPermission()
-    piece.saveMoveToHistory(move)
+    try {
+      piece.moveCallback(move)
+    } catch (e: Exception) {
+      // Restore the board state if the moveCallback fails
+      fromSquare.setPiece(piece)
+      toSquare.setPiece(null)
+      throw e
+    }
     if (turn == Color.BLACK) fullmoveClock++
     halfmoveClock++
     turn = turn.invert()

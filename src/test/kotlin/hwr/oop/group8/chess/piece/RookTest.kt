@@ -52,13 +52,4 @@ class RookTest : AnnotationSpec() {
 
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/R7/K7")
   }
-
-  @Test
-  fun ` rook adds move to history`() {
-    val board = Board(FENData("R7/8/8/8/8/8/p7/K7", 'w', ""))
-    val rook = Rook(Color.WHITE, board)
-    val move = Move(Position('a', 8), Position('a', 2))
-    rook.saveMoveToHistory(move)
-    assertThat(rook.moveHistory.last()).isEqualTo(move)
-  }
 }

@@ -5,7 +5,6 @@ import hwr.oop.group8.chess.core.*
 class King(
   override val color: Color,
   val boardInspector: BoardInspector,
-  override val moveHistory: MutableList<Move> = mutableListOf(),
 ) : Piece {
   override fun getValidMoveDestinations(): Set<Move> {
     val validMoves: MutableSet<Move> = mutableSetOf()
@@ -63,9 +62,7 @@ class King(
     return validMoves.toSet()
   }
 
-  override fun saveMoveToHistory(move: Move) {
-    moveHistory.add(move)
-  }
+  override fun moveCallback(move: Move) {}
 
   override fun getChar(): Char {
     return when (color) {

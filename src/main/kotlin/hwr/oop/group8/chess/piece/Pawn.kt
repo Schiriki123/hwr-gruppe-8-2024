@@ -9,21 +9,13 @@ import hwr.oop.group8.chess.core.Position
 class Pawn(
   override val color: Color,
   val boardInspector: BoardInspector,
-  override val moveHistory: MutableList<Move> = mutableListOf(),
-  var promoted: Boolean = false,
 ) : Piece {
-  var promotedTo: Piece
-
-  init {
-    promotedTo = this
-  }
-
   fun getPosition(): Position {
     return boardInspector.findPositionOfPiece(this)
   }
 
   override fun getValidMoveDestinations(): Set<Move> {
-    var validMoves: MutableSet<Move> = mutableSetOf()
+    val validMoves: MutableSet<Move> = mutableSetOf()
     val forwardDirection: Direction
     val startRank: Int
     val currentPosition = boardInspector.findPositionOfPiece(this)
@@ -36,60 +28,51 @@ class Pawn(
       startRank = 7
     }
 
-    if (!promoted) {// Check for straight move
-      val nextField =
-        getPosition().nextPosition(forwardDirection)
-      if (boardInspector.getPieceAt(nextField) == null) {
-        validMoves.add(Move(currentPosition, nextField))
-        // Check for double move from starting position
-        if (getPosition().rank == startRank) {
-          val twoSquaresForward = nextField.nextPosition(forwardDirection)
-          if (boardInspector.getPieceAt(twoSquaresForward) == null) {
-            validMoves.add(Move(currentPosition, twoSquaresForward))
-          }
+    // Check for straight move
+    val nextField =
+      getPosition().nextPosition(forwardDirection)
+    if (boardInspector.getPieceAt(nextField) == null) {
+      validMoves.add(Move(currentPosition, nextField))
+      // Check for double move from starting position
+      if (getPosition().rank == startRank) {
+        val twoSquaresForward = nextField.nextPosition(forwardDirection)
+        if (boardInspector.getPieceAt(twoSquaresForward) == null) {
+          validMoves.add(Move(currentPosition, twoSquaresForward))
         }
       }
-
-      // Check for diagonal captures
-      for (direction in setOf(
-        Direction.LEFT.combine(forwardDirection),
-        Direction.RIGHT.combine(forwardDirection)
-      )) {
-        if (getPosition().hasNextPosition(direction)) {
-          val nextPosition = getPosition().nextPosition(direction)
-          val nextPiece = boardInspector.getPieceAt(nextPosition)
-          if (nextPiece != null && nextPiece.color != color) {
-            validMoves.add(Move(currentPosition, nextPosition))
-          }
-        }
-      }
-    } else {
-      validMoves = promotedTo.getValidMoveDestinations().toMutableSet()
     }
 
+    // Check for diagonal captures
+    for (direction in setOf(
+      Direction.LEFT.combine(forwardDirection),
+      Direction.RIGHT.combine(forwardDirection)
+    )) {
+      if (getPosition().hasNextPosition(direction)) {
+        val nextPosition = getPosition().nextPosition(direction)
+        val nextPiece = boardInspector.getPieceAt(nextPosition)
+        if (nextPiece != null && nextPiece.color != color) {
+          validMoves.add(Move(currentPosition, nextPosition))
+        }
+      }
+    }
     return validMoves.toSet()
   }
 
-  override fun saveMoveToHistory(move: Move) {
-    if (!promoted && move.to.rank == 8 || move.to.rank == 1) {
-      promotion('q')
+  override fun moveCallback(move: Move) {
+    if (move.to.rank == 8 || move.to.rank == 1) {
+      requireNotNull(move.promotionChar)
+      boardInspector.getSquare(move.to).setPiece(promotion(move.promotionChar))
     }
-    this.moveHistory.add(move)
     boardInspector.resetHalfMoveClock()
-    if (promoted) {
-      promotedTo.moveHistory.addAll(moveHistory)
-    }
   }
 
-  fun promotion(promoteTo: Char) {
-    promoted = true
-    val pawnMoveHistory = mutableListOf<Move>()
-    pawnMoveHistory.addAll(moveHistory)
-    when (promoteTo) {
-      'q', 'Q' -> promotedTo = Queen(color, boardInspector, pawnMoveHistory)
-      'n', 'N' -> promotedTo = Knight(color, boardInspector, pawnMoveHistory)
-      'r', 'R' -> promotedTo = Rook(color, boardInspector, pawnMoveHistory)
-      'b', 'B' -> promotedTo = Bishop(color, boardInspector, pawnMoveHistory)
+  fun promotion(promoteTo: Char): Piece {
+    return when (promoteTo.lowercaseChar()) {
+      'q' -> Queen(color, boardInspector)
+      'r' -> Rook(color, boardInspector)
+      'b' -> Bishop(color, boardInspector)
+      'n' -> Knight(color, boardInspector)
+      else -> throw IllegalArgumentException("Invalid promotion piece: $promoteTo")
     }
   }
 
