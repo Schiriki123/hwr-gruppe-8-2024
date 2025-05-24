@@ -10,8 +10,6 @@ class Bishop(
   val boardInspector: BoardInspector,
 ) : Piece {
   override fun getValidMoveDestinations(): Set<Move> {
-    val currentPosition = boardInspector.findPositionOfPiece(this)
-
     val directions = setOf(
       Direction.BOTTOM_RIGHT,
       Direction.BOTTOM_LEFT,
@@ -19,7 +17,7 @@ class Bishop(
       Direction.TOP_RIGHT
     )
     val bishopMovement =
-      MultiDirectionalPiece(color, boardInspector, directions, currentPosition)
+      MultiDirectionalMoveGenerator(this, boardInspector, directions)
     val validDestinations = bishopMovement.getValidMoveDestinations().toSet()
 
     return validDestinations.toSet()

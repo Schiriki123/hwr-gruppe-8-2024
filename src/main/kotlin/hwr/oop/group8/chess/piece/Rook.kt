@@ -10,8 +10,6 @@ class Rook(
   val boardInspector: BoardInspector,
 ) : Piece {
   override fun getValidMoveDestinations(): Set<Move> {
-    val currentPosition = boardInspector.findPositionOfPiece(this)
-
     val directions = setOf(
       Direction.BOTTOM,
       Direction.TOP,
@@ -19,7 +17,7 @@ class Rook(
       Direction.RIGHT
     )
     val rookMovement =
-      MultiDirectionalPiece(color, boardInspector, directions, currentPosition)
+      MultiDirectionalMoveGenerator(this, boardInspector, directions)
     val validDestinations = rookMovement.getValidMoveDestinations().toSet()
 
     return validDestinations.toSet()

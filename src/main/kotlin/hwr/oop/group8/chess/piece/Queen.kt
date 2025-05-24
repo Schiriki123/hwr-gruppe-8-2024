@@ -11,10 +11,8 @@ class Queen(
 ) : Piece {
   override fun getValidMoveDestinations(): Set<Move> {
     val directions = Direction.entries.toSet()
-    val currentPosition = boardInspector.findPositionOfPiece(this)
-
     val queenMovement =
-      MultiDirectionalPiece(color, boardInspector, directions, currentPosition)
+      MultiDirectionalMoveGenerator(this, boardInspector, directions)
     val validDestinations = queenMovement.getValidMoveDestinations().toSet()
 
     return validDestinations.toSet()
