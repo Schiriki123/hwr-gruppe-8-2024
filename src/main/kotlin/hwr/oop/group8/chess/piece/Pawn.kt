@@ -11,7 +11,7 @@ class Pawn(
   val boardInspector: BoardInspector,
   override val moveHistory: MutableList<Move> = mutableListOf(),
   var promoted: Boolean = false,
-) : Piece {
+  ) : Piece {
   var promotedTo: Piece
 
   init {
@@ -76,7 +76,6 @@ class Pawn(
     }
     this.moveHistory.add(move)
     if (promoted) {
-      promotedTo.moveHistory.clear()
       promotedTo.moveHistory.addAll(moveHistory)
     }
   }
