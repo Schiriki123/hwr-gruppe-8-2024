@@ -9,4 +9,5 @@ interface BoardInspector {
   fun isCastlingAllowed(color: Color): Pair<Boolean, Boolean>
   fun getCurrentTurn(): Color
   fun isPositionThreatened(currentPlayer: Color, position: Position): Boolean
+  fun resetHalfMoveClock()
 }

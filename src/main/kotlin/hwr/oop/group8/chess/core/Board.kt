@@ -8,8 +8,8 @@ class Board(val fenData: FENData) : BoardInspector {
   var turn: Color
   val enPassant: String
   var castle: String
-  val halfmoveClock: Int
-  val fullmoveClock: Int
+  var halfmoveClock: Int
+  var fullmoveClock: Int
   val boardLogic: BoardLogic = BoardLogic(this)
 
   init {
@@ -76,6 +76,7 @@ class Board(val fenData: FENData) : BoardInspector {
 
     check(isMoveCheck(move))
     { "Move would put player in check" }
+    if (!isSquareEmpty(move.to)) resetHalfMoveClock()
     //apply specialmove
     if (!move.specialMove.isEmpty()) {
       val specialToSquare = getSquare(specialMove.first().to)
@@ -84,11 +85,14 @@ class Board(val fenData: FENData) : BoardInspector {
       specialToSquare.setPiece(specialMovePiece)
       specialFromSquare.setPiece(null)
     }
+
     // apply standardmove
     toSquare.setPiece(piece)
     fromSquare.setPiece(null)
     updateCastlingPermission()
     piece.saveMoveToHistory(move)
+    if (turn == Color.BLACK) fullmoveClock++
+    halfmoveClock++
     turn = turn.invert()
   }
 
@@ -108,6 +112,10 @@ class Board(val fenData: FENData) : BoardInspector {
     currentPlayer: Color,
     position: Position,
   ): Boolean = boardLogic.isPositionThreatened(currentPlayer, position)
+
+  override fun resetHalfMoveClock() {
+    halfmoveClock = -1
+  }
 
   private fun updateCastlingPermission() = boardLogic.updateCastlingPermission()
 

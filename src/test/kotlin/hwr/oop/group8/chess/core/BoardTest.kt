@@ -175,6 +175,58 @@ class BoardTest : AnnotationSpec() {
   }
 
   @Test
+  fun `halfmoveclock should be 0 after capture`() {
+    val board =
+      Board(FENData("8/8/8/8/8/7r/7R/k7", 'b', "", halfmoveClock = 12))
+    val startPosition = Position('h', 3)
+    val endPosition = Position('h', 2)
+    val testMove = Move(startPosition, endPosition)
+    board.makeMove(testMove)
+    assertThat(board.halfmoveClock).isEqualTo(0)
+  }
+
+  @Test
+  fun `reset halfmoveclock after pawn move, expecting halfmoveclock to be 0`() {
+    val board =
+      Board(FENData("8/8/8/8/8/1p6/8/k7", 'b', "", halfmoveClock = 12))
+    val startPosition = Position('b', 3)
+    val endPosition = Position('b', 2)
+    val testMove = Move(startPosition, endPosition)
+    board.makeMove(testMove)
+    assertThat(board.halfmoveClock).isEqualTo(0)
+  }
+
+  @Test
+  fun `increase halfmoveclock expecting halfmoveclock to be 13 `() {
+    val board = Board(FENData("r7/8/8/8/8/8/8/k7", 'b', "", halfmoveClock = 12))
+    val startPosition = Position('a', 8)
+    val endPosition = Position('a', 7)
+    val testMove = Move(startPosition, endPosition)
+    board.makeMove(testMove)
+    assertThat(board.halfmoveClock).isEqualTo(13)
+  }
+
+  @Test
+  fun `increase fullmove clock expecting fullmove to be 13 `() {
+    val board = Board(FENData("r7/8/8/8/8/8/8/k7", 'b', "", fullmoveClock = 12))
+    val startPosition = Position('a', 8)
+    val endPosition = Position('a', 7)
+    val testMove = Move(startPosition, endPosition)
+    board.makeMove(testMove)
+    assertThat(board.fullmoveClock).isEqualTo(13)
+  }
+
+  @Test
+  fun `do not increase fullmove clock expecting fullmove to be 12 `() {
+    val board = Board(FENData("R7/8/8/8/8/8/8/K7", 'w', "", fullmoveClock = 12))
+    val startPosition = Position('a', 8)
+    val endPosition = Position('a', 7)
+    val testMove = Move(startPosition, endPosition)
+    board.makeMove(testMove)
+    assertThat(board.fullmoveClock).isEqualTo(12)
+  }
+
+  @Test
   fun `Test piece movement`() {
     val board = Board(FENData("8/8/8/8/4R3/8/8/K7", 'w', ""))
     val startPosition = Position('e', 4)
