@@ -8,8 +8,4 @@ data class Game(val id: Int, private val fenData: FENData) {
   fun getFenData(): FENData {
     return board.getFENData()
   }
-
-  fun printBoard() {
-    board.printBoard()
-  }
 }

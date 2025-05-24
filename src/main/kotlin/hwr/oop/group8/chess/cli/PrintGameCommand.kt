@@ -1,5 +1,7 @@
 package hwr.oop.group8.chess.cli
 
+import hwr.oop.group8.chess.core.Board
+import hwr.oop.group8.chess.core.Position
 import hwr.oop.group8.chess.persistence.LoadGameInterface
 
 class PrintGameCommand(private val loadGameInterface: LoadGameInterface) :
@@ -16,7 +18,24 @@ class PrintGameCommand(private val loadGameInterface: LoadGameInterface) :
     val gameId = args[2].toInt()
     println("Loading game with id $gameId...")
     println("Current board:")
-    loadGameInterface.loadGame(gameId).printBoard()
-    println("Current turn: ${loadGameInterface.loadGame(gameId).getFenData().getTurn()}")
+    printBoard(loadGameInterface.loadGame(gameId).board)
+    println(
+      "Current turn: ${
+        loadGameInterface.loadGame(gameId).getFenData().getTurn()
+      }"
+    )
+  }
+
+  private fun printBoard(board: Board) {
+    val builder = StringBuilder()
+    for (rank in 8 downTo 1) {
+      for (file in 'a'..'h') {
+        val piece = board.getMap().getValue(Position(file, rank)).getPiece()
+        builder.append(piece?.getChar() ?: '.')
+      }
+      builder.append("${System.lineSeparator()}")
+    }
+    println(builder.toString().trim())
   }
 }
+

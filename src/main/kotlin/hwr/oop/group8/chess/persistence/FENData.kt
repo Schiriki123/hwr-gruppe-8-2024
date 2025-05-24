@@ -1,7 +1,9 @@
 package hwr.oop.group8.chess.persistence
 
+import hwr.oop.group8.chess.core.Board
 import hwr.oop.group8.chess.core.BoardInspector
 import hwr.oop.group8.chess.core.Color
+import hwr.oop.group8.chess.core.Position
 import hwr.oop.group8.chess.piece.Bishop
 import hwr.oop.group8.chess.piece.King
 import hwr.oop.group8.chess.piece.Knight
@@ -54,6 +56,39 @@ data class FENData(
         else -> throw IllegalArgumentException("Invalid piece character: $pieceChar")
       }
     }
+  }
+
+  fun generateFENBoardString(board: Board): String {
+    val builder = StringBuilder()
+    var lastPiece = 0
+    for (rank in 8 downTo 1) {
+      for (file in 'a'..'h') {
+        val piece = board.getMap().getValue(Position(file, rank)).getPiece()
+        if (piece != null) {
+          if (lastPiece != 0) {
+            builder.append(lastPiece)
+          }
+          builder.append(piece.getChar())
+          lastPiece = 0
+        } else {
+          lastPiece++
+        }
+      }
+      if (lastPiece != 0) builder.append(lastPiece); lastPiece = 0
+      builder.append('/')
+    }
+    return builder.toString().dropLast(1)
+  }
+
+  fun getFENData(board: Board): FENData {
+    return FENData(
+      generateFENBoardString(board),
+      if (board.turn == Color.WHITE) 'w' else 'b',
+      castle,
+      enPassant,
+      halfmoveClock,
+      fullmoveClock
+    )
   }
 
   override fun toString(): String {
