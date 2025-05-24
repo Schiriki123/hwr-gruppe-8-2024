@@ -9,7 +9,6 @@ import io.kotest.core.spec.style.AnnotationSpec
 import io.kotest.extensions.system.captureStandardOut
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
-import org.junit.jupiter.api.assertAll
 
 class CliTest : AnnotationSpec() {
 
@@ -220,15 +219,17 @@ class CliTest : AnnotationSpec() {
     }.trim()
 
     // then
-    assertAll(
-      { assertThat(output).contains("Usage: chess <command> [options]") },
-      { assertThat(output).contains("Available commands:") },
-      { assertThat(output).contains("new game <id>") },
-      { assertThat(output).contains("show game <id>") },
-      { assertThat(output).contains("make move <id> <start> <end>") },
-      { assertThat(output).contains("list games") },
-      { assertThat(output).contains("Options:") },
-      { assertThat(output).contains(" -h, --help") }
+    assertThat(output).isEqualTo(
+      "Usage: chess <command> [options]${System.lineSeparator()}" +
+          "${System.lineSeparator()}" +
+          "Available commands:${System.lineSeparator()}" +
+          "  new game <id> - Create a new game with the given ID.${System.lineSeparator()}" +
+          "  show game <id> - Print the current state of the game with the given ID.${System.lineSeparator()}" +
+          "  make move <id> <start> <end> - Make a move in the game with the given ID.${System.lineSeparator()}" +
+          "  list games - List all saved games.${System.lineSeparator()}" +
+          "${System.lineSeparator()}" +
+          "Options:${System.lineSeparator()}" +
+          "  -h, --help - Show this help message."
     )
   }
 
@@ -245,7 +246,7 @@ class CliTest : AnnotationSpec() {
       return game ?: Game(id, FENData())
     }
 
-    override fun saveGame(game: Game, isNewGame: Boolean) {
+    override fun saveGame(game: Game, updateExistingGame: Boolean) {
       // Mock implementation
       this.game = game
     }

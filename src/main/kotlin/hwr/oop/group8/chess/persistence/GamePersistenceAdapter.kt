@@ -17,41 +17,32 @@ class GamePersistenceAdapter(val file: File) :
     return Game(id, createFENDataObject(data))
   }
 
-  override fun saveGame(game: Game, isNewGame: Boolean) {
-    if (isNewGame) initGame(game.id) else updateExistingGame(game)
-  }
-
-  private fun updateExistingGame(game: Game) {
+  override fun saveGame(game: Game, updateExistingGame: Boolean) {
     val lines = file.readLines()
     val gameFenString = game.getFenData().toString()
     val gameLineContent = "${game.id},$gameFenString"
+    val updatedLines: List<String>
 
-    if (!lines.any { it.startsWith("${game.id}") }) {
-      throw CouldNotSaveGameException("Game with id ${game.id} does not exist")
-    }
-
-    val updatedLines = lines.map { lines ->
-      if (lines.startsWith("${game.id}")) {
-        gameLineContent
-      } else {
-        lines
+    if (updateExistingGame) {
+      if (!lines.any { it.startsWith("${game.id}") }) {
+        throw CouldNotSaveGameException("Game with id ${game.id} does not exist")
       }
+
+      updatedLines = lines.map { lines ->
+        if (lines.startsWith("${game.id}")) {
+          gameLineContent
+        } else {
+          lines
+        }
+      }
+    } else {
+      if (lines.any { it.startsWith("${game.id}") }) {
+        throw CouldNotSaveGameException("Game with id ${game.id} already exists")
+      }
+      updatedLines = lines + gameLineContent
     }
 
     file.writeText(updatedLines.joinToString("${System.lineSeparator()}"))
-  }
-
-  private fun initGame(id: Int) {
-    val lines = file.readLines()
-    val gameFenString = FENData().toString()
-    val gameLineContent = "$id,$gameFenString"
-
-    if (lines.any { it.startsWith("$id") }) {
-      throw CouldNotSaveGameException("Game with id $id already exists")
-    } else {
-      val updatedLines = lines + gameLineContent
-      file.writeText(updatedLines.joinToString("${System.lineSeparator()}"))
-    }
   }
 
   override fun loadAllGames(): List<Game> {

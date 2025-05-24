@@ -18,7 +18,7 @@ class NewGameCommand(private val saveGameInterface: SaveGameInterface) :
     val gameId = args[2].toInt()
     val initialFENData = FENData()
     val initialGame = Game(gameId, initialFENData)
-    saveGameInterface.saveGame(initialGame, true)
+    saveGameInterface.saveGame(initialGame, false)
     println("New game with id $gameId created.")
   }
 }

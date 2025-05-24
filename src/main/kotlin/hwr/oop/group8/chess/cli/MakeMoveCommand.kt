@@ -26,7 +26,7 @@ class MakeMoveCommand(
 
     val game = loadGameInterface.loadGame(gameId)
     game.board.makeMove(move)
-    saveGameInterface.saveGame(game)
+    saveGameInterface.saveGame(game, true)
     println("Move made from $from to $to.")
   }
 }
