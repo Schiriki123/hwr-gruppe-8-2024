@@ -63,6 +63,9 @@ of "move"-ing the pieces.
 | 3      | Detect checkmate                                    | /     |
 | 4      | save & load multiple games as fen string            | /     |
 | 5      | cli for user input                                  | /     |
+| 6      | move clocks                                         | /     |
+| 7      | pawn promotion                                      | /     |
+|        |                                                     |       |
 
 
 ## Additional Dependencies
