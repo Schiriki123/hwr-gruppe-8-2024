@@ -148,4 +148,13 @@ class KnightTest : AnnotationSpec() {
 //      Position('b', 4)
 //    )
   }
+
+  @Test
+  fun ` Knight adds to move history`() {
+    val board = Board(FENData("8/8/8/5n2/3N4/8/8/K7"))
+    val knight = Knight(Color.WHITE, board)
+    val move = Move(Position('d', 4), Position('f', 5))
+    knight.saveMoveToHistory(move)
+    assertThat(knight.moveHistory.last()).isEqualTo(move)
+  }
 }

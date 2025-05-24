@@ -62,4 +62,13 @@ class BishopTest : AnnotationSpec() {
     assertThatThrownBy { board.makeMove(move) }
       .hasMessageContaining("Invalid move for piece Bishop from a8 to a2")
   }
+
+  @Test
+  fun ` bishop adds move to history`() {
+    val board = Board(FENData("B7/8/8/8/8/8/p7/K7", 'w', ""))
+    val bishop = Bishop(Color.WHITE, board)
+    val move = Move(Position('a', 8), Position('b', 7))
+    bishop.saveMoveToHistory(move)
+    assertThat(bishop.moveHistory.last()).isEqualTo(move)
+  }
 }

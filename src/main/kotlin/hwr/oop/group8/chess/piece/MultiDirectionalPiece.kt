@@ -7,6 +7,7 @@ class MultiDirectionalPiece(
   val boardInspector: BoardInspector,
   val directions: Set<Direction>,
   val currentPosition: Position,
+  override val moveHistory: MutableList<Move> = mutableListOf(),
 ) : Piece {
   override fun getValidMoveDestinations(): Set<Move> {
     val validDestinations: MutableSet<Move> = mutableSetOf()
@@ -26,6 +27,10 @@ class MultiDirectionalPiece(
       }
     }
     return validDestinations
+  }
+
+  override fun saveMoveToHistory(move: Move) {
+    moveHistory.add(move)
   }
 
   override fun getChar(): Char {

@@ -213,6 +213,28 @@ class KingTest : AnnotationSpec() {
   }
 
   @Test
+  fun `Try to castle with blocked path king side`() {
+    val board = Board(FENData("8/8/8/8/8/8/8/R3KB1R"))
+    val move = Move(Position('e', 1), Position('g', 1))
+    assertThatThrownBy {
+      board.makeMove(move)
+    }.message().isEqualTo("Invalid move for piece King from e1 to g1")
+    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/8/R3KB1R")
+    assertThat(board.castle).isEqualTo("KQkq")
+  }
+
+  @Test
+  fun `Try to castle with blocked path queen side`() {
+    val board = Board(FENData("8/8/8/8/8/8/8/RN2K2R"))
+    val move = Move(Position('e', 1), Position('c', 1))
+    assertThatThrownBy {
+      board.makeMove(move)
+    }.message().isEqualTo("Invalid move for piece King from e1 to c1")
+    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/8/RN2K2R")
+    assertThat(board.castle).isEqualTo("KQkq")
+  }
+
+  @Test
   fun `Test movement set generation for black king`() {
     val board = Board(FENData("r3k2r/8/8/8/8/8/1K6/8", 'b'))
     val startPosition = Position('e', 8)
@@ -235,6 +257,22 @@ class KingTest : AnnotationSpec() {
       ),
 
       )
+  }
+
+  @Test
+  fun ` kings adds move to history`() {
+    val board = Board(FENData("r3k2r/8/8/8/8/8/8/8", 'b'))
+    val king = King(Color.BLACK, board)
+    val move = Move(
+      Position('e', 8), Position('c', 8), listOf(
+        Move(
+          Position('a', 8),
+          Position('d', 8)
+        )
+      )
+    )
+    king.saveMoveToHistory(move)
+    assertThat(king.moveHistory.last()).isEqualTo(move)
   }
 
 }

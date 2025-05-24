@@ -88,6 +88,7 @@ class Board(fenData: FENData) : BoardInspector {
     toSquare.setPiece(piece)
     fromSquare.setPiece(null)
     updateCastlingPermission()
+    piece.saveMoveToHistory(move)
     turn = turn.invert()
   }
 
