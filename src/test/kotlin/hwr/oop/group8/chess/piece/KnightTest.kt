@@ -124,29 +124,31 @@ class KnightTest : AnnotationSpec() {
   @Test
   fun `Test knight movement set generation with overflow for rank & file`() {
     val board = Board(FENData("8/6n1/8/7p/8/8/8/k7", 'b'))
+    val startPosition = Position('g', 7)
     val validMoveDestinationsOfKnight =
-      board.getPieceAt(Position('g', 7))!!.getValidMoveDestinations()
+      board.getPieceAt(startPosition)!!.getValidMoveDestinations()
 
-//    assertThat(validMoveDestinationsOfKnight).containsExactly(
-//      Position('e', 8),
-//      Position('e', 6),
-//      Position('f', 5)
-//    )
+    assertThat(validMoveDestinationsOfKnight).containsExactly(
+      Move(startPosition, Position('e', 8)),
+      Move(startPosition, Position('e', 6)),
+      Move(startPosition, Position('f', 5)),
+    )
   }
 
   @Test
   fun `Test knight movement set generation with lower overflow for rank & file`() {
     val board = Board(FENData("K7/8/8/8/3p4/8/2N5/R7"))
+    val startPosition = Position('c', 2)
     val validMoveDestinationOfKnight =
-      board.getPieceAt(Position('c', 2))!!.getValidMoveDestinations()
+      board.getPieceAt(startPosition)!!.getValidMoveDestinations()
 
-//    assertThat(validMoveDestinationOfKnight).containsExactly(
-//      Position('e', 3),
-//      Position('e', 1),
-//      Position('a', 3),
-//      Position('d', 4),
-//      Position('b', 4)
-//    )
+    assertThat(validMoveDestinationOfKnight).containsExactly(
+      Move(startPosition, Position('e', 3)),
+      Move(startPosition, Position('e', 1)),
+      Move(startPosition, Position('a', 3)),
+      Move(startPosition, Position('d', 4)),
+      Move(startPosition, Position('b', 4)),
+    )
   }
 
   @Test
