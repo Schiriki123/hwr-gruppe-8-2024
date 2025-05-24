@@ -11,8 +11,12 @@ class Pawn(
   val boardInspector: BoardInspector,
   override val moveHistory: MutableList<Move> = mutableListOf(),
   var promoted: Boolean = false,
-  var promotedTo: Piece? = null,
 ) : Piece {
+  var promotedTo: Piece
+
+  init {
+    promotedTo = this
+  }
 
   fun getPosition(): Position {
     return boardInspector.findPositionOfPiece(this)
@@ -60,7 +64,7 @@ class Pawn(
         }
       }
     } else {
-      validMoves = promotedTo!!.getValidMoveDestinations().toMutableSet()
+      validMoves = promotedTo.getValidMoveDestinations().toMutableSet()
     }
 
     return validMoves.toSet()
@@ -71,11 +75,10 @@ class Pawn(
       promotion('q')
     }
     this.moveHistory.add(move)
-    if (promoted && promotedTo != null) {
-      promotedTo?.moveHistory?.clear()
-      promotedTo?.moveHistory?.addAll(moveHistory)
+    if (promoted) {
+      promotedTo.moveHistory.clear()
+      promotedTo.moveHistory.addAll(moveHistory)
     }
-
   }
 
   fun promotion(promoteTo: Char) {
