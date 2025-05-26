@@ -8,7 +8,7 @@ import kotlin.random.Random
 class MainTest : AnnotationSpec() {
 
   @Test
-  fun `main prints hello world to stdout`() {
+  fun `Create game with GameID`() {
     val randomGameId = Random.nextInt(1, 1000)
     val output = captureStandardOut {
       main(arrayOf("new", "game", "$randomGameId"))

@@ -10,7 +10,7 @@ import kotlin.io.path.*
 class GamePersistenceAdapterTest : AnnotationSpec() {
 
   @Test
-  fun `Test that Adapter has right id and file name`() {
+  fun `Checking if Adapter has right id and file name`() {
     val tempFile = createTempFile()
     val sut = GamePersistenceAdapter(tempFile.toFile())
     assertThat(sut.file.name).isEqualTo(tempFile.name)

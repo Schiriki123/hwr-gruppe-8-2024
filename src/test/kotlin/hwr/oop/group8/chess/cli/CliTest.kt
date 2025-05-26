@@ -13,7 +13,7 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 class CliTest : AnnotationSpec() {
 
   @Test
-  fun `Test that commands exists`() {
+  fun `Writing existing commands`() {
     // given
     val adapterMock = PersistentGameAdapterMock()
     val cli = Cli(
@@ -54,7 +54,7 @@ class CliTest : AnnotationSpec() {
   }
 
   @Test
-  fun `Test to make a move via cli`() {
+  fun `Make a move via cli`() {
     // given
     val adapterMock = PersistentGameAdapterMock()
     val cli = Cli(
@@ -104,7 +104,7 @@ class CliTest : AnnotationSpec() {
   }
 
   @Test
-  fun `print board via cli`() {
+  fun `Print board via cli`() {
     // given
     val adapterMock = PersistentGameAdapterMock()
     val cli = Cli(
@@ -136,7 +136,7 @@ class CliTest : AnnotationSpec() {
   }
 
   @Test
-  fun `Test to list all games on cli`() {
+  fun `List all games on cli`() {
     // given
     val adapterMock = PersistentGameAdapterMock()
     val cli = Cli(
@@ -182,7 +182,7 @@ class CliTest : AnnotationSpec() {
   }
 
   @Test
-  fun `Test input with no matching command`() {
+  fun `Input with no matching command`() {
     // given
     val adapterMock = PersistentGameAdapterMock()
     val cli = Cli(

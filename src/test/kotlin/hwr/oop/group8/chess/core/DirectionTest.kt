@@ -6,10 +6,8 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 
 class DirectionTest : AnnotationSpec() {
 
-
-
   @Test
-  fun `Test direction combinations`() {
+  fun `Direction combinations`() {
     val direction1 = Direction.TOP
     val direction2 = Direction.RIGHT
 
@@ -18,7 +16,7 @@ class DirectionTest : AnnotationSpec() {
   }
 
   @Test
-  fun `Test invalid direction combinations`() {
+  fun `Invalid direction combinations`() {
     val direction1 = Direction.TOP
     val direction2 = Direction.TOP_RIGHT
 

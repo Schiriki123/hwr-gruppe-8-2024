@@ -11,7 +11,7 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 
 class PawnTest : AnnotationSpec() {
   @Test
-  fun `Test char representation`() {
+  fun `Char representation as Pawn`() {
     val boardInspector = Board(FENData("8/8/8/8/8/8/8/K7", 'w', ""))
     val whitePawn = Pawn(Color.WHITE, boardInspector)
     val blackPawn = Pawn(Color.BLACK, boardInspector)
@@ -20,7 +20,7 @@ class PawnTest : AnnotationSpec() {
   }
 
   @Test
-  fun `Test pawn movement block path`() {
+  fun `Pawn movement block path`() {
     val board = Board(FENData("7k/p7/R7/8/8/8/8/K7", 'b', ""))
     val move = Move(Position('a', 7), Position('a', 6))
 
@@ -29,7 +29,7 @@ class PawnTest : AnnotationSpec() {
   }
 
   @Test
-  fun `Test pawn movement on empty board`() {
+  fun `Pawn movement on empty board`() {
     val board = Board(FENData("8/p7/8/8/8/8/8/k7", 'b', ""))
     val move = Move(Position('a', 7), Position('a', 6))
     board.makeMove(move)
@@ -38,7 +38,7 @@ class PawnTest : AnnotationSpec() {
   }
 
   @Test
-  fun `Test backwards pawn movement`() {
+  fun `Backwards pawn movement`() {
     val board = Board(FENData("8/8/p7/8/8/8/8/K7", 'w', ""))
     val move = Move(Position('a', 6), Position('a', 7))
 
@@ -47,7 +47,7 @@ class PawnTest : AnnotationSpec() {
   }
 
   @Test
-  fun `Test invalid double move`() {
+  fun `Invalid double move, expecting exception`() {
     val board = Board(FENData("8/8/p7/8/8/8/8/K7", 'w', ""))
     val move = Move(Position('a', 6), Position('a', 4))
 
@@ -56,7 +56,7 @@ class PawnTest : AnnotationSpec() {
   }
 
   @Test
-  fun `Test white pawn movement on empty board`() {
+  fun `White pawn movement on empty board`() {
     val board = Board(FENData("8/8/P7/8/8/8/8/K7", 'w', ""))
     val move = Move(Position('a', 6), Position('a', 7))
     board.makeMove(move)
@@ -75,7 +75,7 @@ class PawnTest : AnnotationSpec() {
 //  }
 
   @Test
-  fun `Test valid double move`() {
+  fun `Valid double move`() {
     val board = Board(FENData("8/8/8/8/8/8/P7/K7", 'w', ""))
     val move = Move(Position('a', 2), Position('a', 4))
     board.makeMove(move)
@@ -84,7 +84,7 @@ class PawnTest : AnnotationSpec() {
   }
 
   @Test
-  fun `Test valid double move with blocked path`() {
+  fun `Valid double move with blocked path`() {
     val board = Board(FENData("8/8/8/8/8/b7/P7/K7", 'w', ""))
     val move = Move(Position('a', 2), Position('a', 4))
 
@@ -93,7 +93,7 @@ class PawnTest : AnnotationSpec() {
   }
 
   @Test
-  fun `Test invalid diagonal 2 move with white pawn`() {
+  fun `Invalid diagonal 2 move with white pawn, expecting exception`() {
     val board = Board(FENData("8/8/8/8/8/1R6/P7/K7", 'w', ""))
     val move = Move(Position('a', 2), Position('c', 4))
 
@@ -102,7 +102,7 @@ class PawnTest : AnnotationSpec() {
   }
 
   @Test
-  fun `Test diagonal move without capture`() {
+  fun `Diagonal move without capture`() {
     val board = Board(FENData("8/8/8/8/8/8/1P6/K7", 'w', ""))
     val move = Move(Position('b', 2), Position('c', 3))
 
@@ -111,7 +111,7 @@ class PawnTest : AnnotationSpec() {
   }
 
   @Test
-  fun `Test pawn capture`() {
+  fun `Pawn capture`() {
     val board = Board(FENData("8/8/8/8/8/r7/1P6/K7", 'w', ""))
     val move = Move(Position('b', 2), Position('a', 3))
 
@@ -120,7 +120,7 @@ class PawnTest : AnnotationSpec() {
   }
 
   @Test
-  fun `Test pawn movement with blocked path`() {
+  fun `Pawn movement with blocked path`() {
     val board = Board(FENData("8/8/8/8/8/p7/P7/K7", 'w', ""))
     val move = Move(Position('a', 2), Position('a', 3))
 
@@ -128,7 +128,7 @@ class PawnTest : AnnotationSpec() {
   }
 
   @Test
-  fun `pawn promotes to queen`() {
+  fun `Pawn promotes to queen`() {
     val board = Board(FENData("8/P7/8/8/8/8/8/K7", 'w', ""))
     val move = Move(Position('a', 7), Position('a', 8), promotionChar = 'q')
     board.makeMove(move)
@@ -137,7 +137,7 @@ class PawnTest : AnnotationSpec() {
   }
 
   @Test
-  fun `pawn with queen promotion and movement`() {
+  fun `Pawn with queen promotion and movement`() {
     val board = Board(FENData("8/P5kp/8/8/8/8/8/K7", 'w', ""))
     var move = Move(Position('a', 7), Position('a', 8), promotionChar = 'q')
 
@@ -158,7 +158,7 @@ class PawnTest : AnnotationSpec() {
   }
 
   @Test
-  fun `black pawn with knight promotion and movement`() {
+  fun `Black pawn with knight promotion and movement`() {
     val board = Board(FENData("k7/8/8/8/8/8/7p/8", 'b', ""))
     var move = Move(Position('h', 2), Position('h', 1), promotionChar = 'n')
 
@@ -172,7 +172,7 @@ class PawnTest : AnnotationSpec() {
   }
 
   @Test
-  fun `black pawn with bishop promotion and movement`() {
+  fun `Black pawn with bishop promotion and movement`() {
     val board = Board(FENData("k7/8/8/8/8/8/7p/8", 'b', ""))
     var move = Move(Position('h', 2), Position('h', 1), promotionChar = 'b')
     val pawn: Pawn = board.getPieceAt(Position('h', 2)) as Pawn
@@ -187,7 +187,7 @@ class PawnTest : AnnotationSpec() {
   }
 
   @Test
-  fun `black pawn with rook promotion and movement`() {
+  fun `Black pawn with rook promotion and movement`() {
     val board = Board(FENData("k7/8/8/8/8/8/7p/8", 'b', ""))
     var move = Move(Position('h', 2), Position('h', 1), promotionChar = 'r')
     val pawn: Pawn = board.getPieceAt(Position('h', 2)) as Pawn
@@ -202,7 +202,7 @@ class PawnTest : AnnotationSpec() {
   }
 
   @Test
-  fun `pawn with illegal knight movement`() {
+  fun `Pawn with illegal knight movement`() {
     val board = Board(FENData("8/P5kp/8/8/8/8/8/K7", 'w', ""))
     val move = Move(Position('a', 7), Position('a', 6), promotionChar = 'n')
 
@@ -211,7 +211,7 @@ class PawnTest : AnnotationSpec() {
   }
 
   @Test
-  fun `pawn with illegal bishop movement`() {
+  fun `Pawn with illegal bishop movement`() {
     val board = Board(FENData("8/P5kp/8/8/8/8/8/K7", 'w', ""))
     val move = Move(Position('a', 7), Position('a', 6), promotionChar = 'b')
 
@@ -220,7 +220,7 @@ class PawnTest : AnnotationSpec() {
   }
 
   @Test
-  fun `pawn with illegal rook movement`() {
+  fun `Pawn with illegal rook movement`() {
     val board = Board(FENData("8/P5kp/8/8/8/8/8/K7", 'w', ""))
     val move = Move(Position('a', 7), Position('c', 5), promotionChar = 'r')
 
@@ -229,7 +229,7 @@ class PawnTest : AnnotationSpec() {
   }
 
   @Test
-  fun `pawn promotion with illegal character should throw, but original game state is restored`() {
+  fun `Pawn promotion with illegal character should throw, but original game state is restored`() {
     val board = Board(FENData("8/P5kp/8/8/8/8/8/K7", 'w', ""))
     val move = Move(Position('a', 7), Position('a', 8), promotionChar = 'x')
 

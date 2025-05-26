@@ -6,7 +6,7 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 
 class PositionTest : AnnotationSpec() {
   @Test
-  fun `Test Position initialization`() {
+  fun `Position initialization`() {
     val file = 'a'
     val rank = 8
     val testPosition = Position(file, rank)
@@ -16,22 +16,26 @@ class PositionTest : AnnotationSpec() {
   }
 
   @Test
-  fun `Test invalid position creation`() {
+  fun `Invalid position creation, false rank = 9`() {
     assertThatThrownBy {
       Position('a', 9)
     }
-
+  }
+  @Test
+  fun `Invalid position creation, false rank = 0`() {
     assertThatThrownBy {
       Position('a', 0)
     }
-
+  }
+  @Test
+  fun `Invalid position creation false file`() {
     assertThatThrownBy {
       Position('i', 1)
     }
   }
 
   @Test
-  fun `test next position top`() {
+  fun `Next position top`() {
     val position = Position('e', 4)
     val direction = Direction.TOP
 
@@ -42,7 +46,7 @@ class PositionTest : AnnotationSpec() {
   }
 
   @Test
-  fun `test next position bottom`() {
+  fun `Next position bottom`() {
     val position = Position('e', 4)
     val direction = Direction.BOTTOM
 
@@ -53,7 +57,7 @@ class PositionTest : AnnotationSpec() {
   }
 
   @Test
-  fun `test next position left`() {
+  fun `Next position left`() {
     val position = Position('e', 4)
     val direction = Direction.LEFT
 
@@ -64,7 +68,7 @@ class PositionTest : AnnotationSpec() {
   }
 
   @Test
-  fun `test next position right`() {
+  fun `Next position right`() {
     val position = Position('e', 4)
     val direction = Direction.RIGHT
 
@@ -75,7 +79,7 @@ class PositionTest : AnnotationSpec() {
   }
 
   @Test
-  fun `test next position top left`() {
+  fun `Next position top left`() {
     val position = Position('e', 4)
     val direction = Direction.TOP_LEFT
 
@@ -86,7 +90,7 @@ class PositionTest : AnnotationSpec() {
   }
 
   @Test
-  fun `test next position top right`() {
+  fun `Next position top right`() {
     val position = Position('e', 4)
     val direction = Direction.TOP_RIGHT
 
@@ -97,7 +101,7 @@ class PositionTest : AnnotationSpec() {
   }
 
   @Test
-  fun `test next position bottom left`() {
+  fun `Next position bottom left`() {
     val position = Position('e', 4)
     val direction = Direction.BOTTOM_LEFT
 
@@ -108,7 +112,7 @@ class PositionTest : AnnotationSpec() {
   }
 
   @Test
-  fun `test next position bottom right`() {
+  fun `Next position bottom right`() {
     val position = Position('e', 4)
     val direction = Direction.BOTTOM_RIGHT
 

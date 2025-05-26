@@ -9,7 +9,7 @@ import org.assertj.core.api.Assertions.assertThat
 
 class FENDataTest : AnnotationSpec() {
   @Test
-  fun `test getRank for default board`() {
+  fun `getRank from default board`() {
     val fenData = FENData()
 
     assertThat(fenData.getRank(8)).isEqualTo("rnbqkbnr")
@@ -30,7 +30,7 @@ class FENDataTest : AnnotationSpec() {
   }
 
   @Test
-  fun `test piece object creation`() {
+  fun `Piece object creation, checking if Instance of an object belongs to the correct object`() {
     val board = Board(FENData("K7/8/8/8/8/8/8/8", 'w', ""))
     val pieceChars =
       listOf('r', 'n', 'b', 'q', 'k', 'p', 'R', 'N', 'B', 'Q', 'K', 'P')
@@ -51,7 +51,7 @@ class FENDataTest : AnnotationSpec() {
   }
 
   @Test
-  fun `Test invalid initialization`() {
+  fun `Invalid initialization, expecting exception`() {
     Assertions.assertThatThrownBy { FENData("8/8/8/8/8/8/8/8") }.message()
       .isEqualTo("Board string must be 16 or higher")
     Assertions.assertThatThrownBy { FENData(turn = 'q') }
