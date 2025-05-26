@@ -1,11 +1,13 @@
 package hwr.oop.group8.chess.piece
 
-import hwr.oop.group8.chess.core.*
+import hwr.oop.group8.chess.core.BoardInspector
+import hwr.oop.group8.chess.core.Color
+import hwr.oop.group8.chess.core.Direction
+import hwr.oop.group8.chess.core.Move
+import hwr.oop.group8.chess.core.Position
 
-class King(
-  override val color: Color,
-  val boardInspector: BoardInspector,
-) : Piece {
+class King(override val color: Color, val boardInspector: BoardInspector) :
+  Piece {
   override fun getValidMoveDestinations(): Set<Move> {
     val validMoves: MutableSet<Move> = mutableSetOf()
     val directions = Direction.entries // All possible directions
@@ -35,27 +37,29 @@ class King(
       if (castling.first) {
         validMoves.add(
           Move(
-            currentPosition, queenCastlePosition,
+            currentPosition,
+            queenCastlePosition,
             listOf(
               Move(
                 rookQueenSidePosition,
-                currentPosition.nextPosition(Direction.LEFT)
-              )
-            )
-          )
+                currentPosition.nextPosition(Direction.LEFT),
+              ),
+            ),
+          ),
         )
       }
       if (castling.second) {
         validMoves.add(
           Move(
-            currentPosition, kingCastlePosition,
+            currentPosition,
+            kingCastlePosition,
             listOf(
               Move(
                 rookKingSidePosition,
-                currentPosition.nextPosition(Direction.RIGHT)
-              )
-            )
-          )
+                currentPosition.nextPosition(Direction.RIGHT),
+              ),
+            ),
+          ),
         )
       }
     }
@@ -64,10 +68,8 @@ class King(
 
   override fun moveCallback(move: Move) {}
 
-  override fun getChar(): Char {
-    return when (color) {
-      Color.WHITE -> 'K'
-      Color.BLACK -> 'k'
-    }
+  override fun getChar(): Char = when (color) {
+    Color.WHITE -> 'K'
+    Color.BLACK -> 'k'
   }
 }

@@ -141,12 +141,12 @@ class PawnTest : AnnotationSpec() {
     val board = Board(FENData("8/P5kp/8/8/8/8/8/K7", 'w', ""))
     var move = Move(Position('a', 7), Position('a', 8), promotionChar = 'q')
 
-    //Pawn promotes
+    // Pawn promotes
     board.makeMove(move)
 
     assertThat(board.generateFENBoardString()).isEqualTo("Q7/6kp/8/8/8/8/8/K7")
 
-    //Black Moves
+    // Black Moves
     move = Move(Position('h', 7), Position('h', 6))
     board.makeMove(move)
 
@@ -154,7 +154,9 @@ class PawnTest : AnnotationSpec() {
     move = Move(Position('a', 8), Position('a', 2))
     board.makeMove(move)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("8/6k1/7p/8/8/8/Q7/K7")
+    assertThat(
+      board.generateFENBoardString(),
+    ).isEqualTo("8/6k1/7p/8/8/8/Q7/K7")
   }
 
   @Test
@@ -162,7 +164,7 @@ class PawnTest : AnnotationSpec() {
     val board = Board(FENData("k7/8/8/8/8/8/7p/8", 'b', ""))
     var move = Move(Position('h', 2), Position('h', 1), promotionChar = 'n')
 
-    //Pawn promotes
+    // Pawn promotes
     board.makeMove(move)
 
     board.turn = Color.BLACK
@@ -177,7 +179,7 @@ class PawnTest : AnnotationSpec() {
     var move = Move(Position('h', 2), Position('h', 1), promotionChar = 'b')
     val pawn: Pawn = board.getPieceAt(Position('h', 2)) as Pawn
 
-    //Pawn promotes
+    // Pawn promotes
     board.makeMove(move)
     pawn.promotion('b')
     board.turn = Color.BLACK
@@ -192,7 +194,7 @@ class PawnTest : AnnotationSpec() {
     var move = Move(Position('h', 2), Position('h', 1), promotionChar = 'r')
     val pawn: Pawn = board.getPieceAt(Position('h', 2)) as Pawn
 
-    //Pawn promotes
+    // Pawn promotes
     board.makeMove(move)
     pawn.promotion('r')
     board.turn = Color.BLACK
@@ -228,6 +230,7 @@ class PawnTest : AnnotationSpec() {
     assertThat(board.generateFENBoardString()).isEqualTo("8/P5kp/8/8/8/8/8/K7")
   }
 
+  @Suppress("ktlint:standard:max-line-length")
   @Test
   fun `Pawn promotion with illegal character should throw, but original game state is restored`() {
     val board = Board(FENData("8/P5kp/8/8/8/8/8/K7", 'w', ""))

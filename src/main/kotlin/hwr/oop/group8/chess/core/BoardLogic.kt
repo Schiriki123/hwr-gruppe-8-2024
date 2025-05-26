@@ -12,19 +12,19 @@ class BoardLogic(val board: Board) {
     }
     val kingSide: Boolean =
       board.isSquareEmpty(Position('f', homeRank)) &&
-          board.isSquareEmpty(Position('g', homeRank)) &&
-          board.castle.contains(if (color == Color.WHITE) "K" else "k") &&
-          !board.isPositionThreatened(color, Position('f', homeRank)) &&
-          !board.isPositionThreatened(color, Position('g', homeRank))
+        board.isSquareEmpty(Position('g', homeRank)) &&
+        board.castle.contains(if (color == Color.WHITE) "K" else "k") &&
+        !board.isPositionThreatened(color, Position('f', homeRank)) &&
+        !board.isPositionThreatened(color, Position('g', homeRank))
 
     // Queen side castle
     val queenSide: Boolean =
       board.isSquareEmpty(Position('d', homeRank)) &&
-          board.isSquareEmpty(Position('c', homeRank)) &&
-          board.isSquareEmpty(Position('b', homeRank)) &&
-          board.castle.contains(if (color == Color.WHITE) "Q" else "q") &&
-          !board.isPositionThreatened(color, Position('d', homeRank)) &&
-          !board.isPositionThreatened(color, Position('c', homeRank))
+        board.isSquareEmpty(Position('c', homeRank)) &&
+        board.isSquareEmpty(Position('b', homeRank)) &&
+        board.castle.contains(if (color == Color.WHITE) "Q" else "q") &&
+        !board.isPositionThreatened(color, Position('d', homeRank)) &&
+        !board.isPositionThreatened(color, Position('c', homeRank))
     return Pair(queenSide, kingSide)
   }
 
@@ -43,10 +43,14 @@ class BoardLogic(val board: Board) {
       board.castle = board.castle.replace(kingChar, "")
       board.castle = board.castle.replace(queenChar, "")
     }
-    if (rookPositionKingSide == null || rookPositionKingSide.color != board.turn) {
+    if (rookPositionKingSide == null ||
+      rookPositionKingSide.color != board.turn
+    ) {
       board.castle = board.castle.replace(kingChar, "")
     }
-    if (rookPositionQueenSide == null || rookPositionQueenSide.color != board.turn) {
+    if (rookPositionQueenSide == null ||
+      rookPositionQueenSide.color != board.turn
+    ) {
       board.castle = board.castle.replace(queenChar, "")
     }
   }
@@ -92,7 +96,7 @@ class BoardLogic(val board: Board) {
       possibleMoves.forEach { destination ->
         if (
           isMoveCheck(
-            destination
+            destination,
           )
         ) {
           // If any move is valid and does not put the player in check, return false
@@ -104,10 +108,7 @@ class BoardLogic(val board: Board) {
     return true
   }
 
-  fun isPositionThreatened(
-    currentPlayer: Color,
-    position: Position,
-  ): Boolean {
+  fun isPositionThreatened(currentPlayer: Color, position: Position): Boolean {
     val allPieces: Set<Piece> =
       board.getMap().values.mapNotNull { it.getPiece() }.toSet()
     val possibleMovesOfOpponent: Set<Move> = allPieces
@@ -116,5 +117,4 @@ class BoardLogic(val board: Board) {
       .toSet()
     return possibleMovesOfOpponent.any { it.to == position }
   }
-
 }

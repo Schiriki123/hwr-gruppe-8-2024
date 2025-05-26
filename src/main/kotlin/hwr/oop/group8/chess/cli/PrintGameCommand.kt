@@ -22,7 +22,7 @@ class PrintGameCommand(private val loadGameInterface: LoadGameInterface) :
     println(
       "Current turn: ${
         loadGameInterface.loadGame(gameId).getFenData().getTurn()
-      }"
+      }",
     )
   }
 
@@ -38,4 +38,3 @@ class PrintGameCommand(private val loadGameInterface: LoadGameInterface) :
     println(builder.toString().trim())
   }
 }
-

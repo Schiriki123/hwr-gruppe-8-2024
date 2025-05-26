@@ -13,7 +13,8 @@ class MainTest : AnnotationSpec() {
     val output = captureStandardOut {
       main(arrayOf("new", "game", "$randomGameId"))
     }.trim()
-    Assertions.assertThat(output).contains("New game with id $randomGameId created.")
+    Assertions.assertThat(
+      output,
+    ).contains("New game with id $randomGameId created.")
   }
-
 }

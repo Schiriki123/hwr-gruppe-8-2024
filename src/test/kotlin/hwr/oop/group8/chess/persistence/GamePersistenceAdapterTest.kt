@@ -5,7 +5,11 @@ import hwr.oop.group8.chess.core.Game
 import io.kotest.core.spec.style.AnnotationSpec
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
-import kotlin.io.path.*
+import kotlin.io.path.createTempFile
+import kotlin.io.path.deleteExisting
+import kotlin.io.path.name
+import kotlin.io.path.readText
+import kotlin.io.path.writeText
 
 class GamePersistenceAdapterTest : AnnotationSpec() {
 
@@ -19,7 +23,10 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
   @Test
   fun `Should read game from file and return correct FEN object`() {
     val tempFile = createTempFile()
-    tempFile.writeText("1,rnbqkb1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKB1R w KQkq - 0 1${System.lineSeparator()}")
+    tempFile.writeText(
+      "1,rnbqkb1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKB1R w KQkq - 0 1" +
+        "${System.lineSeparator()}",
+    )
 
     val sut = GamePersistenceAdapter(tempFile.toFile())
     val result: FENData = sut.loadGame(1).getFenData()
@@ -43,7 +50,10 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
   @Test
   fun `Should throw exception when game with given id does not exist`() {
     val tempFile = createTempFile()
-    tempFile.writeText("1,rnbqkb1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKB1R w KQkq - 0 1${System.lineSeparator()}")
+    tempFile.writeText(
+      "1,rnbqkb1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKB1R w KQkq - 0 1" +
+        "${System.lineSeparator()}",
+    )
 
     val sut = GamePersistenceAdapter(tempFile.toFile())
 
@@ -58,9 +68,13 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
   fun `Should select the the game with id 2`() {
     val tempFile = createTempFile()
     tempFile.writeText(
-      "1,rnbqkb1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKB1R w KQkq - 0 1${System.lineSeparator()}" +
-          "2,r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b KQkq - 0 12${System.lineSeparator()}" +
-          "3,rnbqkb1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKB1R w KQkq - 0 1${System.lineSeparator()}"
+      "1,rnbqkb1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKB1R w KQkq - 0 1" +
+        "${System.lineSeparator()}" +
+        "2,r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b " +
+        "KQkq - 0 12" +
+        "${System.lineSeparator()}" +
+        "3,rnbqkb1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKB1R w KQkq - 0 1" +
+        "${System.lineSeparator()}",
     )
 
     val sut = GamePersistenceAdapter(tempFile.toFile())
@@ -107,7 +121,9 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
     sut.saveGame(initialGame, false)
 
     val result = tempFile.readText()
-    assertThat(result).isEqualTo("1,rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+    assertThat(
+      result,
+    ).isEqualTo("1,rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
 
     tempFile.deleteExisting()
   }
@@ -116,8 +132,11 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
   fun `Game 1 should be updated correctly`() {
     val tempFile = createTempFile()
     tempFile.writeText(
-      "1,rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR w KQkq - 0 1${System.lineSeparator()}" +
-          "2,r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b KQkq - 0 12${System.lineSeparator()}"
+      "1,rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR w KQkq - 0 1" +
+        "${System.lineSeparator()}" +
+        "2,r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b " +
+        "KQkq - 0 12" +
+        "${System.lineSeparator()}",
     )
 
     val sut = GamePersistenceAdapter(tempFile.toFile())
@@ -127,15 +146,17 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
       "KQkq",
       "-",
       0,
-      1
+      1,
     )
 
     sut.saveGame(Game(1, fenData), true)
 
     val result = tempFile.readText()
     assertThat(result).isEqualTo(
-      "1,rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq - 0 1${System.lineSeparator()}" +
-          "2,r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b KQkq - 0 12"
+      "1,rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq - 0 1" +
+        "${System.lineSeparator()}" +
+        "2,r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b " +
+        "KQkq - 0 12",
     )
 
     tempFile.deleteExisting()
@@ -145,8 +166,11 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
   fun `Using a id that not exits should throw a exception`() {
     val tempFile = createTempFile()
     tempFile.writeText(
-      "1,rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR w KQkq - 0 1${System.lineSeparator()}" +
-          "2,r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b KQkq - 0 12${System.lineSeparator()}"
+      "1,rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR w KQkq - 0 1" +
+        "${System.lineSeparator()}" +
+        "2,r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b " +
+        "KQkq - 0 12" +
+        "${System.lineSeparator()}",
     )
 
     val sut = GamePersistenceAdapter(tempFile.toFile())
@@ -156,7 +180,7 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
       "KQkq",
       "-",
       0,
-      1
+      1,
     )
 
     assertThatThrownBy {
@@ -170,8 +194,11 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
   fun `Creating a game with existing id should fail`() {
     val tempFile = createTempFile()
     tempFile.writeText(
-      "1,rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR w KQkq - 0 1${System.lineSeparator()}" +
-          "2,r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b KQkq - 0 12${System.lineSeparator()}"
+      "1,rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR w KQkq - 0 1" +
+        "${System.lineSeparator()}" +
+        "2,r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b " +
+        "KQkq - 0 12" +
+        "${System.lineSeparator()}",
     )
     val initialBoard = Game(1, FENData())
 
@@ -188,8 +215,11 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
   fun `list games should print all saved game with id and turn`() {
     val tempFile = createTempFile()
     tempFile.writeText(
-      "1,rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR w KQkq - 0 1${System.lineSeparator()}" +
-          "3,r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b KQkq - 0 12${System.lineSeparator()}"
+      "1,rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR w KQkq - 0 1" +
+        "${System.lineSeparator()}" +
+        "3,r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b " +
+        "KQkq - 0 12" +
+        "${System.lineSeparator()}",
     )
 
     val sut = GamePersistenceAdapter(tempFile.toFile())

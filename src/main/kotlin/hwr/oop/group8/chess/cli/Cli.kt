@@ -7,14 +7,14 @@ import hwr.oop.group8.chess.persistence.SaveGameInterface
 class Cli(
   loadGameInterface: LoadGameInterface,
   saveGameInterface: SaveGameInterface,
-  loadAllGamesInterface: LoadAllGamesInterface
+  loadAllGamesInterface: LoadAllGamesInterface,
 ) {
   val commands = listOf(
     NewGameCommand(saveGameInterface),
     PrintGameCommand(loadGameInterface),
     MakeMoveCommand(loadGameInterface, saveGameInterface),
     ListGamesCommand(loadAllGamesInterface),
-    HelpCommand()
+    HelpCommand(),
   )
 
   fun handle(args: List<String>) {

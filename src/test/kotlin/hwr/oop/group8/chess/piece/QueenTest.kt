@@ -26,30 +26,30 @@ class QueenTest : AnnotationSpec() {
     board.makeMove(move)
     assertThat(board.generateFENBoardString()).isEqualTo("7K/8/8/8/8/8/Q7/8")
 
-    //Queen moves multiple squares up
+    // Queen moves multiple squares up
     move = Move(Position('a', 2), Position('a', 8))
     board.turn = Color.WHITE
     board.makeMove(move)
     assertThat(board.generateFENBoardString()).isEqualTo("Q6K/8/8/8/8/8/8/8")
-    //Queen moves multiple squares down right
+    // Queen moves multiple squares down right
     move = Move(Position('a', 8), Position('h', 1))
     board.turn = Color.WHITE
     board.makeMove(move)
     assertThat(board.generateFENBoardString()).isEqualTo("7K/8/8/8/8/8/8/7Q")
 
-    //Queen moves multiple squares up left
+    // Queen moves multiple squares up left
     move = Move(Position('h', 1), Position('d', 5))
     board.turn = Color.WHITE
     board.makeMove(move)
     assertThat(board.generateFENBoardString()).isEqualTo("7K/8/8/3Q4/8/8/8/8")
 
-    //Queen moves multiple squares up right
+    // Queen moves multiple squares up right
     move = Move(Position('d', 5), Position('g', 8))
     board.turn = Color.WHITE
     board.makeMove(move)
     assertThat(board.generateFENBoardString()).isEqualTo("6QK/8/8/8/8/8/8/8")
 
-    //Queen moves multiple squares down left
+    // Queen moves multiple squares down left
     move = Move(Position('g', 8), Position('a', 2))
     board.turn = Color.WHITE
     board.makeMove(move)

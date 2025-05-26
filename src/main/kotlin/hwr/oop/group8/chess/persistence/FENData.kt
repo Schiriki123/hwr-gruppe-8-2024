@@ -13,7 +13,8 @@ import hwr.oop.group8.chess.piece.Queen
 import hwr.oop.group8.chess.piece.Rook
 
 data class FENData(
-  private val boardString: String = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR",
+  private val boardString: String =
+    "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR",
   private val turn: Char = 'w',
   val castle: String = "KQkq",
   val enPassant: String = "-",
@@ -22,9 +23,15 @@ data class FENData(
 ) {
   init {
     // boardString length 8 ranks + 7 slashes + 1 king
-    require(boardString.length >= 8 + 7 + 1) { "Board string must be 16 or higher" }
+    require(boardString.length >= 8 + 7 + 1) {
+      "Board string must be 16 or higher"
+    }
     require(turn == 'w' || turn == 'b') { "Turn must be either 'w' or 'b'" }
-    require(castle.all { it in "KQkq" }) { "Castle string can only contain 'K', 'Q', 'k', or 'q'" }
+    require(
+      castle.all {
+        it in "KQkq"
+      },
+    ) { "Castle string can only contain 'K', 'Q', 'k', or 'q'" }
     require(halfmoveClock >= 0) { "Halfmove clock must be non-negative." }
     require(fullmoveClock > 0) { "Fullmove clock must be positive." }
   }
@@ -34,13 +41,11 @@ data class FENData(
     return boardString.split("/")[8 - rank]
   }
 
-  fun getTurn(): Color {
-    return if (turn == 'w') Color.WHITE else Color.BLACK
-  }
+  fun getTurn(): Color = if (turn == 'w') Color.WHITE else Color.BLACK
 
   companion object {
-    fun createPieceOnBoard(pieceChar: Char, board: BoardInspector): Piece {
-      return when (pieceChar) {
+    fun createPieceOnBoard(pieceChar: Char, board: BoardInspector): Piece =
+      when (pieceChar) {
         'r' -> Rook(Color.BLACK, board)
         'n' -> Knight(Color.BLACK, board)
         'b' -> Bishop(Color.BLACK, board)
@@ -53,9 +58,10 @@ data class FENData(
         'Q' -> Queen(Color.WHITE, board)
         'K' -> King(Color.WHITE, board)
         'P' -> Pawn(Color.WHITE, board)
-        else -> throw IllegalArgumentException("Invalid piece character: $pieceChar")
+        else -> throw IllegalArgumentException(
+          "Invalid piece character: $pieceChar",
+        )
       }
-    }
   }
 
   fun generateFENBoardString(board: Board): String {
@@ -74,24 +80,22 @@ data class FENData(
           lastPiece++
         }
       }
-      if (lastPiece != 0) builder.append(lastPiece); lastPiece = 0
+      if (lastPiece != 0) builder.append(lastPiece)
+      lastPiece = 0
       builder.append('/')
     }
     return builder.toString().dropLast(1)
   }
 
-  fun getFENData(board: Board): FENData {
-    return FENData(
-      generateFENBoardString(board),
-      if (board.turn == Color.WHITE) 'w' else 'b',
-      castle,
-      enPassant,
-      halfmoveClock,
-      fullmoveClock
-    )
-  }
+  fun getFENData(board: Board): FENData = FENData(
+    generateFENBoardString(board),
+    if (board.turn == Color.WHITE) 'w' else 'b',
+    castle,
+    enPassant,
+    halfmoveClock,
+    fullmoveClock,
+  )
 
-  override fun toString(): String {
-    return "$boardString $turn $castle $enPassant $halfmoveClock $fullmoveClock"
-  }
+  override fun toString(): String =
+    "$boardString $turn $castle $enPassant $halfmoveClock $fullmoveClock"
 }

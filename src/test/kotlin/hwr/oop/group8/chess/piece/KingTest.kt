@@ -129,14 +129,16 @@ class KingTest : AnnotationSpec() {
       Move(startPosition, Position('f', 7)),
       Move(startPosition, Position('e', 7)),
       Move(
-        startPosition, Position('c', 8),
+        startPosition,
+        Position('c', 8),
         listOf(Move(Position('a', 8), Position('d', 8))),
       ),
       Move(
-        startPosition, Position('g', 8),
+        startPosition,
+        Position('g', 8),
         listOf(Move(Position('h', 8), Position('f', 8))),
       ),
 
-      )
+    )
   }
 }

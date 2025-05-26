@@ -5,10 +5,8 @@ import hwr.oop.group8.chess.core.Color
 import hwr.oop.group8.chess.core.Direction
 import hwr.oop.group8.chess.core.Move
 
-class Queen(
-  override val color: Color,
-  val boardInspector: BoardInspector,
-) : Piece {
+class Queen(override val color: Color, val boardInspector: BoardInspector) :
+  Piece {
   override fun getValidMoveDestinations(): Set<Move> {
     val directions = Direction.entries.toSet()
     val queenMovement =
@@ -20,10 +18,8 @@ class Queen(
 
   override fun moveCallback(move: Move) {}
 
-  override fun getChar(): Char {
-    return when (color) {
-      Color.WHITE -> 'Q'
-      Color.BLACK -> 'q'
-    }
+  override fun getChar(): Char = when (color) {
+    Color.WHITE -> 'Q'
+    Color.BLACK -> 'q'
   }
 }
