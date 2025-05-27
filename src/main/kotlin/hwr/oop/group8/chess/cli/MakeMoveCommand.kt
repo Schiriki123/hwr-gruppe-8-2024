@@ -1,7 +1,9 @@
 package hwr.oop.group8.chess.cli
 
+import hwr.oop.group8.chess.core.File
 import hwr.oop.group8.chess.core.Move
 import hwr.oop.group8.chess.core.Position
+import hwr.oop.group8.chess.core.Rank
 import hwr.oop.group8.chess.persistence.LoadGameInterface
 import hwr.oop.group8.chess.persistence.SaveGameInterface
 
@@ -24,8 +26,15 @@ class MakeMoveCommand(
 
   override fun handle(args: List<String>) {
     val gameId = args[2].toInt()
-    val from = Position(args[3].first(), args[3].last().digitToInt())
-    val to = Position(args[4].first(), args[4].last().digitToInt())
+    val from =
+      Position(
+        File.fromChar(args[3].first()),
+        Rank.fromInt(args[3].last().digitToInt()),
+      )
+    val to = Position(
+      File.fromChar(args[4].first()),
+      Rank.fromInt(args[4].last().digitToInt()),
+    )
     val move = Move(from, to)
 
     val game = loadGameInterface.loadGame(gameId)

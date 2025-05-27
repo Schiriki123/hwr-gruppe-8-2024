@@ -1,6 +1,7 @@
 package hwr.oop.group8.chess.core
 
 import io.kotest.core.spec.style.AnnotationSpec
+import org.assertj.core.api.Assertions.assertThat
 
 class FileTest : AnnotationSpec() {
 
@@ -9,11 +10,9 @@ class FileTest : AnnotationSpec() {
     // given
     val fileA = File.A
     // when
-    val isFirstFile = fileA == File.entries.first()
+    val firstFile = File.entries.first()
     // then
-    assert(isFirstFile) {
-      "Expected File.A to be the first file, but it is not."
-    }
+    assertThat(firstFile).isEqualTo(fileA)
   }
 
   @Test
@@ -21,11 +20,9 @@ class FileTest : AnnotationSpec() {
     // given
     val fileH = File.H
     // when
-    val isLastFile = fileH == File.entries.last()
+    val lastFile = File.entries.last()
     // then
-    assert(isLastFile) {
-      "Expected File.H to be the last file, but it is not."
-    }
+    assertThat(lastFile).isEqualTo(fileH)
   }
 
   @Test
@@ -35,9 +32,7 @@ class FileTest : AnnotationSpec() {
     // when
     val nextFile = fileA.right()
     // then
-    assert(nextFile == File.C) {
-      "Expected next file from File.A to be File.B, but got $nextFile"
-    }
+    assertThat(nextFile).isEqualTo(File.C)
   }
 
   @Test
@@ -47,8 +42,6 @@ class FileTest : AnnotationSpec() {
     // when
     val previousFile = fileH.left()
     // then
-    assert(previousFile == File.D) {
-      "Expected previous file from File.H to be File.G, but got $previousFile"
-    }
+    assertThat(previousFile).isEqualTo(File.D)
   }
 }

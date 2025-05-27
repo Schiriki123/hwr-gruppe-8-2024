@@ -10,7 +10,7 @@ class SpecialMovesTest : AnnotationSpec() {
   @Test
   fun `Move into check, expecting exception`() {
     val board = Board(FENData("k7/1R6/8/8/8/8/K7/8", turn = 'b', ""))
-    val move = Move(Position('a', 8), Position('b', 8))
+    val move = Move(Position(File.A, Rank.EIGHT), Position(File.B, Rank.EIGHT))
     assertThatThrownBy {
       board.makeMove(move)
     }.message().isEqualTo("Move would put player in check")
@@ -21,7 +21,8 @@ class SpecialMovesTest : AnnotationSpec() {
   @Test
   fun `King in check, expecting king moves out of check and color change`() {
     val board = Board(FENData("k7/8/R7/8/8/8/K7/8", turn = 'b'))
-    val moveToCheck = Move(Position('a', 8), Position('a', 7))
+    val moveToCheck =
+      Move(Position(File.A, Rank.EIGHT), Position(File.A, Rank.SEVEN))
     assertThatThrownBy { board.makeMove(moveToCheck) }.message()
       .isEqualTo("Move would put player in check")
 
@@ -33,7 +34,8 @@ class SpecialMovesTest : AnnotationSpec() {
   fun `King moving out of check`() {
     val board = Board(FENData("k7/8/R7/8/8/8/K7/8", turn = 'b'))
 
-    val validMove = Move(Position('a', 8), Position('b', 7))
+    val validMove =
+      Move(Position(File.A, Rank.EIGHT), Position(File.B, Rank.SEVEN))
     board.makeMove(validMove)
     assertThat(board.generateFENBoardString()).isEqualTo("8/1k6/R7/8/8/8/K7/8")
     assertThat(board.turn).isEqualTo(Color.WHITE)
@@ -41,8 +43,8 @@ class SpecialMovesTest : AnnotationSpec() {
 
   @Test
   fun `Random move that sets king in check, expecting check`() {
-    val board = Board(FENData("k7/8/r7/8/8/8/R7/8", turn = 'b'))
-    val move = Move(Position('a', 6), Position('c', 6))
+    val board = Board(FENData("k7/8/r7/8/8/8/R7/8", turn = 'b', ""))
+    val move = Move(Position(File.A, Rank.SIX), Position(File.C, Rank.SIX))
     assertThatThrownBy { board.makeMove(move) }.message()
       .isEqualTo("Move would put player in check")
     assertThat(board.generateFENBoardString()).isEqualTo("k7/8/r7/8/8/8/R7/8")
@@ -59,7 +61,7 @@ class SpecialMovesTest : AnnotationSpec() {
   @Test
   fun `Turn black after white moves`() {
     val board = Board(FENData("r3k2r/8/8/8/8/8/8/R3K2R"))
-    val move = Move(Position('h', 1), Position('g', 1))
+    val move = Move(Position(File.H, Rank.ONE), Position(File.G, Rank.ONE))
     board.makeMove(move)
     assertThat(board.turn).isEqualTo(Color.BLACK)
   }

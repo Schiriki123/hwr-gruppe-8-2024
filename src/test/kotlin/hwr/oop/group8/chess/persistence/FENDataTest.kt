@@ -1,6 +1,7 @@
 package hwr.oop.group8.chess.persistence
 
 import hwr.oop.group8.chess.core.Board
+import hwr.oop.group8.chess.core.Rank
 import hwr.oop.group8.chess.piece.Bishop
 import hwr.oop.group8.chess.piece.King
 import hwr.oop.group8.chess.piece.Knight
@@ -17,21 +18,14 @@ class FENDataTest : AnnotationSpec() {
   fun `getRank from default board`() {
     val fenData = FENData()
 
-    assertThat(fenData.getRank(8)).isEqualTo("rnbqkbnr")
-    assertThat(fenData.getRank(7)).isEqualTo("pppppppp")
-    assertThat(fenData.getRank(6)).isEqualTo("8")
-    assertThat(fenData.getRank(5)).isEqualTo("8")
-    assertThat(fenData.getRank(4)).isEqualTo("8")
-    assertThat(fenData.getRank(3)).isEqualTo("8")
-    assertThat(fenData.getRank(2)).isEqualTo("PPPPPPPP")
-    assertThat(fenData.getRank(1)).isEqualTo("RNBQKBNR")
-
-    Assertions.assertThatThrownBy {
-      fenData.getRank(9)
-    }.message().isEqualTo("Rank must be between 1 and 8")
-    Assertions.assertThatThrownBy {
-      fenData.getRank(0)
-    }.message().isEqualTo("Rank must be between 1 and 8")
+    assertThat(fenData.getRank(Rank.EIGHT)).isEqualTo("rnbqkbnr")
+    assertThat(fenData.getRank(Rank.SEVEN)).isEqualTo("pppppppp")
+    assertThat(fenData.getRank(Rank.SIX)).isEqualTo("8")
+    assertThat(fenData.getRank(Rank.FIVE)).isEqualTo("8")
+    assertThat(fenData.getRank(Rank.FOUR)).isEqualTo("8")
+    assertThat(fenData.getRank(Rank.THREE)).isEqualTo("8")
+    assertThat(fenData.getRank(Rank.TWO)).isEqualTo("PPPPPPPP")
+    assertThat(fenData.getRank(Rank.ONE)).isEqualTo("RNBQKBNR")
   }
 
   @Test

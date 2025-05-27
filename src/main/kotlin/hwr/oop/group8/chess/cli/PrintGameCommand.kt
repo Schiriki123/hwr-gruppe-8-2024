@@ -1,7 +1,9 @@
 package hwr.oop.group8.chess.cli
 
 import hwr.oop.group8.chess.core.Board
+import hwr.oop.group8.chess.core.File
 import hwr.oop.group8.chess.core.Position
+import hwr.oop.group8.chess.core.Rank
 import hwr.oop.group8.chess.persistence.LoadGameInterface
 
 class PrintGameCommand(private val loadGameInterface: LoadGameInterface) :
@@ -28,8 +30,8 @@ class PrintGameCommand(private val loadGameInterface: LoadGameInterface) :
 
   private fun printBoard(board: Board) {
     val builder = StringBuilder()
-    for (rank in 8 downTo 1) {
-      for (file in 'a'..'h') {
+    for (rank in Rank.entries.reversed()) {
+      for (file in File.entries) {
         val piece = board.getMap().getValue(Position(file, rank)).getPiece()
         builder.append(piece?.getChar() ?: '.')
       }

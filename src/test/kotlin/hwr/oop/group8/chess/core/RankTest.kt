@@ -1,6 +1,7 @@
 package hwr.oop.group8.chess.core
 
 import io.kotest.core.spec.style.AnnotationSpec
+import org.assertj.core.api.Assertions.assertThat
 
 class RankTest : AnnotationSpec() {
 
@@ -9,11 +10,9 @@ class RankTest : AnnotationSpec() {
     // given
     val rankOne = Rank.ONE
     // when
-    val isFirstRank = rankOne == Rank.entries.first()
+    val firstRank = Rank.entries.first()
     // then
-    assert(isFirstRank) {
-      "Expected Rank.ONE to be the first rank, but it is not."
-    }
+    assertThat(rankOne).isEqualTo(firstRank)
   }
 
   @Test
@@ -21,11 +20,9 @@ class RankTest : AnnotationSpec() {
     // given
     val rankEight = Rank.EIGHT
     // when
-    val isLastRank = rankEight == Rank.entries.last()
+    val lastRank = Rank.entries.last()
     // then
-    assert(isLastRank) {
-      "Expected Rank.EIGHT to be the last rank, but it is not."
-    }
+    assertThat(rankEight).isEqualTo(lastRank)
   }
 
   @Test
@@ -35,7 +32,7 @@ class RankTest : AnnotationSpec() {
     // when
     val nextRank = rankOne.up()
     // then
-    assert(nextRank == Rank.FOUR) { "Expected Rank.TWO, but got $nextRank" }
+    assertThat(nextRank).isEqualTo(Rank.FOUR)
   }
 
   @Test
@@ -45,8 +42,6 @@ class RankTest : AnnotationSpec() {
     // when
     val previousRank = rankSix.down()
     // then
-    assert(previousRank == Rank.FIVE) {
-      "Expected Rank.FIVE, but got $previousRank"
-    }
+    assertThat(previousRank).isEqualTo(Rank.FIVE)
   }
 }
