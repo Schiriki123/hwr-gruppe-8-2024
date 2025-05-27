@@ -219,17 +219,14 @@ class CliTest : AnnotationSpec() {
     }.trim()
 
     // then
+    @Suppress("ktlint:standard:max-line-length")
     assertThat(output).isEqualTo(
       "Usage: chess <command> [options]${System.lineSeparator()}" +
         "${System.lineSeparator()}" +
         "Available commands:${System.lineSeparator()}" +
-        "  new game <id> - Create a new game with the given ID." +
-        "${System.lineSeparator()}" +
-        "  show game <id> - " +
-        "Print the current state of the game with the given ID." +
-        "${System.lineSeparator()}" +
-        "  make move <id> <start> <end> - " +
-        "Make a move in the game with the given ID.${System.lineSeparator()}" +
+        "  new game <id> - Create a new game with the given ID.${System.lineSeparator()}" +
+        "  show game <id> - Print the current state of the game with the given ID.${System.lineSeparator()}" +
+        "  make move <id> <start> <end> - Make a move in the game with the given ID.${System.lineSeparator()}" +
         "  list games - List all saved games.${System.lineSeparator()}" +
         "${System.lineSeparator()}" +
         "Options:${System.lineSeparator()}" +
@@ -240,7 +237,7 @@ class CliTest : AnnotationSpec() {
   private class PersistentGameAdapterMock :
     LoadGameInterface,
     SaveGameInterface,
-    LoadAllGamesInterface {
+    LoadAllGamesInterface { // TODO: One interface, FilePersistenceAdapter
     private var game: Game? = null
 
     fun savedGame(): Game? = game
