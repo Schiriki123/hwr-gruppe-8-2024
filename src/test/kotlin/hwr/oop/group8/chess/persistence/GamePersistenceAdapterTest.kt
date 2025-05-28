@@ -2,6 +2,7 @@ package hwr.oop.group8.chess.persistence
 
 import hwr.oop.group8.chess.core.Color
 import hwr.oop.group8.chess.core.Game
+import hwr.oop.group8.chess.core.Rank
 import io.kotest.core.spec.style.AnnotationSpec
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
@@ -31,14 +32,14 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
     val sut = GamePersistenceAdapter(tempFile.toFile())
     val result: FENData = sut.loadGame(1).getFenData()
 
-    assertThat(result.getRank(8)).isEqualTo("rnbqkb1r")
-    assertThat(result.getRank(7)).isEqualTo("pppppppp")
-    assertThat(result.getRank(6)).isEqualTo("8")
-    assertThat(result.getRank(5)).isEqualTo("8")
-    assertThat(result.getRank(4)).isEqualTo("8")
-    assertThat(result.getRank(3)).isEqualTo("8")
-    assertThat(result.getRank(2)).isEqualTo("PPPPPPPP")
-    assertThat(result.getRank(1)).isEqualTo("RNBQKB1R")
+    assertThat(result.getRank(Rank.EIGHT)).isEqualTo("rnbqkb1r")
+    assertThat(result.getRank(Rank.SEVEN)).isEqualTo("pppppppp")
+    assertThat(result.getRank(Rank.SIX)).isEqualTo("8")
+    assertThat(result.getRank(Rank.FIVE)).isEqualTo("8")
+    assertThat(result.getRank(Rank.FOUR)).isEqualTo("8")
+    assertThat(result.getRank(Rank.THREE)).isEqualTo("8")
+    assertThat(result.getRank(Rank.TWO)).isEqualTo("PPPPPPPP")
+    assertThat(result.getRank(Rank.ONE)).isEqualTo("RNBQKB1R")
     assertThat(result.getTurn()).isEqualTo(Color.WHITE)
     assertThat(result.castle).isEqualTo("KQkq")
     assertThat(result.halfmoveClock).isEqualTo(0)
@@ -80,14 +81,14 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
     val sut = GamePersistenceAdapter(tempFile.toFile())
     val result: FENData = sut.loadGame(2).getFenData()
 
-    assertThat(result.getRank(8)).isEqualTo("r3k2r")
-    assertThat(result.getRank(7)).isEqualTo("p1ppqpb1")
-    assertThat(result.getRank(6)).isEqualTo("bn2pnp1")
-    assertThat(result.getRank(5)).isEqualTo("3PN3")
-    assertThat(result.getRank(4)).isEqualTo("1p2P3")
-    assertThat(result.getRank(3)).isEqualTo("2N2Q1p")
-    assertThat(result.getRank(2)).isEqualTo("PPPBBPPP")
-    assertThat(result.getRank(1)).isEqualTo("R3K2R")
+    assertThat(result.getRank(Rank.EIGHT)).isEqualTo("r3k2r")
+    assertThat(result.getRank(Rank.SEVEN)).isEqualTo("p1ppqpb1")
+    assertThat(result.getRank(Rank.SIX)).isEqualTo("bn2pnp1")
+    assertThat(result.getRank(Rank.FIVE)).isEqualTo("3PN3")
+    assertThat(result.getRank(Rank.FOUR)).isEqualTo("1p2P3")
+    assertThat(result.getRank(Rank.THREE)).isEqualTo("2N2Q1p")
+    assertThat(result.getRank(Rank.TWO)).isEqualTo("PPPBBPPP")
+    assertThat(result.getRank(Rank.ONE)).isEqualTo("R3K2R")
     assertThat(result.getTurn()).isEqualTo(Color.BLACK)
     assertThat(result.castle).isEqualTo("KQkq")
     assertThat(result.halfmoveClock).isEqualTo(0)

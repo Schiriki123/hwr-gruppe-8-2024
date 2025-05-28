@@ -1,9 +1,9 @@
 package hwr.oop.group8.chess.core
 
-data class Move(
+data class Move( // TODO: interface
   val from: Position,
   val to: Position,
-  val specialMove: List<Move> = listOf(),
+  val specialMove: List<Move> = listOf(), // TODO: naming, composite pattern
   val promotionChar: Char? = null,
 ) {
   // Exclude promotionChar from equals

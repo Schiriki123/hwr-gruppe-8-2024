@@ -3,8 +3,10 @@ package hwr.oop.group8.chess.piece
 import hwr.oop.group8.chess.core.BoardInspector
 import hwr.oop.group8.chess.core.Color
 import hwr.oop.group8.chess.core.Direction
+import hwr.oop.group8.chess.core.File
 import hwr.oop.group8.chess.core.Move
 import hwr.oop.group8.chess.core.Position
+import hwr.oop.group8.chess.core.Rank
 
 class King(override val color: Color, val boardInspector: BoardInspector) :
   Piece {
@@ -27,12 +29,12 @@ class King(override val color: Color, val boardInspector: BoardInspector) :
 
     if (boardInspector.getCurrentTurn() == color) {
       val castling = boardInspector.isCastlingAllowed(color)
-      val homeRank = if (color == Color.WHITE) 1 else 8
-      val queenCastlePosition = Position('c', homeRank)
-      val kingCastlePosition = Position('g', homeRank)
+      val homeRank = if (color == Color.WHITE) Rank.ONE else Rank.EIGHT
+      val queenCastlePosition = Position(File.C, homeRank)
+      val kingCastlePosition = Position(File.G, homeRank)
 
-      val rookQueenSidePosition = Position('a', homeRank)
-      val rookKingSidePosition = Position('h', homeRank)
+      val rookQueenSidePosition = Position(File.A, homeRank)
+      val rookKingSidePosition = Position(File.H, homeRank)
 
       if (castling.first) {
         validMoves.add(

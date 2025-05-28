@@ -13,20 +13,22 @@ class Board(val fenData: FENData) : BoardInspector {
   val boardLogic: BoardLogic = BoardLogic(this)
 
   init {
-    for (rank in 1..8) {
-      var fileCounter = 'a'
+    for (rank in Rank.entries) {
+      var fileCounter: File? = File.A
       fenData.getRank(rank).forEach { fileChar ->
         if (fileChar.isDigit()) {
           repeat(fileChar.digitToInt()) {
+            checkNotNull(fileCounter) { "File counter should not be null" }
             map.put(Position(fileCounter, rank), Square(null))
-            fileCounter++
+            fileCounter = fileCounter.right()
           }
         } else {
+          checkNotNull(fileCounter) { "File counter should not be null" }
           map.put(
             Position(fileCounter, rank),
             Square(FENData.createPieceOnBoard(fileChar, this)),
           )
-          fileCounter++
+          fileCounter = fileCounter.right()
         }
       }
     }

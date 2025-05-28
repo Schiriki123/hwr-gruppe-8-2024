@@ -3,7 +3,9 @@ package hwr.oop.group8.chess.persistence
 import hwr.oop.group8.chess.core.Board
 import hwr.oop.group8.chess.core.BoardInspector
 import hwr.oop.group8.chess.core.Color
+import hwr.oop.group8.chess.core.File
 import hwr.oop.group8.chess.core.Position
+import hwr.oop.group8.chess.core.Rank
 import hwr.oop.group8.chess.piece.Bishop
 import hwr.oop.group8.chess.piece.King
 import hwr.oop.group8.chess.piece.Knight
@@ -36,10 +38,8 @@ data class FENData(
     require(fullmoveClock > 0) { "Fullmove clock must be positive." }
   }
 
-  fun getRank(rank: Int): String {
-    require(rank in 1..8) { "Rank must be between 1 and 8" }
-    return boardString.split("/")[8 - rank]
-  }
+  fun getRank(rank: Rank): String =
+    boardString.split("/").reversed()[rank.value]
 
   fun getTurn(): Color = if (turn == 'w') Color.WHITE else Color.BLACK
 
@@ -67,8 +67,8 @@ data class FENData(
   fun generateFENBoardString(board: Board): String {
     val builder = StringBuilder()
     var lastPiece = 0
-    for (rank in 8 downTo 1) {
-      for (file in 'a'..'h') {
+    for (rank in Rank.entries.reversed()) {
+      for (file in File.entries) {
         val piece = board.getMap().getValue(Position(file, rank)).getPiece()
         if (piece != null) {
           if (lastPiece != 0) {

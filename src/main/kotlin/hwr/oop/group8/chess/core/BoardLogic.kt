@@ -5,26 +5,26 @@ import hwr.oop.group8.chess.piece.Piece
 
 class BoardLogic(val board: Board) {
   fun isCastlingAllowed(color: Color): Pair<Boolean, Boolean> {
-    val homeRank = if (color == Color.WHITE) 1 else 8
+    val homeRank = if (color == Color.WHITE) Rank.ONE else Rank.EIGHT
 
     if (board.isCheck()) {
       return Pair(false, false)
     }
     val kingSide: Boolean =
-      board.isSquareEmpty(Position('f', homeRank)) &&
-        board.isSquareEmpty(Position('g', homeRank)) &&
+      board.isSquareEmpty(Position(File.F, homeRank)) &&
+        board.isSquareEmpty(Position(File.G, homeRank)) &&
         board.castle.contains(if (color == Color.WHITE) "K" else "k") &&
-        !board.isPositionThreatened(color, Position('f', homeRank)) &&
-        !board.isPositionThreatened(color, Position('g', homeRank))
+        !board.isPositionThreatened(color, Position(File.F, homeRank)) &&
+        !board.isPositionThreatened(color, Position(File.G, homeRank))
 
     // Queen side castle
     val queenSide: Boolean =
-      board.isSquareEmpty(Position('d', homeRank)) &&
-        board.isSquareEmpty(Position('c', homeRank)) &&
-        board.isSquareEmpty(Position('b', homeRank)) &&
+      board.isSquareEmpty(Position(File.D, homeRank)) &&
+        board.isSquareEmpty(Position(File.C, homeRank)) &&
+        board.isSquareEmpty(Position(File.B, homeRank)) &&
         board.castle.contains(if (color == Color.WHITE) "Q" else "q") &&
-        !board.isPositionThreatened(color, Position('d', homeRank)) &&
-        !board.isPositionThreatened(color, Position('c', homeRank))
+        !board.isPositionThreatened(color, Position(File.D, homeRank)) &&
+        !board.isPositionThreatened(color, Position(File.C, homeRank))
     return Pair(queenSide, kingSide)
   }
 
@@ -32,10 +32,10 @@ class BoardLogic(val board: Board) {
     if (board.castle.isEmpty()) {
       return
     }
-    val homeRank = if (board.turn == Color.WHITE) 1 else 8
-    val kingPosition = board.getPieceAt(Position('e', homeRank))
-    val rookPositionKingSide = board.getPieceAt(Position('h', homeRank))
-    val rookPositionQueenSide = board.getPieceAt(Position('a', homeRank))
+    val homeRank = if (board.turn == Color.WHITE) Rank.ONE else Rank.EIGHT
+    val kingPosition = board.getPieceAt(Position(File.E, homeRank))
+    val rookPositionKingSide = board.getPieceAt(Position(File.H, homeRank))
+    val rookPositionQueenSide = board.getPieceAt(Position(File.A, homeRank))
     val kingChar = if (board.turn == Color.WHITE) "K" else "k"
     val queenChar = if (board.turn == Color.WHITE) "Q" else "q"
 

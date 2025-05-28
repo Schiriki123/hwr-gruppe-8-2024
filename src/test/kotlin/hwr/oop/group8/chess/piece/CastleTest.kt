@@ -2,8 +2,10 @@ package hwr.oop.group8.chess.piece
 
 import hwr.oop.group8.chess.core.Board
 import hwr.oop.group8.chess.core.Color
+import hwr.oop.group8.chess.core.File
 import hwr.oop.group8.chess.core.Move
 import hwr.oop.group8.chess.core.Position
+import hwr.oop.group8.chess.core.Rank
 import hwr.oop.group8.chess.persistence.FENData
 import io.kotest.core.spec.style.AnnotationSpec
 import org.assertj.core.api.Assertions.assertThat
@@ -44,7 +46,7 @@ class CastleTest : AnnotationSpec() {
   @Test
   fun `Move king side tower should remove K from castle`() {
     val board = Board(FENData("r3k2r/8/8/8/8/8/8/R3K2R"))
-    val move = Move(Position('h', 1), Position('g', 1))
+    val move = Move(Position(File.H, Rank.ONE), Position(File.G, Rank.ONE))
     board.makeMove(move)
     assertThat(
       board.generateFENBoardString(),
@@ -55,7 +57,7 @@ class CastleTest : AnnotationSpec() {
   @Test
   fun `Move queen side tower should remove Q from castle`() {
     val board = Board(FENData("r3k2r/8/8/8/8/8/8/R3K2R"))
-    val move = Move(Position('a', 1), Position('b', 1))
+    val move = Move(Position(File.A, Rank.ONE), Position(File.B, Rank.ONE))
     board.makeMove(move)
     assertThat(
       board.generateFENBoardString(),
@@ -69,12 +71,12 @@ class CastleTest : AnnotationSpec() {
     val board = Board(FENData("8/8/8/8/8/8/8/R3K2R"))
     // King side castle
     val move = Move(
-      Position('e', 1),
-      Position('g', 1),
+      Position(File.E, Rank.ONE),
+      Position(File.G, Rank.ONE),
       listOf(
         Move(
-          Position('h', 1),
-          Position('f', 1),
+          Position(File.H, Rank.ONE),
+          Position(File.F, Rank.ONE),
         ),
       ),
     )
@@ -88,12 +90,12 @@ class CastleTest : AnnotationSpec() {
   fun `Castle queen side for white`() {
     val board = Board(FENData("8/8/8/8/8/8/8/R3K2R"))
     val move = Move(
-      Position('e', 1),
-      Position('c', 1),
+      Position(File.E, Rank.ONE),
+      Position(File.C, Rank.ONE),
       listOf(
         Move(
-          Position('a', 1),
-          Position('d', 1),
+          Position(File.A, Rank.ONE),
+          Position(File.D, Rank.ONE),
         ),
       ),
     )
@@ -108,12 +110,12 @@ class CastleTest : AnnotationSpec() {
     val board = Board(FENData("r3k2r/8/8/8/8/8/8/8", 'b'))
     // King side castle
     val move = Move(
-      Position('e', 8),
-      Position('g', 8),
+      Position(File.E, Rank.EIGHT),
+      Position(File.G, Rank.EIGHT),
       listOf(
         Move(
-          Position('h', 8),
-          Position('f', 8),
+          Position(File.H, Rank.EIGHT),
+          Position(File.F, Rank.EIGHT),
         ),
       ),
     )
@@ -127,12 +129,12 @@ class CastleTest : AnnotationSpec() {
   fun `Castle queen side for black`() {
     val board = Board(FENData("r3k2r/8/8/8/8/8/8/8", 'b'))
     val move = Move(
-      Position('e', 8),
-      Position('c', 8),
+      Position(File.E, Rank.EIGHT),
+      Position(File.C, Rank.EIGHT),
       listOf(
         Move(
-          Position('a', 8),
-          Position('d', 8),
+          Position(File.A, Rank.EIGHT),
+          Position(File.D, Rank.EIGHT),
         ),
       ),
     )
@@ -145,7 +147,7 @@ class CastleTest : AnnotationSpec() {
   @Test
   fun `Invalid castle with movement through check, expecting exception`() {
     val board = Board(FENData("8/8/5r2/8/8/8/8/R3K2R"))
-    val move = Move(Position('e', 1), Position('g', 1))
+    val move = Move(Position(File.E, Rank.ONE), Position(File.G, Rank.ONE))
     assertThatThrownBy {
       board.makeMove(move)
     }
@@ -155,10 +157,15 @@ class CastleTest : AnnotationSpec() {
   fun `Check that castling is not allowed if piece was moved`() {
     val board = Board(FENData("8/k7/8/8/8/8/8/R3K2R", 'w'))
     // Move the rook
-    board.makeMove(Move(Position('a', 1), Position('a', 2)))
+    board.makeMove(Move(Position(File.A, Rank.ONE), Position(File.A, Rank.TWO)))
     // Move opponent piece
-    board.makeMove(Move(Position('a', 7), Position('b', 7)))
-    val startPosition = Position('e', 1)
+    board.makeMove(
+      Move(
+        Position(File.A, Rank.SEVEN),
+        Position(File.B, Rank.SEVEN),
+      ),
+    )
+    val startPosition = Position(File.E, Rank.ONE)
     val king = board.getPieceAt(startPosition) as King
     val possibleMoves = king.getValidMoveDestinations()
 
@@ -166,15 +173,15 @@ class CastleTest : AnnotationSpec() {
     assertThat(
       possibleMoves,
     ).containsExactlyInAnyOrder(
-      Move(startPosition, Position('d', 1)),
-      Move(startPosition, Position('d', 2)),
-      Move(startPosition, Position('e', 2)),
-      Move(startPosition, Position('f', 1)),
-      Move(startPosition, Position('f', 2)),
+      Move(startPosition, Position(File.D, Rank.ONE)),
+      Move(startPosition, Position(File.D, Rank.TWO)),
+      Move(startPosition, Position(File.E, Rank.TWO)),
+      Move(startPosition, Position(File.F, Rank.ONE)),
+      Move(startPosition, Position(File.F, Rank.TWO)),
       Move(
         startPosition,
-        Position('g', 1),
-        listOf(Move(Position('h', 1), Position('f', 1))),
+        Position(File.G, Rank.ONE),
+        listOf(Move(Position(File.H, Rank.ONE), Position(File.F, Rank.ONE))),
       ),
     )
   }
@@ -182,7 +189,7 @@ class CastleTest : AnnotationSpec() {
   @Test
   fun `Try to castle from chess`() {
     val board = Board(FENData("8/1k6/4r3/8/8/8/8/R3K2R"))
-    val move = Move(Position('e', 1), Position('g', 1))
+    val move = Move(Position(File.E, Rank.ONE), Position(File.G, Rank.ONE))
     assertThatThrownBy {
       board.makeMove(move)
     }.message().isEqualTo("Invalid move for piece King from e1 to g1")
@@ -195,7 +202,7 @@ class CastleTest : AnnotationSpec() {
   @Test
   fun `Try to castle with blocked path king side`() {
     val board = Board(FENData("8/8/8/8/8/8/8/R3KB1R"))
-    val move = Move(Position('e', 1), Position('g', 1))
+    val move = Move(Position(File.E, Rank.ONE), Position(File.G, Rank.ONE))
     assertThatThrownBy {
       board.makeMove(move)
     }.message().isEqualTo("Invalid move for piece King from e1 to g1")
@@ -208,7 +215,7 @@ class CastleTest : AnnotationSpec() {
   @Test
   fun `Try to castle with blocked path queen side`() {
     val board = Board(FENData("8/8/8/8/8/8/8/RN2K2R"))
-    val move = Move(Position('e', 1), Position('c', 1))
+    val move = Move(Position(File.E, Rank.ONE), Position(File.C, Rank.ONE))
     assertThatThrownBy {
       board.makeMove(move)
     }.message().isEqualTo("Invalid move for piece King from e1 to c1")

@@ -19,11 +19,11 @@ class BoardTest : AnnotationSpec() {
   fun `empty board creation, return standard fen notation-string`() {
     val board = Board(FENData("K7/8/8/8/8/8/8/8", 'w', ""))
     val capturedPieces = CapturedPieces(board.getMap())
-    for (rank in 8 downTo 1) {
-      for (file in 'a'..'h') {
+    for (rank in Rank.entries.reversed()) {
+      for (file in File.entries) {
         val position = Position(file, rank)
         val square = board.getSquare(position)
-        if (rank == 8 && file == 'a') {
+        if (rank == Rank.EIGHT && file == File.A) {
           square.getPiece().shouldBeInstanceOf<King>()
         } else {
           assertThat(square.getPiece()).isNull()
@@ -43,8 +43,8 @@ class BoardTest : AnnotationSpec() {
     val board = Board(FENData("K7/8/8/8/8/8/8/8", 'w', ""))
     val map = board.getMap()
 
-    for (rank in 1..8) {
-      for (file in 'a'..'h') {
+    for (rank in Rank.entries) {
+      for (file in File.entries) {
         val position = Position(file, rank)
         assertThat(map[position]).isNotNull
       }
@@ -56,80 +56,80 @@ class BoardTest : AnnotationSpec() {
   fun `create board with default setup, return board with start arrangement`() {
     val board = Board(FENData())
     val capturedPieces = CapturedPieces(board.getMap())
-    board.getSquare(Position('a', 1)).getPiece()
+    board.getSquare(Position(File.A, Rank.ONE)).getPiece()
       .shouldBeInstanceOf<Rook>().color.shouldBe(
         Color.WHITE,
       )
-    board.getSquare(Position('b', 1)).getPiece()
+    board.getSquare(Position(File.B, Rank.ONE)).getPiece()
       .shouldBeInstanceOf<Knight>().color.shouldBe(
         Color.WHITE,
       )
-    board.getSquare(Position('c', 1)).getPiece()
+    board.getSquare(Position(File.C, Rank.ONE)).getPiece()
       .shouldBeInstanceOf<Bishop>().color.shouldBe(
         Color.WHITE,
       )
-    board.getSquare(Position('d', 1)).getPiece()
+    board.getSquare(Position(File.D, Rank.ONE)).getPiece()
       .shouldBeInstanceOf<Queen>().color.shouldBe(
         Color.WHITE,
       )
-    board.getSquare(Position('e', 1)).getPiece()
+    board.getSquare(Position(File.E, Rank.ONE)).getPiece()
       .shouldBeInstanceOf<King>().color.shouldBe(
         Color.WHITE,
       )
-    board.getSquare(Position('f', 1)).getPiece()
+    board.getSquare(Position(File.F, Rank.ONE)).getPiece()
       .shouldBeInstanceOf<Bishop>().color.shouldBe(
         Color.WHITE,
       )
-    board.getSquare(Position('g', 1)).getPiece()
+    board.getSquare(Position(File.G, Rank.ONE)).getPiece()
       .shouldBeInstanceOf<Knight>().color.shouldBe(
         Color.WHITE,
       )
-    board.getSquare(Position('h', 1)).getPiece()
+    board.getSquare(Position(File.H, Rank.ONE)).getPiece()
       .shouldBeInstanceOf<Rook>().color.shouldBe(
         Color.WHITE,
       )
-    for (i in 'a'..'h') {
-      board.getSquare(Position(i, 2)).getPiece()
+    for (i in File.entries) {
+      board.getSquare(Position(i, Rank.TWO)).getPiece()
         .shouldBeInstanceOf<Pawn>().color.shouldBe(
           Color.WHITE,
         )
     }
 
     // Black pieces
-    board.getSquare(Position('a', 8)).getPiece()
+    board.getSquare(Position(File.A, Rank.EIGHT)).getPiece()
       .shouldBeInstanceOf<Rook>().color.shouldBe(
         Color.BLACK,
       )
-    board.getSquare(Position('b', 8)).getPiece()
+    board.getSquare(Position(File.B, Rank.EIGHT)).getPiece()
       .shouldBeInstanceOf<Knight>().color.shouldBe(
         Color.BLACK,
       )
-    board.getSquare(Position('c', 8)).getPiece()
+    board.getSquare(Position(File.C, Rank.EIGHT)).getPiece()
       .shouldBeInstanceOf<Bishop>().color.shouldBe(
         Color.BLACK,
       )
-    board.getSquare(Position('d', 8)).getPiece()
+    board.getSquare(Position(File.D, Rank.EIGHT)).getPiece()
       .shouldBeInstanceOf<Queen>().color.shouldBe(
         Color.BLACK,
       )
-    board.getSquare(Position('e', 8)).getPiece()
+    board.getSquare(Position(File.E, Rank.EIGHT)).getPiece()
       .shouldBeInstanceOf<King>().color.shouldBe(
         Color.BLACK,
       )
-    board.getSquare(Position('f', 8)).getPiece()
+    board.getSquare(Position(File.F, Rank.EIGHT)).getPiece()
       .shouldBeInstanceOf<Bishop>().color.shouldBe(
         Color.BLACK,
       )
-    board.getSquare(Position('g', 8)).getPiece()
+    board.getSquare(Position(File.G, Rank.EIGHT)).getPiece()
       .shouldBeInstanceOf<Knight>().color.shouldBe(
         Color.BLACK,
       )
-    board.getSquare(Position('h', 8)).getPiece()
+    board.getSquare(Position(File.H, Rank.EIGHT)).getPiece()
       .shouldBeInstanceOf<Rook>().color.shouldBe(
         Color.BLACK,
       )
-    for (i in 'a'..'h') {
-      board.getSquare(Position(i, 7)).getPiece()
+    for (i in File.entries) {
+      board.getSquare(Position(i, Rank.SEVEN)).getPiece()
         .shouldBeInstanceOf<Pawn>().color.shouldBe(
           Color.BLACK,
         )
@@ -151,32 +151,32 @@ class BoardTest : AnnotationSpec() {
   @Test
   fun `custom board initialization`() {
     val board = Board(FENData("k7/2R4B/8/8/1q6/8/8/2Q4N", 'b', "", "-", 4, 25))
-    board.getSquare(Position('b', 4)).getPiece()
+    board.getSquare(Position(File.B, Rank.FOUR)).getPiece()
       .shouldBeInstanceOf<Queen>().color.shouldBe(
         Color.BLACK,
       )
 
-    board.getSquare(Position('a', 8)).getPiece()
+    board.getSquare(Position(File.A, Rank.EIGHT)).getPiece()
       .shouldBeInstanceOf<King>().color.shouldBe(
         Color.BLACK,
       )
 
-    board.getSquare(Position('h', 7)).getPiece()
+    board.getSquare(Position(File.H, Rank.SEVEN)).getPiece()
       .shouldBeInstanceOf<Bishop>().color.shouldBe(
         Color.WHITE,
       )
 
-    board.getSquare(Position('c', 7)).getPiece()
+    board.getSquare(Position(File.C, Rank.SEVEN)).getPiece()
       .shouldBeInstanceOf<Rook>().color.shouldBe(
         Color.WHITE,
       )
 
-    board.getSquare(Position('c', 1)).getPiece()
+    board.getSquare(Position(File.C, Rank.ONE)).getPiece()
       .shouldBeInstanceOf<Queen>().color.shouldBe(
         Color.WHITE,
       )
 
-    board.getSquare(Position('h', 1)).getPiece()
+    board.getSquare(Position(File.H, Rank.ONE)).getPiece()
       .shouldBeInstanceOf<Knight>().color.shouldBe(
         Color.WHITE,
       )
@@ -191,8 +191,8 @@ class BoardTest : AnnotationSpec() {
   fun `halfmoveclock should be 0 after capture`() {
     val board =
       Board(FENData("8/8/8/8/8/7r/7R/k7", 'b', "", halfmoveClock = 12))
-    val startPosition = Position('h', 3)
-    val endPosition = Position('h', 2)
+    val startPosition = Position(File.H, Rank.THREE)
+    val endPosition = Position(File.H, Rank.TWO)
     val testMove = Move(startPosition, endPosition)
     board.makeMove(testMove)
     assertThat(board.halfmoveClock).isEqualTo(0)
@@ -202,8 +202,8 @@ class BoardTest : AnnotationSpec() {
   fun `reset halfmoveclock after pawn move, expecting halfmoveclock to be 0`() {
     val board =
       Board(FENData("8/8/8/8/8/1p6/8/k7", 'b', "", halfmoveClock = 12))
-    val startPosition = Position('b', 3)
-    val endPosition = Position('b', 2)
+    val startPosition = Position(File.B, Rank.THREE)
+    val endPosition = Position(File.B, Rank.TWO)
     val testMove = Move(startPosition, endPosition)
     board.makeMove(testMove)
     assertThat(board.halfmoveClock).isEqualTo(0)
@@ -213,8 +213,8 @@ class BoardTest : AnnotationSpec() {
   fun `increase halfmoveclock expecting halfmoveclock to be 13 `() {
     val board =
       Board(FENData("r7/8/8/8/8/8/8/k7", 'b', "", halfmoveClock = 12))
-    val startPosition = Position('a', 8)
-    val endPosition = Position('a', 7)
+    val startPosition = Position(File.A, Rank.EIGHT)
+    val endPosition = Position(File.A, Rank.SEVEN)
     val testMove = Move(startPosition, endPosition)
     board.makeMove(testMove)
     assertThat(board.halfmoveClock).isEqualTo(13)
@@ -224,8 +224,8 @@ class BoardTest : AnnotationSpec() {
   fun `increase fullmove clock expecting fullmove to be 13 `() {
     val board =
       Board(FENData("r7/8/8/8/8/8/8/k7", 'b', "", fullmoveClock = 12))
-    val startPosition = Position('a', 8)
-    val endPosition = Position('a', 7)
+    val startPosition = Position(File.A, Rank.EIGHT)
+    val endPosition = Position(File.A, Rank.SEVEN)
     val testMove = Move(startPosition, endPosition)
     board.makeMove(testMove)
     assertThat(board.fullmoveClock).isEqualTo(13)
@@ -235,8 +235,8 @@ class BoardTest : AnnotationSpec() {
   fun `do not increase fullmove clock expecting fullmove to be 12 `() {
     val board =
       Board(FENData("R7/8/8/8/8/8/8/K7", 'w', "", fullmoveClock = 12))
-    val startPosition = Position('a', 8)
-    val endPosition = Position('a', 7)
+    val startPosition = Position(File.A, Rank.EIGHT)
+    val endPosition = Position(File.A, Rank.SEVEN)
     val testMove = Move(startPosition, endPosition)
     board.makeMove(testMove)
     assertThat(board.fullmoveClock).isEqualTo(12)
@@ -245,8 +245,8 @@ class BoardTest : AnnotationSpec() {
   @Test
   fun `Piece movement, rook move e4 to e8 + no exception thrown `() {
     val board = Board(FENData("8/8/8/8/4R3/8/8/K7", 'w', ""))
-    val startPosition = Position('e', 4)
-    val endPosition = Position('e', 8)
+    val startPosition = Position(File.E, Rank.FOUR)
+    val endPosition = Position(File.E, Rank.EIGHT)
     val testMove = Move(startPosition, endPosition)
 
     shouldNotThrowAny {
@@ -260,7 +260,7 @@ class BoardTest : AnnotationSpec() {
       Board(FENData("rnbqkbnr/pppppppp/8/8/8/7/PPPPPPPP/RNBQKBNR"))
     }.message().isEqualTo("Board must have exactly 64 squares.")
     assertThatThrownBy { Board(FENData("8/8/8/8/8/8/8/8p")) }.message()
-      .isEqualTo("File must be between 'a' and 'h'")
+      .isEqualTo("File counter should not be null")
   }
 
   @Test
@@ -282,8 +282,8 @@ class BoardTest : AnnotationSpec() {
 
   @Test
   fun `Piece moves on ally, exception expected`() {
-    val board = Board(FENData("K7/8/8/8/8/P7/8/R7"))
-    val move = Move(Position('a', 1), Position('a', 3))
+    val board = Board(FENData("K7/8/8/8/8/P7/8/R7", castle = ""))
+    val move = Move(Position(File.A, Rank.ONE), Position(File.A, Rank.THREE))
     assertThatThrownBy { board.makeMove(move) }.message()
       .isEqualTo("Cannot move to a square occupied by the same color")
     assertThat(board.generateFENBoardString()).isEqualTo("K7/8/8/8/8/P7/8/R7")
@@ -291,9 +291,9 @@ class BoardTest : AnnotationSpec() {
 
   @Test
   fun `Capture Piece, rook captures pawn, expecting valid move`() {
-    val board = Board(FENData("K7/8/8/8/8/p7/8/R7"))
+    val board = Board(FENData("K7/8/8/8/8/p7/8/R7", castle = ""))
     val capturedPieces = CapturedPieces(board.getMap())
-    val move = Move(Position('a', 1), Position('a', 3))
+    val move = Move(Position(File.A, Rank.ONE), Position(File.A, Rank.THREE))
     assertThat(
       capturedPieces.getCapturedPieces(),
     ).isEqualTo(

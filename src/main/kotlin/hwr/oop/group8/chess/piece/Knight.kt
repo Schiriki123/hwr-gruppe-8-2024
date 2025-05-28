@@ -2,8 +2,10 @@ package hwr.oop.group8.chess.piece
 
 import hwr.oop.group8.chess.core.BoardInspector
 import hwr.oop.group8.chess.core.Color
+import hwr.oop.group8.chess.core.File
 import hwr.oop.group8.chess.core.Move
 import hwr.oop.group8.chess.core.Position
+import hwr.oop.group8.chess.core.Rank
 
 class Knight(override val color: Color, val boardInspector: BoardInspector) :
   Piece {
@@ -22,9 +24,11 @@ class Knight(override val color: Color, val boardInspector: BoardInspector) :
       Pair(-1, -2),
     )
     for (pair in possibleDestination) {
-      val newFile = currentPosition.file + pair.first
-      val newRank = currentPosition.rank + pair.second
-      if (newFile in 'a'..'h' && newRank in 1..8) {
+      val newFile: File? =
+        File.entries.getOrNull(currentPosition.file.value + pair.first)
+      val newRank: Rank? =
+        Rank.entries.getOrNull(currentPosition.rank.value + pair.second)
+      if (newFile != null && newRank != null) {
         val nextPiece = boardInspector.getPieceAt(Position(newFile, newRank))
         // Check if the next position is empty or occupied by an opponent's piece
         if (nextPiece == null || nextPiece.color != color) {

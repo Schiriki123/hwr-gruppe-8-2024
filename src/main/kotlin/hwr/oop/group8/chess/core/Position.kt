@@ -1,17 +1,14 @@
 package hwr.oop.group8.chess.core
 
-data class Position(val file: Char, val rank: Int) {
-  init {
-    require(file in 'a'..'h') { "File must be between 'a' and 'h'" }
-    require(rank in 1..8) { "Rank must be between 1 and 8" }
-  }
-
+data class Position(val file: File, val rank: Rank) {
   override fun toString(): String = "$file$rank"
 
-  fun nextPosition(direction: Direction): Position =
-    Position(file + direction.fileShift, rank + direction.rankShift)
+  fun nextPosition(direction: Direction): Position = Position(
+    File.entries[file.value + direction.fileShift],
+    Rank.entries[rank.value + direction.rankShift],
+  )
 
   fun hasNextPosition(direction: Direction): Boolean =
-    file + direction.fileShift in 'a'..'h' &&
-      rank + direction.rankShift in 1..8
+    File.entries.getOrNull(file.value + direction.fileShift) != null &&
+      Rank.entries.getOrNull(rank.value + direction.rankShift) != null
 }

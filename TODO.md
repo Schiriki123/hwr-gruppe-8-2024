@@ -15,3 +15,4 @@
 - [ ] Elo rating
 - [ ] Resign (Aufgeben)
 - [ ] Draw by agreement
+- [ ] Refactor to subpackages

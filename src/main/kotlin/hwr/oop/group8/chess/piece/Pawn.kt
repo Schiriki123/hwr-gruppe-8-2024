@@ -5,6 +5,7 @@ import hwr.oop.group8.chess.core.Color
 import hwr.oop.group8.chess.core.Direction
 import hwr.oop.group8.chess.core.Move
 import hwr.oop.group8.chess.core.Position
+import hwr.oop.group8.chess.core.Rank
 
 class Pawn(override val color: Color, val boardInspector: BoardInspector) :
   Piece {
@@ -13,15 +14,15 @@ class Pawn(override val color: Color, val boardInspector: BoardInspector) :
   override fun getValidMoveDestinations(): Set<Move> {
     val validMoves: MutableSet<Move> = mutableSetOf()
     val forwardDirection: Direction
-    val startRank: Int
+    val startRank: Rank
     val currentPosition = boardInspector.findPositionOfPiece(this)
 
     if (color == Color.WHITE) {
       forwardDirection = Direction.TOP
-      startRank = 2
+      startRank = Rank.TWO
     } else {
       forwardDirection = Direction.BOTTOM
-      startRank = 7
+      startRank = Rank.SEVEN
     }
 
     // Check for straight move
@@ -54,7 +55,7 @@ class Pawn(override val color: Color, val boardInspector: BoardInspector) :
   }
 
   override fun moveCallback(move: Move) {
-    if (move.to.rank == 8 || move.to.rank == 1) {
+    if (move.to.rank == Rank.EIGHT || move.to.rank == Rank.ONE) {
       requireNotNull(move.promotionChar)
       boardInspector.getSquare(move.to).setPiece(promotion(move.promotionChar))
     }
