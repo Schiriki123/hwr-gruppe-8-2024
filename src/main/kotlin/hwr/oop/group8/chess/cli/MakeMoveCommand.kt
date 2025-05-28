@@ -15,7 +15,11 @@ class MakeMoveCommand(
     val thirdArgIsNumber = args[2].toIntOrNull() != null
     val fourthArgIsValid = args[3].matches(Regex("[a-h][1-8]"))
     val fifthArgIsValid = args[4].matches(Regex("[a-h][1-8]"))
-    return firstTwoArgsMatch && thirdArgIsNumber && fourthArgIsValid && fifthArgIsValid
+
+    return firstTwoArgsMatch &&
+      thirdArgIsNumber &&
+      fourthArgIsValid &&
+      fifthArgIsValid
   }
 
   override fun handle(args: List<String>) {

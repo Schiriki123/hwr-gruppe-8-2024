@@ -2,14 +2,11 @@ package hwr.oop.group8.chess.piece
 
 import hwr.oop.group8.chess.core.BoardInspector
 import hwr.oop.group8.chess.core.Color
-import hwr.oop.group8.chess.core.Position
 import hwr.oop.group8.chess.core.Move
+import hwr.oop.group8.chess.core.Position
 
-
-class Knight(
-  override val color: Color,
-  val boardInspector: BoardInspector,
-) : Piece {
+class Knight(override val color: Color, val boardInspector: BoardInspector) :
+  Piece {
   override fun getValidMoveDestinations(): Set<Move> {
     val validDestinations: MutableSet<Move> = mutableSetOf()
     val currentPosition = boardInspector.findPositionOfPiece(this)
@@ -22,7 +19,7 @@ class Knight(
       Pair(1, 2),
       Pair(1, -2),
       Pair(-1, 2),
-      Pair(-1, -2)
+      Pair(-1, -2),
     )
     for (pair in possibleDestination) {
       val newFile = currentPosition.file + pair.first
@@ -34,8 +31,8 @@ class Knight(
           validDestinations.add(
             Move(
               currentPosition,
-              Position(newFile, newRank)
-            )
+              Position(newFile, newRank),
+            ),
           )
         }
       }
@@ -45,10 +42,8 @@ class Knight(
 
   override fun moveCallback(move: Move) {}
 
-  override fun getChar(): Char {
-    return when (color) {
-      Color.WHITE -> 'N'
-      Color.BLACK -> 'n'
-    }
+  override fun getChar(): Char = when (color) {
+    Color.WHITE -> 'N'
+    Color.BLACK -> 'n'
   }
 }

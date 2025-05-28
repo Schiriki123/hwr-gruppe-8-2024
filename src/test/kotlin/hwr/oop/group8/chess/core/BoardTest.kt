@@ -1,7 +1,12 @@
 package hwr.oop.group8.chess.core
 
 import hwr.oop.group8.chess.persistence.FENData
-import hwr.oop.group8.chess.piece.*
+import hwr.oop.group8.chess.piece.Bishop
+import hwr.oop.group8.chess.piece.King
+import hwr.oop.group8.chess.piece.Knight
+import hwr.oop.group8.chess.piece.Pawn
+import hwr.oop.group8.chess.piece.Queen
+import hwr.oop.group8.chess.piece.Rook
 import io.kotest.assertions.throwables.shouldNotThrowAny
 import io.kotest.core.spec.style.AnnotationSpec
 import io.kotest.matchers.shouldBe
@@ -26,7 +31,11 @@ class BoardTest : AnnotationSpec() {
       }
     }
     assertThat(board.generateFENBoardString()).isEqualTo("K7/8/8/8/8/8/8/8")
-    assertThat(capturedPieces.getCapturedPieces()).isEqualTo("White's captures: rnbqkbnrpppppppp${System.lineSeparator()}Black's captures: RNBQBNRPPPPPPPP")
+    assertThat(
+      capturedPieces.getCapturedPieces(),
+    ).isEqualTo(
+      "White's captures: rnbqkbnrpppppppp${System.lineSeparator()}Black's captures: RNBQBNRPPPPPPPP",
+    )
   }
 
   @Test
@@ -49,80 +58,80 @@ class BoardTest : AnnotationSpec() {
     val capturedPieces = CapturedPieces(board.getMap())
     board.getSquare(Position('a', 1)).getPiece()
       .shouldBeInstanceOf<Rook>().color.shouldBe(
-        Color.WHITE
+        Color.WHITE,
       )
     board.getSquare(Position('b', 1)).getPiece()
       .shouldBeInstanceOf<Knight>().color.shouldBe(
-        Color.WHITE
+        Color.WHITE,
       )
     board.getSquare(Position('c', 1)).getPiece()
       .shouldBeInstanceOf<Bishop>().color.shouldBe(
-        Color.WHITE
+        Color.WHITE,
       )
     board.getSquare(Position('d', 1)).getPiece()
       .shouldBeInstanceOf<Queen>().color.shouldBe(
-        Color.WHITE
+        Color.WHITE,
       )
     board.getSquare(Position('e', 1)).getPiece()
       .shouldBeInstanceOf<King>().color.shouldBe(
-        Color.WHITE
+        Color.WHITE,
       )
     board.getSquare(Position('f', 1)).getPiece()
       .shouldBeInstanceOf<Bishop>().color.shouldBe(
-        Color.WHITE
+        Color.WHITE,
       )
     board.getSquare(Position('g', 1)).getPiece()
       .shouldBeInstanceOf<Knight>().color.shouldBe(
-        Color.WHITE
+        Color.WHITE,
       )
     board.getSquare(Position('h', 1)).getPiece()
       .shouldBeInstanceOf<Rook>().color.shouldBe(
-        Color.WHITE
+        Color.WHITE,
       )
     for (i in 'a'..'h') {
       board.getSquare(Position(i, 2)).getPiece()
         .shouldBeInstanceOf<Pawn>().color.shouldBe(
-          Color.WHITE
+          Color.WHITE,
         )
     }
 
     // Black pieces
     board.getSquare(Position('a', 8)).getPiece()
       .shouldBeInstanceOf<Rook>().color.shouldBe(
-        Color.BLACK
+        Color.BLACK,
       )
     board.getSquare(Position('b', 8)).getPiece()
       .shouldBeInstanceOf<Knight>().color.shouldBe(
-        Color.BLACK
+        Color.BLACK,
       )
     board.getSquare(Position('c', 8)).getPiece()
       .shouldBeInstanceOf<Bishop>().color.shouldBe(
-        Color.BLACK
+        Color.BLACK,
       )
     board.getSquare(Position('d', 8)).getPiece()
       .shouldBeInstanceOf<Queen>().color.shouldBe(
-        Color.BLACK
+        Color.BLACK,
       )
     board.getSquare(Position('e', 8)).getPiece()
       .shouldBeInstanceOf<King>().color.shouldBe(
-        Color.BLACK
+        Color.BLACK,
       )
     board.getSquare(Position('f', 8)).getPiece()
       .shouldBeInstanceOf<Bishop>().color.shouldBe(
-        Color.BLACK
+        Color.BLACK,
       )
     board.getSquare(Position('g', 8)).getPiece()
       .shouldBeInstanceOf<Knight>().color.shouldBe(
-        Color.BLACK
+        Color.BLACK,
       )
     board.getSquare(Position('h', 8)).getPiece()
       .shouldBeInstanceOf<Rook>().color.shouldBe(
-        Color.BLACK
+        Color.BLACK,
       )
     for (i in 'a'..'h') {
       board.getSquare(Position(i, 7)).getPiece()
         .shouldBeInstanceOf<Pawn>().color.shouldBe(
-          Color.BLACK
+          Color.BLACK,
         )
     }
 
@@ -132,7 +141,11 @@ class BoardTest : AnnotationSpec() {
     assertThat(board.halfmoveClock).isEqualTo(0)
     assertThat(board.fullmoveClock).isEqualTo(1)
 
-    assertThat(capturedPieces.getCapturedPieces()).isEqualTo("White's captures: ${System.lineSeparator()}Black's captures: ")
+    assertThat(
+      capturedPieces.getCapturedPieces(),
+    ).isEqualTo(
+      "White's captures: ${System.lineSeparator()}Black's captures: ",
+    )
   }
 
   @Test
@@ -140,32 +153,32 @@ class BoardTest : AnnotationSpec() {
     val board = Board(FENData("k7/2R4B/8/8/1q6/8/8/2Q4N", 'b', "", "-", 4, 25))
     board.getSquare(Position('b', 4)).getPiece()
       .shouldBeInstanceOf<Queen>().color.shouldBe(
-        Color.BLACK
+        Color.BLACK,
       )
 
     board.getSquare(Position('a', 8)).getPiece()
       .shouldBeInstanceOf<King>().color.shouldBe(
-        Color.BLACK
+        Color.BLACK,
       )
 
     board.getSquare(Position('h', 7)).getPiece()
       .shouldBeInstanceOf<Bishop>().color.shouldBe(
-        Color.WHITE
+        Color.WHITE,
       )
 
     board.getSquare(Position('c', 7)).getPiece()
       .shouldBeInstanceOf<Rook>().color.shouldBe(
-        Color.WHITE
+        Color.WHITE,
       )
 
     board.getSquare(Position('c', 1)).getPiece()
       .shouldBeInstanceOf<Queen>().color.shouldBe(
-        Color.WHITE
+        Color.WHITE,
       )
 
     board.getSquare(Position('h', 1)).getPiece()
       .shouldBeInstanceOf<Knight>().color.shouldBe(
-        Color.WHITE
+        Color.WHITE,
       )
 
     assertThat(board.turn).isEqualTo(Color.BLACK)
@@ -198,7 +211,8 @@ class BoardTest : AnnotationSpec() {
 
   @Test
   fun `increase halfmoveclock expecting halfmoveclock to be 13 `() {
-    val board = Board(FENData("r7/8/8/8/8/8/8/k7", 'b', "", halfmoveClock = 12))
+    val board =
+      Board(FENData("r7/8/8/8/8/8/8/k7", 'b', "", halfmoveClock = 12))
     val startPosition = Position('a', 8)
     val endPosition = Position('a', 7)
     val testMove = Move(startPosition, endPosition)
@@ -208,7 +222,8 @@ class BoardTest : AnnotationSpec() {
 
   @Test
   fun `increase fullmove clock expecting fullmove to be 13 `() {
-    val board = Board(FENData("r7/8/8/8/8/8/8/k7", 'b', "", fullmoveClock = 12))
+    val board =
+      Board(FENData("r7/8/8/8/8/8/8/k7", 'b', "", fullmoveClock = 12))
     val startPosition = Position('a', 8)
     val endPosition = Position('a', 7)
     val testMove = Move(startPosition, endPosition)
@@ -218,7 +233,8 @@ class BoardTest : AnnotationSpec() {
 
   @Test
   fun `do not increase fullmove clock expecting fullmove to be 12 `() {
-    val board = Board(FENData("R7/8/8/8/8/8/8/K7", 'w', "", fullmoveClock = 12))
+    val board =
+      Board(FENData("R7/8/8/8/8/8/8/K7", 'w', "", fullmoveClock = 12))
     val startPosition = Position('a', 8)
     val endPosition = Position('a', 7)
     val testMove = Move(startPosition, endPosition)
@@ -251,7 +267,9 @@ class BoardTest : AnnotationSpec() {
   fun `FEN board string creation for default setup`() {
     val board = Board(FENData())
     val fenBoardString = board.generateFENBoardString()
-    assertThat(fenBoardString).isEqualTo("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
+    assertThat(
+      fenBoardString,
+    ).isEqualTo("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
   }
 
   @Test
@@ -268,7 +286,7 @@ class BoardTest : AnnotationSpec() {
     val move = Move(Position('a', 1), Position('a', 3))
     assertThatThrownBy { board.makeMove(move) }.message()
       .isEqualTo("Cannot move to a square occupied by the same color")
-    assertThat(board.generateFENBoardString()).isEqualTo("K7/8/8/8/8/P7/8/R7") // That board has not changed
+    assertThat(board.generateFENBoardString()).isEqualTo("K7/8/8/8/8/P7/8/R7")
   }
 
   @Test
@@ -276,9 +294,17 @@ class BoardTest : AnnotationSpec() {
     val board = Board(FENData("K7/8/8/8/8/p7/8/R7"))
     val capturedPieces = CapturedPieces(board.getMap())
     val move = Move(Position('a', 1), Position('a', 3))
-    assertThat(capturedPieces.getCapturedPieces()).isEqualTo("White's captures: rnbqkbnrppppppp${System.lineSeparator()}Black's captures: NBQBNRPPPPPPPP")
+    assertThat(
+      capturedPieces.getCapturedPieces(),
+    ).isEqualTo(
+      "White's captures: rnbqkbnrppppppp${System.lineSeparator()}Black's captures: NBQBNRPPPPPPPP",
+    )
     board.makeMove(move)
     assertThat(board.generateFENBoardString()).isEqualTo("K7/8/8/8/8/R7/8/8")
-    assertThat(capturedPieces.getCapturedPieces()).isEqualTo("White's captures: rnbqkbnrpppppppp${System.lineSeparator()}Black's captures: NBQBNRPPPPPPPP")
+    assertThat(
+      capturedPieces.getCapturedPieces(),
+    ).isEqualTo(
+      "White's captures: rnbqkbnrpppppppp${System.lineSeparator()}Black's captures: NBQBNRPPPPPPPP",
+    )
   }
 }

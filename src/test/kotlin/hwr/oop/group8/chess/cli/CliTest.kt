@@ -76,8 +76,8 @@ class CliTest : AnnotationSpec() {
     assertThat(game.getFenData()).isEqualTo(
       FENData(
         "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR",
-        'b'
-      )
+        'b',
+      ),
     )
     assertThat(output).contains("Move made from e2 to e4.")
   }
@@ -99,7 +99,7 @@ class CliTest : AnnotationSpec() {
     assertThatThrownBy {
       cli.handle(args)
     }.isInstanceOf(IllegalArgumentException::class.java).message().isEqualTo(
-      "No command found for arguments: $args"
+      "No command found for arguments: $args",
     )
   }
 
@@ -122,16 +122,16 @@ class CliTest : AnnotationSpec() {
     // then
     assertThat(output).isEqualTo(
       "Loading game with id 1...${System.lineSeparator()}" +
-          "Current board:${System.lineSeparator()}" +
-          "rnbqkbnr${System.lineSeparator()}" +
-          "pppppppp${System.lineSeparator()}" +
-          "........${System.lineSeparator()}" +
-          "........${System.lineSeparator()}" +
-          "........${System.lineSeparator()}" +
-          "........${System.lineSeparator()}" +
-          "PPPPPPPP${System.lineSeparator()}" +
-          "RNBQKBNR${System.lineSeparator()}" +
-          "Current turn: WHITE"
+        "Current board:${System.lineSeparator()}" +
+        "rnbqkbnr${System.lineSeparator()}" +
+        "pppppppp${System.lineSeparator()}" +
+        "........${System.lineSeparator()}" +
+        "........${System.lineSeparator()}" +
+        "........${System.lineSeparator()}" +
+        "........${System.lineSeparator()}" +
+        "PPPPPPPP${System.lineSeparator()}" +
+        "RNBQKBNR${System.lineSeparator()}" +
+        "Current turn: WHITE",
     )
   }
 
@@ -154,9 +154,9 @@ class CliTest : AnnotationSpec() {
     // then
     assertThat(output).isEqualTo(
       "Loading all games...${System.lineSeparator()}" +
-          "List of games:${System.lineSeparator()}" +
-          "Game ID: 1, Current turn: WHITE${System.lineSeparator()}" +
-          "Game ID: 2, Current turn: BLACK"
+        "List of games:${System.lineSeparator()}" +
+        "Game ID: 1, Current turn: WHITE${System.lineSeparator()}" +
+        "Game ID: 2, Current turn: BLACK",
     )
   }
 
@@ -167,7 +167,7 @@ class CliTest : AnnotationSpec() {
     val cli = Cli(
       adapterMock,
       adapterMock,
-      adapterMock
+      adapterMock,
     )
 
     // when
@@ -177,7 +177,7 @@ class CliTest : AnnotationSpec() {
     assertThatThrownBy {
       cli.handle(args)
     }.isInstanceOf(IllegalArgumentException::class.java).message().isEqualTo(
-      "No command found for arguments: $args"
+      "No command found for arguments: $args",
     )
   }
 
@@ -198,7 +198,7 @@ class CliTest : AnnotationSpec() {
     assertThatThrownBy {
       cli.handle(args)
     }.isInstanceOf(IllegalArgumentException::class.java).message().isEqualTo(
-      "No command found for arguments: $args"
+      "No command found for arguments: $args",
     )
   }
 
@@ -221,25 +221,29 @@ class CliTest : AnnotationSpec() {
     // then
     assertThat(output).isEqualTo(
       "Usage: chess <command> [options]${System.lineSeparator()}" +
-          "${System.lineSeparator()}" +
-          "Available commands:${System.lineSeparator()}" +
-          "  new game <id> - Create a new game with the given ID.${System.lineSeparator()}" +
-          "  show game <id> - Print the current state of the game with the given ID.${System.lineSeparator()}" +
-          "  make move <id> <start> <end> - Make a move in the game with the given ID.${System.lineSeparator()}" +
-          "  list games - List all saved games.${System.lineSeparator()}" +
-          "${System.lineSeparator()}" +
-          "Options:${System.lineSeparator()}" +
-          "  -h, --help - Show this help message."
+        "${System.lineSeparator()}" +
+        "Available commands:${System.lineSeparator()}" +
+        "  new game <id> - Create a new game with the given ID." +
+        "${System.lineSeparator()}" +
+        "  show game <id> - " +
+        "Print the current state of the game with the given ID." +
+        "${System.lineSeparator()}" +
+        "  make move <id> <start> <end> - " +
+        "Make a move in the game with the given ID.${System.lineSeparator()}" +
+        "  list games - List all saved games.${System.lineSeparator()}" +
+        "${System.lineSeparator()}" +
+        "Options:${System.lineSeparator()}" +
+        "  -h, --help - Show this help message.",
     )
   }
 
   private class PersistentGameAdapterMock :
-    LoadGameInterface, SaveGameInterface, LoadAllGamesInterface {
+    LoadGameInterface,
+    SaveGameInterface,
+    LoadAllGamesInterface {
     private var game: Game? = null
 
-    fun savedGame(): Game? {
-      return game
-    }
+    fun savedGame(): Game? = game
 
     override fun loadGame(id: Int): Game {
       // Mock implementation
@@ -251,11 +255,9 @@ class CliTest : AnnotationSpec() {
       this.game = game
     }
 
-    override fun loadAllGames(): List<Game> {
-      return listOf(
-        Game(1, FENData()),
-        Game(2, FENData("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR", 'b')),
-      )
-    }
+    override fun loadAllGames(): List<Game> = listOf(
+      Game(1, FENData()),
+      Game(2, FENData("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR", 'b')),
+    )
   }
 }

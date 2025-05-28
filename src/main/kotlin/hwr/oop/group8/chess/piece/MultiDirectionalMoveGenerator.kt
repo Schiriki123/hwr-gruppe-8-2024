@@ -1,6 +1,8 @@
 package hwr.oop.group8.chess.piece
 
-import hwr.oop.group8.chess.core.*
+import hwr.oop.group8.chess.core.BoardInspector
+import hwr.oop.group8.chess.core.Direction
+import hwr.oop.group8.chess.core.Move
 
 class MultiDirectionalMoveGenerator(
   val piece: Piece,
@@ -28,4 +30,3 @@ class MultiDirectionalMoveGenerator(
     return validDestinations
   }
 }
-

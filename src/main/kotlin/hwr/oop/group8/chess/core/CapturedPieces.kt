@@ -20,6 +20,7 @@ class CapturedPieces(val map: HashMap<Position, Square>) {
         }
       }
     }
-    return "White's captures: $blackPieces${System.lineSeparator()}Black's captures: $whitePieces"
+    return "White's captures: $blackPieces${System.lineSeparator()}" +
+      "Black's captures: $whitePieces"
   }
 }

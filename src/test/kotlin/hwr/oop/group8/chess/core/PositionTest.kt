@@ -21,12 +21,14 @@ class PositionTest : AnnotationSpec() {
       Position('a', 9)
     }
   }
+
   @Test
   fun `Invalid position creation, false rank = 0`() {
     assertThatThrownBy {
       Position('a', 0)
     }
   }
+
   @Test
   fun `Invalid position creation false file`() {
     assertThatThrownBy {

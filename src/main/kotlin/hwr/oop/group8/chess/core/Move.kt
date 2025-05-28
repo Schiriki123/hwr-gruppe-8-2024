@@ -5,7 +5,7 @@ data class Move(
   val to: Position,
   val specialMove: List<Move> = listOf(),
   val promotionChar: Char? = null,
-){
+) {
   // Exclude promotionChar from equals
   override fun equals(other: Any?): Boolean {
     if (this === other) return true

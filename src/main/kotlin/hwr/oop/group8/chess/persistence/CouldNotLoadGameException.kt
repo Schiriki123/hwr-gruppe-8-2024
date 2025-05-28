@@ -1,3 +1,3 @@
 package hwr.oop.group8.chess.persistence
 
-class CouldNotLoadGameException(message: String): Exception(message)
+class CouldNotLoadGameException(message: String) : Exception(message)

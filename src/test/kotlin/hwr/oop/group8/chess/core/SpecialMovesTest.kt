@@ -5,7 +5,6 @@ import io.kotest.core.spec.style.AnnotationSpec
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 
-
 class SpecialMovesTest : AnnotationSpec() {
 
   @Test
@@ -20,7 +19,7 @@ class SpecialMovesTest : AnnotationSpec() {
   }
 
   @Test
-  fun `King in check, expecting that king moves out of check and color change`() {
+  fun `King in check, expecting king moves out of check and color change`() {
     val board = Board(FENData("k7/8/R7/8/8/8/K7/8", turn = 'b'))
     val moveToCheck = Move(Position('a', 8), Position('a', 7))
     assertThatThrownBy { board.makeMove(moveToCheck) }.message()
@@ -28,7 +27,6 @@ class SpecialMovesTest : AnnotationSpec() {
 
     assertThat(board.generateFENBoardString()).isEqualTo("k7/8/R7/8/8/8/K7/8")
     assertThat(board.turn).isEqualTo(Color.BLACK)
-
   }
 
   @Test
@@ -57,7 +55,6 @@ class SpecialMovesTest : AnnotationSpec() {
       Board(FENData("8/8/8/8/8/8/5r2/1K5r"))
     }.message().isEqualTo("Game is over, checkmate!")
   }
-
 
   @Test
   fun `Turn black after white moves`() {

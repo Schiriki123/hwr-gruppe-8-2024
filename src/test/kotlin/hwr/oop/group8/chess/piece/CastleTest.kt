@@ -9,31 +9,32 @@ import io.kotest.core.spec.style.AnnotationSpec
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 
+class CastleTest : AnnotationSpec() {
 
-class CastleTest: AnnotationSpec() {
-
+  @Suppress("ktlint:standard:max-line-length")
   @Test
   fun `Castling permission is read correctly from castle string for white, castling allowed on first try, second is denied`() {
     val board = Board(
       FENData(
         boardString = "r3k2r/8/8/8/8/8/8/R3K2R",
         castle = "Qkq",
-        turn = 'w'
-      )
+        turn = 'w',
+      ),
     )
     val allowedCastlingForWhite = board.isCastlingAllowed(Color.WHITE)
     assertThat(allowedCastlingForWhite.first).isTrue
     assertThat(allowedCastlingForWhite.second).isFalse
   }
 
+  @Suppress("ktlint:standard:max-line-length")
   @Test
   fun `Castling permission is read correctly from castle string for black, castling on first try, second is denied`() {
     val board = Board(
       FENData(
         boardString = "r3k2r/8/8/8/8/8/8/R3K2R",
         castle = "Qk",
-        turn = 'b'
-      )
+        turn = 'b',
+      ),
     )
     val allowedCastlingForBlack = board.isCastlingAllowed(Color.BLACK)
     assertThat(allowedCastlingForBlack.first).isFalse
@@ -45,7 +46,9 @@ class CastleTest: AnnotationSpec() {
     val board = Board(FENData("r3k2r/8/8/8/8/8/8/R3K2R"))
     val move = Move(Position('h', 1), Position('g', 1))
     board.makeMove(move)
-    assertThat(board.generateFENBoardString()).isEqualTo("r3k2r/8/8/8/8/8/8/R3K1R1")
+    assertThat(
+      board.generateFENBoardString(),
+    ).isEqualTo("r3k2r/8/8/8/8/8/8/R3K1R1")
     assertThat(board.castle).isEqualTo("Qkq")
   }
 
@@ -54,22 +57,26 @@ class CastleTest: AnnotationSpec() {
     val board = Board(FENData("r3k2r/8/8/8/8/8/8/R3K2R"))
     val move = Move(Position('a', 1), Position('b', 1))
     board.makeMove(move)
-    assertThat(board.generateFENBoardString()).isEqualTo("r3k2r/8/8/8/8/8/8/1R2K2R")
+    assertThat(
+      board.generateFENBoardString(),
+    ).isEqualTo("r3k2r/8/8/8/8/8/8/1R2K2R")
     assertThat(board.castle).isEqualTo("Kkq")
   }
 
-  //KING
+  // KING
   @Test
   fun `Castle king side for white`() {
     val board = Board(FENData("8/8/8/8/8/8/8/R3K2R"))
-    //King side castle
+    // King side castle
     val move = Move(
-      Position('e', 1), Position('g', 1), listOf(
+      Position('e', 1),
+      Position('g', 1),
+      listOf(
         Move(
           Position('h', 1),
-          Position('f', 1)
-        )
-      )
+          Position('f', 1),
+        ),
+      ),
     )
     board.makeMove(move)
 
@@ -81,12 +88,14 @@ class CastleTest: AnnotationSpec() {
   fun `Castle queen side for white`() {
     val board = Board(FENData("8/8/8/8/8/8/8/R3K2R"))
     val move = Move(
-      Position('e', 1), Position('c', 1), listOf(
+      Position('e', 1),
+      Position('c', 1),
+      listOf(
         Move(
           Position('a', 1),
-          Position('d', 1)
-        )
-      )
+          Position('d', 1),
+        ),
+      ),
     )
     board.makeMove(move)
 
@@ -97,14 +106,16 @@ class CastleTest: AnnotationSpec() {
   @Test
   fun `Castle king side for black`() {
     val board = Board(FENData("r3k2r/8/8/8/8/8/8/8", 'b'))
-    //King side castle
+    // King side castle
     val move = Move(
-      Position('e', 8), Position('g', 8), listOf(
+      Position('e', 8),
+      Position('g', 8),
+      listOf(
         Move(
           Position('h', 8),
-          Position('f', 8)
-        )
-      )
+          Position('f', 8),
+        ),
+      ),
     )
     board.makeMove(move)
 
@@ -116,12 +127,14 @@ class CastleTest: AnnotationSpec() {
   fun `Castle queen side for black`() {
     val board = Board(FENData("r3k2r/8/8/8/8/8/8/8", 'b'))
     val move = Move(
-      Position('e', 8), Position('c', 8), listOf(
+      Position('e', 8),
+      Position('c', 8),
+      listOf(
         Move(
           Position('a', 8),
-          Position('d', 8)
-        )
-      )
+          Position('d', 8),
+        ),
+      ),
     )
     board.makeMove(move)
 
@@ -151,7 +164,7 @@ class CastleTest: AnnotationSpec() {
 
     assertThat(board.castle).isEqualTo("K")
     assertThat(
-      possibleMoves
+      possibleMoves,
     ).containsExactlyInAnyOrder(
       Move(startPosition, Position('d', 1)),
       Move(startPosition, Position('d', 2)),
@@ -159,9 +172,10 @@ class CastleTest: AnnotationSpec() {
       Move(startPosition, Position('f', 1)),
       Move(startPosition, Position('f', 2)),
       Move(
-        startPosition, Position('g', 1),
+        startPosition,
+        Position('g', 1),
         listOf(Move(Position('h', 1), Position('f', 1))),
-      )
+      ),
     )
   }
 
@@ -172,7 +186,9 @@ class CastleTest: AnnotationSpec() {
     assertThatThrownBy {
       board.makeMove(move)
     }.message().isEqualTo("Invalid move for piece King from e1 to g1")
-    assertThat(board.generateFENBoardString()).isEqualTo("8/1k6/4r3/8/8/8/8/R3K2R")
+    assertThat(
+      board.generateFENBoardString(),
+    ).isEqualTo("8/1k6/4r3/8/8/8/8/R3K2R")
     assertThat(board.castle).isEqualTo("KQkq")
   }
 
@@ -183,7 +199,9 @@ class CastleTest: AnnotationSpec() {
     assertThatThrownBy {
       board.makeMove(move)
     }.message().isEqualTo("Invalid move for piece King from e1 to g1")
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/8/R3KB1R")
+    assertThat(
+      board.generateFENBoardString(),
+    ).isEqualTo("8/8/8/8/8/8/8/R3KB1R")
     assertThat(board.castle).isEqualTo("KQkq")
   }
 
@@ -194,7 +212,9 @@ class CastleTest: AnnotationSpec() {
     assertThatThrownBy {
       board.makeMove(move)
     }.message().isEqualTo("Invalid move for piece King from e1 to c1")
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/8/RN2K2R")
+    assertThat(
+      board.generateFENBoardString(),
+    ).isEqualTo("8/8/8/8/8/8/8/RN2K2R")
     assertThat(board.castle).isEqualTo("KQkq")
   }
 }
