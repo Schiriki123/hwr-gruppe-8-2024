@@ -1,10 +1,9 @@
 package hwr.oop.group8.chess.core
 
-enum class Color() {
+enum class Color {
   WHITE(),
-  BLACK();
+  BLACK(),
+  ;
 
-  fun invert(): Color {
-    return if (this == WHITE) BLACK else WHITE
-  }
+  fun invert(): Color = if (this == WHITE) BLACK else WHITE
 }

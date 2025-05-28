@@ -25,7 +25,9 @@ class GamePersistenceAdapter(val file: File) :
 
     if (updateExistingGame) {
       if (!lines.any { it.startsWith("${game.id}") }) {
-        throw CouldNotSaveGameException("Game with id ${game.id} does not exist")
+        throw CouldNotSaveGameException(
+          "Game with id ${game.id} does not exist",
+        )
       }
 
       updatedLines = lines.map { lines ->
@@ -37,7 +39,9 @@ class GamePersistenceAdapter(val file: File) :
       }
     } else {
       if (lines.any { it.startsWith("${game.id}") }) {
-        throw CouldNotSaveGameException("Game with id ${game.id} already exists")
+        throw CouldNotSaveGameException(
+          "Game with id ${game.id} already exists",
+        )
       }
       updatedLines = lines + gameLineContent
     }
@@ -69,7 +73,7 @@ class GamePersistenceAdapter(val file: File) :
       castle,
       enPassant,
       halfmoveClock,
-      fullmoveClock
+      fullmoveClock,
     )
   }
 }

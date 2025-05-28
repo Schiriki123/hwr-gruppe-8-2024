@@ -6,13 +6,9 @@ import hwr.oop.group8.chess.core.Direction
 import hwr.oop.group8.chess.core.Move
 import hwr.oop.group8.chess.core.Position
 
-class Pawn(
-  override val color: Color,
-  val boardInspector: BoardInspector,
-) : Piece {
-  fun getPosition(): Position {
-    return boardInspector.findPositionOfPiece(this)
-  }
+class Pawn(override val color: Color, val boardInspector: BoardInspector) :
+  Piece {
+  fun getPosition(): Position = boardInspector.findPositionOfPiece(this)
 
   override fun getValidMoveDestinations(): Set<Move> {
     val validMoves: MutableSet<Move> = mutableSetOf()
@@ -29,8 +25,7 @@ class Pawn(
     }
 
     // Check for straight move
-    val nextField =
-      getPosition().nextPosition(forwardDirection)
+    val nextField = getPosition().nextPosition(forwardDirection)
     if (boardInspector.getPieceAt(nextField) == null) {
       validMoves.add(Move(currentPosition, nextField))
       // Check for double move from starting position
@@ -45,7 +40,7 @@ class Pawn(
     // Check for diagonal captures
     for (direction in setOf(
       Direction.LEFT.combine(forwardDirection),
-      Direction.RIGHT.combine(forwardDirection)
+      Direction.RIGHT.combine(forwardDirection),
     )) {
       if (getPosition().hasNextPosition(direction)) {
         val nextPosition = getPosition().nextPosition(direction)
@@ -66,20 +61,18 @@ class Pawn(
     boardInspector.resetHalfMoveClock()
   }
 
-  fun promotion(promoteTo: Char): Piece {
-    return when (promoteTo.lowercaseChar()) {
-      'q' -> Queen(color, boardInspector)
-      'r' -> Rook(color, boardInspector)
-      'b' -> Bishop(color, boardInspector)
-      'n' -> Knight(color, boardInspector)
-      else -> throw IllegalArgumentException("Invalid promotion piece: $promoteTo")
-    }
+  fun promotion(promoteTo: Char): Piece = when (promoteTo.lowercaseChar()) {
+    'q' -> Queen(color, boardInspector)
+    'r' -> Rook(color, boardInspector)
+    'b' -> Bishop(color, boardInspector)
+    'n' -> Knight(color, boardInspector)
+    else -> throw IllegalArgumentException(
+      "Invalid promotion piece: $promoteTo",
+    )
   }
 
-  override fun getChar(): Char {
-    return when (color) {
-      Color.WHITE -> 'P'
-      Color.BLACK -> 'p'
-    }
+  override fun getChar(): Char = when (color) {
+    Color.WHITE -> 'P'
+    Color.BLACK -> 'p'
   }
 }

@@ -24,7 +24,7 @@ class Board(val fenData: FENData) : BoardInspector {
         } else {
           map.put(
             Position(fileCounter, rank),
-            Square(FENData.createPieceOnBoard(fileChar, this))
+            Square(FENData.createPieceOnBoard(fileChar, this)),
           )
           fileCounter++
         }
@@ -42,21 +42,17 @@ class Board(val fenData: FENData) : BoardInspector {
     }
   }
 
-  override fun getSquare(position: Position): Square {
-    return map.getValue(position)
-  }
+  override fun getSquare(position: Position): Square = map.getValue(position)
 
-  override fun getPieceAt(position: Position): Piece? {
-    return getSquare(position).getPiece()
-  }
+  override fun getPieceAt(position: Position): Piece? =
+    getSquare(position).getPiece()
 
-  override fun isSquareEmpty(position: Position): Boolean {
-    return getSquare(position).getPiece() == null
-  }
+  override fun isSquareEmpty(position: Position): Boolean =
+    getSquare(position).getPiece() == null
 
-  override fun findPositionOfPiece(piece: Piece): Position {
-    return map.filterValues { it.getPiece() === piece }.keys.first()
-  }
+  override fun findPositionOfPiece(piece: Piece): Position = map.filterValues {
+    it.getPiece() === piece
+  }.keys.first()
 
   fun makeMove(move: Move) {
     val fromSquare = getSquare(move.from)
@@ -65,21 +61,21 @@ class Board(val fenData: FENData) : BoardInspector {
     val piece = fromSquare.getPiece()
 
     checkNotNull(piece)
-    check(piece.color == turn)
-    { "It's not your turn" }
+    check(piece.color == turn) { "It's not your turn" }
 
-    require(piece.color != toSquare.getPiece()?.color)
-    { "Cannot move to a square occupied by the same color" }
+    require(piece.color != toSquare.getPiece()?.color) {
+      "Cannot move to a square occupied by the same color"
+    }
 
-    check(piece.getValidMoveDestinations().contains(move))
-    { "Invalid move for piece ${piece::class.simpleName} from ${move.from} to ${move.to}" }
+    check(piece.getValidMoveDestinations().contains(move)) {
+      "Invalid move for piece ${piece::class.simpleName} from ${move.from} to ${move.to}"
+    }
 
-    check(isMoveCheck(move))
-    { "Move would put player in check" }
+    check(isMoveCheck(move)) { "Move would put player in check" }
 
     if (!isSquareEmpty(move.to)) resetHalfMoveClock()
 
-    //apply special move
+    // apply special move
     if (!move.specialMove.isEmpty()) {
       val specialToSquare = getSquare(specialMove.first().to)
       val specialFromSquare = getSquare(specialMove.first().from)
@@ -114,7 +110,6 @@ class Board(val fenData: FENData) : BoardInspector {
   override fun isCastlingAllowed(color: Color): Pair<Boolean, Boolean> =
     boardLogic.isCastlingAllowed(color)
 
-
   override fun getCurrentTurn(): Color = turn
 
   override fun isPositionThreatened(
@@ -131,7 +126,6 @@ class Board(val fenData: FENData) : BoardInspector {
   fun getMap(): HashMap<Position, Square> = map
 
   fun generateFENBoardString(): String = fenData.generateFENBoardString(this)
-
 
   fun getFENData(): FENData = fenData.getFENData(this)
 }

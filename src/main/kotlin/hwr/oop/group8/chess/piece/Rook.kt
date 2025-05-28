@@ -5,16 +5,14 @@ import hwr.oop.group8.chess.core.Color
 import hwr.oop.group8.chess.core.Direction
 import hwr.oop.group8.chess.core.Move
 
-class Rook(
-  override val color: Color,
-  val boardInspector: BoardInspector,
-) : Piece {
+class Rook(override val color: Color, val boardInspector: BoardInspector) :
+  Piece {
   override fun getValidMoveDestinations(): Set<Move> {
     val directions = setOf(
       Direction.BOTTOM,
       Direction.TOP,
       Direction.LEFT,
-      Direction.RIGHT
+      Direction.RIGHT,
     )
     val rookMovement =
       MultiDirectionalMoveGenerator(this, boardInspector, directions)
@@ -25,10 +23,8 @@ class Rook(
 
   override fun moveCallback(move: Move) {}
 
-  override fun getChar(): Char {
-    return when (color) {
-      Color.WHITE -> 'R'
-      Color.BLACK -> 'r'
-    }
+  override fun getChar(): Char = when (color) {
+    Color.WHITE -> 'R'
+    Color.BLACK -> 'r'
   }
 }

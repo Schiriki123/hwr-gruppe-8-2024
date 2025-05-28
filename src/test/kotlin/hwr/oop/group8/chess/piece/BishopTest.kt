@@ -11,7 +11,7 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 
 class BishopTest : AnnotationSpec() {
   @Test
-  fun `Test char representation`() {
+  fun `Char representation of Bishop`() {
     val boardInspector = Board(FENData("8/8/8/8/8/8/8/K7", 'w', ""))
     val whiteBishop = Bishop(Color.WHITE, boardInspector)
     val blackBishop = Bishop(Color.BLACK, boardInspector)
@@ -20,7 +20,7 @@ class BishopTest : AnnotationSpec() {
   }
 
   @Test
-  fun `Test bishop movement on empty board`() {
+  fun `Bishop movement on empty board`() {
     val board = Board(FENData("B7/8/8/8/8/8/8/K7", 'w', ""))
     val move = Move(Position('a', 8), Position('e', 4))
     board.makeMove(move)
@@ -29,7 +29,7 @@ class BishopTest : AnnotationSpec() {
   }
 
   @Test
-  fun `Test bishop capture move set generation`() {
+  fun `Bishop capture move set generation`() {
     val board = Board(FENData("8/8/8/2B5/8/P3p3/8/K7"))
     val startPosition = Position('c', 5)
     val validMoveDestinationsOfBishop =
@@ -48,7 +48,7 @@ class BishopTest : AnnotationSpec() {
   }
 
   @Test
-  fun `Test bishop movement with blocked path`() {
+  fun `Bishop movement with blocked path`() {
     val board = Board(FENData("B7/8/8/8/4r3/8/8/K7", 'w', ""))
     val move = Move(Position('a', 8), Position('g', 2))
     assertThatThrownBy { board.makeMove(move) }
@@ -56,7 +56,7 @@ class BishopTest : AnnotationSpec() {
   }
 
   @Test
-  fun `Test invalid move`() {
+  fun `Invalid move, expection exception`() {
     val board = Board(FENData("B7/8/8/8/4r3/8/8/K7", 'w', ""))
     val move = Move(Position('a', 8), Position('a', 2))
     assertThatThrownBy { board.makeMove(move) }
