@@ -6,9 +6,8 @@ import hwr.oop.group8.chess.core.Position
 import hwr.oop.group8.chess.core.Rank
 import hwr.oop.group8.chess.persistence.PersistencePort
 
-class MakeMoveCommand(
-  private val persistencePort: PersistencePort,
-) : CliCommand {
+class MakeMoveCommand(private val persistencePort: PersistencePort) :
+  CliCommand {
   override fun matches(args: List<String>): Boolean {
     if (args.size != 5) return false
     val firstTwoArgsMatch = args.subList(0, 2) == listOf("make", "move")
@@ -33,10 +32,10 @@ class MakeMoveCommand(
       File.fromChar(args[4].first()),
       Rank.fromInt(args[4].last().digitToInt()),
     )
-    val move = Move(from, to)
+    val move = Move(from, to) // TODO: Extract move generation
 
     val game = persistencePort.loadGame(gameId)
-    game.board.makeMove(move) // TODO: Extract to game
+    game.board.makeMove(move) // TODO: makeMove Extract to game
     persistencePort.saveGame(game, true)
     println("Move made from $from to $to.")
   }

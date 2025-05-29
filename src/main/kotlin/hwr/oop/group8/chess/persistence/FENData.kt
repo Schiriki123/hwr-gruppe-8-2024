@@ -69,7 +69,7 @@ data class FENData(
     var lastPiece = 0
     for (rank in Rank.entries.reversed()) {
       for (file in File.entries) {
-        val piece = board.getMap().getValue(Position(file, rank)).getPiece()
+        val piece = board.getPieceAt(Position(file, rank))
         if (piece != null) {
           if (lastPiece != 0) {
             builder.append(lastPiece)

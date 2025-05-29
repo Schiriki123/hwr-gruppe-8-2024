@@ -12,7 +12,7 @@ import kotlin.io.path.name
 import kotlin.io.path.readText
 import kotlin.io.path.writeText
 
-class GamePersistenceAdapterTest : AnnotationSpec() {
+class FilePersistenceAdapterTest : AnnotationSpec() {
 
   @Test
   fun `Checking if Adapter has right id and file name`() {
@@ -233,5 +233,54 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
     assertThat(games[1].getFenData().getTurn()).isEqualTo(Color.BLACK)
 
     tempFile.deleteExisting()
+  }
+
+  @Test
+  fun `Game with id 2 should be deleted`() {
+    // given
+    val tempFile = createTempFile()
+    tempFile.writeText(
+      "1,rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR w KQkq - 0 1" +
+        "${System.lineSeparator()}" +
+        "2,r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b " +
+        "KQkq - 0 12" +
+        "${System.lineSeparator()}" +
+        "3,rnbqkb1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKB1R w KQkq - 0 1" +
+        "${System.lineSeparator()}",
+    )
+    val sut = FilePersistenceAdapter(tempFile.toFile())
+
+    // when
+    sut.deleteGame(2)
+    val remainingGames = sut.loadAllGames()
+
+    // then
+    assertThat(remainingGames).hasSize(2)
+    assertThat(remainingGames.map { it.id }).doesNotContain(2)
+
+    tempFile.deleteExisting()
+  }
+
+  @Test
+  fun `Deleting non existing game should throw exception`() {
+    // given
+    val tempFile = createTempFile()
+    tempFile.writeText(
+      "1,rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR w KQkq - 0 1" +
+        "${System.lineSeparator()}" +
+        "2,r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b " +
+        "KQkq - 0 12" +
+        "${System.lineSeparator()}",
+    )
+    val sut = FilePersistenceAdapter(tempFile.toFile())
+    // when
+    assertThatThrownBy {
+      sut.deleteGame(3)
+    }.isInstanceOf(CouldNotDeleteGameException::class.java)
+      .hasMessageContaining("Game with id 3 does not exist")
+    // then
+    val remainingGames = sut.loadAllGames()
+    assertThat(remainingGames).hasSize(2)
+    assertThat(remainingGames.map { it.id }).containsExactlyInAnyOrder(1, 2)
   }
 }

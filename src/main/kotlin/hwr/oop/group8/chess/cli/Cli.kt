@@ -8,6 +8,7 @@ class Cli(persistencePort: PersistencePort) {
     PrintGameCommand(persistencePort),
     MakeMoveCommand(persistencePort),
     ListGamesCommand(persistencePort),
+    DeleteGameCommand(persistencePort),
     HelpCommand(),
   )
 

@@ -1,8 +1,6 @@
 package hwr.oop.group8.chess.cli
 
-import hwr.oop.group8.chess.core.Game
 import hwr.oop.group8.chess.persistence.FENData
-import hwr.oop.group8.chess.persistence.PersistencePort
 import io.kotest.core.spec.style.AnnotationSpec
 import io.kotest.extensions.system.captureStandardOut
 import org.assertj.core.api.Assertions.assertThat
@@ -13,7 +11,7 @@ class CliTest : AnnotationSpec() {
   @Test
   fun `Writing existing commands`() {
     // given
-    val adapterMock = PersistentGameAdapterMock()
+    val adapterMock = PersistentAdapterMock()
     val cli = Cli(
       adapterMock,
     )
@@ -28,7 +26,7 @@ class CliTest : AnnotationSpec() {
   @Test
   fun `Use cli to create new game`() {
     // given
-    val adapterMock = PersistentGameAdapterMock()
+    val adapterMock = PersistentAdapterMock()
     val cli = Cli(
       adapterMock,
     )
@@ -50,7 +48,7 @@ class CliTest : AnnotationSpec() {
   @Test
   fun `Make a move via cli`() {
     // given
-    val adapterMock = PersistentGameAdapterMock()
+    val adapterMock = PersistentAdapterMock()
     val cli = Cli(
       adapterMock,
     )
@@ -77,7 +75,7 @@ class CliTest : AnnotationSpec() {
   @Test
   fun `Try to make move with invalid coordinates`() {
     // given
-    val adapterMock = PersistentGameAdapterMock()
+    val adapterMock = PersistentAdapterMock()
     val cli = Cli(
       adapterMock,
     )
@@ -96,7 +94,7 @@ class CliTest : AnnotationSpec() {
   @Test
   fun `Print board via cli`() {
     // given
-    val adapterMock = PersistentGameAdapterMock()
+    val adapterMock = PersistentAdapterMock()
     val cli = Cli(
       adapterMock,
     )
@@ -126,7 +124,7 @@ class CliTest : AnnotationSpec() {
   @Test
   fun `List all games on cli`() {
     // given
-    val adapterMock = PersistentGameAdapterMock()
+    val adapterMock = PersistentAdapterMock()
     val cli = Cli(
       adapterMock,
     )
@@ -149,7 +147,7 @@ class CliTest : AnnotationSpec() {
   @Test
   fun `Try to list games with invalid additional arguments`() {
     // given
-    val adapterMock = PersistentGameAdapterMock()
+    val adapterMock = PersistentAdapterMock()
     val cli = Cli(
       adapterMock,
     )
@@ -168,7 +166,7 @@ class CliTest : AnnotationSpec() {
   @Test
   fun `Input with no matching command`() {
     // given
-    val adapterMock = PersistentGameAdapterMock()
+    val adapterMock = PersistentAdapterMock()
     val cli = Cli(
       adapterMock,
     )
@@ -187,7 +185,7 @@ class CliTest : AnnotationSpec() {
   @Test
   fun `Empty execution should print help`() {
     // given
-    val adapterMock = PersistentGameAdapterMock()
+    val adapterMock = PersistentAdapterMock()
     val cli = Cli(
       adapterMock,
     )
@@ -211,27 +209,6 @@ class CliTest : AnnotationSpec() {
         "${System.lineSeparator()}" +
         "Options:${System.lineSeparator()}" +
         "  -h, --help - Show this help message.",
-    )
-  }
-
-  private class PersistentGameAdapterMock : PersistencePort {
-    private var game: Game? = null
-
-    fun savedGame(): Game? = game
-
-    override fun loadGame(id: Int): Game {
-      // Mock implementation
-      return game ?: Game(id, FENData())
-    }
-
-    override fun saveGame(game: Game, updateExistingGame: Boolean) {
-      // Mock implementation
-      this.game = game
-    }
-
-    override fun loadAllGames(): List<Game> = listOf(
-      Game(1, FENData()),
-      Game(2, FENData("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR", 'b')),
     )
   }
 }
