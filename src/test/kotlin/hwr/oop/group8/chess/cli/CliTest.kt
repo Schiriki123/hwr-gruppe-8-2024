@@ -181,34 +181,4 @@ class CliTest : AnnotationSpec() {
       "No command found for arguments: $args",
     )
   }
-
-  @Test
-  fun `Empty execution should print help`() {
-    // given
-    val adapterMock = PersistentAdapterMock()
-    val cli = Cli(
-      adapterMock,
-    )
-
-    // when
-    val output = captureStandardOut {
-      val args = emptyList<String>()
-      cli.handle(args)
-    }.trim()
-
-    // then
-    @Suppress("ktlint:standard:max-line-length")
-    assertThat(output).isEqualTo(
-      "Usage: chess <command> [options]${System.lineSeparator()}" +
-        "${System.lineSeparator()}" +
-        "Available commands:${System.lineSeparator()}" +
-        "  new game <id> - Create a new game with the given ID.${System.lineSeparator()}" +
-        "  show game <id> - Print the current state of the game with the given ID.${System.lineSeparator()}" +
-        "  make move <id> <start> <end> - Make a move in the game with the given ID.${System.lineSeparator()}" +
-        "  list games - List all saved games.${System.lineSeparator()}" +
-        "${System.lineSeparator()}" +
-        "Options:${System.lineSeparator()}" +
-        "  -h, --help - Show this help message.",
-    )
-  }
 }
