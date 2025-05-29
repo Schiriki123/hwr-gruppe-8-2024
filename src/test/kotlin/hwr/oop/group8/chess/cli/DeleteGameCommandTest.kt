@@ -26,7 +26,7 @@ class DeleteGameCommandTest : AnnotationSpec() {
     // then
     val mockGame = adapterMock.savedGame()
     assertThat(mockGame).isNull()
-    assertThat(output).contains("Game with ID 1 deleted successfully.")
+    assertThat(output).contains("Game with ID 1 deleted.")
   }
 
   @Test

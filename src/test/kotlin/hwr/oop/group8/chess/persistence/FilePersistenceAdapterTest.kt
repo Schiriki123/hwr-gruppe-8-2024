@@ -19,6 +19,8 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
     val tempFile = createTempFile()
     val sut = FilePersistenceAdapter(tempFile.toFile())
     assertThat(sut.file.name).isEqualTo(tempFile.name)
+
+    tempFile.deleteExisting()
   }
 
   @Test
@@ -282,5 +284,7 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
     val remainingGames = sut.loadAllGames()
     assertThat(remainingGames).hasSize(2)
     assertThat(remainingGames.map { it.id }).containsExactlyInAnyOrder(1, 2)
+
+    tempFile.deleteExisting()
   }
 }

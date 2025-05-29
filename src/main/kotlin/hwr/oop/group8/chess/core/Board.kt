@@ -127,7 +127,7 @@ class Board(val fenData: FENData) : BoardInspector {
 
   fun getMap(): HashMap<Position, Square> = map
 
-  fun generateFENBoardString(): String = fenData.generateFENBoardString(this)
+  fun generateFENBoardString(): String = FENData.generateFENBoardString(this)
 
   fun getFENData(): FENData = fenData.getFENData(this)
 }

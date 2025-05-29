@@ -50,6 +50,18 @@ class FENDataTest : AnnotationSpec() {
   }
 
   @Test
+  fun `Default board should generate correct fen string`() {
+    // given
+    val board = Board(FENData())
+    // when
+    val fenString = FENData.generateFENBoardString(board)
+    // then
+    assertThat(
+      fenString,
+    ).isEqualTo("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
+  }
+
+  @Test
   fun `Invalid initialization, expecting exception`() {
     assertThatThrownBy { FENData("8/8/8/8/8/8/8/8") }.message()
       .isEqualTo("Board string must be 16 or higher")

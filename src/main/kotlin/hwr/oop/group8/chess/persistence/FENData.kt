@@ -62,29 +62,29 @@ data class FENData(
           "Invalid piece character: $pieceChar",
         )
       }
-  }
 
-  fun generateFENBoardString(board: Board): String {
-    val builder = StringBuilder()
-    var lastPiece = 0
-    for (rank in Rank.entries.reversed()) {
-      for (file in File.entries) {
-        val piece = board.getPieceAt(Position(file, rank))
-        if (piece != null) {
-          if (lastPiece != 0) {
-            builder.append(lastPiece)
+    fun generateFENBoardString(board: Board): String {
+      val builder = StringBuilder()
+      var lastPiece = 0
+      for (rank in Rank.entries.reversed()) {
+        for (file in File.entries) {
+          val piece = board.getPieceAt(Position(file, rank))
+          if (piece != null) {
+            if (lastPiece != 0) {
+              builder.append(lastPiece)
+            }
+            builder.append(piece.getChar())
+            lastPiece = 0
+          } else {
+            lastPiece++
           }
-          builder.append(piece.getChar())
-          lastPiece = 0
-        } else {
-          lastPiece++
         }
+        if (lastPiece != 0) builder.append(lastPiece)
+        lastPiece = 0
+        builder.append('/')
       }
-      if (lastPiece != 0) builder.append(lastPiece)
-      lastPiece = 0
-      builder.append('/')
+      return builder.toString().dropLast(1)
     }
-    return builder.toString().dropLast(1)
   }
 
   fun getFENData(board: Board): FENData = FENData(

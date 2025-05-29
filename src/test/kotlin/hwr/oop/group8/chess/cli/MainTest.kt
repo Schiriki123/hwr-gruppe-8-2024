@@ -9,7 +9,7 @@ import kotlin.random.Random
 class MainTest : AnnotationSpec() {
 
   @Test
-  fun `Create game with GameID, assert that is was created`() {
+  fun `Create game, assert that is was created, delete game`() {
     val testGameID = Random(System.currentTimeMillis()).nextInt()
     val output = captureStandardOut {
       main(arrayOf("new", "game", "$testGameID"))
@@ -18,5 +18,10 @@ class MainTest : AnnotationSpec() {
     assertThat(File("games.txt").readLines().last()).isEqualTo(
       "$testGameID,rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
     )
+
+    val deleteOutput = captureStandardOut {
+      main(arrayOf("delete", "game", "$testGameID"))
+    }.trim()
+    assertThat(deleteOutput).contains("Game with ID $testGameID deleted.")
   }
 }

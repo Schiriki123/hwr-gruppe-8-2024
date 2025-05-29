@@ -15,6 +15,6 @@ class DeleteGameCommand(private val persistencePort: PersistencePort) :
   override fun handle(args: List<String>) {
     val gameId = args[2].toInt()
     persistencePort.deleteGame(gameId)
-    println("Game with ID $gameId deleted successfully.")
+    println("Game with ID $gameId deleted.")
   }
 }
