@@ -19,6 +19,7 @@ class RookTest : AnnotationSpec() {
     val blackRook = Rook(Color.BLACK, boardInspector)
     assertThat(whiteRook.getChar()).isEqualTo('R')
     assertThat(blackRook.getChar()).isEqualTo('r')
+    assertThat(whiteRook.getType()).isEqualTo(PieceType.ROOK)
   }
 
   @Test

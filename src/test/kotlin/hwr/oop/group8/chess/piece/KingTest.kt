@@ -19,6 +19,7 @@ class KingTest : AnnotationSpec() {
     val blackKing = King(Color.BLACK, boardInspector)
     assertThat(whiteKing.getChar()).isEqualTo('K')
     assertThat(blackKing.getChar()).isEqualTo('k')
+    assertThat(whiteKing.getType()).isEqualTo(PieceType.KING)
   }
 
   @Test

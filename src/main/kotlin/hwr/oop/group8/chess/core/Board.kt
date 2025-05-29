@@ -2,6 +2,7 @@ package hwr.oop.group8.chess.core
 
 import hwr.oop.group8.chess.persistence.FENData
 import hwr.oop.group8.chess.piece.Piece
+import hwr.oop.group8.chess.piece.PieceType
 
 class Board(val fenData: FENData) : BoardInspector {
   private val map = HashMap<Position, Square>()
@@ -101,6 +102,15 @@ class Board(val fenData: FENData) : BoardInspector {
     if (turn == Color.BLACK) fullmoveClock++
     halfmoveClock++
     turn = turn.invert()
+  }
+
+  private fun updateClock(piece: PieceType) {
+    if (turn == Color.BLACK) fullmoveClock++
+    if (piece == PieceType.PAWN) {
+      halfmoveClock = 0
+    } else {
+      halfmoveClock++
+    }
   }
 
   private fun isCheckmate(): Boolean = boardLogic.isCheckmate()
