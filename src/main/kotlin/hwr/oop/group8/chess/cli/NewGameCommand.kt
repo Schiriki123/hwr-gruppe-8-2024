@@ -2,9 +2,9 @@ package hwr.oop.group8.chess.cli
 
 import hwr.oop.group8.chess.core.Game
 import hwr.oop.group8.chess.persistence.FENData
-import hwr.oop.group8.chess.persistence.SaveGamePort
+import hwr.oop.group8.chess.persistence.PersistencePort
 
-class NewGameCommand(private val saveGamePort: SaveGamePort) :
+class NewGameCommand(private val persistencePort: PersistencePort) :
   CliCommand {
   override fun matches(args: List<String>): Boolean {
     if (args.size != 3) return false
@@ -18,7 +18,7 @@ class NewGameCommand(private val saveGamePort: SaveGamePort) :
     val gameId = args[2].toInt()
     val initialFENData = FENData()
     val initialGame = Game(gameId, initialFENData)
-    saveGamePort.saveGame(initialGame, false)
+    persistencePort.saveGame(initialGame, false)
     println("New game with id $gameId created.")
   }
 }

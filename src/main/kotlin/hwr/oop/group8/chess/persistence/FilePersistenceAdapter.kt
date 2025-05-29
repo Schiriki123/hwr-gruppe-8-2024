@@ -3,9 +3,7 @@ package hwr.oop.group8.chess.persistence
 import hwr.oop.group8.chess.core.Game
 import java.io.File
 
-class FileSystemAdapter(val file: File) :
-  SaveGamePort,
-  LoadGamesPort {
+class FilePersistenceAdapter(val file: File) : PersistencePort {
   override fun saveGame(game: Game, updateExistingGame: Boolean) {
     val lines = file.readLines()
     val gameFenString = game.getFenData().toString()

@@ -1,17 +1,16 @@
 package hwr.oop.group8.chess.cli
 
-import hwr.oop.group8.chess.persistence.FileSystemAdapter
+import hwr.oop.group8.chess.persistence.FilePersistenceAdapter
 import java.io.File
 
 fun main(args: Array<String>) {
   val storageFile = File("games.txt")
   storageFile.createNewFile()
-  val fileSystemAdapter =
-    FileSystemAdapter(storageFile)
+  val filePersistenceAdapter =
+    FilePersistenceAdapter(storageFile)
   val cli =
     Cli(
-      fileSystemAdapter,
-      fileSystemAdapter,
+      filePersistenceAdapter,
     )
   cli.handle(args.toList())
 }
