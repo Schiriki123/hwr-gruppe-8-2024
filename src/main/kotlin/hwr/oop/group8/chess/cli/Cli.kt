@@ -5,7 +5,7 @@ import hwr.oop.group8.chess.persistence.PersistencePort
 class Cli(persistencePort: PersistencePort) {
   val commands = listOf(
     NewGameCommand(persistencePort),
-    PrintGameCommand(persistencePort),
+    ShowGameCommand(persistencePort),
     MakeMoveCommand(persistencePort),
     ListGamesCommand(persistencePort),
     DeleteGameCommand(persistencePort),

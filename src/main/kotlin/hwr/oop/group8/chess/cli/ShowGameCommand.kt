@@ -6,7 +6,7 @@ import hwr.oop.group8.chess.core.Position
 import hwr.oop.group8.chess.core.Rank
 import hwr.oop.group8.chess.persistence.PersistencePort
 
-class PrintGameCommand(private val persistencePort: PersistencePort) :
+class ShowGameCommand(private val persistencePort: PersistencePort) :
   CliCommand {
   override fun matches(args: List<String>): Boolean {
     if (args.size != 3) return false
