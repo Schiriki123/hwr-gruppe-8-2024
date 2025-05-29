@@ -2,9 +2,8 @@ package hwr.oop.group8.chess.cli
 
 import hwr.oop.group8.chess.core.Game
 import hwr.oop.group8.chess.persistence.FENData
-import hwr.oop.group8.chess.persistence.LoadAllGamesInterface
-import hwr.oop.group8.chess.persistence.LoadGameInterface
-import hwr.oop.group8.chess.persistence.SaveGameInterface
+import hwr.oop.group8.chess.persistence.LoadGamesPort
+import hwr.oop.group8.chess.persistence.SaveGamePort
 import io.kotest.core.spec.style.AnnotationSpec
 import io.kotest.extensions.system.captureStandardOut
 import org.assertj.core.api.Assertions.assertThat
@@ -17,7 +16,6 @@ class CliTest : AnnotationSpec() {
     // given
     val adapterMock = PersistentGameAdapterMock()
     val cli = Cli(
-      adapterMock,
       adapterMock,
       adapterMock,
     )
@@ -34,7 +32,6 @@ class CliTest : AnnotationSpec() {
     // given
     val adapterMock = PersistentGameAdapterMock()
     val cli = Cli(
-      adapterMock,
       adapterMock,
       adapterMock,
     )
@@ -58,7 +55,6 @@ class CliTest : AnnotationSpec() {
     // given
     val adapterMock = PersistentGameAdapterMock()
     val cli = Cli(
-      adapterMock,
       adapterMock,
       adapterMock,
     )
@@ -89,7 +85,6 @@ class CliTest : AnnotationSpec() {
     val cli = Cli(
       adapterMock,
       adapterMock,
-      adapterMock,
     )
 
     // when
@@ -108,7 +103,6 @@ class CliTest : AnnotationSpec() {
     // given
     val adapterMock = PersistentGameAdapterMock()
     val cli = Cli(
-      adapterMock,
       adapterMock,
       adapterMock,
     )
@@ -142,7 +136,6 @@ class CliTest : AnnotationSpec() {
     val cli = Cli(
       adapterMock,
       adapterMock,
-      adapterMock,
     )
 
     // when
@@ -167,7 +160,6 @@ class CliTest : AnnotationSpec() {
     val cli = Cli(
       adapterMock,
       adapterMock,
-      adapterMock,
     )
 
     // when
@@ -188,7 +180,6 @@ class CliTest : AnnotationSpec() {
     val cli = Cli(
       adapterMock,
       adapterMock,
-      adapterMock,
     )
 
     // when
@@ -207,7 +198,6 @@ class CliTest : AnnotationSpec() {
     // given
     val adapterMock = PersistentGameAdapterMock()
     val cli = Cli(
-      adapterMock,
       adapterMock,
       adapterMock,
     )
@@ -235,9 +225,8 @@ class CliTest : AnnotationSpec() {
   }
 
   private class PersistentGameAdapterMock :
-    LoadGameInterface,
-    SaveGameInterface,
-    LoadAllGamesInterface { // TODO: One interface, FilePersistenceAdapter
+    SaveGamePort,
+    LoadGamesPort { // TODO: One interface, FilePersistenceAdapter
     private var game: Game? = null
 
     fun savedGame(): Game? = game

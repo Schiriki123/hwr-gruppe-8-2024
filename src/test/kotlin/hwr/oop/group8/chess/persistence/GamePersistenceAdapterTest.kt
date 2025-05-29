@@ -17,7 +17,7 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
   @Test
   fun `Checking if Adapter has right id and file name`() {
     val tempFile = createTempFile()
-    val sut = GamePersistenceAdapter(tempFile.toFile())
+    val sut = FileSystemAdapter(tempFile.toFile())
     assertThat(sut.file.name).isEqualTo(tempFile.name)
   }
 
@@ -29,7 +29,7 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
         "${System.lineSeparator()}",
     )
 
-    val sut = GamePersistenceAdapter(tempFile.toFile())
+    val sut = FileSystemAdapter(tempFile.toFile())
     val result: FENData = sut.loadGame(1).getFenData()
 
     assertThat(result.getRank(Rank.EIGHT)).isEqualTo("rnbqkb1r")
@@ -56,7 +56,7 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
         "${System.lineSeparator()}",
     )
 
-    val sut = GamePersistenceAdapter(tempFile.toFile())
+    val sut = FileSystemAdapter(tempFile.toFile())
 
     assertThatThrownBy {
       sut.loadGame(2)
@@ -78,7 +78,7 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
         "${System.lineSeparator()}",
     )
 
-    val sut = GamePersistenceAdapter(tempFile.toFile())
+    val sut = FileSystemAdapter(tempFile.toFile())
     val result: FENData = sut.loadGame(2).getFenData()
 
     assertThat(result.getRank(Rank.EIGHT)).isEqualTo("r3k2r")
@@ -102,7 +102,7 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
     val tempFile = createTempFile()
     tempFile.writeText("")
 
-    val sut = GamePersistenceAdapter(tempFile.toFile())
+    val sut = FileSystemAdapter(tempFile.toFile())
 
     assertThatThrownBy {
       sut.loadGame(1)
@@ -117,7 +117,7 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
     tempFile.writeText("")
     val initialGame = Game(1, FENData())
 
-    val sut = GamePersistenceAdapter(tempFile.toFile())
+    val sut = FileSystemAdapter(tempFile.toFile())
 
     sut.saveGame(initialGame, false)
 
@@ -140,7 +140,7 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
         "${System.lineSeparator()}",
     )
 
-    val sut = GamePersistenceAdapter(tempFile.toFile())
+    val sut = FileSystemAdapter(tempFile.toFile())
     val fenData = FENData(
       "rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR",
       'b',
@@ -174,7 +174,7 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
         "${System.lineSeparator()}",
     )
 
-    val sut = GamePersistenceAdapter(tempFile.toFile())
+    val sut = FileSystemAdapter(tempFile.toFile())
     val fenData = FENData(
       "rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR",
       'b',
@@ -203,7 +203,7 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
     )
     val initialBoard = Game(1, FENData())
 
-    val sut = GamePersistenceAdapter(tempFile.toFile())
+    val sut = FileSystemAdapter(tempFile.toFile())
 
     assertThatThrownBy {
       sut.saveGame(initialBoard, false)
@@ -223,7 +223,7 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
         "${System.lineSeparator()}",
     )
 
-    val sut = GamePersistenceAdapter(tempFile.toFile())
+    val sut = FileSystemAdapter(tempFile.toFile())
     val games = sut.loadAllGames()
 
     assertThat(games).hasSize(2)

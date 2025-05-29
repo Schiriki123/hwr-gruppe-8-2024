@@ -4,12 +4,12 @@ import hwr.oop.group8.chess.core.File
 import hwr.oop.group8.chess.core.Move
 import hwr.oop.group8.chess.core.Position
 import hwr.oop.group8.chess.core.Rank
-import hwr.oop.group8.chess.persistence.LoadGameInterface
-import hwr.oop.group8.chess.persistence.SaveGameInterface
+import hwr.oop.group8.chess.persistence.LoadGamesPort
+import hwr.oop.group8.chess.persistence.SaveGamePort
 
 class MakeMoveCommand(
-  private val loadGameInterface: LoadGameInterface,
-  private val saveGameInterface: SaveGameInterface,
+  private val loadGamesPort: LoadGamesPort,
+  private val saveGamePort: SaveGamePort,
 ) : CliCommand {
   override fun matches(args: List<String>): Boolean {
     if (args.size != 5) return false
@@ -37,9 +37,9 @@ class MakeMoveCommand(
     )
     val move = Move(from, to)
 
-    val game = loadGameInterface.loadGame(gameId)
+    val game = loadGamesPort.loadGame(gameId)
     game.board.makeMove(move) // TODO: Extract to game
-    saveGameInterface.saveGame(game, true)
+    saveGamePort.saveGame(game, true)
     println("Move made from $from to $to.")
   }
 }

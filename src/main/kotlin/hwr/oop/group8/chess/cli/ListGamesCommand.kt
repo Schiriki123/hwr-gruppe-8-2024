@@ -1,9 +1,9 @@
 package hwr.oop.group8.chess.cli
 
-import hwr.oop.group8.chess.persistence.LoadAllGamesInterface
+import hwr.oop.group8.chess.persistence.LoadGamesPort
 
 class ListGamesCommand(
-  private val loadAllGamesInterface: LoadAllGamesInterface,
+  private val loadGamesPort: LoadGamesPort,
 ) : CliCommand {
   override fun matches(args: List<String>): Boolean {
     if (args.size != 2) return false
@@ -14,7 +14,7 @@ class ListGamesCommand(
 
   override fun handle(args: List<String>) {
     println("Loading all games...")
-    val games = loadAllGamesInterface.loadAllGames()
+    val games = loadGamesPort.loadAllGames()
     println("List of games:")
     for (game in games) {
       println(
