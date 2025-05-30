@@ -74,4 +74,6 @@ class King(override val color: Color, val boardInspector: BoardInspector) :
     Color.WHITE -> 'K'
     Color.BLACK -> 'k'
   }
+
+  override fun getType(): PieceType = PieceType.KING
 }

@@ -11,9 +11,13 @@ enum class Rank(val value: Int) {
   EIGHT(7),
   ;
 
-  fun up(): Rank? = entries.getOrNull(this.value + 1)
+  fun up(): Rank = entries.getOrElse(this.value + 1) {
+    throw IndexOutOfBoundsException("No upper rank from $this")
+  }
 
-  fun down(): Rank? = entries.getOrNull(this.value - 1)
+  fun down(): Rank = entries.getOrElse(this.value - 1) {
+    throw IndexOutOfBoundsException("No lower rank from $this")
+  }
 
   companion object {
     fun fromInt(value: Int): Rank =

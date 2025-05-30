@@ -19,6 +19,7 @@ class PawnTest : AnnotationSpec() {
     val blackPawn = Pawn(Color.BLACK, boardInspector)
     assertThat(whitePawn.getChar()).isEqualTo('P')
     assertThat(blackPawn.getChar()).isEqualTo('p')
+    assertThat(whitePawn.getType()).isEqualTo(PieceType.PAWN)
   }
 
   @Test

@@ -27,4 +27,6 @@ class Bishop(override val color: Color, val boardInspector: BoardInspector) :
     Color.WHITE -> 'B'
     Color.BLACK -> 'b'
   }
+
+  override fun getType(): PieceType = PieceType.BISHOP
 }
