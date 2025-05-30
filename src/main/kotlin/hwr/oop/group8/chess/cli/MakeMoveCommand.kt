@@ -34,7 +34,6 @@ class MakeMoveCommand(private val persistencePort: PersistencePort) :
     )
     val move = Move(from, to) // TODO: Extract move generation
 
-
     val game = persistencePort.loadGame(gameId)
     game.makeMove(move) // TODO: makeMove Extract to game
     persistencePort.saveGame(game, true)
