@@ -4,7 +4,7 @@ import hwr.oop.group8.chess.persistence.GamePersistenceAdapter
 import java.io.File
 
 fun main(args: Array<String>) {
-  val storageFile = File("games.txt")
+  val storageFile = File("games.csv")
   storageFile.createNewFile()
   val gamePersistenceAdapter =
     GamePersistenceAdapter(storageFile)

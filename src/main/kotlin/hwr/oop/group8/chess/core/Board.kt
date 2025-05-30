@@ -11,6 +11,7 @@ class Board(val fenData: FENData) : BoardInspector {
   var halfmoveClock: Int
   var fullmoveClock: Int
   val boardLogic: BoardLogic = BoardLogic(this)
+  val castlingLogic: CastlingLogic = CastlingLogic(this)
 
   init {
     initializeBoardFromFENString()
@@ -48,15 +49,13 @@ class Board(val fenData: FENData) : BoardInspector {
     piece: Piece?,
   ) {
     check(fileIterator.hasNext()) { "File iterator should have next element." }
-    map[Position(fileIterator.next(), rank)] = Square(piece)
+    val position = Position(fileIterator.next(), rank)
+    map[position] = Square(piece)
   }
 
   override fun getSquare(position: Position): Square = map.getValue(position)
 
-  override fun getPieceAt(position: Position): Piece? =
-    getSquare(position).getPiece()
-
-  override fun isSquareEmpty(position: Position): Boolean =
+  fun isSquareEmpty(position: Position): Boolean =
     getSquare(position).getPiece() == null
 
   override fun findPositionOfPiece(piece: Piece): Position = map.filterValues {
@@ -96,7 +95,7 @@ class Board(val fenData: FENData) : BoardInspector {
     // apply standard move
     toSquare.setPiece(piece)
     fromSquare.setPiece(null)
-    updateCastlingPermission()
+    castlingLogic.updateCastlingPermission()
     try {
       piece.moveCallback(move)
     } catch (e: Exception) {
@@ -117,20 +116,16 @@ class Board(val fenData: FENData) : BoardInspector {
   fun isCheck(): Boolean = boardLogic.isCheck()
 
   override fun isCastlingAllowed(color: Color): Pair<Boolean, Boolean> =
-    boardLogic.isCastlingAllowed(color)
+    castlingLogic.isCastlingAllowed(color)
 
   override fun getCurrentTurn(): Color = turn
 
-  override fun isPositionThreatened(
-    currentPlayer: Color,
-    position: Position,
-  ): Boolean = boardLogic.isPositionThreatened(currentPlayer, position)
+  fun isPositionThreatened(currentPlayer: Color, position: Position): Boolean =
+    boardLogic.isPositionThreatened(currentPlayer, position)
 
   override fun resetHalfMoveClock() {
     halfmoveClock = -1
   }
-
-  private fun updateCastlingPermission() = boardLogic.updateCastlingPermission()
 
   fun getMap(): HashMap<Position, Square> = map
 
