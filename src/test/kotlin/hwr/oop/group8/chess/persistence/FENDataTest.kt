@@ -10,8 +10,8 @@ import hwr.oop.group8.chess.piece.Queen
 import hwr.oop.group8.chess.piece.Rook
 import io.kotest.core.spec.style.AnnotationSpec
 import io.kotest.matchers.types.shouldBeInstanceOf
-import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 
 class FENDataTest : AnnotationSpec() {
   @Test
@@ -33,7 +33,7 @@ class FENDataTest : AnnotationSpec() {
     val board = Board(FENData("K7/8/8/8/8/8/8/8", 'w', ""))
     val pieceChars =
       listOf('r', 'n', 'b', 'q', 'k', 'p', 'R', 'N', 'B', 'Q', 'K', 'P')
-    Assertions.assertThat(pieceChars).allSatisfy { pieceChar ->
+    assertThat(pieceChars).allSatisfy { pieceChar ->
       val piece = FENData.createPieceOnBoard(pieceChar, board)
       when (pieceChar) {
         'r', 'R' -> piece.shouldBeInstanceOf<Rook>()
@@ -44,18 +44,30 @@ class FENDataTest : AnnotationSpec() {
         'p', 'P' -> piece.shouldBeInstanceOf<Piece>()
       }
     }
-    Assertions.assertThatThrownBy {
+    assertThatThrownBy {
       FENData.createPieceOnBoard('x', board)
     }.message().isEqualTo("Invalid piece character: x")
   }
 
   @Test
+  fun `Default board should generate correct fen string`() {
+    // given
+    val board = Board(FENData())
+    // when
+    val fenString = FENData.generateFENBoardString(board)
+    // then
+    assertThat(
+      fenString,
+    ).isEqualTo("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
+  }
+
+  @Test
   fun `Invalid initialization, expecting exception`() {
-    Assertions.assertThatThrownBy { FENData("8/8/8/8/8/8/8/8") }.message()
+    assertThatThrownBy { FENData("8/8/8/8/8/8/8/8") }.message()
       .isEqualTo("Board string must be 16 or higher")
-    Assertions.assertThatThrownBy { FENData(turn = 'q') }
-    Assertions.assertThatThrownBy { FENData(castle = "KQkb") }
-    Assertions.assertThatThrownBy { FENData(halfmoveClock = -1) }
-    Assertions.assertThatThrownBy { FENData(fullmoveClock = 0) }
+    assertThatThrownBy { FENData(turn = 'q') }
+    assertThatThrownBy { FENData(castle = "KQkb") }
+    assertThatThrownBy { FENData(halfmoveClock = -1) }
+    assertThatThrownBy { FENData(fullmoveClock = 0) }
   }
 }

@@ -1,19 +1,14 @@
 package hwr.oop.group8.chess.cli
 
-import hwr.oop.group8.chess.persistence.LoadAllGamesInterface
-import hwr.oop.group8.chess.persistence.LoadGameInterface
-import hwr.oop.group8.chess.persistence.SaveGameInterface
+import hwr.oop.group8.chess.persistence.PersistencePort
 
-class Cli(
-  loadGameInterface: LoadGameInterface,
-  saveGameInterface: SaveGameInterface,
-  loadAllGamesInterface: LoadAllGamesInterface,
-) {
+class Cli(persistencePort: PersistencePort) {
   val commands = listOf(
-    NewGameCommand(saveGameInterface),
-    PrintGameCommand(loadGameInterface),
-    MakeMoveCommand(loadGameInterface, saveGameInterface),
-    ListGamesCommand(loadAllGamesInterface),
+    NewGameCommand(persistencePort),
+    ShowGameCommand(persistencePort),
+    MakeMoveCommand(persistencePort),
+    ListGamesCommand(persistencePort),
+    DeleteGameCommand(persistencePort),
     HelpCommand(),
   )
 

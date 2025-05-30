@@ -4,9 +4,9 @@ import hwr.oop.group8.chess.core.Board
 import hwr.oop.group8.chess.core.File
 import hwr.oop.group8.chess.core.Position
 import hwr.oop.group8.chess.core.Rank
-import hwr.oop.group8.chess.persistence.LoadGameInterface
+import hwr.oop.group8.chess.persistence.PersistencePort
 
-class PrintGameCommand(private val loadGameInterface: LoadGameInterface) :
+class ShowGameCommand(private val persistencePort: PersistencePort) :
   CliCommand {
   override fun matches(args: List<String>): Boolean {
     if (args.size != 3) return false
@@ -20,10 +20,10 @@ class PrintGameCommand(private val loadGameInterface: LoadGameInterface) :
     val gameId = args[2].toInt()
     println("Loading game with id $gameId...")
     println("Current board:")
-    printBoard(loadGameInterface.loadGame(gameId).board)
+    printBoard(persistencePort.loadGame(gameId).board)
     println(
       "Current turn: ${
-        loadGameInterface.loadGame(gameId).getFenData().getTurn()
+        persistencePort.loadGame(gameId).getFenData().getTurn()
       }",
     )
   }

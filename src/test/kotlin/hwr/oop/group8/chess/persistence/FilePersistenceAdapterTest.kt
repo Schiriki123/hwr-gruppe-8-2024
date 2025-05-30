@@ -12,13 +12,15 @@ import kotlin.io.path.name
 import kotlin.io.path.readText
 import kotlin.io.path.writeText
 
-class GamePersistenceAdapterTest : AnnotationSpec() {
+class FilePersistenceAdapterTest : AnnotationSpec() {
 
   @Test
   fun `Checking if Adapter has right id and file name`() {
     val tempFile = createTempFile()
-    val sut = GamePersistenceAdapter(tempFile.toFile())
+    val sut = FilePersistenceAdapter(tempFile.toFile())
     assertThat(sut.file.name).isEqualTo(tempFile.name)
+
+    tempFile.deleteExisting()
   }
 
   @Test
@@ -29,7 +31,7 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
         "${System.lineSeparator()}",
     )
 
-    val sut = GamePersistenceAdapter(tempFile.toFile())
+    val sut = FilePersistenceAdapter(tempFile.toFile())
     val result: FENData = sut.loadGame(1).getFenData()
 
     assertThat(result.getRank(Rank.EIGHT)).isEqualTo("rnbqkb1r")
@@ -56,7 +58,7 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
         "${System.lineSeparator()}",
     )
 
-    val sut = GamePersistenceAdapter(tempFile.toFile())
+    val sut = FilePersistenceAdapter(tempFile.toFile())
 
     assertThatThrownBy {
       sut.loadGame(2)
@@ -78,7 +80,7 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
         "${System.lineSeparator()}",
     )
 
-    val sut = GamePersistenceAdapter(tempFile.toFile())
+    val sut = FilePersistenceAdapter(tempFile.toFile())
     val result: FENData = sut.loadGame(2).getFenData()
 
     assertThat(result.getRank(Rank.EIGHT)).isEqualTo("r3k2r")
@@ -102,7 +104,7 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
     val tempFile = createTempFile()
     tempFile.writeText("")
 
-    val sut = GamePersistenceAdapter(tempFile.toFile())
+    val sut = FilePersistenceAdapter(tempFile.toFile())
 
     assertThatThrownBy {
       sut.loadGame(1)
@@ -117,7 +119,7 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
     tempFile.writeText("")
     val initialGame = Game(1, FENData())
 
-    val sut = GamePersistenceAdapter(tempFile.toFile())
+    val sut = FilePersistenceAdapter(tempFile.toFile())
 
     sut.saveGame(initialGame, false)
 
@@ -140,7 +142,7 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
         "${System.lineSeparator()}",
     )
 
-    val sut = GamePersistenceAdapter(tempFile.toFile())
+    val sut = FilePersistenceAdapter(tempFile.toFile())
     val fenData = FENData(
       "rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR",
       'b',
@@ -174,7 +176,7 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
         "${System.lineSeparator()}",
     )
 
-    val sut = GamePersistenceAdapter(tempFile.toFile())
+    val sut = FilePersistenceAdapter(tempFile.toFile())
     val fenData = FENData(
       "rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR",
       'b',
@@ -203,7 +205,7 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
     )
     val initialBoard = Game(1, FENData())
 
-    val sut = GamePersistenceAdapter(tempFile.toFile())
+    val sut = FilePersistenceAdapter(tempFile.toFile())
 
     assertThatThrownBy {
       sut.saveGame(initialBoard, false)
@@ -223,7 +225,7 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
         "${System.lineSeparator()}",
     )
 
-    val sut = GamePersistenceAdapter(tempFile.toFile())
+    val sut = FilePersistenceAdapter(tempFile.toFile())
     val games = sut.loadAllGames()
 
     assertThat(games).hasSize(2)
@@ -231,6 +233,57 @@ class GamePersistenceAdapterTest : AnnotationSpec() {
     assertThat(games[0].getFenData().getTurn()).isEqualTo(Color.WHITE)
     assertThat(games[1].id).isEqualTo(3)
     assertThat(games[1].getFenData().getTurn()).isEqualTo(Color.BLACK)
+
+    tempFile.deleteExisting()
+  }
+
+  @Test
+  fun `Game with id 2 should be deleted`() {
+    // given
+    val tempFile = createTempFile()
+    tempFile.writeText(
+      "1,rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR w KQkq - 0 1" +
+        "${System.lineSeparator()}" +
+        "2,r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b " +
+        "KQkq - 0 12" +
+        "${System.lineSeparator()}" +
+        "3,rnbqkb1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKB1R w KQkq - 0 1" +
+        "${System.lineSeparator()}",
+    )
+    val sut = FilePersistenceAdapter(tempFile.toFile())
+
+    // when
+    sut.deleteGame(2)
+    val remainingGames = sut.loadAllGames()
+
+    // then
+    assertThat(remainingGames).hasSize(2)
+    assertThat(remainingGames.map { it.id }).doesNotContain(2)
+
+    tempFile.deleteExisting()
+  }
+
+  @Test
+  fun `Deleting non existing game should throw exception`() {
+    // given
+    val tempFile = createTempFile()
+    tempFile.writeText(
+      "1,rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR w KQkq - 0 1" +
+        "${System.lineSeparator()}" +
+        "2,r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b " +
+        "KQkq - 0 12" +
+        "${System.lineSeparator()}",
+    )
+    val sut = FilePersistenceAdapter(tempFile.toFile())
+    // when
+    assertThatThrownBy {
+      sut.deleteGame(3)
+    }.isInstanceOf(CouldNotDeleteGameException::class.java)
+      .hasMessageContaining("Game with id 3 does not exist")
+    // then
+    val remainingGames = sut.loadAllGames()
+    assertThat(remainingGames).hasSize(2)
+    assertThat(remainingGames.map { it.id }).containsExactlyInAnyOrder(1, 2)
 
     tempFile.deleteExisting()
   }
