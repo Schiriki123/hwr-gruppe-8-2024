@@ -19,6 +19,7 @@ class BishopTest : AnnotationSpec() {
     val blackBishop = Bishop(Color.BLACK, boardInspector)
     assertThat(whiteBishop.getChar()).isEqualTo('B')
     assertThat(blackBishop.getChar()).isEqualTo('b')
+    assertThat(whiteBishop.getType()).isEqualTo(PieceType.BISHOP)
   }
 
   @Test

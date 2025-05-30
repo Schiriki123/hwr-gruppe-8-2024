@@ -50,4 +50,6 @@ class Knight(override val color: Color, val boardInspector: BoardInspector) :
     Color.WHITE -> 'N'
     Color.BLACK -> 'n'
   }
+
+  override fun getType(): PieceType = PieceType.KNIGHT
 }

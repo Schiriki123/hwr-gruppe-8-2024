@@ -22,4 +22,6 @@ class Queen(override val color: Color, val boardInspector: BoardInspector) :
     Color.WHITE -> 'Q'
     Color.BLACK -> 'q'
   }
+
+  override fun getType(): PieceType = PieceType.QUEEN
 }

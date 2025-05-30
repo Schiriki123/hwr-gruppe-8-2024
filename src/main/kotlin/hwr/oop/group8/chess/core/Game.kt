@@ -6,4 +6,7 @@ data class Game(val id: Int, private val fenData: FENData) {
   val board: Board = Board(fenData)
 
   fun getFenData(): FENData = board.getFENData()
+  fun makeMove(move: Move) {
+    board.makeMove(move)
+  }
 }

@@ -259,8 +259,10 @@ class BoardTest : AnnotationSpec() {
     assertThatThrownBy {
       Board(FENData("rnbqkbnr/pppppppp/8/8/8/7/PPPPPPPP/RNBQKBNR"))
     }.message().isEqualTo("Board must have exactly 64 squares.")
-    assertThatThrownBy { Board(FENData("8/8/8/8/8/8/8/8p")) }.message()
-      .isEqualTo("File counter should not be null")
+
+    assertThatThrownBy {
+      Board(FENData("K7/8/k7/8/8/8/8/9"))
+    }.message().isEqualTo("File iterator should have next element.")
   }
 
   @Test

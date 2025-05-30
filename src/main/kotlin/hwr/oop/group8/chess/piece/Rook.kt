@@ -27,4 +27,6 @@ class Rook(override val color: Color, val boardInspector: BoardInspector) :
     Color.WHITE -> 'R'
     Color.BLACK -> 'r'
   }
+
+  override fun getType(): PieceType = PieceType.ROOK
 }

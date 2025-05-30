@@ -76,4 +76,6 @@ class Pawn(override val color: Color, val boardInspector: BoardInspector) :
     Color.WHITE -> 'P'
     Color.BLACK -> 'p'
   }
+
+  override fun getType(): PieceType = PieceType.PAWN
 }

@@ -11,28 +11,10 @@ class Board(val fenData: FENData) : BoardInspector {
   var halfmoveClock: Int
   var fullmoveClock: Int
   val boardLogic: BoardLogic = BoardLogic(this)
+  val castlingLogic: CastlingLogic = CastlingLogic(this)
 
   init {
-    for (rank in Rank.entries) {
-      var fileCounter: File? = File.A
-      fenData.getRank(rank).forEach { fileChar ->
-        if (fileChar.isDigit()) {
-          repeat(fileChar.digitToInt()) {
-            checkNotNull(fileCounter) { "File counter should not be null" }
-            map.put(Position(fileCounter, rank), Square(null))
-            fileCounter = fileCounter.right()
-          }
-        } else {
-          checkNotNull(fileCounter) { "File counter should not be null" }
-          map.put(
-            Position(fileCounter, rank),
-            Square(FENData.createPieceOnBoard(fileChar, this)),
-          )
-          fileCounter = fileCounter.right()
-        }
-      }
-    }
-    check(map.size == 64) { "Board must have exactly 64 squares." }
+    initializeBoardFromFENString()
 
     turn = fenData.getTurn()
     castle = fenData.castle
@@ -44,12 +26,36 @@ class Board(val fenData: FENData) : BoardInspector {
     }
   }
 
+  private fun initializeBoardFromFENString() {
+    for (rank in Rank.entries) {
+      val fileIterator = File.entries.iterator()
+      fenData.getRank(rank).forEach { character ->
+        if (character.isDigit()) {
+          repeat(character.digitToInt()) {
+            populateSquare(fileIterator, rank, null)
+          }
+        } else {
+          val piece = FENData.createPieceOnBoard(character, this)
+          populateSquare(fileIterator, rank, piece)
+        }
+      }
+    }
+    check(map.size == 64) { "Board must have exactly 64 squares." }
+  }
+
+  private fun populateSquare(
+    fileIterator: Iterator<File>,
+    rank: Rank,
+    piece: Piece?,
+  ) {
+    check(fileIterator.hasNext()) { "File iterator should have next element." }
+    val position = Position(fileIterator.next(), rank)
+    map[position] = Square(piece)
+  }
+
   override fun getSquare(position: Position): Square = map.getValue(position)
 
-  override fun getPieceAt(position: Position): Piece? =
-    getSquare(position).getPiece()
-
-  override fun isSquareEmpty(position: Position): Boolean =
+  fun isSquareEmpty(position: Position): Boolean =
     getSquare(position).getPiece() == null
 
   override fun findPositionOfPiece(piece: Piece): Position = map.filterValues {
@@ -89,7 +95,7 @@ class Board(val fenData: FENData) : BoardInspector {
     // apply standard move
     toSquare.setPiece(piece)
     fromSquare.setPiece(null)
-    updateCastlingPermission()
+    castlingLogic.updateCastlingPermission()
     try {
       piece.moveCallback(move)
     } catch (e: Exception) {
@@ -110,20 +116,16 @@ class Board(val fenData: FENData) : BoardInspector {
   fun isCheck(): Boolean = boardLogic.isCheck()
 
   override fun isCastlingAllowed(color: Color): Pair<Boolean, Boolean> =
-    boardLogic.isCastlingAllowed(color)
+    castlingLogic.isCastlingAllowed(color)
 
   override fun getCurrentTurn(): Color = turn
 
-  override fun isPositionThreatened(
-    currentPlayer: Color,
-    position: Position,
-  ): Boolean = boardLogic.isPositionThreatened(currentPlayer, position)
+  fun isPositionThreatened(currentPlayer: Color, position: Position): Boolean =
+    boardLogic.isPositionThreatened(currentPlayer, position)
 
   override fun resetHalfMoveClock() {
     halfmoveClock = -1
   }
-
-  private fun updateCastlingPermission() = boardLogic.updateCastlingPermission()
 
   fun getMap(): HashMap<Position, Square> = map
 

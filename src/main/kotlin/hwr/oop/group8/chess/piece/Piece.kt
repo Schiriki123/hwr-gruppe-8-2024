@@ -8,5 +8,5 @@ interface Piece {
   fun getValidMoveDestinations(): Set<Move>
   fun moveCallback(move: Move)
   fun getChar(): Char
-  fun getType(): PieceType = TODO()
+  fun getType(): PieceType
 }

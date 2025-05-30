@@ -12,12 +12,15 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 
 class QueenTest : AnnotationSpec() {
+
+  @Test
   fun `char representation`() {
-    val boardInspector = Board(FENData("8/8/8/8/8/8/8/K7"))
-    val whiteQueen = Rook(Color.WHITE, boardInspector)
-    val blackQueen = Rook(Color.BLACK, boardInspector)
-    assertThat(whiteQueen.getChar()).isEqualTo('R')
-    assertThat(blackQueen.getChar()).isEqualTo('r')
+    val boardInspector = Board(FENData("8/8/8/8/8/8/8/K7", 'w', ""))
+    val whiteQueen = Queen(Color.WHITE, boardInspector)
+    val blackQueen = Queen(Color.BLACK, boardInspector)
+    assertThat(whiteQueen.getChar()).isEqualTo('Q')
+    assertThat(blackQueen.getChar()).isEqualTo('q')
+    assertThat(whiteQueen.getType()).isEqualTo(PieceType.QUEEN)
   }
 
   @Test
