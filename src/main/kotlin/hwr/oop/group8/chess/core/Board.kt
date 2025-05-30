@@ -63,9 +63,8 @@ class Board(val fenData: FENData) : BoardInspector {
   }.keys.first()
 
   fun makeMove(move: Move) {
-    val fromSquare = getSquare(move.from)
-    val toSquare = getSquare(move.to)
-    val specialMove = move.specialMove
+    val fromSquare = getSquare(move.moves().first().from)
+    val toSquare = getSquare(move.moves().first().to)
     val piece = fromSquare.getPiece()
 
     checkNotNull(piece)
@@ -75,38 +74,52 @@ class Board(val fenData: FENData) : BoardInspector {
       "Cannot move to a square occupied by the same color"
     }
 
-    check(piece.getValidMoveDestinations().contains(move)) {
-      "Invalid move for piece ${piece::class.simpleName} from ${move.from} to ${move.to}"
+    val matchingMove = piece.getValidMoveDestinations().find { validMoves ->
+      validMoves.moves().first().to == move.moves().first().to &&
+        validMoves.moves().first().from == move.moves().first().from
     }
 
-    check(isMoveCheck(move)) { "Move would put player in check" }
-
-    if (!isSquareEmpty(move.to)) resetHalfMoveClock()
-
-    // apply special move
-    if (!move.specialMove.isEmpty()) {
-      val specialToSquare = getSquare(specialMove.first().to)
-      val specialFromSquare = getSquare(specialMove.first().from)
-      val specialMovePiece = getPieceAt(specialMove.first().from)
-      specialToSquare.setPiece(specialMovePiece)
-      specialFromSquare.setPiece(null)
+    checkNotNull(matchingMove) {
+      "Invalid move for piece ${piece::class.simpleName} from ${
+        move.moves().first().from
+      } to ${move.moves().first().to}"
     }
+
+    matchingMove.moves().first().promotionChar =
+      move.moves().first().promotionChar
+
+    check(isMoveCheck(matchingMove)) { "Move would put player in check" }
+
+    if (!isSquareEmpty(move.moves().first().to)) resetHalfMoveClock()
 
     // apply standard move
+    applyMoves(matchingMove)
+
+    if (turn == Color.BLACK) fullmoveClock++
+    halfmoveClock++
+    turn = turn.invert()
+  }
+
+  private fun applyMoves(move: Move) {
+    move.moves().forEach { applySingleMove(it) }
+  }
+
+  private fun applySingleMove(singleMove: SingleMove) {
+    val toSquare = getSquare(singleMove.to)
+    val fromSquare = getSquare(singleMove.from)
+    val piece = fromSquare.getPiece()
+    checkNotNull(piece) { "No piece found at ${singleMove.from}" }
     toSquare.setPiece(piece)
     fromSquare.setPiece(null)
     castlingLogic.updateCastlingPermission()
     try {
-      piece.moveCallback(move)
+      piece.moveCallback(singleMove)
     } catch (e: Exception) {
       // Restore the board state if the moveCallback fails
       fromSquare.setPiece(piece)
       toSquare.setPiece(null)
       throw e
     }
-    if (turn == Color.BLACK) fullmoveClock++
-    halfmoveClock++
-    turn = turn.invert()
   }
 
   private fun isCheckmate(): Boolean = boardLogic.isCheckmate()

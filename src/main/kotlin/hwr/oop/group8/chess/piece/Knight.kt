@@ -3,12 +3,12 @@ package hwr.oop.group8.chess.piece
 import hwr.oop.group8.chess.core.BoardInspector
 import hwr.oop.group8.chess.core.Color
 import hwr.oop.group8.chess.core.Direction
-import hwr.oop.group8.chess.core.Move
+import hwr.oop.group8.chess.core.SingleMove
 
 class Knight(override val color: Color, val boardInspector: BoardInspector) :
   Piece {
-  override fun getValidMoveDestinations(): Set<Move> {
-    val validDestinations: MutableSet<Move> = mutableSetOf()
+  override fun getValidMoveDestinations(): Set<SingleMove> {
+    val validDestinations: MutableSet<SingleMove> = mutableSetOf()
     val currentPosition = boardInspector.findPositionOfPiece(this)
 
     val possibleDestination = listOf(
@@ -25,7 +25,7 @@ class Knight(override val color: Color, val boardInspector: BoardInspector) :
       try {
         val newPosition =
           currentPosition.nextPosition(pair.first).nextPosition(pair.second)
-        validDestinations.add(Move(currentPosition, newPosition))
+        validDestinations.add(SingleMove(currentPosition, newPosition))
       } catch (_: IndexOutOfBoundsException) {
         // Ignore out of bounds exceptions, as they indicate invalid moves
       }
@@ -33,7 +33,7 @@ class Knight(override val color: Color, val boardInspector: BoardInspector) :
     return validDestinations
   }
 
-  override fun moveCallback(move: Move) {}
+  override fun moveCallback(move: SingleMove) {}
 
   override fun getChar(): Char = when (color) {
     Color.WHITE -> 'N'

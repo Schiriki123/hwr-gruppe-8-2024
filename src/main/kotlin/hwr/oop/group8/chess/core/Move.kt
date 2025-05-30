@@ -1,30 +1,36 @@
 package hwr.oop.group8.chess.core
 
-data class Move( // TODO: interface
+import hwr.oop.group8.chess.piece.King
+
+interface Move {
+  fun moves(): List<SingleMove>
+
+  companion object {
+    fun create(from: Position, to: Position): Move =
+      SingleMove(from, to, emptyList(), null)
+  }
+}
+
+data class CastleMove(val king: King, val isKingSideCastle: Boolean) : Move {
+  val kingColor = king.color
+  val homeRank = if (kingColor == Color.WHITE) Rank.ONE else Rank.EIGHT
+  override fun moves(): List<SingleMove> = listOf(
+    SingleMove(
+      Position(File.E, homeRank),
+      Position(if (isKingSideCastle) File.G else File.C, homeRank),
+    ),
+    SingleMove(
+      Position(if (isKingSideCastle) File.H else File.A, homeRank),
+      Position(if (isKingSideCastle) File.F else File.D, homeRank),
+    ),
+  )
+}
+
+class PromotionMove(
   val from: Position,
   val to: Position,
-  val specialMove: List<Move> = listOf(), // TODO: naming, composite pattern
-  val promotionChar: Char? = null,
-) {
-  // Exclude promotionChar from equals
-  override fun equals(other: Any?): Boolean {
-    if (this === other) return true
-    if (javaClass != other?.javaClass) return false
-
-    other as Move
-
-    if (from != other.from) return false
-    if (to != other.to) return false
-    if (specialMove != other.specialMove) return false
-
-    return true
-  }
-
-  override fun hashCode(): Int {
-    var result = promotionChar?.hashCode() ?: 0
-    result = 31 * result + from.hashCode()
-    result = 31 * result + to.hashCode()
-    result = 31 * result + specialMove.hashCode()
-    return result
-  }
+  val promotionChar: Char,
+) : Move {
+  override fun moves(): List<SingleMove> =
+    listOf(SingleMove(from, to, emptyList(), promotionChar))
 }

@@ -3,9 +3,9 @@ package hwr.oop.group8.chess.piece
 import hwr.oop.group8.chess.core.Board
 import hwr.oop.group8.chess.core.Color
 import hwr.oop.group8.chess.core.File
-import hwr.oop.group8.chess.core.Move
 import hwr.oop.group8.chess.core.Position
 import hwr.oop.group8.chess.core.Rank
+import hwr.oop.group8.chess.core.SingleMove
 import hwr.oop.group8.chess.persistence.FENData
 import io.kotest.core.spec.style.AnnotationSpec
 import org.assertj.core.api.Assertions.assertThat
@@ -25,8 +25,8 @@ class BishopTest : AnnotationSpec() {
   @Test
   fun `Bishop movement on empty board`() {
     val board = Board(FENData("B7/8/8/8/8/8/8/K7", 'w', ""))
-    val move = Move(Position(File.A, Rank.EIGHT), Position(File.E, Rank.FOUR))
-    board.makeMove(move)
+    val singleMove = SingleMove(Position(File.A, Rank.EIGHT), Position(File.E, Rank.FOUR))
+    board.makeMove(singleMove)
 
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/4B3/8/8/K7")
   }
@@ -39,30 +39,30 @@ class BishopTest : AnnotationSpec() {
       board.getPieceAt(startPosition)!!.getValidMoveDestinations()
 
     assertThat(validMoveDestinationsOfBishop).containsExactlyInAnyOrder(
-      Move(startPosition, Position(File.B, Rank.SIX)),
-      Move(startPosition, Position(File.D, Rank.SIX)),
-      Move(startPosition, Position(File.B, Rank.FOUR)),
-      Move(startPosition, Position(File.D, Rank.FOUR)),
-      Move(startPosition, Position(File.E, Rank.THREE)),
-      Move(startPosition, Position(File.F, Rank.EIGHT)),
-      Move(startPosition, Position(File.A, Rank.SEVEN)),
-      Move(startPosition, Position(File.E, Rank.SEVEN)),
+      SingleMove(startPosition, Position(File.B, Rank.SIX)),
+      SingleMove(startPosition, Position(File.D, Rank.SIX)),
+      SingleMove(startPosition, Position(File.B, Rank.FOUR)),
+      SingleMove(startPosition, Position(File.D, Rank.FOUR)),
+      SingleMove(startPosition, Position(File.E, Rank.THREE)),
+      SingleMove(startPosition, Position(File.F, Rank.EIGHT)),
+      SingleMove(startPosition, Position(File.A, Rank.SEVEN)),
+      SingleMove(startPosition, Position(File.E, Rank.SEVEN)),
     )
   }
 
   @Test
   fun `Bishop movement with blocked path`() {
     val board = Board(FENData("B7/8/8/8/4r3/8/8/K7", 'w', ""))
-    val move = Move(Position(File.A, Rank.EIGHT), Position(File.G, Rank.TWO))
-    assertThatThrownBy { board.makeMove(move) }
+    val singleMove = SingleMove(Position(File.A, Rank.EIGHT), Position(File.G, Rank.TWO))
+    assertThatThrownBy { board.makeMove(singleMove) }
       .hasMessageContaining("Invalid move for piece Bishop from a8 to g2")
   }
 
   @Test
   fun `Invalid move, expection exception`() {
     val board = Board(FENData("B7/8/8/8/4r3/8/8/K7", 'w', ""))
-    val move = Move(Position(File.A, Rank.EIGHT), Position(File.A, Rank.TWO))
-    assertThatThrownBy { board.makeMove(move) }
+    val singleMove = SingleMove(Position(File.A, Rank.EIGHT), Position(File.A, Rank.TWO))
+    assertThatThrownBy { board.makeMove(singleMove) }
       .hasMessageContaining("Invalid move for piece Bishop from a8 to a2")
   }
 }

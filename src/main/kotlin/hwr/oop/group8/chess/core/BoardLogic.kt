@@ -7,8 +7,8 @@ class BoardLogic(val board: Board) {
 
   fun isMoveCheck(move: Move): Boolean {
     // Simulate the move
-    val fromSquare = board.getSquare(move.from)
-    val toSquare = board.getSquare(move.to)
+    val fromSquare = board.getSquare(move.moves().first().from)
+    val toSquare = board.getSquare(move.moves().first().to)
     val movedPiece = fromSquare.getPiece()
     val pieceOnTargetSquare = toSquare.getPiece()
     toSquare.setPiece(movedPiece)
@@ -65,6 +65,6 @@ class BoardLogic(val board: Board) {
       .filter { it.color != currentPlayer }
       .flatMap { it.getValidMoveDestinations() }
       .toSet()
-    return possibleMovesOfOpponent.any { it.to == position }
+    return possibleMovesOfOpponent.any { it.moves().first().to == position }
   }
 }

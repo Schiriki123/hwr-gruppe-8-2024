@@ -193,8 +193,8 @@ class BoardTest : AnnotationSpec() {
       Board(FENData("8/8/8/8/8/7r/7R/k7", 'b', "", halfmoveClock = 12))
     val startPosition = Position(File.H, Rank.THREE)
     val endPosition = Position(File.H, Rank.TWO)
-    val testMove = Move(startPosition, endPosition)
-    board.makeMove(testMove)
+    val testSingleMove = SingleMove(startPosition, endPosition)
+    board.makeMove(testSingleMove)
     assertThat(board.halfmoveClock).isEqualTo(0)
   }
 
@@ -204,8 +204,8 @@ class BoardTest : AnnotationSpec() {
       Board(FENData("8/8/8/8/8/1p6/8/k7", 'b', "", halfmoveClock = 12))
     val startPosition = Position(File.B, Rank.THREE)
     val endPosition = Position(File.B, Rank.TWO)
-    val testMove = Move(startPosition, endPosition)
-    board.makeMove(testMove)
+    val testSingleMove = SingleMove(startPosition, endPosition)
+    board.makeMove(testSingleMove)
     assertThat(board.halfmoveClock).isEqualTo(0)
   }
 
@@ -215,8 +215,8 @@ class BoardTest : AnnotationSpec() {
       Board(FENData("r7/8/8/8/8/8/8/k7", 'b', "", halfmoveClock = 12))
     val startPosition = Position(File.A, Rank.EIGHT)
     val endPosition = Position(File.A, Rank.SEVEN)
-    val testMove = Move(startPosition, endPosition)
-    board.makeMove(testMove)
+    val testSingleMove = SingleMove(startPosition, endPosition)
+    board.makeMove(testSingleMove)
     assertThat(board.halfmoveClock).isEqualTo(13)
   }
 
@@ -226,8 +226,8 @@ class BoardTest : AnnotationSpec() {
       Board(FENData("r7/8/8/8/8/8/8/k7", 'b', "", fullmoveClock = 12))
     val startPosition = Position(File.A, Rank.EIGHT)
     val endPosition = Position(File.A, Rank.SEVEN)
-    val testMove = Move(startPosition, endPosition)
-    board.makeMove(testMove)
+    val testSingleMove = SingleMove(startPosition, endPosition)
+    board.makeMove(testSingleMove)
     assertThat(board.fullmoveClock).isEqualTo(13)
   }
 
@@ -237,8 +237,8 @@ class BoardTest : AnnotationSpec() {
       Board(FENData("R7/8/8/8/8/8/8/K7", 'w', "", fullmoveClock = 12))
     val startPosition = Position(File.A, Rank.EIGHT)
     val endPosition = Position(File.A, Rank.SEVEN)
-    val testMove = Move(startPosition, endPosition)
-    board.makeMove(testMove)
+    val testSingleMove = SingleMove(startPosition, endPosition)
+    board.makeMove(testSingleMove)
     assertThat(board.fullmoveClock).isEqualTo(12)
   }
 
@@ -247,10 +247,10 @@ class BoardTest : AnnotationSpec() {
     val board = Board(FENData("8/8/8/8/4R3/8/8/K7", 'w', ""))
     val startPosition = Position(File.E, Rank.FOUR)
     val endPosition = Position(File.E, Rank.EIGHT)
-    val testMove = Move(startPosition, endPosition)
+    val testSingleMove = SingleMove(startPosition, endPosition)
 
     shouldNotThrowAny {
-      board.makeMove(testMove)
+      board.makeMove(testSingleMove)
     }
   }
 
@@ -285,8 +285,8 @@ class BoardTest : AnnotationSpec() {
   @Test
   fun `Piece moves on ally, exception expected`() {
     val board = Board(FENData("K7/8/8/8/8/P7/8/R7", castle = ""))
-    val move = Move(Position(File.A, Rank.ONE), Position(File.A, Rank.THREE))
-    assertThatThrownBy { board.makeMove(move) }.message()
+    val singleMove = SingleMove(Position(File.A, Rank.ONE), Position(File.A, Rank.THREE))
+    assertThatThrownBy { board.makeMove(singleMove) }.message()
       .isEqualTo("Cannot move to a square occupied by the same color")
     assertThat(board.generateFENBoardString()).isEqualTo("K7/8/8/8/8/P7/8/R7")
   }
@@ -295,13 +295,13 @@ class BoardTest : AnnotationSpec() {
   fun `Capture Piece, rook captures pawn, expecting valid move`() {
     val board = Board(FENData("K7/8/8/8/8/p7/8/R7", castle = ""))
     val capturedPieces = CapturedPieces(board.getMap())
-    val move = Move(Position(File.A, Rank.ONE), Position(File.A, Rank.THREE))
+    val singleMove = SingleMove(Position(File.A, Rank.ONE), Position(File.A, Rank.THREE))
     assertThat(
       capturedPieces.getCapturedPieces(),
     ).isEqualTo(
       "White's captures: rnbqkbnrppppppp${System.lineSeparator()}Black's captures: NBQBNRPPPPPPPP",
     )
-    board.makeMove(move)
+    board.makeMove(singleMove)
     assertThat(board.generateFENBoardString()).isEqualTo("K7/8/8/8/8/R7/8/8")
     assertThat(
       capturedPieces.getCapturedPieces(),
