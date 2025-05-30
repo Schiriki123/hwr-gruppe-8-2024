@@ -15,7 +15,7 @@ class MainTest : AnnotationSpec() {
       main(arrayOf("new", "game", "$testGameID"))
     }.trim()
     assertThat(output).contains("New game with id $testGameID created.")
-    assertThat(File("games.txt").readLines().last()).isEqualTo(
+    assertThat(File("games.csv").readLines().last()).isEqualTo(
       "$testGameID,rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
     )
 
