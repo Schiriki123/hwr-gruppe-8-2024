@@ -39,7 +39,7 @@ data class FENData(
   }
 
   fun getRank(rank: Rank): String =
-    boardString.split("/").reversed()[rank.value]
+    boardString.split("/").reversed()[rank.toInt() - 1]
 
   fun getTurn(): Color = if (turn == 'w') Color.WHITE else Color.BLACK
 

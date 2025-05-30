@@ -1,25 +1,24 @@
 package hwr.oop.group8.chess.core
 
-enum class Direction(val fileShift: Int, val rankShift: Int) {
-  TOP(0, 1),
-  BOTTOM(0, -1),
-  LEFT(-1, 0),
-  RIGHT(1, 0),
-  TOP_LEFT(-1, 1),
-  TOP_RIGHT(1, 1),
-  BOTTOM_LEFT(-1, -1),
-  BOTTOM_RIGHT(1, -1),
+enum class Direction {
+  TOP,
+  BOTTOM,
+  LEFT,
+  RIGHT,
+  TOP_LEFT,
+  TOP_RIGHT,
+  BOTTOM_LEFT,
+  BOTTOM_RIGHT,
   ;
 
-  fun combine(other: Direction): Direction {
-    val combinedFileShift = this.fileShift + other.fileShift
-    val combinedRankShift = this.rankShift + other.rankShift
-    return entries.firstOrNull {
-      it.fileShift == combinedFileShift &&
-        it.rankShift == combinedRankShift
-    }
-      ?: throw IllegalArgumentException(
-        "Invalid direction combination: $this and $other",
-      )
+  fun appliedOn(position: Position): Position = when (this) {
+    TOP -> position.up()
+    BOTTOM -> position.down()
+    LEFT -> position.left()
+    RIGHT -> position.right()
+    TOP_LEFT -> position.upLeft()
+    TOP_RIGHT -> position.upRight()
+    BOTTOM_LEFT -> position.downLeft()
+    BOTTOM_RIGHT -> position.downRight()
   }
 }

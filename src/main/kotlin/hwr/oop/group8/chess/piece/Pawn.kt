@@ -40,11 +40,12 @@ class Pawn(override val color: Color, val boardInspector: BoardInspector) :
 
     // Check for diagonal captures
     for (direction in setOf(
-      Direction.LEFT.combine(forwardDirection),
-      Direction.RIGHT.combine(forwardDirection),
+      Direction.LEFT,
+      Direction.RIGHT,
     )) {
       if (getPosition().hasNextPosition(direction)) {
-        val nextPosition = getPosition().nextPosition(direction)
+        val nextPosition =
+          getPosition().nextPosition(direction).nextPosition(forwardDirection)
         val nextPiece = boardInspector.getPieceAt(nextPosition)
         if (nextPiece != null && nextPiece.color != color) {
           validMoves.add(Move(currentPosition, nextPosition))

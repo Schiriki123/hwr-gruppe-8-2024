@@ -1,22 +1,36 @@
 package hwr.oop.group8.chess.core
 
-enum class File(val value: Int) {
-  A(0),
-  B(1),
-  C(2),
-  D(3),
-  E(4),
-  F(5),
-  G(6),
-  H(7),
+enum class File {
+  A,
+  B,
+  C,
+  D,
+  E,
+  F,
+  G,
+  H,
   ;
 
-  fun right(): File = entries.getOrElse(this.value + 1) {
-    throw IndexOutOfBoundsException("No right file from $this")
+  fun right(): File = when (this) {
+    A -> B
+    B -> C
+    C -> D
+    D -> E
+    E -> F
+    F -> G
+    G -> H
+    H -> throw IndexOutOfBoundsException("No right file from $this")
   }
 
-  fun left(): File = entries.getOrElse(this.value - 1) {
-    throw IndexOutOfBoundsException("No left file from $this")
+  fun left(): File = when (this) {
+    A -> throw IndexOutOfBoundsException("No left file from $this")
+    B -> A
+    C -> B
+    D -> C
+    E -> D
+    F -> E
+    G -> F
+    H -> G
   }
 
   companion object {

@@ -153,6 +153,7 @@ class KnightTest : AnnotationSpec() {
     assertThat(validMoveDestinationsOfKnight).containsExactly(
       Move(startPosition, Position(File.E, Rank.EIGHT)),
       Move(startPosition, Position(File.E, Rank.SIX)),
+      Move(startPosition, Position(File.H, Rank.FIVE)),
       Move(startPosition, Position(File.F, Rank.FIVE)),
     )
   }
@@ -166,8 +167,9 @@ class KnightTest : AnnotationSpec() {
 
     assertThat(validMoveDestinationOfKnight).containsExactly(
       Move(startPosition, Position(File.E, Rank.THREE)),
-      Move(startPosition, Position(File.E, Rank.ONE)),
       Move(startPosition, Position(File.A, Rank.THREE)),
+      Move(startPosition, Position(File.E, Rank.ONE)),
+      Move(startPosition, Position(File.A, Rank.ONE)),
       Move(startPosition, Position(File.D, Rank.FOUR)),
       Move(startPosition, Position(File.B, Rank.FOUR)),
     )
