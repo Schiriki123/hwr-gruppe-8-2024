@@ -2,7 +2,6 @@ package hwr.oop.group8.chess.core
 
 import hwr.oop.group8.chess.persistence.FENData
 import hwr.oop.group8.chess.piece.Piece
-import hwr.oop.group8.chess.piece.PieceType
 
 class Board(val fenData: FENData) : BoardInspector {
   private val map = HashMap<Position, Square>()
@@ -14,26 +13,7 @@ class Board(val fenData: FENData) : BoardInspector {
   val boardLogic: BoardLogic = BoardLogic(this)
 
   init {
-    for (rank in Rank.entries) {
-      var fileCounter: File? = File.A
-      fenData.getRank(rank).forEach { fileChar ->
-        if (fileChar.isDigit()) {
-          repeat(fileChar.digitToInt()) {
-            checkNotNull(fileCounter) { "File counter should not be null" }
-            map.put(Position(fileCounter, rank), Square(null))
-            fileCounter = fileCounter.right()
-          }
-        } else {
-          checkNotNull(fileCounter) { "File counter should not be null" }
-          map.put(
-            Position(fileCounter, rank),
-            Square(FENData.createPieceOnBoard(fileChar, this)),
-          )
-          fileCounter = fileCounter.right()
-        }
-      }
-    }
-    check(map.size == 64) { "Board must have exactly 64 squares." }
+    initializeBoardFromFENString()
 
     turn = fenData.getTurn()
     castle = fenData.castle
@@ -43,6 +23,32 @@ class Board(val fenData: FENData) : BoardInspector {
     check(!isCheckmate()) {
       "Game is over, checkmate!"
     }
+  }
+
+  private fun initializeBoardFromFENString() {
+    for (rank in Rank.entries) {
+      val fileIterator = File.entries.iterator()
+      fenData.getRank(rank).forEach { character ->
+        if (character.isDigit()) {
+          repeat(character.digitToInt()) {
+            populateSquare(fileIterator, rank, null)
+          }
+        } else {
+          val piece = FENData.createPieceOnBoard(character, this)
+          populateSquare(fileIterator, rank, piece)
+        }
+      }
+    }
+    check(map.size == 64) { "Board must have exactly 64 squares." }
+  }
+
+  private fun populateSquare(
+    fileIterator: Iterator<File>,
+    rank: Rank,
+    piece: Piece?,
+  ) {
+    check(fileIterator.hasNext()) { "File iterator should have next element." }
+    map[Position(fileIterator.next(), rank)] = Square(piece)
   }
 
   override fun getSquare(position: Position): Square = map.getValue(position)
@@ -102,15 +108,6 @@ class Board(val fenData: FENData) : BoardInspector {
     if (turn == Color.BLACK) fullmoveClock++
     halfmoveClock++
     turn = turn.invert()
-  }
-
-  private fun updateClock(piece: PieceType) {
-    if (turn == Color.BLACK) fullmoveClock++
-    if (piece == PieceType.PAWN) {
-      halfmoveClock = 0
-    } else {
-      halfmoveClock++
-    }
   }
 
   private fun isCheckmate(): Boolean = boardLogic.isCheckmate()

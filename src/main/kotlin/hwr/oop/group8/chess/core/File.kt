@@ -11,9 +11,13 @@ enum class File(val value: Int) {
   H(7),
   ;
 
-  fun right(): File? = entries.getOrNull(this.value + 1)
+  fun right(): File = entries.getOrElse(this.value + 1) {
+    throw IndexOutOfBoundsException("No right file from $this")
+  }
 
-  fun left(): File? = entries.getOrNull(this.value - 1)
+  fun left(): File = entries.getOrElse(this.value - 1) {
+    throw IndexOutOfBoundsException("No left file from $this")
+  }
 
   companion object {
     fun fromChar(char: Char): File =
