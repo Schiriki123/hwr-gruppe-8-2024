@@ -5,7 +5,6 @@ import hwr.oop.group8.chess.core.CastleMove
 import hwr.oop.group8.chess.core.Color
 import hwr.oop.group8.chess.core.Direction
 import hwr.oop.group8.chess.core.Move
-import hwr.oop.group8.chess.core.Rank
 import hwr.oop.group8.chess.core.SingleMove
 
 class King(override val color: Color, val boardInspector: BoardInspector) :
@@ -29,7 +28,6 @@ class King(override val color: Color, val boardInspector: BoardInspector) :
 
     if (boardInspector.getCurrentTurn() == color) {
       val castling = boardInspector.isCastlingAllowed(color)
-      val homeRank = if (color == Color.WHITE) Rank.ONE else Rank.EIGHT
 
       if (castling.first) {
         validSingleMoves.add(CastleMove(this, false))
@@ -40,8 +38,6 @@ class King(override val color: Color, val boardInspector: BoardInspector) :
     }
     return validSingleMoves.toSet()
   }
-
-  override fun moveCallback(move: SingleMove) {}
 
   override fun getChar(): Char = when (color) {
     Color.WHITE -> 'K'

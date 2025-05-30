@@ -76,12 +76,6 @@ class CastleTest : AnnotationSpec() {
     val singleMove = SingleMove(
       Position(File.E, Rank.ONE),
       Position(File.G, Rank.ONE),
-      listOf(
-        SingleMove(
-          Position(File.H, Rank.ONE),
-          Position(File.F, Rank.ONE),
-        ),
-      ),
     )
     board.makeMove(singleMove)
 
@@ -95,12 +89,6 @@ class CastleTest : AnnotationSpec() {
     val singleMove = SingleMove(
       Position(File.E, Rank.ONE),
       Position(File.C, Rank.ONE),
-      listOf(
-        SingleMove(
-          Position(File.A, Rank.ONE),
-          Position(File.D, Rank.ONE),
-        ),
-      ),
     )
     board.makeMove(singleMove)
 
@@ -115,12 +103,6 @@ class CastleTest : AnnotationSpec() {
     val singleMove = SingleMove(
       Position(File.E, Rank.EIGHT),
       Position(File.G, Rank.EIGHT),
-      listOf(
-        SingleMove(
-          Position(File.H, Rank.EIGHT),
-          Position(File.F, Rank.EIGHT),
-        ),
-      ),
     )
     board.makeMove(singleMove)
 
@@ -134,12 +116,6 @@ class CastleTest : AnnotationSpec() {
     val singleMove = SingleMove(
       Position(File.E, Rank.EIGHT),
       Position(File.C, Rank.EIGHT),
-      listOf(
-        SingleMove(
-          Position(File.A, Rank.EIGHT),
-          Position(File.D, Rank.EIGHT),
-        ),
-      ),
     )
     board.makeMove(singleMove)
 

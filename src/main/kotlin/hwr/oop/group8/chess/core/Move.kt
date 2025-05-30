@@ -1,14 +1,17 @@
 package hwr.oop.group8.chess.core
 
 import hwr.oop.group8.chess.piece.King
+import hwr.oop.group8.chess.piece.PieceType
 
 interface Move {
   fun moves(): List<SingleMove>
 
   companion object {
-    fun create(from: Position, to: Position): Move =
-      SingleMove(from, to, emptyList(), null)
+    fun create(from: Position, to: Position): Move = SingleMove(from, to)
   }
+
+  fun promotesTo(): PieceType? = null
+  fun isPromotion(): Boolean = false
 }
 
 data class CastleMove(val king: King, val isKingSideCastle: Boolean) : Move {
@@ -29,8 +32,10 @@ data class CastleMove(val king: King, val isKingSideCastle: Boolean) : Move {
 class PromotionMove(
   val from: Position,
   val to: Position,
-  val promotionChar: Char,
+  val promotesTo: PieceType,
 ) : Move {
-  override fun moves(): List<SingleMove> =
-    listOf(SingleMove(from, to, emptyList(), promotionChar))
+  override fun moves(): List<SingleMove> = listOf(SingleMove(from, to))
+
+  override fun promotesTo(): PieceType = promotesTo
+  override fun isPromotion(): Boolean = true
 }

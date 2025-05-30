@@ -33,8 +33,6 @@ class Knight(override val color: Color, val boardInspector: BoardInspector) :
     return validDestinations
   }
 
-  override fun moveCallback(move: SingleMove) {}
-
   override fun getChar(): Char = when (color) {
     Color.WHITE -> 'N'
     Color.BLACK -> 'n'

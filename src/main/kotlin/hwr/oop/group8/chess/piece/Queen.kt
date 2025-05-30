@@ -16,8 +16,6 @@ class Queen(override val color: Color, val boardInspector: BoardInspector) :
     return validDestinations.toSet()
   }
 
-  override fun moveCallback(move: SingleMove) {}
-
   override fun getChar(): Char = when (color) {
     Color.WHITE -> 'Q'
     Color.BLACK -> 'q'

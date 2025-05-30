@@ -2,6 +2,7 @@ package hwr.oop.group8.chess.core
 
 import io.kotest.core.spec.style.AnnotationSpec
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 
 class RankTest : AnnotationSpec() {
 
@@ -43,5 +44,75 @@ class RankTest : AnnotationSpec() {
     val previousRank = rankSix.down()
     // then
     assertThat(previousRank).isEqualTo(Rank.FIVE)
+  }
+
+  @Test
+  fun `fromInt 1 should return Rank ONE`() {
+    // given
+    val value = 1
+    // when
+    val rank = Rank.fromInt(value)
+    // then
+    assertThat(rank).isEqualTo(Rank.ONE)
+  }
+
+  @Test
+  fun `fromInt 3 should return Rank THREE`() {
+    // given
+    val value = 3
+    // when
+    val rank = Rank.fromInt(value)
+    // then
+    assertThat(rank).isEqualTo(Rank.THREE)
+  }
+
+  @Test
+  fun `fromInt 5 should return Rank FIVE`() {
+    // given
+    val value = 5
+    // when
+    val rank = Rank.fromInt(value)
+    // then
+    assertThat(rank).isEqualTo(Rank.FIVE)
+  }
+
+  @Test
+  fun `fromInt 6 should return Rank SIX`() {
+    // given
+    val value = 6
+    // when
+    val rank = Rank.fromInt(value)
+    // then
+    assertThat(rank).isEqualTo(Rank.SIX)
+  }
+
+  @Test
+  fun `fromInt 7 should return Rank SEVEN`() {
+    // given
+    val value = 7
+    // when
+    val rank = Rank.fromInt(value)
+    // then
+    assertThat(rank).isEqualTo(Rank.SEVEN)
+  }
+
+  @Test
+  fun `fromInt 8 should return Rank EIGHT`() {
+    // given
+    val value = 8
+    // when
+    val rank = Rank.fromInt(value)
+    // then
+    assertThat(rank).isEqualTo(Rank.EIGHT)
+  }
+
+  @Test
+  fun `fromInt should throw exception for invalid value`() {
+    // given
+    val invalidValue = 9
+    // when/then
+    assertThatThrownBy { Rank.fromInt(invalidValue) }
+      .isInstanceOf(IllegalArgumentException::class.java)
+      .hasMessageContaining("Invalid rank value: $invalidValue")
   }
 }
