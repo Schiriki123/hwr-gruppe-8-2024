@@ -3,12 +3,25 @@ package hwr.oop.group8.chess.core
 data class Position(val file: File, val rank: Rank) {
   override fun toString(): String = "$file$rank"
 
-  fun nextPosition(direction: Direction): Position = Position(
-    File.entries[file.value + direction.fileShift],
-    Rank.entries[rank.value + direction.rankShift],
-  )
+  fun left(): Position = Position(file.left(), rank)
+  fun right(): Position = Position(file.right(), rank)
+  fun up(): Position = Position(file, rank.up())
+  fun down(): Position = Position(file, rank.down())
+  fun upLeft(): Position = Position(file.left(), rank.up())
+  fun upRight(): Position = Position(file.right(), rank.up())
+  fun downLeft(): Position = Position(file.left(), rank.down())
+  fun downRight(): Position = Position(file.right(), rank.down())
 
-  fun hasNextPosition(direction: Direction): Boolean =
-    File.entries.getOrNull(file.value + direction.fileShift) != null &&
-      Rank.entries.getOrNull(rank.value + direction.rankShift) != null
+  fun nextPosition(direction: Direction) = direction.appliedOn(this)
+
+  fun hasNextPosition(direction: Direction): Boolean = when (direction) {
+    Direction.TOP -> rank != Rank.EIGHT
+    Direction.BOTTOM -> rank != Rank.ONE
+    Direction.LEFT -> file != File.A
+    Direction.RIGHT -> file != File.H
+    Direction.TOP_LEFT -> rank != Rank.EIGHT && file != File.A
+    Direction.TOP_RIGHT -> rank != Rank.EIGHT && file != File.H
+    Direction.BOTTOM_LEFT -> rank != Rank.ONE && file != File.A
+    Direction.BOTTOM_RIGHT -> rank != Rank.ONE && file != File.H
+  }
 }

@@ -1,7 +1,12 @@
 package hwr.oop.group8.chess.core
 
 import hwr.oop.group8.chess.persistence.FENData
+import hwr.oop.group8.chess.piece.Bishop
+import hwr.oop.group8.chess.piece.Knight
 import hwr.oop.group8.chess.piece.Piece
+import hwr.oop.group8.chess.piece.PieceType
+import hwr.oop.group8.chess.piece.Queen
+import hwr.oop.group8.chess.piece.Rook
 
 class Board(val fenData: FENData) : BoardInspector {
   private val map = HashMap<Position, Square>()
@@ -53,19 +58,18 @@ class Board(val fenData: FENData) : BoardInspector {
     map[position] = Square(piece)
   }
 
-  override fun getSquare(position: Position): Square = map.getValue(position)
+  fun getSquare(position: Position): Square = map.getValue(position)
 
-  fun isSquareEmpty(position: Position): Boolean =
-    getSquare(position).getPiece() == null
+  override fun getPieceAt(position: Position): Piece? =
+    getSquare(position).getPiece()
 
   override fun findPositionOfPiece(piece: Piece): Position = map.filterValues {
     it.getPiece() === piece
   }.keys.first()
 
   fun makeMove(move: Move) {
-    val fromSquare = getSquare(move.from)
-    val toSquare = getSquare(move.to)
-    val specialMove = move.specialMove
+    val fromSquare = getSquare(move.moves().first().from)
+    val toSquare = getSquare(move.moves().first().to)
     val piece = fromSquare.getPiece()
 
     checkNotNull(piece)
@@ -75,38 +79,74 @@ class Board(val fenData: FENData) : BoardInspector {
       "Cannot move to a square occupied by the same color"
     }
 
-    check(piece.getValidMoveDestinations().contains(move)) {
-      "Invalid move for piece ${piece::class.simpleName} from ${move.from} to ${move.to}"
+    var matchingMove = piece.getValidMoveDestinations().find { validMoves ->
+      validMoves.moves().first() == move.moves().first()
     }
 
-    check(isMoveCheck(move)) { "Move would put player in check" }
-
-    if (!isSquareEmpty(move.to)) resetHalfMoveClock()
-
-    // apply special move
-    if (!move.specialMove.isEmpty()) {
-      val specialToSquare = getSquare(specialMove.first().to)
-      val specialFromSquare = getSquare(specialMove.first().from)
-      val specialMovePiece = getPieceAt(specialMove.first().from)
-      specialToSquare.setPiece(specialMovePiece)
-      specialFromSquare.setPiece(null)
+    checkNotNull(matchingMove) {
+      "Invalid move for piece ${piece::class.simpleName} from ${
+        move.moves().first().from
+      } to ${move.moves().first().to}"
     }
 
-    // apply standard move
-    toSquare.setPiece(piece)
-    fromSquare.setPiece(null)
-    castlingLogic.updateCastlingPermission()
-    try {
-      piece.moveCallback(move)
-    } catch (e: Exception) {
-      // Restore the board state if the moveCallback fails
-      fromSquare.setPiece(piece)
-      toSquare.setPiece(null)
-      throw e
+    if (matchingMove.isPromotion()) {
+      val promotionType = move.promotesTo()
+      checkNotNull(promotionType) {
+        "Promotion move must specify a piece type to promote to"
+      }
+      matchingMove = PromotionMove(
+        matchingMove.moves().first().from,
+        matchingMove.moves().first().to,
+        promotionType,
+      )
     }
+
+    check(isMoveCheck(matchingMove)) { "Move would put player in check" }
+
+    if (piece.getType() == PieceType.PAWN || isCapture(move)) {
+      resetHalfMoveClock()
+    }
+
+    applyMoves(matchingMove, piece)
+
     if (turn == Color.BLACK) fullmoveClock++
     halfmoveClock++
     turn = turn.invert()
+  }
+
+  private fun isCapture(move: Move): Boolean =
+    !isSquareEmpty(move.moves().first().to)
+
+  private fun generatePromotionPiece(type: PieceType, color: Color): Piece =
+    when (type) {
+      PieceType.QUEEN -> Queen(color, this)
+      PieceType.ROOK -> Rook(color, this)
+      PieceType.BISHOP -> Bishop(color, this)
+      PieceType.KNIGHT -> Knight(color, this)
+      else -> {
+        throw IllegalArgumentException("Invalid promotion piece type: $type")
+      }
+    }
+
+  private fun applyMoves(move: Move, piece: Piece) {
+    move.moves().forEach { applySingleMove(it) }
+    if (move.isPromotion()) {
+      val toSquare = getSquare(move.moves().first().to)
+      val pieceType = move.promotesTo()
+      requireNotNull(pieceType)
+      val promotionPiece = generatePromotionPiece(pieceType, piece.color)
+      toSquare.setPiece(promotionPiece)
+    }
+  }
+
+  private fun applySingleMove(singleMove: SingleMove) {
+    val toSquare = getSquare(singleMove.to)
+    val fromSquare = getSquare(singleMove.from)
+    val piece = fromSquare.getPiece()
+    checkNotNull(piece) { "No piece found at ${singleMove.from}" }
+    toSquare.setPiece(piece)
+    fromSquare.setPiece(null)
+    castlingLogic.updateCastlingPermission()
   }
 
   private fun isCheckmate(): Boolean = boardLogic.isCheckmate()
@@ -123,13 +163,11 @@ class Board(val fenData: FENData) : BoardInspector {
   fun isPositionThreatened(currentPlayer: Color, position: Position): Boolean =
     boardLogic.isPositionThreatened(currentPlayer, position)
 
-  override fun resetHalfMoveClock() {
+  private fun resetHalfMoveClock() {
     halfmoveClock = -1
   }
 
   fun getMap(): HashMap<Position, Square> = map
 
   fun generateFENBoardString(): String = FENData.generateFENBoardString(this)
-
-  fun getFENData(): FENData = fenData.getFENData(this)
 }

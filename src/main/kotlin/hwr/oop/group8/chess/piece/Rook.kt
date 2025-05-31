@@ -3,11 +3,11 @@ package hwr.oop.group8.chess.piece
 import hwr.oop.group8.chess.core.BoardInspector
 import hwr.oop.group8.chess.core.Color
 import hwr.oop.group8.chess.core.Direction
-import hwr.oop.group8.chess.core.Move
+import hwr.oop.group8.chess.core.SingleMove
 
 class Rook(override val color: Color, val boardInspector: BoardInspector) :
   Piece {
-  override fun getValidMoveDestinations(): Set<Move> {
+  override fun getValidMoveDestinations(): Set<SingleMove> {
     val directions = setOf(
       Direction.BOTTOM,
       Direction.TOP,
@@ -20,8 +20,6 @@ class Rook(override val color: Color, val boardInspector: BoardInspector) :
 
     return validDestinations.toSet()
   }
-
-  override fun moveCallback(move: Move) {}
 
   override fun getChar(): Char = when (color) {
     Color.WHITE -> 'R'

@@ -1,7 +1,8 @@
 ## Todos
 - [ ] Readme
+- [ ] Code cleanup
 - [x] castling
-- [ ] Pawn promotion
+- [x] Pawn promotion
 - [ ] en passant
 - [ ] draw
 - [x] Persistence

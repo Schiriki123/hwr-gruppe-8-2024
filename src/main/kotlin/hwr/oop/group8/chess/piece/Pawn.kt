@@ -5,7 +5,9 @@ import hwr.oop.group8.chess.core.Color
 import hwr.oop.group8.chess.core.Direction
 import hwr.oop.group8.chess.core.Move
 import hwr.oop.group8.chess.core.Position
+import hwr.oop.group8.chess.core.PromotionMove
 import hwr.oop.group8.chess.core.Rank
+import hwr.oop.group8.chess.core.SingleMove
 
 class Pawn(override val color: Color, val boardInspector: BoardInspector) :
   Piece {
@@ -26,50 +28,62 @@ class Pawn(override val color: Color, val boardInspector: BoardInspector) :
     }
 
     // Check for straight move
+    if (currentPosition.rank ==
+      if (color == Color.WHITE) Rank.SEVEN else Rank.TWO
+    ) {
+      moveGeneration(
+        forwardDirection,
+        validMoves,
+        currentPosition,
+        startRank,
+      ) { from: Position, to: Position ->
+        // Piece type is overwritten with user input
+        PromotionMove(from, to, PieceType.QUEEN)
+      }
+    } else {
+      moveGeneration(
+        forwardDirection,
+        validMoves,
+        currentPosition,
+        startRank,
+      ) { from: Position, to: Position -> SingleMove(from, to) }
+    }
+    return validMoves.toSet()
+  }
+
+  private fun moveGeneration(
+    forwardDirection: Direction,
+    validMoves: MutableSet<Move>,
+    currentPosition: Position,
+    startRank: Rank,
+    moveFactory: (Position, Position) -> Move,
+  ) {
     val nextField = getPosition().nextPosition(forwardDirection)
-    if (boardInspector.getPieceAt(nextField) == null) {
-      validMoves.add(Move(currentPosition, nextField))
+    if (boardInspector.isSquareEmpty(nextField)) {
+      validMoves.add(moveFactory(currentPosition, nextField))
       // Check for double move from starting position
       if (getPosition().rank == startRank) {
         val twoSquaresForward = nextField.nextPosition(forwardDirection)
-        if (boardInspector.getPieceAt(twoSquaresForward) == null) {
-          validMoves.add(Move(currentPosition, twoSquaresForward))
+        if (boardInspector.isSquareEmpty(twoSquaresForward)) {
+          validMoves.add(moveFactory(currentPosition, twoSquaresForward))
         }
       }
     }
 
     // Check for diagonal captures
     for (direction in setOf(
-      Direction.LEFT.combine(forwardDirection),
-      Direction.RIGHT.combine(forwardDirection),
+      Direction.LEFT,
+      Direction.RIGHT,
     )) {
       if (getPosition().hasNextPosition(direction)) {
-        val nextPosition = getPosition().nextPosition(direction)
+        val nextPosition =
+          getPosition().nextPosition(direction).nextPosition(forwardDirection)
         val nextPiece = boardInspector.getPieceAt(nextPosition)
         if (nextPiece != null && nextPiece.color != color) {
-          validMoves.add(Move(currentPosition, nextPosition))
+          validMoves.add(moveFactory(currentPosition, nextPosition))
         }
       }
     }
-    return validMoves.toSet()
-  }
-
-  override fun moveCallback(move: Move) {
-    if (move.to.rank == Rank.EIGHT || move.to.rank == Rank.ONE) {
-      requireNotNull(move.promotionChar)
-      boardInspector.getSquare(move.to).setPiece(promotion(move.promotionChar))
-    }
-    boardInspector.resetHalfMoveClock()
-  }
-
-  fun promotion(promoteTo: Char): Piece = when (promoteTo.lowercaseChar()) {
-    'q' -> Queen(color, boardInspector)
-    'r' -> Rook(color, boardInspector)
-    'b' -> Bishop(color, boardInspector)
-    'n' -> Knight(color, boardInspector)
-    else -> throw IllegalArgumentException(
-      "Invalid promotion piece: $promoteTo",
-    )
   }
 
   override fun getChar(): Char = when (color) {

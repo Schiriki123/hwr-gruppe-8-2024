@@ -2,9 +2,22 @@ package hwr.oop.group8.chess.piece
 
 enum class PieceType(val allowedPromotion: Boolean = false) {
   PAWN,
-  ROOK(true),
-  KNIGHT(true),
-  BISHOP(true),
-  QUEEN(true),
+  ROOK(allowedPromotion = true),
+  KNIGHT(allowedPromotion = true),
+  BISHOP(allowedPromotion = true),
+  QUEEN(allowedPromotion = true),
   KING,
+  ;
+
+  companion object {
+    fun fromChar(char: Char): PieceType = when (char.lowercaseChar()) {
+      'p' -> PAWN
+      'r' -> ROOK
+      'n' -> KNIGHT
+      'b' -> BISHOP
+      'q' -> QUEEN
+      'k' -> KING
+      else -> throw IllegalArgumentException("Invalid piece character: $char")
+    }
+  }
 }
