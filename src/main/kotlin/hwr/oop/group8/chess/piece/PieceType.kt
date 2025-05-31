@@ -1,11 +1,11 @@
 package hwr.oop.group8.chess.piece
 
-enum class PieceType {
+enum class PieceType(val allowedPromotion: Boolean = false) {
   PAWN,
-  ROOK,
-  KNIGHT,
-  BISHOP,
-  QUEEN,
+  ROOK(allowedPromotion = true),
+  KNIGHT(allowedPromotion = true),
+  BISHOP(allowedPromotion = true),
+  QUEEN(allowedPromotion = true),
   KING,
   ;
 
