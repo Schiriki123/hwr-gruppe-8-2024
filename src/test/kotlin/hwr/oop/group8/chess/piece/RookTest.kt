@@ -25,7 +25,8 @@ class RookTest : AnnotationSpec() {
   @Test
   fun `Rook movement on empty board from a8 to a2`() {
     val board = Board(FENData("R7/8/8/8/8/8/8/K7", 'w', ""))
-    val singleMove = SingleMove(Position(File.A, Rank.EIGHT), Position(File.A, Rank.TWO))
+    val singleMove =
+      SingleMove(Position(File.A, Rank.EIGHT), Position(File.A, Rank.TWO))
     board.makeMove(singleMove)
 
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/R7/K7")
@@ -34,7 +35,8 @@ class RookTest : AnnotationSpec() {
   @Test
   fun `invalid rook movement`() {
     val board = Board(FENData("R7/8/8/8/8/8/8/K7", 'w', ""))
-    val singleMove = SingleMove(Position(File.A, Rank.EIGHT), Position(File.B, Rank.TWO))
+    val singleMove =
+      SingleMove(Position(File.A, Rank.EIGHT), Position(File.B, Rank.TWO))
     assertThatThrownBy { board.makeMove(singleMove) }
       .hasMessageContaining("Invalid move for piece Rook from a8 to b2")
   }
@@ -42,7 +44,8 @@ class RookTest : AnnotationSpec() {
   @Test
   fun `Rook movement with path blocked by pawn`() {
     val board = Board(FENData("R7/8/8/8/8/8/P7/1K6"))
-    val singleMove = SingleMove(Position(File.A, Rank.EIGHT), Position(File.A, Rank.ONE))
+    val singleMove =
+      SingleMove(Position(File.A, Rank.EIGHT), Position(File.A, Rank.ONE))
     assertThatThrownBy { board.makeMove(singleMove) }
       .hasMessageContaining("Invalid move for piece Rook from a8 to a1")
   }
@@ -50,7 +53,8 @@ class RookTest : AnnotationSpec() {
   @Test
   fun `capture piece with rook`() {
     val board = Board(FENData("R7/8/8/8/8/8/p7/K7", 'w', ""))
-    val singleMove = SingleMove(Position(File.A, Rank.EIGHT), Position(File.A, Rank.TWO))
+    val singleMove =
+      SingleMove(Position(File.A, Rank.EIGHT), Position(File.A, Rank.TWO))
     board.makeMove(singleMove)
 
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/R7/K7")

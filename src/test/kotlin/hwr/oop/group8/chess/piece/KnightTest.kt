@@ -26,7 +26,8 @@ class KnightTest : AnnotationSpec() {
   @Test
   fun `Knight move from d4 to f5`() {
     val board = Board(FENData("8/8/8/8/3N4/8/8/K7", 'w', ""))
-    val singleMove = SingleMove(Position(File.D, Rank.FOUR), Position(File.F, Rank.FIVE))
+    val singleMove =
+      SingleMove(Position(File.D, Rank.FOUR), Position(File.F, Rank.FIVE))
     board.makeMove(singleMove)
 
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/5N2/8/8/8/K7")
@@ -35,7 +36,8 @@ class KnightTest : AnnotationSpec() {
   @Test
   fun `Knight move from d4 to e6`() {
     val board = Board(FENData("8/8/8/8/3N4/8/8/K7", 'w', ""))
-    val singleMove = SingleMove(Position(File.D, Rank.FOUR), Position(File.E, Rank.SIX))
+    val singleMove =
+      SingleMove(Position(File.D, Rank.FOUR), Position(File.E, Rank.SIX))
     board.makeMove(singleMove)
 
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/4N3/8/8/8/8/K7")
@@ -44,7 +46,8 @@ class KnightTest : AnnotationSpec() {
   @Test
   fun `Knight move from d4 to e2`() {
     val board = Board(FENData("8/8/8/8/3N4/8/8/K7", 'w', ""))
-    val singleMove = SingleMove(Position(File.D, Rank.FOUR), Position(File.E, Rank.TWO))
+    val singleMove =
+      SingleMove(Position(File.D, Rank.FOUR), Position(File.E, Rank.TWO))
     board.makeMove(singleMove)
 
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/4N3/K7")
@@ -53,7 +56,8 @@ class KnightTest : AnnotationSpec() {
   @Test
   fun `Knight move from d4 to b3`() {
     val board = Board(FENData("8/8/8/8/3N4/8/8/K7", 'w', ""))
-    val singleMove = SingleMove(Position(File.D, Rank.FOUR), Position(File.B, Rank.THREE))
+    val singleMove =
+      SingleMove(Position(File.D, Rank.FOUR), Position(File.B, Rank.THREE))
     board.makeMove(singleMove)
 
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/1N6/8/K7")
@@ -62,7 +66,8 @@ class KnightTest : AnnotationSpec() {
   @Test
   fun `Knight move from d4 to c2`() {
     val board = Board(FENData("8/8/8/8/3N4/8/8/K7", 'w', ""))
-    val singleMove = SingleMove(Position(File.D, Rank.FOUR), Position(File.C, Rank.TWO))
+    val singleMove =
+      SingleMove(Position(File.D, Rank.FOUR), Position(File.C, Rank.TWO))
     board.makeMove(singleMove)
 
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/2N5/K7")
@@ -71,7 +76,8 @@ class KnightTest : AnnotationSpec() {
   @Test
   fun `Knight move from d4 to b5`() {
     val board = Board(FENData("8/8/8/8/3N4/8/8/K7", 'w', ""))
-    val singleMove = SingleMove(Position(File.D, Rank.FOUR), Position(File.B, Rank.FIVE))
+    val singleMove =
+      SingleMove(Position(File.D, Rank.FOUR), Position(File.B, Rank.FIVE))
     board.makeMove(singleMove)
 
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/1N6/8/8/8/K7")
@@ -80,7 +86,8 @@ class KnightTest : AnnotationSpec() {
   @Test
   fun `Knight move from d4 to c6`() {
     val board = Board(FENData("8/8/8/8/3N4/8/8/K7", 'w', ""))
-    val singleMove = SingleMove(Position(File.D, Rank.FOUR), Position(File.C, Rank.SIX))
+    val singleMove =
+      SingleMove(Position(File.D, Rank.FOUR), Position(File.C, Rank.SIX))
     board.makeMove(singleMove)
 
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/2N5/8/8/8/8/K7")
@@ -89,7 +96,8 @@ class KnightTest : AnnotationSpec() {
   @Test
   fun `Knight move from d4 to f3`() {
     val board = Board(FENData("8/8/8/8/3N4/8/8/K7", 'w', ""))
-    val singleMove = SingleMove(Position(File.D, Rank.FOUR), Position(File.F, Rank.THREE))
+    val singleMove =
+      SingleMove(Position(File.D, Rank.FOUR), Position(File.F, Rank.THREE))
     board.makeMove(singleMove)
 
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/5N2/8/K7")
@@ -98,7 +106,8 @@ class KnightTest : AnnotationSpec() {
   @Test
   fun `Knight move from a3 to b5`() {
     val board = Board(FENData("8/8/8/8/8/N7/8/K7", 'w', ""))
-    val singleMove = SingleMove(Position(File.A, Rank.THREE), Position(File.B, Rank.FIVE))
+    val singleMove =
+      SingleMove(Position(File.A, Rank.THREE), Position(File.B, Rank.FIVE))
     board.makeMove(singleMove)
 
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/1N6/8/8/8/K7")
@@ -107,7 +116,8 @@ class KnightTest : AnnotationSpec() {
   @Test
   fun `Knight capture`() {
     val board = Board(FENData("8/8/8/5n2/3N4/8/8/K7", 'w', ""))
-    val singleMove = SingleMove(Position(File.D, Rank.FOUR), Position(File.F, Rank.FIVE))
+    val singleMove =
+      SingleMove(Position(File.D, Rank.FOUR), Position(File.F, Rank.FIVE))
     board.makeMove(singleMove)
 
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/5N2/8/8/8/K7")
@@ -116,7 +126,8 @@ class KnightTest : AnnotationSpec() {
   @Test
   fun `Knight end-position blocked`() {
     val board = Board(FENData("8/8/8/5N2/3N4/8/8/K7", 'w', ""))
-    val singleMove = SingleMove(Position(File.D, Rank.FOUR), Position(File.F, Rank.FIVE))
+    val singleMove =
+      SingleMove(Position(File.D, Rank.FOUR), Position(File.F, Rank.FIVE))
 
     assertThatThrownBy { board.makeMove(singleMove) }
     assertThat(
@@ -128,7 +139,8 @@ class KnightTest : AnnotationSpec() {
   fun `Knight invalid moves`() {
     // Knight move from d4 to d2
     val board = Board(FENData("8/8/8/8/3N4/8/8/K7", 'w', ""))
-    val singleMove = SingleMove(Position(File.D, Rank.FOUR), Position(File.D, Rank.TWO))
+    val singleMove =
+      SingleMove(Position(File.D, Rank.FOUR), Position(File.D, Rank.TWO))
 
     assertThatThrownBy { board.makeMove(singleMove) }
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/3N4/8/8/K7")
@@ -137,7 +149,8 @@ class KnightTest : AnnotationSpec() {
   @Test
   fun `Knight move from d4 to e5`() {
     val board = Board(FENData("8/8/8/8/3N4/8/8/K7", 'w', ""))
-    val singleMove = SingleMove(Position(File.D, Rank.FOUR), Position(File.F, Rank.SIX))
+    val singleMove =
+      SingleMove(Position(File.D, Rank.FOUR), Position(File.F, Rank.SIX))
 
     assertThatThrownBy { board.makeMove(singleMove) }
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/3N4/8/8/K7")

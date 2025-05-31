@@ -10,7 +10,8 @@ class SpecialMovesTest : AnnotationSpec() {
   @Test
   fun `Move into check, expecting exception`() {
     val board = Board(FENData("k7/1R6/8/8/8/8/K7/8", turn = 'b', ""))
-    val singleMove = SingleMove(Position(File.A, Rank.EIGHT), Position(File.B, Rank.EIGHT))
+    val singleMove =
+      SingleMove(Position(File.A, Rank.EIGHT), Position(File.B, Rank.EIGHT))
     assertThatThrownBy {
       board.makeMove(singleMove)
     }.message().isEqualTo("Move would put player in check")
@@ -44,7 +45,8 @@ class SpecialMovesTest : AnnotationSpec() {
   @Test
   fun `Random move that sets king in check, expecting check`() {
     val board = Board(FENData("k7/8/r7/8/8/8/R7/8", turn = 'b', ""))
-    val singleMove = SingleMove(Position(File.A, Rank.SIX), Position(File.C, Rank.SIX))
+    val singleMove =
+      SingleMove(Position(File.A, Rank.SIX), Position(File.C, Rank.SIX))
     assertThatThrownBy { board.makeMove(singleMove) }.message()
       .isEqualTo("Move would put player in check")
     assertThat(board.generateFENBoardString()).isEqualTo("k7/8/r7/8/8/8/R7/8")
@@ -61,7 +63,8 @@ class SpecialMovesTest : AnnotationSpec() {
   @Test
   fun `Turn black after white moves`() {
     val board = Board(FENData("r3k2r/8/8/8/8/8/8/R3K2R"))
-    val singleMove = SingleMove(Position(File.H, Rank.ONE), Position(File.G, Rank.ONE))
+    val singleMove =
+      SingleMove(Position(File.H, Rank.ONE), Position(File.G, Rank.ONE))
     board.makeMove(singleMove)
     assertThat(board.turn).isEqualTo(Color.BLACK)
   }

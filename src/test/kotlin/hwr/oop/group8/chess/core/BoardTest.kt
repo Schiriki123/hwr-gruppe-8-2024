@@ -285,7 +285,8 @@ class BoardTest : AnnotationSpec() {
   @Test
   fun `Piece moves on ally, exception expected`() {
     val board = Board(FENData("K7/8/8/8/8/P7/8/R7", castle = ""))
-    val singleMove = SingleMove(Position(File.A, Rank.ONE), Position(File.A, Rank.THREE))
+    val singleMove =
+      SingleMove(Position(File.A, Rank.ONE), Position(File.A, Rank.THREE))
     assertThatThrownBy { board.makeMove(singleMove) }.message()
       .isEqualTo("Cannot move to a square occupied by the same color")
     assertThat(board.generateFENBoardString()).isEqualTo("K7/8/8/8/8/P7/8/R7")
@@ -295,7 +296,8 @@ class BoardTest : AnnotationSpec() {
   fun `Capture Piece, rook captures pawn, expecting valid move`() {
     val board = Board(FENData("K7/8/8/8/8/p7/8/R7", castle = ""))
     val capturedPieces = CapturedPieces(board.getMap())
-    val singleMove = SingleMove(Position(File.A, Rank.ONE), Position(File.A, Rank.THREE))
+    val singleMove =
+      SingleMove(Position(File.A, Rank.ONE), Position(File.A, Rank.THREE))
     assertThat(
       capturedPieces.getCapturedPieces(),
     ).isEqualTo(

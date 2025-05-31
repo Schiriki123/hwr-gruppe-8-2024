@@ -25,7 +25,8 @@ class BishopTest : AnnotationSpec() {
   @Test
   fun `Bishop movement on empty board`() {
     val board = Board(FENData("B7/8/8/8/8/8/8/K7", 'w', ""))
-    val singleMove = SingleMove(Position(File.A, Rank.EIGHT), Position(File.E, Rank.FOUR))
+    val singleMove =
+      SingleMove(Position(File.A, Rank.EIGHT), Position(File.E, Rank.FOUR))
     board.makeMove(singleMove)
 
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/4B3/8/8/K7")
@@ -53,7 +54,8 @@ class BishopTest : AnnotationSpec() {
   @Test
   fun `Bishop movement with blocked path`() {
     val board = Board(FENData("B7/8/8/8/4r3/8/8/K7", 'w', ""))
-    val singleMove = SingleMove(Position(File.A, Rank.EIGHT), Position(File.G, Rank.TWO))
+    val singleMove =
+      SingleMove(Position(File.A, Rank.EIGHT), Position(File.G, Rank.TWO))
     assertThatThrownBy { board.makeMove(singleMove) }
       .hasMessageContaining("Invalid move for piece Bishop from a8 to g2")
   }
@@ -61,7 +63,8 @@ class BishopTest : AnnotationSpec() {
   @Test
   fun `Invalid move, expection exception`() {
     val board = Board(FENData("B7/8/8/8/4r3/8/8/K7", 'w', ""))
-    val singleMove = SingleMove(Position(File.A, Rank.EIGHT), Position(File.A, Rank.TWO))
+    val singleMove =
+      SingleMove(Position(File.A, Rank.EIGHT), Position(File.A, Rank.TWO))
     assertThatThrownBy { board.makeMove(singleMove) }
       .hasMessageContaining("Invalid move for piece Bishop from a8 to a2")
   }
