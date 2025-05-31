@@ -31,37 +31,41 @@ class Pawn(override val color: Color, val boardInspector: BoardInspector) :
     if (currentPosition.rank ==
       if (color == Color.WHITE) Rank.SEVEN else Rank.TWO
     ) {
-      promotionMoveGeneration(
+      moveGeneration(
         forwardDirection,
         validMoves,
         currentPosition,
         startRank,
-      )
+      ) { from: Position, to: Position ->
+        // Piece type is overwritten with user input
+        PromotionMove(from, to, PieceType.PAWN)
+      }
     } else {
       moveGeneration(
         forwardDirection,
         validMoves,
         currentPosition,
         startRank,
-      )
+      ) { from: Position, to: Position -> SingleMove(from, to) }
     }
     return validMoves.toSet()
   }
 
   private fun moveGeneration(
     forwardDirection: Direction,
-    validSingleMoves: MutableSet<Move>,
+    validMoves: MutableSet<Move>,
     currentPosition: Position,
     startRank: Rank,
+    moveFactory: (Position, Position) -> Move,
   ) {
     val nextField = getPosition().nextPosition(forwardDirection)
-    if (boardInspector.getPieceAt(nextField) == null) {
-      validSingleMoves.add(SingleMove(currentPosition, nextField))
+    if (boardInspector.isSquareEmpty(nextField)) {
+      validMoves.add(moveFactory(currentPosition, nextField))
       // Check for double move from starting position
       if (getPosition().rank == startRank) {
         val twoSquaresForward = nextField.nextPosition(forwardDirection)
-        if (boardInspector.getPieceAt(twoSquaresForward) == null) {
-          validSingleMoves.add(SingleMove(currentPosition, twoSquaresForward))
+        if (boardInspector.isSquareEmpty(twoSquaresForward)) {
+          validMoves.add(moveFactory(currentPosition, twoSquaresForward))
         }
       }
     }
@@ -76,59 +80,7 @@ class Pawn(override val color: Color, val boardInspector: BoardInspector) :
           getPosition().nextPosition(direction).nextPosition(forwardDirection)
         val nextPiece = boardInspector.getPieceAt(nextPosition)
         if (nextPiece != null && nextPiece.color != color) {
-          validSingleMoves.add(SingleMove(currentPosition, nextPosition))
-        }
-      }
-    }
-  }
-
-  private fun promotionMoveGeneration(
-    forwardDirection: Direction,
-    validSingleMoves: MutableSet<Move>,
-    currentPosition: Position,
-    startRank: Rank,
-  ) {
-    val nextField = getPosition().nextPosition(forwardDirection)
-    if (boardInspector.getPieceAt(nextField) == null) {
-      validSingleMoves.add(
-        PromotionMove(
-          currentPosition,
-          nextField,
-          PieceType.QUEEN,
-        ),
-      )
-      // Check for double move from starting position
-      if (getPosition().rank == startRank) {
-        val twoSquaresForward = nextField.nextPosition(forwardDirection)
-        if (boardInspector.getPieceAt(twoSquaresForward) == null) {
-          validSingleMoves.add(
-            PromotionMove(
-              currentPosition,
-              twoSquaresForward,
-              PieceType.QUEEN,
-            ),
-          )
-        }
-      }
-    }
-
-    // Check for diagonal captures
-    for (direction in setOf(
-      Direction.LEFT,
-      Direction.RIGHT,
-    )) {
-      if (getPosition().hasNextPosition(direction)) {
-        val nextPosition =
-          getPosition().nextPosition(direction).nextPosition(forwardDirection)
-        val nextPiece = boardInspector.getPieceAt(nextPosition)
-        if (nextPiece != null && nextPiece.color != color) {
-          validSingleMoves.add(
-            PromotionMove(
-              currentPosition,
-              nextPosition,
-              PieceType.QUEEN,
-            ),
-          )
+          validMoves.add(moveFactory(currentPosition, nextPosition))
         }
       }
     }

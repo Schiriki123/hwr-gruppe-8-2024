@@ -60,9 +60,6 @@ class Board(val fenData: FENData) : BoardInspector {
 
   fun getSquare(position: Position): Square = map.getValue(position)
 
-  fun isSquareEmpty(position: Position): Boolean =
-    getSquare(position).getPiece() == null
-
   override fun getPieceAt(position: Position): Piece? =
     getSquare(position).getPiece()
 
@@ -106,26 +103,19 @@ class Board(val fenData: FENData) : BoardInspector {
 
     check(isMoveCheck(matchingMove)) { "Move would put player in check" }
 
-    if (!isSquareEmpty(move.moves().first().to)) resetHalfMoveClock()
-
-    // apply standard move
-    applyMoves(matchingMove)
-
-    if (matchingMove.isPromotion()) {
-      val toSquare = getSquare(move.moves().first().to)
-      val pieceType = matchingMove.promotesTo()
-      requireNotNull(pieceType)
-      toSquare.setPiece(generatePromotionPiece(pieceType, piece.color))
-    }
-
-    if (piece.getType() == PieceType.PAWN) {
+    if (piece.getType() == PieceType.PAWN || isCapture(move)) {
       resetHalfMoveClock()
     }
+
+    applyMoves(matchingMove, piece)
 
     if (turn == Color.BLACK) fullmoveClock++
     halfmoveClock++
     turn = turn.invert()
   }
+
+  private fun isCapture(move: Move): Boolean =
+    !isSquareEmpty(move.moves().first().to)
 
   private fun generatePromotionPiece(type: PieceType, color: Color): Piece =
     when (type) {
@@ -138,8 +128,15 @@ class Board(val fenData: FENData) : BoardInspector {
       }
     }
 
-  private fun applyMoves(move: Move) {
+  private fun applyMoves(move: Move, piece: Piece) {
     move.moves().forEach { applySingleMove(it) }
+    if (move.isPromotion()) {
+      val toSquare = getSquare(move.moves().first().to)
+      val pieceType = move.promotesTo()
+      requireNotNull(pieceType)
+      val promotionPiece = generatePromotionPiece(pieceType, piece.color)
+      toSquare.setPiece(promotionPiece)
+    }
   }
 
   private fun applySingleMove(singleMove: SingleMove) {
@@ -173,6 +170,4 @@ class Board(val fenData: FENData) : BoardInspector {
   fun getMap(): HashMap<Position, Square> = map
 
   fun generateFENBoardString(): String = FENData.generateFENBoardString(this)
-
-  fun getFENData(): FENData = fenData.getFENData(this)
 }

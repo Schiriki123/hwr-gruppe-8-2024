@@ -3,8 +3,8 @@ package hwr.oop.group8.chess.core
 import hwr.oop.group8.chess.piece.Piece
 
 interface BoardInspector {
-  // TODO: To empty instead of null
   fun getPieceAt(position: Position): Piece?
+  fun isSquareEmpty(position: Position): Boolean = getPieceAt(position) == null
   fun findPositionOfPiece(piece: Piece): Position
   fun isCastlingAllowed(color: Color): Pair<Boolean, Boolean>
   fun getCurrentTurn(): Color

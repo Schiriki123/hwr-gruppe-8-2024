@@ -85,16 +85,16 @@ data class FENData(
       }
       return builder.toString().dropLast(1)
     }
-  }
 
-  fun getFENData(board: Board): FENData = FENData(
-    generateFENBoardString(board),
-    if (board.turn == Color.WHITE) 'w' else 'b',
-    castle,
-    enPassant,
-    halfmoveClock,
-    fullmoveClock,
-  )
+    fun getFENData(board: Board): FENData = FENData(
+      generateFENBoardString(board),
+      if (board.turn == Color.WHITE) 'w' else 'b',
+      board.castle,
+      board.enPassant,
+      board.halfmoveClock,
+      board.fullmoveClock,
+    )
+  }
 
   override fun toString(): String =
     "$boardString $turn $castle $enPassant $halfmoveClock $fullmoveClock"

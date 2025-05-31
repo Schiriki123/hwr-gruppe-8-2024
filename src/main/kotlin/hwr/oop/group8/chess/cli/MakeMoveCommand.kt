@@ -2,11 +2,8 @@ package hwr.oop.group8.chess.cli
 
 import hwr.oop.group8.chess.core.File
 import hwr.oop.group8.chess.core.Position
-import hwr.oop.group8.chess.core.PromotionMove
 import hwr.oop.group8.chess.core.Rank
-import hwr.oop.group8.chess.core.SingleMove
 import hwr.oop.group8.chess.persistence.PersistencePort
-import hwr.oop.group8.chess.piece.PieceType
 
 class MakeMoveCommand(private val persistencePort: PersistencePort) :
   CliCommand {
@@ -40,13 +37,10 @@ class MakeMoveCommand(private val persistencePort: PersistencePort) :
     val promotionCharacter: Char? =
       if (args.size == 6) args[5].first() else null
 
-    val move = if (promotionCharacter != null) {
-      PromotionMove(from, to, PieceType.fromChar(promotionCharacter))
-    } else {
-      SingleMove(from, to) // TODO: Extract move generation
-    }
+    val cliMove =
+      CliMove(from, to, promotionCharacter)
     val game = persistencePort.loadGame(gameId)
-    game.makeMove(move)
+    game.makeMove(cliMove)
     persistencePort.saveGame(game, true)
 
     println("Move made from $from to $to.")

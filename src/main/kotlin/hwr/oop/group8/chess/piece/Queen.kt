@@ -8,7 +8,16 @@ import hwr.oop.group8.chess.core.SingleMove
 class Queen(override val color: Color, val boardInspector: BoardInspector) :
   Piece {
   override fun getValidMoveDestinations(): Set<SingleMove> {
-    val directions = Direction.entries.toSet()
+    val directions = setOf(
+      Direction.BOTTOM,
+      Direction.TOP,
+      Direction.LEFT,
+      Direction.RIGHT,
+      Direction.BOTTOM_RIGHT,
+      Direction.BOTTOM_LEFT,
+      Direction.TOP_LEFT,
+      Direction.TOP_RIGHT,
+    )
     val queenMovement =
       MultiDirectionalMoveGenerator(this, boardInspector, directions)
     val validDestinations = queenMovement.getValidMoveDestinations().toSet()

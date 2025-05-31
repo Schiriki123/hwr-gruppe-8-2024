@@ -74,16 +74,6 @@ class PawnTest : AnnotationSpec() {
     assertThat(board.generateFENBoardString()).isEqualTo("8/P7/8/8/8/8/8/K7")
   }
 
-//  @Test
-//  fun `white pawn is not promoted`() {
-//    val board = Board(FENData("8/8/P7/8/8/8/8/K7", 'w', ""))
-//    val move = Move(Position(File.A, Rank.SIX), Position(File.A, Rank.SEVEN))
-//    val pawn = board.getPieceAt(Position(File.A, Rank.SIX)) as Pawn
-//    board.makeMove(move)
-//    assertThat(pawn.promoted).isFalse
-//    assertThat(board.generateFENBoardString()).isEqualTo("8/P7/8/8/8/8/8/K7")
-//  }
-
   @Test
   fun `Valid double move`() {
     val board = Board(FENData("8/8/8/8/8/8/P7/K7", 'w', ""))

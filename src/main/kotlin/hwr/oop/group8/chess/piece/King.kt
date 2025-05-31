@@ -11,7 +11,16 @@ class King(override val color: Color, val boardInspector: BoardInspector) :
   Piece {
   override fun getValidMoveDestinations(): Set<Move> {
     val validSingleMoves: MutableSet<Move> = mutableSetOf()
-    val directions = Direction.entries // All possible directions
+    val directions = setOf(
+      Direction.TOP,
+      Direction.BOTTOM,
+      Direction.LEFT,
+      Direction.RIGHT,
+      Direction.TOP_LEFT,
+      Direction.TOP_RIGHT,
+      Direction.BOTTOM_LEFT,
+      Direction.BOTTOM_RIGHT,
+    )
 
     val currentPosition = boardInspector.findPositionOfPiece(this)
     for (dir in directions) {
