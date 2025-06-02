@@ -33,8 +33,10 @@ data class FENData(
     require(
       castle.all {
         it in "KQkq"
-      },
-    ) { "Castle string can only contain 'K', 'Q', 'k', or 'q'" }
+      }.or(castle == "-"),
+    ) {
+      "Castle string can only contain 'K', 'Q', 'k', 'q' or '-'"
+    }
     require(halfmoveClock >= 0) { "Halfmove clock must be non-negative." }
     require(fullmoveClock > 0) { "Fullmove clock must be positive." }
   }

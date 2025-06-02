@@ -208,4 +208,19 @@ class CastleTest : AnnotationSpec() {
     ).isEqualTo("8/8/8/8/8/8/8/RN2K2R")
     assertThat(board.castle).isEqualTo("KQkq")
   }
+
+  @Test
+  fun `Removing last castling permission should write '-' to file`() {
+    // Given
+    val board = Board(FENData("4k3/8/8/8/8/8/8/R3K2R", 'w', "KQ"))
+    // When
+    val move =
+      SingleMove(Position(File.E, Rank.ONE), Position(File.E, Rank.TWO))
+    board.makeMove(move)
+    // Then
+    assertThat(
+      board.generateFENBoardString(),
+    ).isEqualTo("4k3/8/8/8/8/8/4K3/R6R")
+    assertThat(board.castle).isEqualTo("-")
+  }
 }

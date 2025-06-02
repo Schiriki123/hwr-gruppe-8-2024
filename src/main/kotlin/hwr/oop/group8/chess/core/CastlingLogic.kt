@@ -63,6 +63,9 @@ class CastlingLogic(val board: Board) {
     if (hasQueenSideRookMoved(rookPositionQueenSide)) {
       board.castle = board.castle.replace(queenChar, "")
     }
+    if (board.castle.isEmpty()) {
+      board.castle = "-"
+    }
   }
 
   private fun hasQueenSideRookMoved(rookPositionQueenSide: Piece?): Boolean =

@@ -287,4 +287,19 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
 
     tempFile.deleteExisting()
   }
+
+  @Test
+  fun `Load game after no castling is allowed, castling string should be -`() {
+    // given
+    val tempFile = createTempFile()
+    tempFile.writeText(
+      "1,rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR w - - 0 1" +
+        "${System.lineSeparator()}",
+    )
+    val sut = FilePersistenceAdapter(tempFile.toFile())
+    // when
+    val result = sut.loadGame(1).getFenData()
+    // then
+    assertThat(result.castle).isEqualTo("-")
+  }
 }
