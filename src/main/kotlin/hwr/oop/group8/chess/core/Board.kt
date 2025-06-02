@@ -1,12 +1,12 @@
 package hwr.oop.group8.chess.core
 
+import hwr.oop.group8.chess.core.piece.Bishop
+import hwr.oop.group8.chess.core.piece.Knight
+import hwr.oop.group8.chess.core.piece.Piece
+import hwr.oop.group8.chess.core.piece.PieceType
+import hwr.oop.group8.chess.core.piece.Queen
+import hwr.oop.group8.chess.core.piece.Rook
 import hwr.oop.group8.chess.persistence.FENData
-import hwr.oop.group8.chess.piece.Bishop
-import hwr.oop.group8.chess.piece.Knight
-import hwr.oop.group8.chess.piece.Piece
-import hwr.oop.group8.chess.piece.PieceType
-import hwr.oop.group8.chess.piece.Queen
-import hwr.oop.group8.chess.piece.Rook
 
 class Board(
   val fenData: FENData,

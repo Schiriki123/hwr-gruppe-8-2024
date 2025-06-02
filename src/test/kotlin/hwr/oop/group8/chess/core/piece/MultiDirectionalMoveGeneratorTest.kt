@@ -1,4 +1,4 @@
-package hwr.oop.group8.chess.piece
+package hwr.oop.group8.chess.core.piece
 
 import hwr.oop.group8.chess.core.Board
 import hwr.oop.group8.chess.core.Direction

@@ -1,6 +1,6 @@
 package hwr.oop.group8.chess.core
 
-import hwr.oop.group8.chess.piece.Piece
+import hwr.oop.group8.chess.core.piece.Piece
 
 interface BoardInspector {
   fun getPieceAt(position: Position): Piece?

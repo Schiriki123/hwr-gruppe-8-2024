@@ -6,13 +6,13 @@ import hwr.oop.group8.chess.core.Color
 import hwr.oop.group8.chess.core.File
 import hwr.oop.group8.chess.core.Position
 import hwr.oop.group8.chess.core.Rank
-import hwr.oop.group8.chess.piece.Bishop
-import hwr.oop.group8.chess.piece.King
-import hwr.oop.group8.chess.piece.Knight
-import hwr.oop.group8.chess.piece.Pawn
-import hwr.oop.group8.chess.piece.Piece
-import hwr.oop.group8.chess.piece.Queen
-import hwr.oop.group8.chess.piece.Rook
+import hwr.oop.group8.chess.core.piece.Bishop
+import hwr.oop.group8.chess.core.piece.King
+import hwr.oop.group8.chess.core.piece.Knight
+import hwr.oop.group8.chess.core.piece.Pawn
+import hwr.oop.group8.chess.core.piece.Piece
+import hwr.oop.group8.chess.core.piece.Queen
+import hwr.oop.group8.chess.core.piece.Rook
 
 // TODO: Rename to FEN
 data class FENData(

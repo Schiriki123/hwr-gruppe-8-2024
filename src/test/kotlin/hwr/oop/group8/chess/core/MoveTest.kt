@@ -1,8 +1,8 @@
 package hwr.oop.group8.chess.core
 
+import hwr.oop.group8.chess.core.piece.King
+import hwr.oop.group8.chess.core.piece.PieceType
 import hwr.oop.group8.chess.persistence.FENData
-import hwr.oop.group8.chess.piece.King
-import hwr.oop.group8.chess.piece.PieceType
 import io.kotest.core.spec.style.AnnotationSpec
 import org.assertj.core.api.Assertions.assertThat
 

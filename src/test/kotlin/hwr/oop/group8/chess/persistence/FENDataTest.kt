@@ -2,12 +2,12 @@ package hwr.oop.group8.chess.persistence
 
 import hwr.oop.group8.chess.core.Board
 import hwr.oop.group8.chess.core.Rank
-import hwr.oop.group8.chess.piece.Bishop
-import hwr.oop.group8.chess.piece.King
-import hwr.oop.group8.chess.piece.Knight
-import hwr.oop.group8.chess.piece.Piece
-import hwr.oop.group8.chess.piece.Queen
-import hwr.oop.group8.chess.piece.Rook
+import hwr.oop.group8.chess.core.piece.Bishop
+import hwr.oop.group8.chess.core.piece.King
+import hwr.oop.group8.chess.core.piece.Knight
+import hwr.oop.group8.chess.core.piece.Piece
+import hwr.oop.group8.chess.core.piece.Queen
+import hwr.oop.group8.chess.core.piece.Rook
 import io.kotest.core.spec.style.AnnotationSpec
 import io.kotest.matchers.types.shouldBeInstanceOf
 import org.assertj.core.api.Assertions.assertThat
