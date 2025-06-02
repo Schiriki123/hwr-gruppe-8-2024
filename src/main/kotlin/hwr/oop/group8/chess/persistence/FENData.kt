@@ -14,6 +14,7 @@ import hwr.oop.group8.chess.piece.Piece
 import hwr.oop.group8.chess.piece.Queen
 import hwr.oop.group8.chess.piece.Rook
 
+// TODO: Rename to FEN
 data class FENData(
   private val boardString: String =
     "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR",
@@ -32,8 +33,10 @@ data class FENData(
     require(
       castle.all {
         it in "KQkq"
-      },
-    ) { "Castle string can only contain 'K', 'Q', 'k', or 'q'" }
+      }.or(castle == "-"),
+    ) {
+      "Castle string can only contain 'K', 'Q', 'k', 'q' or '-'"
+    }
     require(halfmoveClock >= 0) { "Halfmove clock must be non-negative." }
     require(fullmoveClock > 0) { "Fullmove clock must be positive." }
   }
@@ -42,6 +45,8 @@ data class FENData(
     boardString.split("/").reversed()[rank.toInt() - 1]
 
   fun getTurn(): Color = if (turn == 'w') Color.WHITE else Color.BLACK
+
+  fun hashOfBoard() = boardString.hashCode()
 
   companion object {
     fun createPieceOnBoard(pieceChar: Char, board: BoardInspector): Piece =

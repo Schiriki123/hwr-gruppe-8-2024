@@ -16,7 +16,8 @@ class MainTest : AnnotationSpec() {
     }.trim()
     assertThat(output).contains("New game with id $testGameID created.")
     assertThat(File("games.csv").readLines().last()).isEqualTo(
-      "$testGameID,rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "$testGameID,rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1," +
+        "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR".hashCode(),
     )
 
     val deleteOutput = captureStandardOut {

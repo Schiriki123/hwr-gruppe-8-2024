@@ -32,6 +32,7 @@ class ShowGameCommand(private val persistencePort: PersistencePort) :
     val builder = StringBuilder()
     for (rank in Rank.entries.reversed()) {
       for (file in File.entries) {
+        // TODO: Use BoardInspector
         val piece = board.getMap().getValue(Position(file, rank)).getPiece()
         builder.append(piece?.getChar() ?: '.')
       }

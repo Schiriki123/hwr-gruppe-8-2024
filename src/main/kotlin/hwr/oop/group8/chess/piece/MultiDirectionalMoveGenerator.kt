@@ -8,7 +8,7 @@ class MultiDirectionalMoveGenerator(
   val piece: Piece,
   val boardInspector: BoardInspector,
   val directions: Set<Direction>,
-) {
+) { // TODO: Improve readability
   fun getValidMoveDestinations(): Set<SingleMove> {
     val validDestinations: MutableSet<SingleMove> = mutableSetOf()
     val currentPosition = boardInspector.findPositionOfPiece(piece)
