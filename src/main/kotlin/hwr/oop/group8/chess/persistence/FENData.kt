@@ -32,8 +32,8 @@ data class FENData(
     require(
       castle.all {
         it in "KQkq"
-      },
-    ) { "Castle string can only contain 'K', 'Q', 'k', or 'q'" }
+      }.or(castle == "-"),
+    ) { "Castle string can only contain 'K', 'Q', 'k', 'q' or '-'" }
     require(halfmoveClock >= 0) { "Halfmove clock must be non-negative." }
     require(fullmoveClock > 0) { "Fullmove clock must be positive." }
   }
@@ -85,16 +85,16 @@ data class FENData(
       }
       return builder.toString().dropLast(1)
     }
-  }
 
-  fun getFENData(board: Board): FENData = FENData(
-    generateFENBoardString(board),
-    if (board.turn == Color.WHITE) 'w' else 'b',
-    castle,
-    enPassant,
-    halfmoveClock,
-    fullmoveClock,
-  )
+    fun getFENData(board: Board): FENData = FENData(
+      generateFENBoardString(board),
+      if (board.turn == Color.WHITE) 'w' else 'b',
+      board.castle,
+      board.enPassant,
+      board.halfmoveClock,
+      board.fullmoveClock,
+    )
+  }
 
   override fun toString(): String =
     "$boardString $turn $castle $enPassant $halfmoveClock $fullmoveClock"

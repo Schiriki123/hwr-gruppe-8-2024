@@ -131,5 +131,5 @@ class Board(val fenData: FENData) : BoardInspector {
 
   fun generateFENBoardString(): String = FENData.generateFENBoardString(this)
 
-  fun getFENData(): FENData = fenData.getFENData(this)
+  fun getFENData() = FENData.getFENData(this)
 }
