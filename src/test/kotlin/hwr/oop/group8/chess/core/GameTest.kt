@@ -52,4 +52,21 @@ class GameTest : AnnotationSpec() {
     assertThat(game.board.generateFENBoardString())
       .isEqualTo("8/P7/7k/8/8/8/8/K7")
   }
+
+  @Test
+  fun `Create and assert game with default configuration`() {
+    // given
+    val game = Game(1, FENData())
+    // when
+    val board = game.board
+    // then
+    assertThat(
+      board.stateHistory,
+    ).containsExactly("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR".hashCode())
+    assertThat(board.fenData).isEqualTo(FENData())
+    assertThat(board.generateFENBoardString()).isEqualTo(
+      "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR",
+    )
+    assertThat(game.id).isEqualTo(1)
+  }
 }

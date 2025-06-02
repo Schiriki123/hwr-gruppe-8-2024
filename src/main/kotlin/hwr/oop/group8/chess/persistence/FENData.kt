@@ -46,6 +46,8 @@ data class FENData(
 
   fun getTurn(): Color = if (turn == 'w') Color.WHITE else Color.BLACK
 
+  fun hashOfBoard() = boardString.hashCode()
+
   companion object {
     fun createPieceOnBoard(pieceChar: Char, board: BoardInspector): Piece =
       when (pieceChar) {

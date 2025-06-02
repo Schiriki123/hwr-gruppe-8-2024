@@ -8,7 +8,10 @@ import hwr.oop.group8.chess.piece.PieceType
 import hwr.oop.group8.chess.piece.Queen
 import hwr.oop.group8.chess.piece.Rook
 
-class Board(val fenData: FENData) : BoardInspector {
+class Board(
+  val fenData: FENData,
+  val stateHistory: MutableList<Int> = mutableListOf(),
+) : BoardInspector {
   private val map = HashMap<Position, Square>()
   var turn: Color
   val enPassant: String
@@ -27,6 +30,7 @@ class Board(val fenData: FENData) : BoardInspector {
     halfmoveClock = fenData.halfmoveClock
     fullmoveClock = fenData.fullmoveClock
     // TODO: Move to makeMove
+    checkForDraw()
     check(!isCheckmate()) {
       "Game is over, checkmate!"
     }
@@ -112,8 +116,21 @@ class Board(val fenData: FENData) : BoardInspector {
 
     if (turn == Color.BLACK) fullmoveClock++
     halfmoveClock++
+    stateHistory.add(generateFENBoardString().hashCode())
     turn = turn.invert()
   }
+
+  private fun checkForDraw() {
+    if (halfmoveClock >= 50) {
+      throw IllegalStateException("Game is draw due to the 50-move rule.")
+    }
+    if (isRepetitionDraw()) {
+      throw IllegalStateException("Game is draw due to threefold repetition.")
+    }
+  }
+
+  fun isRepetitionDraw(): Boolean = stateHistory.groupBy { it }
+    .any { it.value.size >= 3 }
 
   private fun isCapture(move: Move): Boolean =
     !isSquareEmpty(move.moves().first().to)
