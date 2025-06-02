@@ -15,7 +15,7 @@ import hwr.oop.group8.chess.piece.Queen
 import hwr.oop.group8.chess.piece.Rook
 
 data class FENData(
-  private val boardString: String =
+  val boardString: String =
     "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR",
   private val turn: Char = 'w',
   val castle: String = "KQkq",

@@ -3,7 +3,10 @@ package hwr.oop.group8.chess.core
 import hwr.oop.group8.chess.persistence.FENData
 import hwr.oop.group8.chess.piece.Piece
 
-class Board(val fenData: FENData) : BoardInspector {
+class Board(
+  val fenData: FENData,
+  val moveHistory: MutableList<Int> = mutableListOf(),
+) : BoardInspector {
   private val map = HashMap<Position, Square>()
   var turn: Color
   val enPassant: String
@@ -21,10 +24,23 @@ class Board(val fenData: FENData) : BoardInspector {
     enPassant = fenData.enPassant
     halfmoveClock = fenData.halfmoveClock
     fullmoveClock = fenData.fullmoveClock
+    checkForDraw()
     check(!isCheckmate()) {
       "Game is over, checkmate!"
     }
   }
+
+  private fun checkForDraw() {
+    if (halfmoveClock >= 50) {
+      throw IllegalStateException("Game is draw due to the 50-move rule.")
+    }
+    if (isRepetitionDraw()) {
+      throw IllegalStateException("Game is draw due to threefold repetition.")
+    }
+  }
+
+  fun isRepetitionDraw(): Boolean = moveHistory.groupBy { it }
+    .any { it.value.size >= 3 }
 
   private fun initializeBoardFromFENString() {
     for (rank in Rank.entries) {
@@ -104,8 +120,10 @@ class Board(val fenData: FENData) : BoardInspector {
       toSquare.setPiece(null)
       throw e
     }
+
     if (turn == Color.BLACK) fullmoveClock++
     halfmoveClock++
+    moveHistory.add(generateFENBoardString().hashCode())
     turn = turn.invert()
   }
 

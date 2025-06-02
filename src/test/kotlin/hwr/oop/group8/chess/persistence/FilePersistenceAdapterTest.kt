@@ -1,7 +1,10 @@
 package hwr.oop.group8.chess.persistence
 
 import hwr.oop.group8.chess.core.Color
+import hwr.oop.group8.chess.core.File
 import hwr.oop.group8.chess.core.Game
+import hwr.oop.group8.chess.core.Move
+import hwr.oop.group8.chess.core.Position
 import hwr.oop.group8.chess.core.Rank
 import io.kotest.core.spec.style.AnnotationSpec
 import org.assertj.core.api.Assertions.assertThat
@@ -27,7 +30,8 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
   fun `Should read game from file and return correct FEN object`() {
     val tempFile = createTempFile()
     tempFile.writeText(
-      "1,rnbqkb1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKB1R w KQkq - 0 1" +
+      "1,rnbqkb1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKB1R w KQkq - 0 1," +
+        "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR".hashCode() +
         "${System.lineSeparator()}",
     )
 
@@ -54,7 +58,8 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
   fun `Should throw exception when game with given id does not exist`() {
     val tempFile = createTempFile()
     tempFile.writeText(
-      "1,rnbqkb1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKB1R w KQkq - 0 1" +
+      "1,rnbqkb1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKB1R w KQkq - 0 1," +
+        "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR".hashCode() +
         "${System.lineSeparator()}",
     )
 
@@ -71,12 +76,15 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
   fun `Should select the the game with id 2`() {
     val tempFile = createTempFile()
     tempFile.writeText(
-      "1,rnbqkb1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKB1R w KQkq - 0 1" +
+      "1,rnbqkb1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKB1R w KQkq - 0 1," +
+        "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR".hashCode() +
         "${System.lineSeparator()}" +
         "2,r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b " +
-        "KQkq - 0 12" +
+        "KQkq - 0 12," +
+        "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR".hashCode() +
         "${System.lineSeparator()}" +
-        "3,rnbqkb1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKB1R w KQkq - 0 1" +
+        "3,rnbqkb1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKB1R w KQkq - 0 1," +
+        "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR".hashCode() +
         "${System.lineSeparator()}",
     )
 
@@ -126,7 +134,10 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
     val result = tempFile.readText()
     assertThat(
       result,
-    ).isEqualTo("1,rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+    ).isEqualTo(
+      "1,rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1," +
+        "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR".hashCode(),
+    )
 
     tempFile.deleteExisting()
   }
@@ -156,7 +167,8 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
 
     val result = tempFile.readText()
     assertThat(result).isEqualTo(
-      "1,rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq - 0 1" +
+      "1,rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq - 0 1," +
+        fenData.boardString.hashCode() +
         "${System.lineSeparator()}" +
         "2,r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b " +
         "KQkq - 0 12",
@@ -169,10 +181,12 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
   fun `Using a id that not exits should throw a exception`() {
     val tempFile = createTempFile()
     tempFile.writeText(
-      "1,rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR w KQkq - 0 1" +
+      "1,rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR w KQkq - 0 1," +
+        "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR".hashCode() +
         "${System.lineSeparator()}" +
         "2,r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b " +
-        "KQkq - 0 12" +
+        "KQkq - 0 12," +
+        "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR".hashCode() +
         "${System.lineSeparator()}",
     )
 
@@ -197,10 +211,12 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
   fun `Creating a game with existing id should fail`() {
     val tempFile = createTempFile()
     tempFile.writeText(
-      "1,rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR w KQkq - 0 1" +
+      "1,rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR w KQkq - 0 1," +
+        "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR".hashCode() +
         "${System.lineSeparator()}" +
         "2,r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b " +
-        "KQkq - 0 12" +
+        "KQkq - 0 12," +
+        "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR".hashCode() +
         "${System.lineSeparator()}",
     )
     val initialBoard = Game(1, FENData())
@@ -218,10 +234,12 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
   fun `list games should print all saved game with id and turn`() {
     val tempFile = createTempFile()
     tempFile.writeText(
-      "1,rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR w KQkq - 0 1" +
+      "1,rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR w KQkq - 0 1," +
+        "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR".hashCode() +
         "${System.lineSeparator()}" +
         "3,r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b " +
-        "KQkq - 0 12" +
+        "KQkq - 0 12," +
+        "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR".hashCode() +
         "${System.lineSeparator()}",
     )
 
@@ -242,12 +260,15 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
     // given
     val tempFile = createTempFile()
     tempFile.writeText(
-      "1,rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR w KQkq - 0 1" +
+      "1,rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR w KQkq - 0 1," +
+        "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR".hashCode() +
         "${System.lineSeparator()}" +
         "2,r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b " +
-        "KQkq - 0 12" +
+        "KQkq - 0 12," +
+        "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR".hashCode() +
         "${System.lineSeparator()}" +
-        "3,rnbqkb1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKB1R w KQkq - 0 1" +
+        "3,rnbqkb1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKB1R w KQkq - 0 1," +
+        "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR".hashCode() +
         "${System.lineSeparator()}",
     )
     val sut = FilePersistenceAdapter(tempFile.toFile())
@@ -268,10 +289,12 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
     // given
     val tempFile = createTempFile()
     tempFile.writeText(
-      "1,rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR w KQkq - 0 1" +
+      "1,rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR w KQkq - 0 1," +
+        "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR".hashCode() +
         "${System.lineSeparator()}" +
         "2,r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b " +
-        "KQkq - 0 12" +
+        "KQkq - 0 12," +
+        "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR".hashCode() +
         "${System.lineSeparator()}",
     )
     val sut = FilePersistenceAdapter(tempFile.toFile())
@@ -293,7 +316,8 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
     // given
     val tempFile = createTempFile()
     tempFile.writeText(
-      "1,rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR w - - 0 1" +
+      "1,rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR w - - 0 1," +
+        "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR".hashCode() +
         "${System.lineSeparator()}",
     )
     val sut = FilePersistenceAdapter(tempFile.toFile())
@@ -303,4 +327,57 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
     assertThat(result.castle).isEqualTo("-")
   }
 
+  @Test
+  fun `Loading game hashes correctly into list`() {
+    // given
+    val tempFile = createTempFile()
+    tempFile.writeText(
+      "1,rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR w KQkq - 0 1," +
+        "1230 1230 123212" +
+        "${System.lineSeparator()}",
+    )
+    // when
+    val sut = FilePersistenceAdapter(tempFile.toFile())
+    val game = sut.loadGame(1)
+    // then
+    assertThat(game.board.moveHistory).contains(
+      1230,
+      1230,
+      123212,
+    )
+  }
+
+  @Test
+  fun `Saving game with move history`() {
+    // given
+    val tempFile = createTempFile()
+    val sut = FilePersistenceAdapter(tempFile.toFile())
+    val game = Game(1, FENData())
+    // when
+    sut.saveGame(game, false)
+    // then
+    val result = tempFile.readText()
+    assertThat(result).isEqualTo(
+      "1,rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1," +
+        game.getFenData().boardString.hashCode(),
+    )
+  }
+
+  @Test
+  fun `Saving game with existing move history should save correctly`() {
+    // given
+    val tempFile = createTempFile()
+    val sut = FilePersistenceAdapter(tempFile.toFile())
+    val game = Game(1, FENData(), listOf(1234, 5678, 91011))
+    val move = Move(Position(File.A, Rank.TWO), Position(File.A, Rank.THREE))
+    // when
+    game.board.makeMove(move)
+    sut.saveGame(game, false)
+    val result = tempFile.readText()
+    // then
+    assertThat(result).isEqualTo(
+      "1,rnbqkbnr/pppppppp/8/8/8/P7/1PPPPPPP/RNBQKBNR b KQkq - 0 1," +
+        "1234 5678 91011 " + game.getFenData().boardString.hashCode(),
+    )
+  }
 }
