@@ -19,13 +19,14 @@ class Board(val fenData: FENData) : BoardInspector {
   val castlingLogic: CastlingLogic = CastlingLogic(this)
 
   init {
-    initializeBoardFromFENString()
+    initializeBoardFromFENString() // TODO: BoardFactory class
 
     turn = fenData.getTurn()
     castle = fenData.castle
     enPassant = fenData.enPassant
     halfmoveClock = fenData.halfmoveClock
     fullmoveClock = fenData.fullmoveClock
+    // TODO: Move to makeMove
     check(!isCheckmate()) {
       "Game is over, checkmate!"
     }
@@ -119,6 +120,7 @@ class Board(val fenData: FENData) : BoardInspector {
 
   private fun generatePromotionPiece(type: PieceType, color: Color): Piece =
     when (type) {
+      // TODO: boardInspector could be passed as a parameter
       PieceType.QUEEN -> Queen(color, this)
       PieceType.ROOK -> Rook(color, this)
       PieceType.BISHOP -> Bishop(color, this)

@@ -14,6 +14,7 @@ import hwr.oop.group8.chess.piece.Piece
 import hwr.oop.group8.chess.piece.Queen
 import hwr.oop.group8.chess.piece.Rook
 
+// TODO: Rename to FEN
 data class FENData(
   private val boardString: String =
     "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR",

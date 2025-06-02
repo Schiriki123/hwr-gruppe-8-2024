@@ -13,6 +13,7 @@ data class Position(val file: File, val rank: Rank) {
   fun downRight(): Position = Position(file.right(), rank.down())
 
   fun nextPosition(direction: Direction) = direction.appliedOn(this)
+  // TODO: Use nextPosition instead of appliedOn
 
   fun hasNextPosition(direction: Direction): Boolean = when (direction) {
     Direction.TOP -> rank != Rank.EIGHT

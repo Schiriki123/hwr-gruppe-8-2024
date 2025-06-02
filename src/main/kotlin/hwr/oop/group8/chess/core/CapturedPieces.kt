@@ -1,7 +1,6 @@
 package hwr.oop.group8.chess.core
 
-import kotlin.text.indexOf
-
+// TODO: Move to cli & rename
 class CapturedPieces(val map: HashMap<Position, Square>) {
 
   fun getCapturedPieces(): String {

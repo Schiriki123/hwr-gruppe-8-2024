@@ -3,7 +3,7 @@ package hwr.oop.group8.chess.core
 import hwr.oop.group8.chess.piece.Piece
 import hwr.oop.group8.chess.piece.PieceType
 
-class BoardLogic(val board: Board) {
+class BoardLogic(val board: Board) { // TODO: Use BoardInspector interface
 
   fun isMoveCheck(move: Move): Boolean {
     // Simulate the move

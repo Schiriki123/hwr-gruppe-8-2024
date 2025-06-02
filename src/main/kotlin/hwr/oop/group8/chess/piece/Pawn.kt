@@ -38,6 +38,7 @@ class Pawn(override val color: Color, val boardInspector: BoardInspector) :
         startRank,
       ) { from: Position, to: Position ->
         // Piece type is overwritten with user input
+        // TODO: Create promotion move for every piece type
         PromotionMove(from, to, PieceType.QUEEN)
       }
     } else {
