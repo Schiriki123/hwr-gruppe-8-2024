@@ -311,7 +311,7 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
   }
 
   @Test
-  fun `Load game after no castling is allowed, castling string should be '-'`() {
+  fun `Load game after no castling is allowed, castle string should be '-'`() {
     // given
     val tempFile = createTempFile()
     tempFile.writeText(
