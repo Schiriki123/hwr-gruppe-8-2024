@@ -36,7 +36,7 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
     )
 
     val sut = FilePersistenceAdapter(tempFile.toFile())
-    val result: FENData = sut.loadGame(1).getFenData()
+    val result: FEN = sut.loadGame(1).getFenData()
 
     assertThat(result.getRank(Rank.EIGHT)).isEqualTo("rnbqkb1r")
     assertThat(result.getRank(Rank.SEVEN)).isEqualTo("pppppppp")
@@ -92,7 +92,7 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
     )
 
     val sut = FilePersistenceAdapter(tempFile.toFile())
-    val result: FENData = sut.loadGame(2).getFenData()
+    val result: FEN = sut.loadGame(2).getFenData()
 
     assertThat(result.getRank(Rank.EIGHT)).isEqualTo("r3k2r")
     assertThat(result.getRank(Rank.SEVEN)).isEqualTo("p1ppqpb1")
@@ -128,7 +128,7 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
   fun `Game create new game`() {
     val tempFile = createTempFile()
     tempFile.writeText("")
-    val initialGame = Game(1, FENData())
+    val initialGame = Game(1, FEN())
 
     val sut = FilePersistenceAdapter(tempFile.toFile())
 
@@ -157,7 +157,7 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
     )
 
     val sut = FilePersistenceAdapter(tempFile.toFile())
-    val fenData = FENData(
+    val fen = FEN(
       "rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR",
       'b',
       "KQkq",
@@ -166,12 +166,12 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
       1,
     )
 
-    sut.saveGame(Game(1, fenData), true)
+    sut.saveGame(Game(1, fen), true)
 
     val result = tempFile.readText()
     assertThat(result).isEqualTo(
       "1,rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq - 0 1," +
-        fenData.hashOfBoard() +
+        fen.hashOfBoard() +
         "${System.lineSeparator()}" +
         "2,r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b " +
         "KQkq - 0 12",
@@ -192,7 +192,7 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
     )
 
     val sut = FilePersistenceAdapter(tempFile.toFile())
-    val fenData = FENData(
+    val fen = FEN(
       "rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR",
       'b',
       "KQkq",
@@ -202,7 +202,7 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
     )
 
     assertThatThrownBy {
-      sut.saveGame(Game(3, fenData), true)
+      sut.saveGame(Game(3, fen), true)
     }.message().contains("Game with id 3 does not exist")
 
     tempFile.deleteExisting()
@@ -218,7 +218,7 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
         "KQkq - 0 12" +
         "${System.lineSeparator()}",
     )
-    val initialBoard = Game(1, FENData())
+    val initialBoard = Game(1, FEN())
 
     val sut = FilePersistenceAdapter(tempFile.toFile())
 
@@ -351,7 +351,7 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
     // given
     val tempFile = createTempFile()
     val sut = FilePersistenceAdapter(tempFile.toFile())
-    val game = Game(1, FENData())
+    val game = Game(1, FEN())
     // when
     sut.saveGame(game, false)
     // then
@@ -367,7 +367,7 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
     // given
     val tempFile = createTempFile()
     val sut = FilePersistenceAdapter(tempFile.toFile())
-    val game = Game(1, FENData(), listOf(1234, 5678, 91011))
+    val game = Game(1, FEN(), listOf(1234, 5678, 91011))
     val move =
       SingleMove(Position(File.A, Rank.TWO), Position(File.A, Rank.THREE))
     // when

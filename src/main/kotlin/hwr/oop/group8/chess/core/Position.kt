@@ -12,8 +12,16 @@ data class Position(val file: File, val rank: Rank) {
   fun downLeft(): Position = Position(file.left(), rank.down())
   fun downRight(): Position = Position(file.right(), rank.down())
 
-  fun nextPosition(direction: Direction) = direction.appliedOn(this)
-  // TODO: Use nextPosition instead of appliedOn
+  fun nextPosition(direction: Direction) = when (direction) {
+    Direction.TOP -> up()
+    Direction.BOTTOM -> down()
+    Direction.LEFT -> left()
+    Direction.RIGHT -> right()
+    Direction.TOP_LEFT -> upLeft()
+    Direction.TOP_RIGHT -> upRight()
+    Direction.BOTTOM_LEFT -> downLeft()
+    Direction.BOTTOM_RIGHT -> downRight()
+  }
 
   fun hasNextPosition(direction: Direction): Boolean = when (direction) {
     Direction.TOP -> rank != Rank.EIGHT

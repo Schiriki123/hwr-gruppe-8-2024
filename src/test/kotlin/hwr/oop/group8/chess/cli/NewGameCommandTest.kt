@@ -1,6 +1,6 @@
 package hwr.oop.group8.chess.cli
 
-import hwr.oop.group8.chess.persistence.FENData
+import hwr.oop.group8.chess.persistence.FEN
 import io.kotest.core.spec.style.AnnotationSpec
 import io.kotest.extensions.system.captureStandardOut
 import org.assertj.core.api.Assertions.assertThat
@@ -24,7 +24,7 @@ class NewGameCommandTest : AnnotationSpec() {
     val game = adapterMock.savedGame()
     requireNotNull(game)
     assertThat(game.id).isEqualTo(1)
-    assertThat(game.getFenData()).isEqualTo(FENData())
+    assertThat(game.getFenData()).isEqualTo(FEN())
     assertThat(output).contains("New game with id 1 created.")
   }
 }

@@ -6,7 +6,7 @@ import hwr.oop.group8.chess.core.piece.Knight
 import hwr.oop.group8.chess.core.piece.Pawn
 import hwr.oop.group8.chess.core.piece.Queen
 import hwr.oop.group8.chess.core.piece.Rook
-import hwr.oop.group8.chess.persistence.FENData
+import hwr.oop.group8.chess.persistence.FEN
 import io.kotest.assertions.throwables.shouldNotThrowAny
 import io.kotest.core.spec.style.AnnotationSpec
 import io.kotest.matchers.shouldBe
@@ -17,8 +17,7 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 class BoardTest : AnnotationSpec() {
   @Test
   fun `empty board creation, return standard fen notation-string`() {
-    val board = Board(FENData("K7/8/8/8/8/8/8/8", 'w', ""))
-    val capturedPieces = CapturedPieces(board.getMap())
+    val board = Board(FEN("K7/8/8/8/8/8/8/8", 'w', ""))
     for (rank in Rank.entries.reversed()) {
       for (file in File.entries) {
         val position = Position(file, rank)
@@ -31,16 +30,11 @@ class BoardTest : AnnotationSpec() {
       }
     }
     assertThat(board.generateFENBoardString()).isEqualTo("K7/8/8/8/8/8/8/8")
-    assertThat(
-      capturedPieces.getCapturedPieces(),
-    ).isEqualTo(
-      "White's captures: rnbqkbnrpppppppp${System.lineSeparator()}Black's captures: RNBQBNRPPPPPPPP",
-    )
   }
 
   @Test
   fun `create map with size 64, return map`() {
-    val board = Board(FENData("K7/8/8/8/8/8/8/8", 'w', ""))
+    val board = Board(FEN("K7/8/8/8/8/8/8/8", 'w', ""))
     val map = board.getMap()
 
     for (rank in Rank.entries) {
@@ -54,8 +48,7 @@ class BoardTest : AnnotationSpec() {
 
   @Test
   fun `create board with default setup, return board with start arrangement`() {
-    val board = Board(FENData())
-    val capturedPieces = CapturedPieces(board.getMap())
+    val board = Board(FEN())
     board.getPieceAt(Position(File.A, Rank.ONE))
       .shouldBeInstanceOf<Rook>().color.shouldBe(
         Color.WHITE,
@@ -140,17 +133,11 @@ class BoardTest : AnnotationSpec() {
     assertThat(board.enPassant).isEqualTo("-")
     assertThat(board.halfmoveClock).isEqualTo(0)
     assertThat(board.fullmoveClock).isEqualTo(1)
-
-    assertThat(
-      capturedPieces.getCapturedPieces(),
-    ).isEqualTo(
-      "White's captures: ${System.lineSeparator()}Black's captures: ",
-    )
   }
 
   @Test
   fun `custom board initialization`() {
-    val board = Board(FENData("k7/2R4B/8/8/1q6/8/8/2Q4N", 'b', "", "-", 4, 25))
+    val board = Board(FEN("k7/2R4B/8/8/1q6/8/8/2Q4N", 'b', "", "-", 4, 25))
     board.getPieceAt(Position(File.B, Rank.FOUR))
       .shouldBeInstanceOf<Queen>().color.shouldBe(
         Color.BLACK,
@@ -190,7 +177,7 @@ class BoardTest : AnnotationSpec() {
   @Test
   fun `halfmoveclock should be 0 after capture`() {
     val board =
-      Board(FENData("8/8/8/8/8/7r/7R/k7", 'b', "", halfmoveClock = 12))
+      Board(FEN("8/8/8/8/8/7r/7R/k7", 'b', "", halfmoveClock = 12))
     val startPosition = Position(File.H, Rank.THREE)
     val endPosition = Position(File.H, Rank.TWO)
     val testSingleMove = SingleMove(startPosition, endPosition)
@@ -201,7 +188,7 @@ class BoardTest : AnnotationSpec() {
   @Test
   fun `reset halfmoveclock after pawn move, expecting halfmoveclock to be 0`() {
     val board =
-      Board(FENData("8/8/8/8/8/1p6/8/k7", 'b', "", halfmoveClock = 12))
+      Board(FEN("8/8/8/8/8/1p6/8/k7", 'b', "", halfmoveClock = 12))
     val startPosition = Position(File.B, Rank.THREE)
     val endPosition = Position(File.B, Rank.TWO)
     val testSingleMove = SingleMove(startPosition, endPosition)
@@ -212,7 +199,7 @@ class BoardTest : AnnotationSpec() {
   @Test
   fun `increase halfmoveclock expecting halfmoveclock to be 13 `() {
     val board =
-      Board(FENData("r7/8/8/8/8/8/8/k7", 'b', "", halfmoveClock = 12))
+      Board(FEN("r7/8/8/8/8/8/8/k7", 'b', "", halfmoveClock = 12))
     val startPosition = Position(File.A, Rank.EIGHT)
     val endPosition = Position(File.A, Rank.SEVEN)
     val testSingleMove = SingleMove(startPosition, endPosition)
@@ -223,7 +210,7 @@ class BoardTest : AnnotationSpec() {
   @Test
   fun `increase fullmove clock expecting fullmove to be 13 `() {
     val board =
-      Board(FENData("r7/8/8/8/8/8/8/k7", 'b', "", fullmoveClock = 12))
+      Board(FEN("r7/8/8/8/8/8/8/k7", 'b', "", fullmoveClock = 12))
     val startPosition = Position(File.A, Rank.EIGHT)
     val endPosition = Position(File.A, Rank.SEVEN)
     val testSingleMove = SingleMove(startPosition, endPosition)
@@ -234,7 +221,7 @@ class BoardTest : AnnotationSpec() {
   @Test
   fun `do not increase fullmove clock expecting fullmove to be 12 `() {
     val board =
-      Board(FENData("R7/8/8/8/8/8/8/K7", 'w', "", fullmoveClock = 12))
+      Board(FEN("R7/8/8/8/8/8/8/K7", 'w', "", fullmoveClock = 12))
     val startPosition = Position(File.A, Rank.EIGHT)
     val endPosition = Position(File.A, Rank.SEVEN)
     val testSingleMove = SingleMove(startPosition, endPosition)
@@ -244,7 +231,7 @@ class BoardTest : AnnotationSpec() {
 
   @Test
   fun `Piece movement, rook move e4 to e8 + no exception thrown `() {
-    val board = Board(FENData("8/8/8/8/4R3/8/8/K7", 'w', ""))
+    val board = Board(FEN("8/8/8/8/4R3/8/8/K7", 'w', ""))
     val startPosition = Position(File.E, Rank.FOUR)
     val endPosition = Position(File.E, Rank.EIGHT)
     val testSingleMove = SingleMove(startPosition, endPosition)
@@ -257,17 +244,17 @@ class BoardTest : AnnotationSpec() {
   @Test
   fun `Invalid board creation`() {
     assertThatThrownBy {
-      Board(FENData("rnbqkbnr/pppppppp/8/8/8/7/PPPPPPPP/RNBQKBNR"))
+      Board(FEN("rnbqkbnr/pppppppp/8/8/8/7/PPPPPPPP/RNBQKBNR"))
     }.message().isEqualTo("Board must have exactly 64 squares.")
 
     assertThatThrownBy {
-      Board(FENData("K7/8/k7/8/8/8/8/9"))
+      Board(FEN("K7/8/k7/8/8/8/8/9"))
     }.message().isEqualTo("File iterator should have next element.")
   }
 
   @Test
   fun `FEN board string creation for default setup`() {
-    val board = Board(FENData())
+    val board = Board(FEN())
     val fenBoardString = board.generateFENBoardString()
     assertThat(
       fenBoardString,
@@ -277,14 +264,14 @@ class BoardTest : AnnotationSpec() {
   @Test
   fun `FEN board string with custom setup`() {
     val testString = "q4b2/8/8/1Q6/3B4/1PP4K/8/n1n1n1n1"
-    val board = Board(FENData(testString))
+    val board = Board(FEN(testString))
     val fenBoardString = board.generateFENBoardString()
     assertThat(fenBoardString).isEqualTo(testString)
   }
 
   @Test
   fun `Piece moves on ally, exception expected`() {
-    val board = Board(FENData("K7/8/8/8/8/P7/8/R7", castle = ""))
+    val board = Board(FEN("K7/8/8/8/8/P7/8/R7", castle = ""))
     val singleMove =
       SingleMove(Position(File.A, Rank.ONE), Position(File.A, Rank.THREE))
     assertThatThrownBy { board.makeMove(singleMove) }.message()
@@ -294,21 +281,10 @@ class BoardTest : AnnotationSpec() {
 
   @Test
   fun `Capture Piece, rook captures pawn, expecting valid move`() {
-    val board = Board(FENData("K7/8/8/8/8/p7/8/R7", castle = ""))
-    val capturedPieces = CapturedPieces(board.getMap())
+    val board = Board(FEN("K7/8/8/8/8/p7/8/R7", castle = ""))
     val singleMove =
       SingleMove(Position(File.A, Rank.ONE), Position(File.A, Rank.THREE))
-    assertThat(
-      capturedPieces.getCapturedPieces(),
-    ).isEqualTo(
-      "White's captures: rnbqkbnrppppppp${System.lineSeparator()}Black's captures: NBQBNRPPPPPPPP",
-    )
     board.makeMove(singleMove)
     assertThat(board.generateFENBoardString()).isEqualTo("K7/8/8/8/8/R7/8/8")
-    assertThat(
-      capturedPieces.getCapturedPieces(),
-    ).isEqualTo(
-      "White's captures: rnbqkbnrpppppppp${System.lineSeparator()}Black's captures: NBQBNRPPPPPPPP",
-    )
   }
 }

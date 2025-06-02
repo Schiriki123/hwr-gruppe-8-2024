@@ -6,7 +6,7 @@ import hwr.oop.group8.chess.core.File
 import hwr.oop.group8.chess.core.Position
 import hwr.oop.group8.chess.core.Rank
 import hwr.oop.group8.chess.core.SingleMove
-import hwr.oop.group8.chess.persistence.FENData
+import hwr.oop.group8.chess.persistence.FEN
 import io.kotest.core.spec.style.AnnotationSpec
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
@@ -15,7 +15,7 @@ class KnightTest : AnnotationSpec() {
 
   @Test
   fun `Char representation of Knight`() {
-    val boardInspector = Board(FENData("8/8/8/8/8/8/8/K7", 'w', ""))
+    val boardInspector = Board(FEN("8/8/8/8/8/8/8/K7", 'w', ""))
     val whiteKnight = Knight(Color.WHITE, boardInspector)
     val blackKnight = Knight(Color.BLACK, boardInspector)
     assertThat(whiteKnight.getChar()).isEqualTo('N')
@@ -25,7 +25,7 @@ class KnightTest : AnnotationSpec() {
 
   @Test
   fun `Knight move from d4 to f5`() {
-    val board = Board(FENData("8/8/8/8/3N4/8/8/K7", 'w', ""))
+    val board = Board(FEN("8/8/8/8/3N4/8/8/K7", 'w', ""))
     val singleMove =
       SingleMove(Position(File.D, Rank.FOUR), Position(File.F, Rank.FIVE))
     board.makeMove(singleMove)
@@ -35,7 +35,7 @@ class KnightTest : AnnotationSpec() {
 
   @Test
   fun `Knight move from d4 to e6`() {
-    val board = Board(FENData("8/8/8/8/3N4/8/8/K7", 'w', ""))
+    val board = Board(FEN("8/8/8/8/3N4/8/8/K7", 'w', ""))
     val singleMove =
       SingleMove(Position(File.D, Rank.FOUR), Position(File.E, Rank.SIX))
     board.makeMove(singleMove)
@@ -45,7 +45,7 @@ class KnightTest : AnnotationSpec() {
 
   @Test
   fun `Knight move from d4 to e2`() {
-    val board = Board(FENData("8/8/8/8/3N4/8/8/K7", 'w', ""))
+    val board = Board(FEN("8/8/8/8/3N4/8/8/K7", 'w', ""))
     val singleMove =
       SingleMove(Position(File.D, Rank.FOUR), Position(File.E, Rank.TWO))
     board.makeMove(singleMove)
@@ -55,7 +55,7 @@ class KnightTest : AnnotationSpec() {
 
   @Test
   fun `Knight move from d4 to b3`() {
-    val board = Board(FENData("8/8/8/8/3N4/8/8/K7", 'w', ""))
+    val board = Board(FEN("8/8/8/8/3N4/8/8/K7", 'w', ""))
     val singleMove =
       SingleMove(Position(File.D, Rank.FOUR), Position(File.B, Rank.THREE))
     board.makeMove(singleMove)
@@ -65,7 +65,7 @@ class KnightTest : AnnotationSpec() {
 
   @Test
   fun `Knight move from d4 to c2`() {
-    val board = Board(FENData("8/8/8/8/3N4/8/8/K7", 'w', ""))
+    val board = Board(FEN("8/8/8/8/3N4/8/8/K7", 'w', ""))
     val singleMove =
       SingleMove(Position(File.D, Rank.FOUR), Position(File.C, Rank.TWO))
     board.makeMove(singleMove)
@@ -75,7 +75,7 @@ class KnightTest : AnnotationSpec() {
 
   @Test
   fun `Knight move from d4 to b5`() {
-    val board = Board(FENData("8/8/8/8/3N4/8/8/K7", 'w', ""))
+    val board = Board(FEN("8/8/8/8/3N4/8/8/K7", 'w', ""))
     val singleMove =
       SingleMove(Position(File.D, Rank.FOUR), Position(File.B, Rank.FIVE))
     board.makeMove(singleMove)
@@ -85,7 +85,7 @@ class KnightTest : AnnotationSpec() {
 
   @Test
   fun `Knight move from d4 to c6`() {
-    val board = Board(FENData("8/8/8/8/3N4/8/8/K7", 'w', ""))
+    val board = Board(FEN("8/8/8/8/3N4/8/8/K7", 'w', ""))
     val singleMove =
       SingleMove(Position(File.D, Rank.FOUR), Position(File.C, Rank.SIX))
     board.makeMove(singleMove)
@@ -95,7 +95,7 @@ class KnightTest : AnnotationSpec() {
 
   @Test
   fun `Knight move from d4 to f3`() {
-    val board = Board(FENData("8/8/8/8/3N4/8/8/K7", 'w', ""))
+    val board = Board(FEN("8/8/8/8/3N4/8/8/K7", 'w', ""))
     val singleMove =
       SingleMove(Position(File.D, Rank.FOUR), Position(File.F, Rank.THREE))
     board.makeMove(singleMove)
@@ -105,7 +105,7 @@ class KnightTest : AnnotationSpec() {
 
   @Test
   fun `Knight move from a3 to b5`() {
-    val board = Board(FENData("8/8/8/8/8/N7/8/K7", 'w', ""))
+    val board = Board(FEN("8/8/8/8/8/N7/8/K7", 'w', ""))
     val singleMove =
       SingleMove(Position(File.A, Rank.THREE), Position(File.B, Rank.FIVE))
     board.makeMove(singleMove)
@@ -115,7 +115,7 @@ class KnightTest : AnnotationSpec() {
 
   @Test
   fun `Knight capture`() {
-    val board = Board(FENData("8/8/8/5n2/3N4/8/8/K7", 'w', ""))
+    val board = Board(FEN("8/8/8/5n2/3N4/8/8/K7", 'w', ""))
     val singleMove =
       SingleMove(Position(File.D, Rank.FOUR), Position(File.F, Rank.FIVE))
     board.makeMove(singleMove)
@@ -125,7 +125,7 @@ class KnightTest : AnnotationSpec() {
 
   @Test
   fun `Knight end-position blocked`() {
-    val board = Board(FENData("8/8/8/5N2/3N4/8/8/K7", 'w', ""))
+    val board = Board(FEN("8/8/8/5N2/3N4/8/8/K7", 'w', ""))
     val singleMove =
       SingleMove(Position(File.D, Rank.FOUR), Position(File.F, Rank.FIVE))
 
@@ -138,7 +138,7 @@ class KnightTest : AnnotationSpec() {
   @Test
   fun `Knight invalid moves`() {
     // Knight move from d4 to d2
-    val board = Board(FENData("8/8/8/8/3N4/8/8/K7", 'w', ""))
+    val board = Board(FEN("8/8/8/8/3N4/8/8/K7", 'w', ""))
     val singleMove =
       SingleMove(Position(File.D, Rank.FOUR), Position(File.D, Rank.TWO))
 
@@ -148,7 +148,7 @@ class KnightTest : AnnotationSpec() {
 
   @Test
   fun `Knight move from d4 to e5`() {
-    val board = Board(FENData("8/8/8/8/3N4/8/8/K7", 'w', ""))
+    val board = Board(FEN("8/8/8/8/3N4/8/8/K7", 'w', ""))
     val singleMove =
       SingleMove(Position(File.D, Rank.FOUR), Position(File.F, Rank.SIX))
 
@@ -158,7 +158,7 @@ class KnightTest : AnnotationSpec() {
 
   @Test
   fun `Knight movement set generation with overflow for rank & file`() {
-    val board = Board(FENData("8/6n1/8/7p/8/8/8/k7", 'b', ""))
+    val board = Board(FEN("8/6n1/8/7p/8/8/8/k7", 'b', ""))
     val startPosition = Position(File.G, Rank.SEVEN)
     val validMoveDestinationsOfKnight =
       board.getPieceAt(startPosition)!!.getValidMoveDestinations()
@@ -173,7 +173,7 @@ class KnightTest : AnnotationSpec() {
 
   @Test
   fun `Knight movement set generation with lower overflow for rank & file`() {
-    val board = Board(FENData("K7/8/8/8/3p4/8/2N5/R7", castle = ""))
+    val board = Board(FEN("K7/8/8/8/3p4/8/2N5/R7", castle = ""))
     val startPosition = Position(File.C, Rank.TWO)
     val validMoveDestinationOfKnight =
       board.getPieceAt(startPosition)!!.getValidMoveDestinations()

@@ -7,7 +7,7 @@ import hwr.oop.group8.chess.core.File
 import hwr.oop.group8.chess.core.Position
 import hwr.oop.group8.chess.core.Rank
 import hwr.oop.group8.chess.core.SingleMove
-import hwr.oop.group8.chess.persistence.FENData
+import hwr.oop.group8.chess.persistence.FEN
 import io.kotest.core.spec.style.AnnotationSpec
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
@@ -18,7 +18,7 @@ class CastleTest : AnnotationSpec() {
   @Test
   fun `Castling permission is read correctly from castle string for white, castling allowed on first try, second is denied`() {
     val board = Board(
-      FENData(
+      FEN(
         boardString = "r3k2r/8/8/8/8/8/8/R3K2R",
         castle = "Qkq",
         turn = 'w',
@@ -33,7 +33,7 @@ class CastleTest : AnnotationSpec() {
   @Test
   fun `Castling permission is read correctly from castle string for black, castling on first try, second is denied`() {
     val board = Board(
-      FENData(
+      FEN(
         boardString = "r3k2r/8/8/8/8/8/8/R3K2R",
         castle = "Qk",
         turn = 'b',
@@ -46,7 +46,7 @@ class CastleTest : AnnotationSpec() {
 
   @Test
   fun `Move king side tower should remove K from castle`() {
-    val board = Board(FENData("r3k2r/8/8/8/8/8/8/R3K2R"))
+    val board = Board(FEN("r3k2r/8/8/8/8/8/8/R3K2R"))
     val singleMove =
       SingleMove(Position(File.H, Rank.ONE), Position(File.G, Rank.ONE))
     board.makeMove(singleMove)
@@ -58,7 +58,7 @@ class CastleTest : AnnotationSpec() {
 
   @Test
   fun `Move queen side tower should remove Q from castle`() {
-    val board = Board(FENData("r3k2r/8/8/8/8/8/8/R3K2R"))
+    val board = Board(FEN("r3k2r/8/8/8/8/8/8/R3K2R"))
     val singleMove =
       SingleMove(Position(File.A, Rank.ONE), Position(File.B, Rank.ONE))
     board.makeMove(singleMove)
@@ -71,7 +71,7 @@ class CastleTest : AnnotationSpec() {
   // KING
   @Test
   fun `Castle king side for white`() {
-    val board = Board(FENData("8/8/8/8/8/8/8/R3K2R"))
+    val board = Board(FEN("8/8/8/8/8/8/8/R3K2R"))
     // King side castle
     val singleMove = SingleMove(
       Position(File.E, Rank.ONE),
@@ -85,7 +85,7 @@ class CastleTest : AnnotationSpec() {
 
   @Test
   fun `Castle queen side for white`() {
-    val board = Board(FENData("8/8/8/8/8/8/8/R3K2R"))
+    val board = Board(FEN("8/8/8/8/8/8/8/R3K2R"))
     val singleMove = SingleMove(
       Position(File.E, Rank.ONE),
       Position(File.C, Rank.ONE),
@@ -98,7 +98,7 @@ class CastleTest : AnnotationSpec() {
 
   @Test
   fun `Castle king side for black`() {
-    val board = Board(FENData("r3k2r/8/8/8/8/8/8/8", 'b'))
+    val board = Board(FEN("r3k2r/8/8/8/8/8/8/8", 'b'))
     // King side castle
     val singleMove = SingleMove(
       Position(File.E, Rank.EIGHT),
@@ -112,7 +112,7 @@ class CastleTest : AnnotationSpec() {
 
   @Test
   fun `Castle queen side for black`() {
-    val board = Board(FENData("r3k2r/8/8/8/8/8/8/8", 'b'))
+    val board = Board(FEN("r3k2r/8/8/8/8/8/8/8", 'b'))
     val singleMove = SingleMove(
       Position(File.E, Rank.EIGHT),
       Position(File.C, Rank.EIGHT),
@@ -125,7 +125,7 @@ class CastleTest : AnnotationSpec() {
 
   @Test
   fun `Invalid castle with movement through check, expecting exception`() {
-    val board = Board(FENData("8/8/5r2/8/8/8/8/R3K2R"))
+    val board = Board(FEN("8/8/5r2/8/8/8/8/R3K2R"))
     val singleMove =
       SingleMove(Position(File.E, Rank.ONE), Position(File.G, Rank.ONE))
     assertThatThrownBy {
@@ -135,7 +135,7 @@ class CastleTest : AnnotationSpec() {
 
   @Test
   fun `Check that castling is not allowed if piece was moved`() {
-    val board = Board(FENData("8/k7/8/8/8/8/8/R3K2R", 'w'))
+    val board = Board(FEN("8/k7/8/8/8/8/8/R3K2R", 'w'))
     // Move the rook
     board.makeMove(
       SingleMove(
@@ -169,7 +169,7 @@ class CastleTest : AnnotationSpec() {
 
   @Test
   fun `Try to castle from chess`() {
-    val board = Board(FENData("8/1k6/4r3/8/8/8/8/R3K2R"))
+    val board = Board(FEN("8/1k6/4r3/8/8/8/8/R3K2R"))
     val singleMove =
       SingleMove(Position(File.E, Rank.ONE), Position(File.G, Rank.ONE))
     assertThatThrownBy {
@@ -183,7 +183,7 @@ class CastleTest : AnnotationSpec() {
 
   @Test
   fun `Try to castle with blocked path king side`() {
-    val board = Board(FENData("8/8/8/8/8/8/8/R3KB1R"))
+    val board = Board(FEN("8/8/8/8/8/8/8/R3KB1R"))
     val singleMove =
       SingleMove(Position(File.E, Rank.ONE), Position(File.G, Rank.ONE))
     assertThatThrownBy {
@@ -197,7 +197,7 @@ class CastleTest : AnnotationSpec() {
 
   @Test
   fun `Try to castle with blocked path queen side`() {
-    val board = Board(FENData("8/8/8/8/8/8/8/RN2K2R"))
+    val board = Board(FEN("8/8/8/8/8/8/8/RN2K2R"))
     val singleMove =
       SingleMove(Position(File.E, Rank.ONE), Position(File.C, Rank.ONE))
     assertThatThrownBy {
@@ -212,7 +212,7 @@ class CastleTest : AnnotationSpec() {
   @Test
   fun `Removing last castling permission should write '-' to file`() {
     // Given
-    val board = Board(FENData("4k3/8/8/8/8/8/8/R3K2R", 'w', "KQ"))
+    val board = Board(FEN("4k3/8/8/8/8/8/8/R3K2R", 'w', "KQ"))
     // When
     val move =
       SingleMove(Position(File.E, Rank.ONE), Position(File.E, Rank.TWO))

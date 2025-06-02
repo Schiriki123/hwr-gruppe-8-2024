@@ -61,7 +61,7 @@ class FilePersistenceAdapter(val file: File) : PersistencePort {
     }
   }
 
-  private fun createFENDataObject(fenLine: String): FENData {
+  private fun createFENDataObject(fenLine: String): FEN {
     val data = fenLine.split(" ")
     val boardString = data.first()
     val turn: Char = data[1].first()
@@ -69,7 +69,7 @@ class FilePersistenceAdapter(val file: File) : PersistencePort {
     val enPassant: String = data[3]
     val halfmoveClock: Int = data[4].toInt()
     val fullmoveClock: Int = data[5].toInt()
-    return FENData(
+    return FEN(
       boardString,
       turn,
       castle,

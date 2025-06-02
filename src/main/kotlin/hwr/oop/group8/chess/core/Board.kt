@@ -6,10 +6,10 @@ import hwr.oop.group8.chess.core.piece.Piece
 import hwr.oop.group8.chess.core.piece.PieceType
 import hwr.oop.group8.chess.core.piece.Queen
 import hwr.oop.group8.chess.core.piece.Rook
-import hwr.oop.group8.chess.persistence.FENData
+import hwr.oop.group8.chess.persistence.FEN
 
 class Board(
-  val fenData: FENData,
+  val fen: FEN,
   val stateHistory: MutableList<Int> = mutableListOf(),
 ) : BoardInspector {
   private val map = HashMap<Position, Square>()
@@ -24,11 +24,11 @@ class Board(
   init {
     initializeBoardFromFENString() // TODO: BoardFactory class
 
-    turn = fenData.getTurn()
-    castle = fenData.castle
-    enPassant = fenData.enPassant
-    halfmoveClock = fenData.halfmoveClock
-    fullmoveClock = fenData.fullmoveClock
+    turn = fen.getTurn()
+    castle = fen.castle
+    enPassant = fen.enPassant
+    halfmoveClock = fen.halfmoveClock
+    fullmoveClock = fen.fullmoveClock
     // TODO: Move to makeMove
     checkForDraw()
     check(!isCheckmate()) {
@@ -39,13 +39,13 @@ class Board(
   private fun initializeBoardFromFENString() {
     for (rank in Rank.entries) {
       val fileIterator = File.entries.iterator()
-      fenData.getRank(rank).forEach { character ->
+      fen.getRank(rank).forEach { character ->
         if (character.isDigit()) {
           repeat(character.digitToInt()) {
             populateSquare(fileIterator, rank, null)
           }
         } else {
-          val piece = FENData.createPieceOnBoard(character, this)
+          val piece = FEN.createPieceOnBoard(character, this)
           populateSquare(fileIterator, rank, piece)
         }
       }
@@ -188,5 +188,5 @@ class Board(
 
   fun getMap(): HashMap<Position, Square> = map
 
-  fun generateFENBoardString(): String = FENData.generateFENBoardString(this)
+  fun generateFENBoardString(): String = FEN.generateFENBoardString(this)
 }

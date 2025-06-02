@@ -1,6 +1,7 @@
 package hwr.oop.group8.chess.cli
 
-import hwr.oop.group8.chess.core.Board
+import hwr.oop.group8.chess.core.BoardInspector
+import hwr.oop.group8.chess.core.Color
 import hwr.oop.group8.chess.core.File
 import hwr.oop.group8.chess.core.Position
 import hwr.oop.group8.chess.core.Rank
@@ -18,26 +19,51 @@ class ShowGameCommand(private val persistencePort: PersistencePort) :
 
   override fun handle(args: List<String>) {
     val gameId = args[2].toInt()
+    val game = persistencePort.loadGame(gameId)
     println("Loading game with id $gameId...")
     println("Current board:")
-    printBoard(persistencePort.loadGame(gameId).board)
-    println(
-      "Current turn: ${
-        persistencePort.loadGame(gameId).getFenData().getTurn()
-      }",
-    )
+    printBoard(game.board)
+    println("Current turn: ${game.getFenData().getTurn()}")
+    printCapturedPieces(game.board)
   }
 
-  private fun printBoard(board: Board) {
+  private fun printBoard(board: BoardInspector) {
     val builder = StringBuilder()
     for (rank in Rank.entries.reversed()) {
       for (file in File.entries) {
-        // TODO: Use BoardInspector
-        val piece = board.getMap().getValue(Position(file, rank)).getPiece()
+        val piece = board.getPieceAt(Position(file, rank))
         builder.append(piece?.getChar() ?: '.')
       }
       builder.append("${System.lineSeparator()}")
     }
     println(builder.toString().trim())
+  }
+
+  private fun printCapturedPieces(boardInspector: BoardInspector) {
+    val whitePieces = StringBuilder()
+    whitePieces.append("RNBQKBNR")
+    whitePieces.append("PPPPPPPP")
+    val blackPieces = StringBuilder()
+    blackPieces.append("rnbqkbnr")
+    blackPieces.append("pppppppp")
+    for (rank in Rank.entries) {
+      for (file in File.entries) {
+        val position = Position(file, rank)
+        val piece = boardInspector.getPieceAt(position)
+        piece?.let { piece ->
+          if (piece.color == Color.WHITE) {
+            whitePieces.deleteAt(whitePieces.indexOf(piece.getChar()))
+          } else {
+            blackPieces.deleteAt(blackPieces.indexOf(piece.getChar()))
+          }
+        }
+      }
+    }
+    println(
+      """
+        White's captures: $blackPieces
+        Black's captures: $whitePieces
+      """.trimIndent(),
+    )
   }
 }
