@@ -1,4 +1,4 @@
-package hwr.oop.group8.chess.piece
+package hwr.oop.group8.chess.core.piece
 
 enum class PieceType(val allowedPromotion: Boolean = false) {
   PAWN,

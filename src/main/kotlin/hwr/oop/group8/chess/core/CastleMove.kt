@@ -1,6 +1,6 @@
 package hwr.oop.group8.chess.core
 
-import hwr.oop.group8.chess.piece.King
+import hwr.oop.group8.chess.core.piece.King
 
 data class CastleMove(val king: King, val isKingSideCastle: Boolean) : Move {
   val kingColor = king.color

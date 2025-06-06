@@ -1,8 +1,8 @@
 package hwr.oop.group8.chess.core
 
-import hwr.oop.group8.chess.persistence.FENData
-import hwr.oop.group8.chess.piece.King
-import hwr.oop.group8.chess.piece.PieceType
+import hwr.oop.group8.chess.core.piece.King
+import hwr.oop.group8.chess.core.piece.PieceType
+import hwr.oop.group8.chess.persistence.FEN
 import io.kotest.core.spec.style.AnnotationSpec
 import org.assertj.core.api.Assertions.assertThat
 
@@ -37,7 +37,7 @@ class MoveTest : AnnotationSpec() {
 
   @Test
   fun `Test king side castle move creation, assert that storage is correct`() {
-    val board = Board(FENData("k7/8/8/8/8/8/8/R3KBNR", 'w', "KQ"))
+    val board = Board(FEN("k7/8/8/8/8/8/8/R3KBNR", 'w', "KQ"))
     val from = Position(File.E, Rank.ONE)
     val castleMove = CastleMove(board.getPieceAt(from) as King, true)
 
@@ -48,7 +48,7 @@ class MoveTest : AnnotationSpec() {
 
   @Test
   fun `Test queen side castle move creation, assert that storage is correct`() {
-    val board = Board(FENData("k7/8/8/8/8/8/8/R3K2R", 'w', "KQ"))
+    val board = Board(FEN("k7/8/8/8/8/8/8/R3K2R", 'w', "KQ"))
     val from = Position(File.E, Rank.ONE)
     val castleMove = CastleMove(board.getPieceAt(from) as King, false)
 

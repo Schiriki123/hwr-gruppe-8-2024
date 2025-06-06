@@ -2,7 +2,7 @@ package hwr.oop.group8.chess.cli
 
 import hwr.oop.group8.chess.core.Game
 import hwr.oop.group8.chess.persistence.CouldNotDeleteGameException
-import hwr.oop.group8.chess.persistence.FENData
+import hwr.oop.group8.chess.persistence.FEN
 import io.kotest.core.spec.style.AnnotationSpec
 import io.kotest.extensions.system.captureStandardOut
 import org.assertj.core.api.Assertions.assertThat
@@ -13,7 +13,7 @@ class DeleteGameCommandTest : AnnotationSpec() {
   fun `Game should be deleted`() {
     // given
     val adapterMock = PersistentAdapterMock()
-    val gameToDelete = Game(1, FENData())
+    val gameToDelete = Game(1, FEN())
     adapterMock.saveGame(gameToDelete, false)
     val cli = Cli(adapterMock)
 

@@ -1,4 +1,4 @@
-package hwr.oop.group8.chess.piece
+package hwr.oop.group8.chess.core.piece
 
 import hwr.oop.group8.chess.core.Board
 import hwr.oop.group8.chess.core.Color
@@ -6,7 +6,7 @@ import hwr.oop.group8.chess.core.File
 import hwr.oop.group8.chess.core.Position
 import hwr.oop.group8.chess.core.Rank
 import hwr.oop.group8.chess.core.SingleMove
-import hwr.oop.group8.chess.persistence.FENData
+import hwr.oop.group8.chess.persistence.FEN
 import io.kotest.core.spec.style.AnnotationSpec
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
@@ -14,7 +14,7 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 class RookTest : AnnotationSpec() {
   @Test
   fun `char representation`() {
-    val boardInspector = Board(FENData("8/8/8/8/8/8/8/K7", 'w', ""))
+    val boardInspector = Board(FEN("8/8/8/8/8/8/8/K7", 'w', ""))
     val whiteRook = Rook(Color.WHITE, boardInspector)
     val blackRook = Rook(Color.BLACK, boardInspector)
     assertThat(whiteRook.getChar()).isEqualTo('R')
@@ -24,7 +24,7 @@ class RookTest : AnnotationSpec() {
 
   @Test
   fun `Rook movement on empty board from a8 to a2`() {
-    val board = Board(FENData("R7/8/8/8/8/8/8/K7", 'w', ""))
+    val board = Board(FEN("R7/8/8/8/8/8/8/K7", 'w', ""))
     val singleMove =
       SingleMove(Position(File.A, Rank.EIGHT), Position(File.A, Rank.TWO))
     board.makeMove(singleMove)
@@ -34,7 +34,7 @@ class RookTest : AnnotationSpec() {
 
   @Test
   fun `invalid rook movement`() {
-    val board = Board(FENData("R7/8/8/8/8/8/8/K7", 'w', ""))
+    val board = Board(FEN("R7/8/8/8/8/8/8/K7", 'w', ""))
     val singleMove =
       SingleMove(Position(File.A, Rank.EIGHT), Position(File.B, Rank.TWO))
     assertThatThrownBy { board.makeMove(singleMove) }
@@ -43,7 +43,7 @@ class RookTest : AnnotationSpec() {
 
   @Test
   fun `Rook movement with path blocked by pawn`() {
-    val board = Board(FENData("R7/8/8/8/8/8/P7/1K6"))
+    val board = Board(FEN("R7/8/8/8/8/8/P7/1K6"))
     val singleMove =
       SingleMove(Position(File.A, Rank.EIGHT), Position(File.A, Rank.ONE))
     assertThatThrownBy { board.makeMove(singleMove) }
@@ -52,7 +52,7 @@ class RookTest : AnnotationSpec() {
 
   @Test
   fun `capture piece with rook`() {
-    val board = Board(FENData("R7/8/8/8/8/8/p7/K7", 'w', ""))
+    val board = Board(FEN("R7/8/8/8/8/8/p7/K7", 'w', ""))
     val singleMove =
       SingleMove(Position(File.A, Rank.EIGHT), Position(File.A, Rank.TWO))
     board.makeMove(singleMove)

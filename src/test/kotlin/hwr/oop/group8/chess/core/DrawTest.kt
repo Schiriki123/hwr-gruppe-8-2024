@@ -1,7 +1,7 @@
 package hwr.oop.group8.chess.core
 
 import hwr.oop.group8.chess.cli.CliMove
-import hwr.oop.group8.chess.persistence.FENData
+import hwr.oop.group8.chess.persistence.FEN
 import io.kotest.core.spec.style.AnnotationSpec
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
@@ -10,7 +10,7 @@ class DrawTest : AnnotationSpec() {
   @Test
   fun `Creating board with half move clock at 50 should throw`() {
     assertThatThrownBy {
-      Board(FENData("r3k2r/8/8/8/8/8/8/R3K2R", 'w', halfmoveClock = 50))
+      Board(FEN("r3k2r/8/8/8/8/8/8/R3K2R", 'w', halfmoveClock = 50))
     }.message().isEqualTo("Game is draw due to the 50-move rule.")
   }
 
@@ -18,7 +18,7 @@ class DrawTest : AnnotationSpec() {
   fun `Creating board with half move clock at 49 should not throw`() {
     // given
     val board =
-      Board(FENData("r3k2r/8/8/8/8/8/8/R3K2R", 'w', halfmoveClock = 49))
+      Board(FEN("r3k2r/8/8/8/8/8/8/R3K2R", 'w', halfmoveClock = 49))
     val move =
       SingleMove(Position(File.A, Rank.ONE), Position(File.B, Rank.ONE))
     // when
@@ -33,7 +33,7 @@ class DrawTest : AnnotationSpec() {
     assertThatThrownBy {
       Game(
         1,
-        FENData("r3k2r/8/8/8/8/8/8/R3K2R"),
+        FEN("r3k2r/8/8/8/8/8/8/R3K2R"),
         listOf(888, 112, 888, 112, 888, 122),
       )
     }.message().isEqualTo("Game is draw due to threefold repetition.")
@@ -44,7 +44,7 @@ class DrawTest : AnnotationSpec() {
     // given
     val game = Game(
       1,
-      FENData("r3k2r/8/8/8/8/8/8/R3K2R"),
+      FEN("r3k2r/8/8/8/8/8/8/R3K2R"),
       listOf(-423117847, -423117847),
     )
     val move =
@@ -60,7 +60,7 @@ class DrawTest : AnnotationSpec() {
     // given
     val game = Game(
       1,
-      FENData("r3k2r/8/8/8/8/8/8/R3K2R"),
+      FEN("r3k2r/8/8/8/8/8/8/R3K2R"),
       listOf(-423117847, -423117847),
     )
     val move =

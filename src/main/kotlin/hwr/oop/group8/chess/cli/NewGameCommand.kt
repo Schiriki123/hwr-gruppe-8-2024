@@ -1,7 +1,7 @@
 package hwr.oop.group8.chess.cli
 
 import hwr.oop.group8.chess.core.Game
-import hwr.oop.group8.chess.persistence.FENData
+import hwr.oop.group8.chess.persistence.FEN
 import hwr.oop.group8.chess.persistence.PersistencePort
 
 class NewGameCommand(private val persistencePort: PersistencePort) :
@@ -16,8 +16,8 @@ class NewGameCommand(private val persistencePort: PersistencePort) :
 
   override fun handle(args: List<String>) {
     val gameId = args[2].toInt()
-    val initialFENData = FENData()
-    val initialGame = Game(gameId, initialFENData)
+    val initialFEN = FEN()
+    val initialGame = Game(gameId, initialFEN)
     persistencePort.saveGame(initialGame, false)
     println("New game with id $gameId created.")
   }

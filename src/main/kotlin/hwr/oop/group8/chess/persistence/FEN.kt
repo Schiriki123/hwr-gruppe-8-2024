@@ -6,16 +6,15 @@ import hwr.oop.group8.chess.core.Color
 import hwr.oop.group8.chess.core.File
 import hwr.oop.group8.chess.core.Position
 import hwr.oop.group8.chess.core.Rank
-import hwr.oop.group8.chess.piece.Bishop
-import hwr.oop.group8.chess.piece.King
-import hwr.oop.group8.chess.piece.Knight
-import hwr.oop.group8.chess.piece.Pawn
-import hwr.oop.group8.chess.piece.Piece
-import hwr.oop.group8.chess.piece.Queen
-import hwr.oop.group8.chess.piece.Rook
+import hwr.oop.group8.chess.core.piece.Bishop
+import hwr.oop.group8.chess.core.piece.King
+import hwr.oop.group8.chess.core.piece.Knight
+import hwr.oop.group8.chess.core.piece.Pawn
+import hwr.oop.group8.chess.core.piece.Piece
+import hwr.oop.group8.chess.core.piece.Queen
+import hwr.oop.group8.chess.core.piece.Rook
 
-// TODO: Rename to FEN
-data class FENData(
+data class FEN(
   private val boardString: String =
     "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR",
   private val turn: Char = 'w',
@@ -91,7 +90,7 @@ data class FENData(
       return builder.toString().dropLast(1)
     }
 
-    fun getFENData(board: Board): FENData = FENData(
+    fun getFENData(board: Board): FEN = FEN(
       generateFENBoardString(board),
       if (board.turn == Color.WHITE) 'w' else 'b',
       board.castle,

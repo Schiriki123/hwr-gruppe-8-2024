@@ -1,6 +1,6 @@
 package hwr.oop.group8.chess.cli
 
-import hwr.oop.group8.chess.persistence.FENData
+import hwr.oop.group8.chess.persistence.FEN
 import io.kotest.core.spec.style.AnnotationSpec
 import io.kotest.extensions.system.captureStandardOut
 import org.assertj.core.api.Assertions.assertThat
@@ -41,7 +41,7 @@ class MakeMoveCommandTest : AnnotationSpec() {
     requireNotNull(game)
     assertThat(game.id).isEqualTo(1)
     assertThat(game.getFenData()).isEqualTo(
-      FENData(
+      FEN(
         "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR",
         'b',
       ),

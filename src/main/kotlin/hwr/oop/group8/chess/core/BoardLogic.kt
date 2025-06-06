@@ -1,7 +1,7 @@
 package hwr.oop.group8.chess.core
 
-import hwr.oop.group8.chess.piece.Piece
-import hwr.oop.group8.chess.piece.PieceType
+import hwr.oop.group8.chess.core.piece.Piece
+import hwr.oop.group8.chess.core.piece.PieceType
 
 class BoardLogic(val board: Board) { // TODO: Use BoardInspector interface
 

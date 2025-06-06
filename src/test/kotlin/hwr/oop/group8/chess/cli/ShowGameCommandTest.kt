@@ -31,7 +31,9 @@ class ShowGameCommandTest : AnnotationSpec() {
         "........${System.lineSeparator()}" +
         "PPPPPPPP${System.lineSeparator()}" +
         "RNBQKBNR${System.lineSeparator()}" +
-        "Current turn: WHITE",
+        "Current turn: WHITE${System.lineSeparator()}" +
+        "White's captures: ${System.lineSeparator()}" +
+        "Black's captures:",
     )
   }
 }

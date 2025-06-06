@@ -1,7 +1,7 @@
 package hwr.oop.group8.chess.core
 
 import hwr.oop.group8.chess.cli.CliMove
-import hwr.oop.group8.chess.persistence.FENData
+import hwr.oop.group8.chess.persistence.FEN
 import io.kotest.core.spec.style.AnnotationSpec
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
@@ -11,7 +11,7 @@ class GameTest : AnnotationSpec() {
   @Test
   fun `Game receives cliMove with promotion to rook expect to be successful`() {
     // given
-    val game = Game(1, FENData("8/P7/7k/8/8/8/8/K7", 'w', ""))
+    val game = Game(1, FEN("8/P7/7k/8/8/8/8/K7", 'w', ""))
     val cliMove =
       CliMove(Position(File.A, Rank.SEVEN), Position(File.A, Rank.EIGHT), 'R')
     // when
@@ -24,7 +24,7 @@ class GameTest : AnnotationSpec() {
   @Test
   fun `Try to promote pawn without providing promotion char, should throw`() {
     // given
-    val game = Game(1, FENData("8/P7/7k/8/8/8/8/K7", 'w', ""))
+    val game = Game(1, FEN("8/P7/7k/8/8/8/8/K7", 'w', ""))
     val cliMove =
       CliMove(Position(File.A, Rank.SEVEN), Position(File.A, Rank.EIGHT), null)
     // when
@@ -40,7 +40,7 @@ class GameTest : AnnotationSpec() {
   @Test
   fun `Try to promote pawn with with king char, should throw`() {
     // given
-    val game = Game(1, FENData("8/P7/7k/8/8/8/8/K7", 'w', ""))
+    val game = Game(1, FEN("8/P7/7k/8/8/8/8/K7", 'w', ""))
     val cliMove =
       CliMove(Position(File.A, Rank.SEVEN), Position(File.A, Rank.EIGHT), 'k')
     // when
@@ -56,14 +56,14 @@ class GameTest : AnnotationSpec() {
   @Test
   fun `Create and assert game with default configuration`() {
     // given
-    val game = Game(1, FENData())
+    val game = Game(1, FEN())
     // when
     val board = game.board
     // then
     assertThat(
       board.stateHistory,
     ).containsExactly("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR".hashCode())
-    assertThat(board.fenData).isEqualTo(FENData())
+    assertThat(board.fen).isEqualTo(FEN())
     assertThat(board.generateFENBoardString()).isEqualTo(
       "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR",
     )
