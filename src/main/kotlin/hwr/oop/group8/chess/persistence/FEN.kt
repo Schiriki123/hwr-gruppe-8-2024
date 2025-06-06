@@ -90,7 +90,7 @@ data class FEN(
       return builder.toString().dropLast(1)
     }
 
-    fun getFENData(board: Board): FEN = FEN(
+    fun getFEN(board: Board): FEN = FEN(
       generateFENBoardString(board),
       if (board.turn == Color.WHITE) 'w' else 'b',
       board.castle,

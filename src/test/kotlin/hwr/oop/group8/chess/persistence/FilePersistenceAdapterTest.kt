@@ -36,7 +36,7 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
     )
 
     val sut = FilePersistenceAdapter(tempFile.toFile())
-    val result: FEN = sut.loadGame(1).getFenData()
+    val result: FEN = sut.loadGame(1).getFen()
 
     assertThat(result.getRank(Rank.EIGHT)).isEqualTo("rnbqkb1r")
     assertThat(result.getRank(Rank.SEVEN)).isEqualTo("pppppppp")
@@ -92,7 +92,7 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
     )
 
     val sut = FilePersistenceAdapter(tempFile.toFile())
-    val result: FEN = sut.loadGame(2).getFenData()
+    val result: FEN = sut.loadGame(2).getFen()
 
     assertThat(result.getRank(Rank.EIGHT)).isEqualTo("r3k2r")
     assertThat(result.getRank(Rank.SEVEN)).isEqualTo("p1ppqpb1")
@@ -139,7 +139,7 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
       result,
     ).isEqualTo(
       "1,rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1," +
-        initialGame.getFenData().hashOfBoard(),
+        initialGame.getFen().hashOfBoard(),
     )
 
     tempFile.deleteExisting()
@@ -247,9 +247,9 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
 
     assertThat(games).hasSize(2)
     assertThat(games[0].id).isEqualTo(1)
-    assertThat(games[0].getFenData().getTurn()).isEqualTo(Color.WHITE)
+    assertThat(games[0].getFen().getTurn()).isEqualTo(Color.WHITE)
     assertThat(games[1].id).isEqualTo(3)
-    assertThat(games[1].getFenData().getTurn()).isEqualTo(Color.BLACK)
+    assertThat(games[1].getFen().getTurn()).isEqualTo(Color.BLACK)
 
     tempFile.deleteExisting()
   }
@@ -321,7 +321,7 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
     )
     val sut = FilePersistenceAdapter(tempFile.toFile())
     // when
-    val result = sut.loadGame(1).getFenData()
+    val result = sut.loadGame(1).getFen()
     // then
     assertThat(result.castle).isEqualTo("-")
   }
@@ -358,7 +358,7 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
     val result = tempFile.readText()
     assertThat(result).isEqualTo(
       "1,rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1," +
-        game.getFenData().hashOfBoard(),
+        game.getFen().hashOfBoard(),
     )
   }
 
@@ -377,7 +377,7 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
     // then
     assertThat(result).isEqualTo(
       "1,rnbqkbnr/pppppppp/8/8/8/P7/1PPPPPPP/RNBQKBNR b KQkq - 0 1," +
-        "1234 5678 91011 " + game.getFenData().hashOfBoard(),
+        "1234 5678 91011 " + game.getFen().hashOfBoard(),
     )
   }
 }

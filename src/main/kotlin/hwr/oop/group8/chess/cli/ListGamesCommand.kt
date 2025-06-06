@@ -17,7 +17,7 @@ class ListGamesCommand(private val persistencePort: PersistencePort) :
     println("List of games:")
     for (game in games) {
       println(
-        "Game ID: ${game.id}, Current turn: ${game.getFenData().getTurn()}",
+        "Game ID: ${game.id}, Current turn: ${game.getFen().getTurn()}",
       )
     }
   }

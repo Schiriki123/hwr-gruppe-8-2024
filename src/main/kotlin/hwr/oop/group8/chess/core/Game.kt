@@ -10,7 +10,7 @@ data class Game(
 ) {
   val board: Board = Board(fen, stateHistory.toMutableList())
 
-  fun getFenData(): FEN = FEN.getFENData(board)
+  fun getFen(): FEN = FEN.getFEN(board)
   fun makeMove(move: CliMove) {
     board.makeMove(move.toDomainMove())
   }

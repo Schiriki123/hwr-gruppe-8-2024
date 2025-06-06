@@ -23,7 +23,7 @@ class ShowGameCommand(private val persistencePort: PersistencePort) :
     println("Loading game with id $gameId...")
     println("Current board:")
     printBoard(game.board)
-    println("Current turn: ${game.getFenData().getTurn()}")
+    println("Current turn: ${game.getFen().getTurn()}")
     printCapturedPieces(game.board)
   }
 
