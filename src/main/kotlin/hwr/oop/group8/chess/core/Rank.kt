@@ -1,5 +1,7 @@
 package hwr.oop.group8.chess.core
 
+import kotlin.math.abs
+
 enum class Rank {
   ONE,
   TWO,
@@ -57,6 +59,8 @@ enum class Rank {
     SEVEN -> 7
     EIGHT -> 8
   }
+
+  fun distanceTo(other: Rank) = abs(this.toInt() - other.toInt())
 
   override fun toString(): String = when (this) {
     ONE -> "1"

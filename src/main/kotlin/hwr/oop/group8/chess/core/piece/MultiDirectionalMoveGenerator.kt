@@ -2,7 +2,7 @@ package hwr.oop.group8.chess.core.piece
 
 import hwr.oop.group8.chess.core.BoardInspector
 import hwr.oop.group8.chess.core.Direction
-import hwr.oop.group8.chess.core.SingleMove
+import hwr.oop.group8.chess.core.move.SingleMove
 
 class MultiDirectionalMoveGenerator(
   val piece: Piece,

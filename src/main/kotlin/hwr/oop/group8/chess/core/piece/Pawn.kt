@@ -3,11 +3,12 @@ package hwr.oop.group8.chess.core.piece
 import hwr.oop.group8.chess.core.BoardInspector
 import hwr.oop.group8.chess.core.Color
 import hwr.oop.group8.chess.core.Direction
-import hwr.oop.group8.chess.core.Move
 import hwr.oop.group8.chess.core.Position
-import hwr.oop.group8.chess.core.PromotionMove
 import hwr.oop.group8.chess.core.Rank
-import hwr.oop.group8.chess.core.SingleMove
+import hwr.oop.group8.chess.core.move.DoublePawnMove
+import hwr.oop.group8.chess.core.move.Move
+import hwr.oop.group8.chess.core.move.PromotionMove
+import hwr.oop.group8.chess.core.move.SingleMove
 
 class Pawn(override val color: Color, val boardInspector: BoardInspector) :
   Piece {
@@ -28,27 +29,16 @@ class Pawn(override val color: Color, val boardInspector: BoardInspector) :
     }
 
     // Check for straight move
-    if (currentPosition.rank ==
-      if (color == Color.WHITE) Rank.SEVEN else Rank.TWO
-    ) {
-      moveGeneration(
-        forwardDirection,
-        validMoves,
-        currentPosition,
-        startRank,
-      ) { from: Position, to: Position ->
-        // Piece type is overwritten with user input
-        // TODO: Create promotion move for every piece type
-        PromotionMove(from, to, PieceType.QUEEN)
-      }
-    } else {
-      moveGeneration(
-        forwardDirection,
-        validMoves,
-        currentPosition,
-        startRank,
-      ) { from: Position, to: Position -> SingleMove(from, to) }
-    }
+    val promotionRank = if (color == Color.WHITE) Rank.EIGHT else Rank.ONE
+
+    moveGeneration(
+      forwardDirection,
+      validMoves,
+      currentPosition,
+      startRank,
+      promotionRank,
+    )
+
     return validMoves.toSet()
   }
 
@@ -57,16 +47,20 @@ class Pawn(override val color: Color, val boardInspector: BoardInspector) :
     validMoves: MutableSet<Move>,
     currentPosition: Position,
     startRank: Rank,
-    moveFactory: (Position, Position) -> Move,
+    promotionRank: Rank,
   ) {
     val nextField = getPosition().nextPosition(forwardDirection)
     if (boardInspector.isSquareEmpty(nextField)) {
-      validMoves.add(moveFactory(currentPosition, nextField))
+      if (nextField.rank == promotionRank) {
+        validMoves.addAll(generatePromotionMove(currentPosition, nextField))
+      } else {
+        validMoves.add(SingleMove(currentPosition, nextField))
+      }
       // Check for double move from starting position
       if (getPosition().rank == startRank) {
         val twoSquaresForward = nextField.nextPosition(forwardDirection)
         if (boardInspector.isSquareEmpty(twoSquaresForward)) {
-          validMoves.add(moveFactory(currentPosition, twoSquaresForward))
+          validMoves.add(DoublePawnMove(currentPosition, twoSquaresForward))
         }
       }
     }
@@ -81,11 +75,28 @@ class Pawn(override val color: Color, val boardInspector: BoardInspector) :
           getPosition().nextPosition(direction).nextPosition(forwardDirection)
         val nextPiece = boardInspector.getPieceAt(nextPosition)
         if (nextPiece != null && nextPiece.color != color) {
-          validMoves.add(moveFactory(currentPosition, nextPosition))
+          if (nextField.rank == promotionRank) {
+            validMoves.addAll(
+              generatePromotionMove(
+                currentPosition,
+                nextPosition,
+              ),
+            )
+          } else {
+            validMoves.add(SingleMove(currentPosition, nextPosition))
+          }
         }
       }
     }
   }
+
+  private fun generatePromotionMove(from: Position, to: Position): Set<Move> =
+    listOf(
+      PieceType.QUEEN,
+      PieceType.ROOK,
+      PieceType.BISHOP,
+      PieceType.KNIGHT,
+    ).map { promotionType -> PromotionMove(from, to, promotionType) }.toSet()
 
   override fun getChar(): Char = when (color) {
     Color.WHITE -> 'P'

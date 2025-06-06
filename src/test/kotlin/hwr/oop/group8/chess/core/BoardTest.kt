@@ -1,5 +1,6 @@
 package hwr.oop.group8.chess.core
 
+import hwr.oop.group8.chess.core.move.SingleMove
 import hwr.oop.group8.chess.core.piece.Bishop
 import hwr.oop.group8.chess.core.piece.King
 import hwr.oop.group8.chess.core.piece.Knight

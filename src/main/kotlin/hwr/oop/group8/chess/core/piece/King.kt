@@ -1,11 +1,11 @@
 package hwr.oop.group8.chess.core.piece
 
 import hwr.oop.group8.chess.core.BoardInspector
-import hwr.oop.group8.chess.core.CastleMove
 import hwr.oop.group8.chess.core.Color
 import hwr.oop.group8.chess.core.Direction
-import hwr.oop.group8.chess.core.Move
-import hwr.oop.group8.chess.core.SingleMove
+import hwr.oop.group8.chess.core.move.CastleMove
+import hwr.oop.group8.chess.core.move.Move
+import hwr.oop.group8.chess.core.move.SingleMove
 
 class King(override val color: Color, val boardInspector: BoardInspector) :
   Piece {

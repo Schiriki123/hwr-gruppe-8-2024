@@ -115,4 +115,37 @@ class RankTest : AnnotationSpec() {
       .isInstanceOf(IllegalArgumentException::class.java)
       .hasMessageContaining("Invalid rank value: $invalidValue")
   }
+
+  @Test
+  fun `Distance between TWO and FOUR should be 2`() {
+    // given
+    val rankTwo = Rank.TWO
+    val rankFour = Rank.FOUR
+    // when
+    val distance = rankTwo.distanceTo(rankFour)
+    // then
+    assertThat(distance).isEqualTo(2)
+  }
+
+  @Test
+  fun `Distance between SEVEN and SEVEN should be 0`() {
+    // given
+    val rankSeven = Rank.SEVEN
+    val anotherRankSeven = Rank.SEVEN
+    // when
+    val distance = rankSeven.distanceTo(anotherRankSeven)
+    // then
+    assertThat(distance).isEqualTo(0)
+  }
+
+  @Test
+  fun `Distance between SEVEN and THREE should be 4`() {
+    // given
+    val rankSeven = Rank.SEVEN
+    val rankThree = Rank.THREE
+    // when
+    val distance = rankSeven.distanceTo(rankThree)
+    // then
+    assertThat(distance).isEqualTo(4)
+  }
 }
