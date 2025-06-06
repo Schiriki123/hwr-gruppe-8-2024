@@ -1,7 +1,6 @@
 package hwr.oop.group8.chess.core
 
 import hwr.oop.group8.chess.core.move.Move
-import hwr.oop.group8.chess.core.move.PromotionMove
 import hwr.oop.group8.chess.core.move.SingleMove
 import hwr.oop.group8.chess.core.piece.Bishop
 import hwr.oop.group8.chess.core.piece.Knight
@@ -87,26 +86,15 @@ class Board(
       "Cannot move to a square occupied by the same color"
     }
 
-    var matchingMove = piece.getValidMoveDestinations().find { validMoves ->
-      validMoves.moves().first() == move.moves().first()
+    val matchingMove = piece.getValidMoveDestinations().find { validMoves ->
+      validMoves.moves().first() == move.moves().first() &&
+        validMoves.promotesTo() == move.promotesTo()
     }
 
     checkNotNull(matchingMove) {
       "Invalid move for piece ${piece::class.simpleName} from ${
         move.moves().first().from
       } to ${move.moves().first().to}"
-    }
-
-    if (matchingMove.isPromotion()) {
-      val promotionType = move.promotesTo()
-      checkNotNull(promotionType) {
-        "Promotion move must specify a piece type to promote to"
-      }
-      matchingMove = PromotionMove(
-        matchingMove.moves().first().from,
-        matchingMove.moves().first().to,
-        promotionType,
-      )
     }
 
     check(isMoveCheck(matchingMove)) { "Move would put player in check" }

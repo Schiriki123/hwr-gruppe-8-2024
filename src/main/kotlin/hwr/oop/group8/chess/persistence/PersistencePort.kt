@@ -2,7 +2,7 @@ package hwr.oop.group8.chess.persistence
 
 import hwr.oop.group8.chess.core.Game
 
-interface PersistencePort {
+interface PersistencePort { // Split to different interfaces if needed
   fun saveGame(game: Game, updateExistingGame: Boolean)
   fun deleteGame(id: Int)
   fun loadAllGames(): List<Game>

@@ -5,6 +5,7 @@ import hwr.oop.group8.chess.core.Color
 import hwr.oop.group8.chess.core.File
 import hwr.oop.group8.chess.core.Position
 import hwr.oop.group8.chess.core.Rank
+import hwr.oop.group8.chess.core.move.DoublePawnMove
 import hwr.oop.group8.chess.core.move.Move
 import hwr.oop.group8.chess.core.move.PromotionMove
 import hwr.oop.group8.chess.core.move.SingleMove
@@ -78,7 +79,7 @@ class PawnTest : AnnotationSpec() {
   fun `Valid double move`() {
     val board = Board(FEN("8/8/8/8/8/8/P7/K7", 'w', ""))
     val singleMove =
-      SingleMove(Position(File.A, Rank.TWO), Position(File.A, Rank.FOUR))
+      DoublePawnMove(Position(File.A, Rank.TWO), Position(File.A, Rank.FOUR))
     board.makeMove(singleMove)
 
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/P7/8/8/K7")
