@@ -11,7 +11,6 @@ import org.assertj.core.api.Assertions.assertThat
 
 class EnPassantTest : AnnotationSpec() {
   @Test
-  @Ignore
   fun `After double pawn move, en passant e6 should be in FEN`() {
     // given
     val board = Board(

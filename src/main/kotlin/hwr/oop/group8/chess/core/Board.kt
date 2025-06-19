@@ -1,5 +1,6 @@
 package hwr.oop.group8.chess.core
 
+import hwr.oop.group8.chess.core.move.DoublePawnMove
 import hwr.oop.group8.chess.core.move.Move
 import hwr.oop.group8.chess.core.move.SingleMove
 import hwr.oop.group8.chess.core.piece.Bishop
@@ -13,17 +14,20 @@ import hwr.oop.group8.chess.persistence.FEN
 class Board(
   val fen: FEN,
   val stateHistory: MutableList<Int> = mutableListOf(),
-) : BoardInspector {
+) : BoardInspector,
+  BoardInspectorEnPassant {
   private val map = HashMap<Position, Square>()
   var turn: Color
     private set
-  val enPassant: String
+  var enPassant: String
+    private set
   var castle: String
   var halfmoveClock: Int
     private set
   var fullmoveClock: Int
     private set
   val boardLogic: BoardLogic = BoardLogic(this)
+  val enPassantAnalyser: EnPassantAnalyser = EnPassantAnalyser(this)
   val castlingLogic: CastlingLogic = CastlingLogic(this)
 
   init {
@@ -144,6 +148,9 @@ class Board(
       val promotionPiece = generatePromotionPiece(pieceType, piece.color)
       toSquare.setPiece(promotionPiece)
     }
+    if (move.isDoublePawnMove()) {
+      enPassantAnalyser.setAllowedEnPassantMoves(move as DoublePawnMove)
+    }
   }
 
   private fun applySingleMove(singleMove: SingleMove) {
@@ -164,6 +171,9 @@ class Board(
     castlingLogic.isCastlingAllowed(color)
 
   override fun getCurrentTurn(): Color = turn
+  override fun setEnPassant(position: Position) {
+    enPassant = position.toString()
+  }
 
   fun isPositionThreatened(currentPlayer: Color, position: Position): Boolean =
     boardLogic.isPositionThreatened(currentPlayer, position)
