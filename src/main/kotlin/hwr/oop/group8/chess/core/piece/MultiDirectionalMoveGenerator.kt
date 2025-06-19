@@ -2,31 +2,45 @@ package hwr.oop.group8.chess.core.piece
 
 import hwr.oop.group8.chess.core.BoardInspector
 import hwr.oop.group8.chess.core.Direction
+import hwr.oop.group8.chess.core.Position
 import hwr.oop.group8.chess.core.move.SingleMove
 
 class MultiDirectionalMoveGenerator(
   val piece: Piece,
   val boardInspector: BoardInspector,
   val directions: Set<Direction>,
-) { // TODO: Improve readability
+) {
   fun getValidMoveDestinations(): Set<SingleMove> {
-    val validDestinations: MutableSet<SingleMove> = mutableSetOf()
     val currentPosition = boardInspector.findPositionOfPiece(piece)
-    for (dir in directions) {
-      var nextPosition = currentPosition
-      while (nextPosition.hasNextPosition(dir)) {
-        nextPosition = nextPosition.nextPosition(dir)
-        val nextPiece = boardInspector.getPieceAt(nextPosition)
-        if (nextPiece == null) {
-          validDestinations.add(SingleMove(currentPosition, nextPosition))
-        } else if (nextPiece.color != piece.color) {
-          validDestinations.add(SingleMove(currentPosition, nextPosition))
-          break
-        } else {
-          break
-        }
-      }
+    return directions.flatMap { dir ->
+      collectMovesInDirection(dir)
+    }.toSet()
+  }
+
+  private fun collectMovesInDirection(dir: Direction): Set<SingleMove> {
+    val moves = mutableSetOf<SingleMove>()
+    var pos = boardInspector.findPositionOfPiece(piece)
+    while (pos.hasNextPosition(dir)) {
+      pos = pos.nextPosition(dir)
+      if (reachedPiece(moves, pos)) break
     }
-    return validDestinations
+    return moves
+  }
+
+  private fun reachedPiece(
+    moves: MutableSet<SingleMove>,
+    pos: Position,
+  ): Boolean {
+    val currentPosition = boardInspector.findPositionOfPiece(piece)
+    val nextPiece = boardInspector.getPieceAt(pos)
+    return if (nextPiece == null) {
+      moves.add(SingleMove(currentPosition, pos))
+      false
+    } else if (nextPiece.color != piece.color) {
+      moves.add(SingleMove(currentPosition, pos))
+      true
+    } else {
+      true
+    }
   }
 }
