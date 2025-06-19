@@ -276,7 +276,7 @@ class BoardTest : AnnotationSpec() {
     val singleMove =
       SingleMove(Position(File.A, Rank.ONE), Position(File.A, Rank.THREE))
     assertThatThrownBy { board.makeMove(singleMove) }.message()
-      .isEqualTo("Cannot move to a square occupied by the same color")
+      .isEqualTo("Invalid move for piece Rook from a1 to a3")
     assertThat(board.generateFENBoardString()).isEqualTo("K7/8/8/8/8/P7/8/R7")
   }
 

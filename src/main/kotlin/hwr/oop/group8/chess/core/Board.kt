@@ -36,7 +36,7 @@ class Board(
     fullmoveClock = fen.fullmoveClock
     // TODO: Move to makeMove
     checkForDraw()
-    check(!isCheckmate()) {
+    check(!boardLogic.isCheckmate()) {
       "Game is over, checkmate!"
     }
   }
@@ -47,18 +47,18 @@ class Board(
       fen.getRank(rank).forEach { character ->
         if (character.isDigit()) {
           repeat(character.digitToInt()) {
-            populateSquare(fileIterator, rank, null)
+            populateRank(fileIterator, rank, null)
           }
         } else {
           val piece = FEN.createPieceOnBoard(character, this)
-          populateSquare(fileIterator, rank, piece)
+          populateRank(fileIterator, rank, piece)
         }
       }
     }
     check(map.size == 64) { "Board must have exactly 64 squares." }
   }
 
-  private fun populateSquare(
+  private fun populateRank(
     fileIterator: Iterator<File>,
     rank: Rank,
     piece: Piece?,
@@ -84,10 +84,6 @@ class Board(
 
     checkNotNull(piece)
     check(piece.color == turn) { "It's not your turn" }
-
-    require(piece.color != toSquare.getPiece()?.color) {
-      "Cannot move to a square occupied by the same color"
-    }
 
     val matchingMove = piece.getValidMoveDestinations().find { validMoves ->
       validMoves.moves().first() == move.moves().first() &&
@@ -161,8 +157,6 @@ class Board(
     fromSquare.setPiece(null)
     castlingLogic.updateCastlingPermission()
   }
-
-  private fun isCheckmate(): Boolean = boardLogic.isCheckmate()
 
   private fun isMoveCheck(move: Move): Boolean = boardLogic.isMoveCheck(move)
 

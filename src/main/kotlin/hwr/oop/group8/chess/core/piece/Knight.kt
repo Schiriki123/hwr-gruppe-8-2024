@@ -25,6 +25,9 @@ class Knight(override val color: Color, val boardInspector: BoardInspector) :
       try {
         val newPosition =
           currentPosition.nextPosition(pair.first).nextPosition(pair.second)
+        if (boardInspector.getPieceAt(newPosition)?.color == color) {
+          continue
+        }
         validDestinations.add(SingleMove(currentPosition, newPosition))
       } catch (_: IndexOutOfBoundsException) {
         // Ignore out of bounds exceptions, as they indicate invalid moves
