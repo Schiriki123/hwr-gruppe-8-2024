@@ -4,7 +4,7 @@ import hwr.oop.group8.chess.core.move.DoublePawnMove
 import hwr.oop.group8.chess.core.piece.PieceType
 
 class EnPassantAnalyser(val inspector: BoardInspectorEnPassant) {
-  fun setAllowedEnPassantMoves(move: DoublePawnMove) {
+  fun updateAllowedEnPassant(move: DoublePawnMove) {
     val currentTurn = inspector.getCurrentTurn()
     if (move.to.hasNextPosition(Direction.LEFT) &&
       inspector.getPieceAt(move.to.left())?.color != currentTurn &&
@@ -16,6 +16,8 @@ class EnPassantAnalyser(val inspector: BoardInspectorEnPassant) {
       inspector.getPieceAt(move.to.right())?.getType() == PieceType.PAWN
     ) {
       inspector.setEnPassant(move.skippedPosition())
+    } else {
+      inspector.setEnPassant(null)
     }
   }
 }

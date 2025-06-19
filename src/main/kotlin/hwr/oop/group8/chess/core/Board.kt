@@ -149,7 +149,9 @@ class Board(
       toSquare.setPiece(promotionPiece)
     }
     if (move.isDoublePawnMove()) {
-      enPassantAnalyser.setAllowedEnPassantMoves(move as DoublePawnMove)
+      enPassantAnalyser.updateAllowedEnPassant(move as DoublePawnMove)
+    } else {
+      enPassant = null
     }
   }
 
@@ -171,7 +173,7 @@ class Board(
     castlingLogic.isCastlingAllowed(color)
 
   override fun getCurrentTurn(): Color = turn
-  override fun setEnPassant(position: Position) {
+  override fun setEnPassant(position: Position?) {
     enPassant = position
   }
 

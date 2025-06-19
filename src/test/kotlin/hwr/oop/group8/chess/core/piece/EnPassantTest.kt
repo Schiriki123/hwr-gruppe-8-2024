@@ -31,4 +31,16 @@ class EnPassantTest : AnnotationSpec() {
       board.generateFENBoardString(),
     ).isEqualTo("rnbqkbnr/pppp1pp1/8/3Pp2p/8/8/PPP1PPPP/RNBQKBNR")
   }
+
+  @Test
+  fun `After move en passant should be cleared`() {
+    // given
+    val board = Board(FEN(enPassant = "e6"))
+    val move = SingleMove(Position.fromString("a2"), Position.fromString("a3"))
+    // when
+    board.makeMove(move)
+    // then
+    assertThat(board.enPassant).isNull()
+    assertThat(FEN.getFEN(board).enPassant).isEqualTo("-")
+  }
 }

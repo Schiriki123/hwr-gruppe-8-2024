@@ -5,5 +5,5 @@ import hwr.oop.group8.chess.core.piece.Piece
 interface BoardInspectorEnPassant {
   fun getPieceAt(position: Position): Piece?
   fun getCurrentTurn(): Color
-  fun setEnPassant(position: Position)
+  fun setEnPassant(position: Position?)
 }
