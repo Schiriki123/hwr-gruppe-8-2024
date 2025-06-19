@@ -59,7 +59,7 @@ of "move"-ing the pieces.
 | Number | Feature                                             | Tests |
 |--------|-----------------------------------------------------|-------|
 | 1      | create new game                                     | /     |
-| 2      | make moves based on piece logic (except En Passant) | /     |
+| 2      | make moves based on piece logic                     | /     |
 | 3      | Detect checkmate                                    | /     |
 | 4      | save & load multiple games as fen string            | /     |
 | 5      | cli for user input                                  | /     |
