@@ -79,7 +79,6 @@ class Board(
 
   fun makeMove(move: Move) {
     val fromSquare = getSquare(move.moves().first().from)
-    val toSquare = getSquare(move.moves().first().to)
     val piece = fromSquare.getPiece()
 
     checkNotNull(piece)

@@ -11,7 +11,6 @@ class MultiDirectionalMoveGenerator(
   val directions: Set<Direction>,
 ) {
   fun getValidMoveDestinations(): Set<SingleMove> {
-    val currentPosition = boardInspector.findPositionOfPiece(piece)
     return directions.flatMap { dir ->
       collectMovesInDirection(dir)
     }.toSet()
