@@ -1,6 +1,7 @@
 package hwr.oop.group8.chess.core
 
 import hwr.oop.group8.chess.core.move.CastleMove
+import hwr.oop.group8.chess.core.move.DoublePawnMove
 import hwr.oop.group8.chess.core.move.PromotionMove
 import hwr.oop.group8.chess.core.move.SingleMove
 import hwr.oop.group8.chess.core.piece.King
@@ -58,5 +59,17 @@ class MoveTest : AnnotationSpec() {
     assertThat(castleMove.promotesTo()).isNull()
     assertThat(castleMove.isKingSideCastle).isFalse
     assertThat(castleMove.isPromotion()).isFalse
+  }
+
+  @Test
+  fun `Double Move up from a2 to a4 should skip a3`() {
+    // given
+    val from = Position(File.A, Rank.TWO)
+    val to = Position(File.A, Rank.FOUR)
+    val skippedPosition = Position(File.A, Rank.THREE)
+    // when
+    val doubleMove = DoublePawnMove(from, to)
+    // then
+    assertThat(doubleMove.skippedPosition()).isEqualTo(skippedPosition)
   }
 }
