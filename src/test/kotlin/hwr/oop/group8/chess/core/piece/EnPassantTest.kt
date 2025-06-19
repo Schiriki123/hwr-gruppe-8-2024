@@ -26,7 +26,7 @@ class EnPassantTest : AnnotationSpec() {
     // when
     board.makeMove(moveThatAllowsEnPassant)
     // then
-    assertThat(board.enPassant).isEqualTo("e6")
+    assertThat(board.enPassant).isEqualTo(Position(File.E, Rank.SIX))
     assertThat(
       board.generateFENBoardString(),
     ).isEqualTo("rnbqkbnr/pppp1pp1/8/3Pp2p/8/8/PPP1PPPP/RNBQKBNR")

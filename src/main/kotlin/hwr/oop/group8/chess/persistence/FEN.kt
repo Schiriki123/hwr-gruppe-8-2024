@@ -40,6 +40,12 @@ data class FEN(
     require(fullmoveClock > 0) { "Fullmove clock must be positive." }
   }
 
+  fun enPassant(): Position? = if (enPassant == "-") {
+    null
+  } else {
+    Position.fromString(enPassant)
+  }
+
   fun getRank(rank: Rank): String =
     boardString.split("/").reversed()[rank.toInt() - 1]
 
@@ -94,7 +100,7 @@ data class FEN(
       generateFENBoardString(board),
       if (board.turn == Color.WHITE) 'w' else 'b',
       board.castle,
-      board.enPassant,
+      board.enPassant?.toString() ?: "-",
       board.halfmoveClock,
       board.fullmoveClock,
     )

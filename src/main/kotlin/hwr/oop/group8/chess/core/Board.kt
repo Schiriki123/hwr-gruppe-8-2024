@@ -19,7 +19,7 @@ class Board(
   private val map = HashMap<Position, Square>()
   var turn: Color
     private set
-  var enPassant: String
+  var enPassant: Position?
     private set
   var castle: String
   var halfmoveClock: Int
@@ -35,7 +35,7 @@ class Board(
 
     turn = fen.getTurn()
     castle = fen.castle
-    enPassant = fen.enPassant
+    enPassant = fen.enPassant()
     halfmoveClock = fen.halfmoveClock
     fullmoveClock = fen.fullmoveClock
     // TODO: Move to makeMove
@@ -172,7 +172,7 @@ class Board(
 
   override fun getCurrentTurn(): Color = turn
   override fun setEnPassant(position: Position) {
-    enPassant = position.toString()
+    enPassant = position
   }
 
   fun isPositionThreatened(currentPlayer: Color, position: Position): Boolean =

@@ -131,7 +131,7 @@ class BoardTest : AnnotationSpec() {
 
     assertThat(board.turn).isEqualTo(Color.WHITE)
     assertThat(board.castle).isEqualTo("KQkq")
-    assertThat(board.enPassant).isEqualTo("-")
+    assertThat(board.enPassant).isEqualTo(null)
     assertThat(board.halfmoveClock).isEqualTo(0)
     assertThat(board.fullmoveClock).isEqualTo(1)
   }
