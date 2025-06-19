@@ -24,7 +24,7 @@ class NewGameCommandTest : AnnotationSpec() {
     val game = adapterMock.savedGame()
     requireNotNull(game)
     assertThat(game.id).isEqualTo(1)
-    assertThat(game.getFenData()).isEqualTo(FEN())
+    assertThat(game.getFen()).isEqualTo(FEN())
     assertThat(output).contains("New game with id 1 created.")
   }
 }

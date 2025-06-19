@@ -1,5 +1,9 @@
-package hwr.oop.group8.chess.core
+package hwr.oop.group8.chess.core.move
 
+import hwr.oop.group8.chess.core.Color
+import hwr.oop.group8.chess.core.File
+import hwr.oop.group8.chess.core.Position
+import hwr.oop.group8.chess.core.Rank
 import hwr.oop.group8.chess.core.piece.King
 
 data class CastleMove(val king: King, val isKingSideCastle: Boolean) : Move {

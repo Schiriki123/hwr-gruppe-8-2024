@@ -3,7 +3,7 @@ package hwr.oop.group8.chess.core.piece
 import hwr.oop.group8.chess.core.BoardInspector
 import hwr.oop.group8.chess.core.Color
 import hwr.oop.group8.chess.core.Direction
-import hwr.oop.group8.chess.core.SingleMove
+import hwr.oop.group8.chess.core.move.SingleMove
 
 class Knight(override val color: Color, val boardInspector: BoardInspector) :
   Piece {
@@ -25,6 +25,9 @@ class Knight(override val color: Color, val boardInspector: BoardInspector) :
       try {
         val newPosition =
           currentPosition.nextPosition(pair.first).nextPosition(pair.second)
+        if (boardInspector.getPieceAt(newPosition)?.color == color) {
+          continue
+        }
         validDestinations.add(SingleMove(currentPosition, newPosition))
       } catch (_: IndexOutOfBoundsException) {
         // Ignore out of bounds exceptions, as they indicate invalid moves

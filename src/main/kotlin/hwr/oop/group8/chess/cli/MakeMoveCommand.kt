@@ -1,8 +1,6 @@
 package hwr.oop.group8.chess.cli
 
-import hwr.oop.group8.chess.core.File
 import hwr.oop.group8.chess.core.Position
-import hwr.oop.group8.chess.core.Rank
 import hwr.oop.group8.chess.persistence.PersistencePort
 
 class MakeMoveCommand(private val persistencePort: PersistencePort) :
@@ -25,15 +23,8 @@ class MakeMoveCommand(private val persistencePort: PersistencePort) :
 
   override fun handle(args: List<String>) {
     val gameId = args[2].toInt()
-    val from =
-      Position(
-        File.fromChar(args[3].first()),
-        Rank.fromInt(args[3].last().digitToInt()),
-      )
-    val to = Position(
-      File.fromChar(args[4].first()),
-      Rank.fromInt(args[4].last().digitToInt()),
-    )
+    val from = Position.fromString(args[3])
+    val to = Position.fromString(args[4])
     val promotionCharacter: Char? =
       if (args.size == 6) args[5].first() else null
 

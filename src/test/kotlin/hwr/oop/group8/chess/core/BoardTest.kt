@@ -1,5 +1,6 @@
 package hwr.oop.group8.chess.core
 
+import hwr.oop.group8.chess.core.move.SingleMove
 import hwr.oop.group8.chess.core.piece.Bishop
 import hwr.oop.group8.chess.core.piece.King
 import hwr.oop.group8.chess.core.piece.Knight
@@ -130,7 +131,7 @@ class BoardTest : AnnotationSpec() {
 
     assertThat(board.turn).isEqualTo(Color.WHITE)
     assertThat(board.castle).isEqualTo("KQkq")
-    assertThat(board.enPassant).isEqualTo("-")
+    assertThat(board.enPassant).isEqualTo(null)
     assertThat(board.halfmoveClock).isEqualTo(0)
     assertThat(board.fullmoveClock).isEqualTo(1)
   }
@@ -275,7 +276,7 @@ class BoardTest : AnnotationSpec() {
     val singleMove =
       SingleMove(Position(File.A, Rank.ONE), Position(File.A, Rank.THREE))
     assertThatThrownBy { board.makeMove(singleMove) }.message()
-      .isEqualTo("Cannot move to a square occupied by the same color")
+      .isEqualTo("Invalid move for piece Rook from a1 to a3")
     assertThat(board.generateFENBoardString()).isEqualTo("K7/8/8/8/8/P7/8/R7")
   }
 

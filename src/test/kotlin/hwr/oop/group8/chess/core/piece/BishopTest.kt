@@ -5,7 +5,7 @@ import hwr.oop.group8.chess.core.Color
 import hwr.oop.group8.chess.core.File
 import hwr.oop.group8.chess.core.Position
 import hwr.oop.group8.chess.core.Rank
-import hwr.oop.group8.chess.core.SingleMove
+import hwr.oop.group8.chess.core.move.SingleMove
 import hwr.oop.group8.chess.persistence.FEN
 import io.kotest.core.spec.style.AnnotationSpec
 import org.assertj.core.api.Assertions.assertThat

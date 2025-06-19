@@ -5,7 +5,7 @@ import hwr.oop.group8.chess.core.Color
 import hwr.oop.group8.chess.core.File
 import hwr.oop.group8.chess.core.Position
 import hwr.oop.group8.chess.core.Rank
-import hwr.oop.group8.chess.core.SingleMove
+import hwr.oop.group8.chess.core.move.SingleMove
 import hwr.oop.group8.chess.persistence.FEN
 import io.kotest.core.spec.style.AnnotationSpec
 import org.assertj.core.api.Assertions.assertThat
@@ -166,7 +166,6 @@ class KnightTest : AnnotationSpec() {
     assertThat(validMoveDestinationsOfKnight).containsExactly(
       SingleMove(startPosition, Position(File.E, Rank.EIGHT)),
       SingleMove(startPosition, Position(File.E, Rank.SIX)),
-      SingleMove(startPosition, Position(File.H, Rank.FIVE)),
       SingleMove(startPosition, Position(File.F, Rank.FIVE)),
     )
   }
@@ -182,7 +181,6 @@ class KnightTest : AnnotationSpec() {
       SingleMove(startPosition, Position(File.E, Rank.THREE)),
       SingleMove(startPosition, Position(File.A, Rank.THREE)),
       SingleMove(startPosition, Position(File.E, Rank.ONE)),
-      SingleMove(startPosition, Position(File.A, Rank.ONE)),
       SingleMove(startPosition, Position(File.D, Rank.FOUR)),
       SingleMove(startPosition, Position(File.B, Rank.FOUR)),
     )

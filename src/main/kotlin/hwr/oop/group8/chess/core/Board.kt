@@ -1,5 +1,8 @@
 package hwr.oop.group8.chess.core
 
+import hwr.oop.group8.chess.core.move.DoublePawnMove
+import hwr.oop.group8.chess.core.move.Move
+import hwr.oop.group8.chess.core.move.SingleMove
 import hwr.oop.group8.chess.core.piece.Bishop
 import hwr.oop.group8.chess.core.piece.Knight
 import hwr.oop.group8.chess.core.piece.Piece
@@ -11,14 +14,20 @@ import hwr.oop.group8.chess.persistence.FEN
 class Board(
   val fen: FEN,
   val stateHistory: MutableList<Int> = mutableListOf(),
-) : BoardInspector {
+) : BoardInspector,
+  BoardInspectorEnPassant {
   private val map = HashMap<Position, Square>()
   var turn: Color
-  val enPassant: String
+    private set
+  var enPassant: Position?
+    private set
   var castle: String
   var halfmoveClock: Int
+    private set
   var fullmoveClock: Int
+    private set
   val boardLogic: BoardLogic = BoardLogic(this)
+  val enPassantAnalyser: EnPassantAnalyser = EnPassantAnalyser(this)
   val castlingLogic: CastlingLogic = CastlingLogic(this)
 
   init {
@@ -26,12 +35,12 @@ class Board(
 
     turn = fen.getTurn()
     castle = fen.castle
-    enPassant = fen.enPassant
+    enPassant = fen.enPassant()
     halfmoveClock = fen.halfmoveClock
     fullmoveClock = fen.fullmoveClock
     // TODO: Move to makeMove
     checkForDraw()
-    check(!isCheckmate()) {
+    check(!boardLogic.isCheckmate()) {
       "Game is over, checkmate!"
     }
   }
@@ -42,18 +51,18 @@ class Board(
       fen.getRank(rank).forEach { character ->
         if (character.isDigit()) {
           repeat(character.digitToInt()) {
-            populateSquare(fileIterator, rank, null)
+            populateRank(fileIterator, rank, null)
           }
         } else {
           val piece = FEN.createPieceOnBoard(character, this)
-          populateSquare(fileIterator, rank, piece)
+          populateRank(fileIterator, rank, piece)
         }
       }
     }
     check(map.size == 64) { "Board must have exactly 64 squares." }
   }
 
-  private fun populateSquare(
+  private fun populateRank(
     fileIterator: Iterator<File>,
     rank: Rank,
     piece: Piece?,
@@ -73,37 +82,20 @@ class Board(
   }.keys.first()
 
   fun makeMove(move: Move) {
-    val fromSquare = getSquare(move.moves().first().from)
-    val toSquare = getSquare(move.moves().first().to)
-    val piece = fromSquare.getPiece()
+    val piece = getPieceAt(move.moves().first().from)
 
     checkNotNull(piece)
     check(piece.color == turn) { "It's not your turn" }
 
-    require(piece.color != toSquare.getPiece()?.color) {
-      "Cannot move to a square occupied by the same color"
-    }
-
-    var matchingMove = piece.getValidMoveDestinations().find { validMoves ->
-      validMoves.moves().first() == move.moves().first()
+    val matchingMove = piece.getValidMoveDestinations().find { validMoves ->
+      validMoves.moves().first() == move.moves().first() &&
+        validMoves.promotesTo() == move.promotesTo()
     }
 
     checkNotNull(matchingMove) {
       "Invalid move for piece ${piece::class.simpleName} from ${
         move.moves().first().from
       } to ${move.moves().first().to}"
-    }
-
-    if (matchingMove.isPromotion()) {
-      val promotionType = move.promotesTo()
-      checkNotNull(promotionType) {
-        "Promotion move must specify a piece type to promote to"
-      }
-      matchingMove = PromotionMove(
-        matchingMove.moves().first().from,
-        matchingMove.moves().first().to,
-        promotionType,
-      )
     }
 
     check(isMoveCheck(matchingMove)) { "Move would put player in check" }
@@ -156,6 +148,14 @@ class Board(
       val promotionPiece = generatePromotionPiece(pieceType, piece.color)
       toSquare.setPiece(promotionPiece)
     }
+    if (move.isDoublePawnMove()) {
+      enPassantAnalyser.updateAllowedEnPassant(move as DoublePawnMove)
+    } else {
+      enPassant = null
+    }
+    if (move.enPassantCapture() != null) {
+      getSquare(move.enPassantCapture()!!).setPiece(null)
+    }
   }
 
   private fun applySingleMove(singleMove: SingleMove) {
@@ -168,8 +168,6 @@ class Board(
     castlingLogic.updateCastlingPermission()
   }
 
-  private fun isCheckmate(): Boolean = boardLogic.isCheckmate()
-
   private fun isMoveCheck(move: Move): Boolean = boardLogic.isMoveCheck(move)
 
   fun isCheck(): Boolean = boardLogic.isCheck()
@@ -178,6 +176,11 @@ class Board(
     castlingLogic.isCastlingAllowed(color)
 
   override fun getCurrentTurn(): Color = turn
+  override fun accessEnPassant(): Position? = enPassant
+
+  override fun setEnPassant(position: Position?) {
+    enPassant = position
+  }
 
   fun isPositionThreatened(currentPlayer: Color, position: Position): Boolean =
     boardLogic.isPositionThreatened(currentPlayer, position)

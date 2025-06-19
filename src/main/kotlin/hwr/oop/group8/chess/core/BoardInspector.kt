@@ -8,4 +8,5 @@ interface BoardInspector {
   fun findPositionOfPiece(piece: Piece): Position
   fun isCastlingAllowed(color: Color): Pair<Boolean, Boolean>
   fun getCurrentTurn(): Color
+  fun accessEnPassant(): Position?
 }

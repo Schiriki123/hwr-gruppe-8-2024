@@ -40,7 +40,7 @@ class MakeMoveCommandTest : AnnotationSpec() {
     val game = adapterMock.loadGame(1)
     requireNotNull(game)
     assertThat(game.id).isEqualTo(1)
-    assertThat(game.getFenData()).isEqualTo(
+    assertThat(game.getFen()).isEqualTo(
       FEN(
         "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR",
         'b',

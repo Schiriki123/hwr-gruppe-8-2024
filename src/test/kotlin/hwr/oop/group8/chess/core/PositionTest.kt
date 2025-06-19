@@ -2,6 +2,7 @@ package hwr.oop.group8.chess.core
 
 import io.kotest.core.spec.style.AnnotationSpec
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 
 class PositionTest : AnnotationSpec() {
   @Test
@@ -100,5 +101,13 @@ class PositionTest : AnnotationSpec() {
     val newPosition = position.nextPosition(direction)
 
     assertThat(newPosition).isEqualTo(expectedPosition)
+  }
+
+  @Test
+  fun `Creating position with string length other then 2 should throw`() {
+    val invalidPositionString = "Z9Z"
+    assertThatThrownBy {
+      Position.fromString(invalidPositionString)
+    }.hasMessageContaining("Invalid position string: $invalidPositionString")
   }
 }

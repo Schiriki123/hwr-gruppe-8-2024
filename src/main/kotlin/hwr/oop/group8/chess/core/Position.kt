@@ -33,4 +33,15 @@ data class Position(val file: File, val rank: Rank) {
     Direction.BOTTOM_LEFT -> rank != Rank.ONE && file != File.A
     Direction.BOTTOM_RIGHT -> rank != Rank.ONE && file != File.H
   }
+
+  companion object {
+    fun fromString(position: String): Position {
+      if (position.length != 2) {
+        throw IllegalArgumentException("Invalid position string: $position")
+      }
+      val file = File.fromChar(position.first())
+      val rank = Rank.fromInt(position.last().digitToInt())
+      return Position(file, rank)
+    }
+  }
 }

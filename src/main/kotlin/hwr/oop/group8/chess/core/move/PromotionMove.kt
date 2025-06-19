@@ -1,8 +1,9 @@
-package hwr.oop.group8.chess.core
+package hwr.oop.group8.chess.core.move
 
+import hwr.oop.group8.chess.core.Position
 import hwr.oop.group8.chess.core.piece.PieceType
 
-class PromotionMove(
+data class PromotionMove(
   val from: Position,
   val to: Position,
   val promotesTo: PieceType,

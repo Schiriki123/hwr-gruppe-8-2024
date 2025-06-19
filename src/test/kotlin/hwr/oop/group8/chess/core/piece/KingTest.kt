@@ -1,12 +1,12 @@
 package hwr.oop.group8.chess.core.piece
 
 import hwr.oop.group8.chess.core.Board
-import hwr.oop.group8.chess.core.CastleMove
 import hwr.oop.group8.chess.core.Color
 import hwr.oop.group8.chess.core.File
 import hwr.oop.group8.chess.core.Position
 import hwr.oop.group8.chess.core.Rank
-import hwr.oop.group8.chess.core.SingleMove
+import hwr.oop.group8.chess.core.move.CastleMove
+import hwr.oop.group8.chess.core.move.SingleMove
 import hwr.oop.group8.chess.persistence.FEN
 import io.kotest.core.spec.style.AnnotationSpec
 import org.assertj.core.api.Assertions.assertThat
@@ -47,7 +47,6 @@ class KingTest : AnnotationSpec() {
     val board = Board(FEN("8/8/8/3K4/8/8/8/8", 'w', ""))
     val singleMove =
       SingleMove(Position(File.D, Rank.FIVE), Position(File.E, Rank.FIVE))
-    board.turn = Color.WHITE
     board.makeMove(singleMove)
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/4K3/8/8/8/8")
   }
@@ -57,7 +56,6 @@ class KingTest : AnnotationSpec() {
     val board = Board(FEN("8/8/8/3K4/8/8/8/8", 'w', ""))
     val singleMove =
       SingleMove(Position(File.D, Rank.FIVE), Position(File.D, Rank.FOUR))
-    board.turn = Color.WHITE
     board.makeMove(singleMove)
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/3K4/8/8/8")
   }
@@ -67,7 +65,6 @@ class KingTest : AnnotationSpec() {
     val board = Board(FEN("8/8/8/3K4/8/8/8/8", 'w', ""))
     val singleMove =
       SingleMove(Position(File.D, Rank.FIVE), Position(File.D, Rank.SIX))
-    board.turn = Color.WHITE
     board.makeMove(singleMove)
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/3K4/8/8/8/8/8")
   }
@@ -77,7 +74,6 @@ class KingTest : AnnotationSpec() {
     val board = Board(FEN("8/8/8/3K4/8/8/8/8", 'w', ""))
     val singleMove =
       SingleMove(Position(File.D, Rank.FIVE), Position(File.E, Rank.SIX))
-    board.turn = Color.WHITE
     board.makeMove(singleMove)
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/4K3/8/8/8/8/8")
   }
@@ -87,7 +83,6 @@ class KingTest : AnnotationSpec() {
     val board = Board(FEN("8/8/8/3K4/8/8/8/8", 'w', ""))
     val singleMove =
       SingleMove(Position(File.D, Rank.FIVE), Position(File.C, Rank.SIX))
-    board.turn = Color.WHITE
     board.makeMove(singleMove)
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/2K5/8/8/8/8/8")
   }
@@ -97,7 +92,6 @@ class KingTest : AnnotationSpec() {
     val board = Board(FEN("8/8/8/3K4/8/8/8/8", 'w', ""))
     val singleMove =
       SingleMove(Position(File.D, Rank.FIVE), Position(File.C, Rank.FOUR))
-    board.turn = Color.WHITE
     board.makeMove(singleMove)
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/2K5/8/8/8")
   }
@@ -107,7 +101,6 @@ class KingTest : AnnotationSpec() {
     val board = Board(FEN("8/8/2K5/8/8/8/8/8", 'w', ""))
     val singleMove =
       SingleMove(Position(File.C, Rank.SIX), Position(File.D, Rank.FIVE))
-    board.turn = Color.WHITE
     board.makeMove(singleMove)
     assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/3K4/8/8/8/8")
   }
