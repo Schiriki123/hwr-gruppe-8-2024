@@ -63,7 +63,7 @@ class EnPassantTest : AnnotationSpec() {
   }
 
   @Test
-  fun `Black En passant move should be allowed, white pawn should be captured`() {
+  fun `Black En passant move should be allowed, white pawn pawn captured`() {
     // given
     val board = Board(
       FEN(
