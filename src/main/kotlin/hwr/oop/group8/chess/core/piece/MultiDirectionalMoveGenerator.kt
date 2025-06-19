@@ -10,11 +10,9 @@ class MultiDirectionalMoveGenerator(
   val boardInspector: BoardInspector,
   val directions: Set<Direction>,
 ) {
-  fun getValidMoveDestinations(): Set<SingleMove> {
-    return directions.flatMap { dir ->
-      collectMovesInDirection(dir)
-    }.toSet()
-  }
+  fun getValidMoveDestinations(): Set<SingleMove> = directions.flatMap { dir ->
+    collectMovesInDirection(dir)
+  }.toSet()
 
   private fun collectMovesInDirection(dir: Direction): Set<SingleMove> {
     val moves = mutableSetOf<SingleMove>()

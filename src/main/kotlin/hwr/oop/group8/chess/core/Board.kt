@@ -78,8 +78,7 @@ class Board(
   }.keys.first()
 
   fun makeMove(move: Move) {
-    val fromSquare = getSquare(move.moves().first().from)
-    val piece = fromSquare.getPiece()
+    val piece = getPieceAt(move.moves().first().from)
 
     checkNotNull(piece)
     check(piece.color == turn) { "It's not your turn" }
