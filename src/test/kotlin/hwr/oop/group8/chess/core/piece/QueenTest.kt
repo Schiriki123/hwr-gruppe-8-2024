@@ -37,7 +37,6 @@ class QueenTest : AnnotationSpec() {
     val board = Board(FEN("7K/8/8/8/8/8/Q7/8", 'w', ""))
     val singleMove =
       SingleMove(Position(File.A, Rank.TWO), Position(File.A, Rank.EIGHT))
-    board.turn = Color.WHITE
     board.makeMove(singleMove)
     assertThat(board.generateFENBoardString()).isEqualTo("Q6K/8/8/8/8/8/8/8")
   }
@@ -47,7 +46,6 @@ class QueenTest : AnnotationSpec() {
     val board = Board(FEN("Q6K/8/8/8/8/8/8/8", 'w', ""))
     val singleMove =
       SingleMove(Position(File.A, Rank.EIGHT), Position(File.H, Rank.ONE))
-    board.turn = Color.WHITE
     board.makeMove(singleMove)
     assertThat(board.generateFENBoardString()).isEqualTo("7K/8/8/8/8/8/8/7Q")
   }
@@ -57,7 +55,6 @@ class QueenTest : AnnotationSpec() {
     val board = Board(FEN("7K/8/8/8/8/8/8/7Q", 'w', ""))
     val singleMove =
       SingleMove(Position(File.H, Rank.ONE), Position(File.D, Rank.FIVE))
-    board.turn = Color.WHITE
     board.makeMove(singleMove)
     assertThat(board.generateFENBoardString()).isEqualTo("7K/8/8/3Q4/8/8/8/8")
   }
@@ -67,7 +64,6 @@ class QueenTest : AnnotationSpec() {
     val board = Board(FEN("7K/8/8/3Q4/8/8/8/8", 'w', ""))
     val singleMove =
       SingleMove(Position(File.D, Rank.FIVE), Position(File.G, Rank.EIGHT))
-    board.turn = Color.WHITE
     board.makeMove(singleMove)
     assertThat(board.generateFENBoardString()).isEqualTo("6QK/8/8/8/8/8/8/8")
   }
@@ -77,7 +73,6 @@ class QueenTest : AnnotationSpec() {
     val board = Board(FEN("6QK/8/8/8/8/8/8/8", 'w', ""))
     val singleMove =
       SingleMove(Position(File.G, Rank.EIGHT), Position(File.A, Rank.TWO))
-    board.turn = Color.WHITE
     board.makeMove(singleMove)
     assertThat(board.generateFENBoardString()).isEqualTo("7K/8/8/8/8/8/Q7/8")
   }

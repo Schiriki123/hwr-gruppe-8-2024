@@ -180,7 +180,7 @@ class PawnTest : AnnotationSpec() {
 
   @Test
   fun `Black pawn with knight promotion and movement`() {
-    val board = Board(FEN("k7/8/8/8/8/8/7p/8", 'b', ""))
+    val board = Board(FEN("k7/8/8/8/8/8/7p/K7", 'b', ""))
     var move: Move =
       PromotionMove(
         Position(File.H, Rank.TWO),
@@ -191,16 +191,22 @@ class PawnTest : AnnotationSpec() {
     // Pawn promotes
     board.makeMove(move)
 
-    board.turn = Color.BLACK
+    // Move white king
+    board.makeMove(
+      SingleMove(
+        Position(File.A, Rank.ONE),
+        Position(File.A, Rank.TWO),
+      ),
+    )
     move =
       SingleMove(Position(File.H, Rank.ONE), Position(File.F, Rank.TWO))
     board.makeMove(move)
-    assertThat(board.generateFENBoardString()).isEqualTo("k7/8/8/8/8/8/5n2/8")
+    assertThat(board.generateFENBoardString()).isEqualTo("k7/8/8/8/8/8/K4n2/8")
   }
 
   @Test
   fun `Black pawn with bishop promotion and movement`() {
-    val board = Board(FEN("k7/8/8/8/8/8/7p/8", 'b', ""))
+    val board = Board(FEN("k7/8/8/8/8/8/7p/K7", 'b', ""))
     var move: Move =
       PromotionMove(
         Position(File.H, Rank.TWO),
@@ -210,15 +216,21 @@ class PawnTest : AnnotationSpec() {
 
     // Pawn promotes
     board.makeMove(move)
-    board.turn = Color.BLACK
+    // Move white king
+    board.makeMove(
+      SingleMove(
+        Position(File.A, Rank.ONE),
+        Position(File.A, Rank.TWO),
+      ),
+    )
     move = SingleMove(Position(File.H, Rank.ONE), Position(File.F, Rank.THREE))
     board.makeMove(move)
-    assertThat(board.generateFENBoardString()).isEqualTo("k7/8/8/8/8/5b2/8/8")
+    assertThat(board.generateFENBoardString()).isEqualTo("k7/8/8/8/8/5b2/K7/8")
   }
 
   @Test
   fun `Black pawn with rook promotion and movement`() {
-    val board = Board(FEN("k7/8/8/8/8/8/7p/8", 'b', ""))
+    val board = Board(FEN("k7/8/8/8/8/8/7p/K7", 'b', ""))
     var move: Move =
       PromotionMove(
         Position(File.H, Rank.TWO),
@@ -228,11 +240,18 @@ class PawnTest : AnnotationSpec() {
 
     // Pawn promotes
     board.makeMove(move)
-    board.turn = Color.BLACK
+
+    // Move white king
+    board.makeMove(
+      SingleMove(
+        Position(File.A, Rank.ONE),
+        Position(File.A, Rank.TWO),
+      ),
+    )
     move =
       SingleMove(Position(File.H, Rank.ONE), Position(File.H, Rank.FOUR))
     board.makeMove(move)
-    assertThat(board.generateFENBoardString()).isEqualTo("k7/8/8/8/7r/8/8/8")
+    assertThat(board.generateFENBoardString()).isEqualTo("k7/8/8/8/7r/8/K7/8")
   }
 
   @Test

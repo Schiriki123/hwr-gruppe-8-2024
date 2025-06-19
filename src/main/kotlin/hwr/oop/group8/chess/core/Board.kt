@@ -16,10 +16,13 @@ class Board(
 ) : BoardInspector {
   private val map = HashMap<Position, Square>()
   var turn: Color
+    private set
   val enPassant: String
   var castle: String
   var halfmoveClock: Int
+    private set
   var fullmoveClock: Int
+    private set
   val boardLogic: BoardLogic = BoardLogic(this)
   val castlingLogic: CastlingLogic = CastlingLogic(this)
 
