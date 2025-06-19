@@ -43,4 +43,27 @@ class EnPassantTest : AnnotationSpec() {
     assertThat(board.enPassant).isNull()
     assertThat(FEN.getFEN(board).enPassant).isEqualTo("-")
   }
+
+  @Test
+  fun `En passant move should be allowed, enemy pawn should be captured`() {
+    // given
+    val board = Board(
+      FEN(
+        "rnbqkbnr/ppp1pppp/8/6N1/3pP3/8/PPPP1PPP/RNBQKB1R",
+        'b',
+        enPassant = "e3",
+      ),
+    )
+    val enPassantCapture = SingleMove(
+      Position(File.D, Rank.FOUR),
+      Position(File.E, Rank.THREE),
+    )
+    // when
+    board.makeMove(enPassantCapture)
+    // then
+    assertThat(
+      board.generateFENBoardString(),
+    ).isEqualTo("rnbqkbnr/ppp1pppp/8/6N1/8/4p3/PPPP1PPP/RNBQKB1R")
+    assertThat(board.enPassant).isNull()
+  }
 }

@@ -6,6 +6,7 @@ import hwr.oop.group8.chess.core.Direction
 import hwr.oop.group8.chess.core.Position
 import hwr.oop.group8.chess.core.Rank
 import hwr.oop.group8.chess.core.move.DoublePawnMove
+import hwr.oop.group8.chess.core.move.EnPassantMove
 import hwr.oop.group8.chess.core.move.Move
 import hwr.oop.group8.chess.core.move.PromotionMove
 import hwr.oop.group8.chess.core.move.SingleMove
@@ -43,6 +44,7 @@ class Pawn(override val color: Color, val boardInspector: BoardInspector) :
     }
     validMoves.addAll(generateCaptureMove(currentPosition, Direction.LEFT))
     validMoves.addAll(generateCaptureMove(currentPosition, Direction.RIGHT))
+    validMoves.addAll(generateEnPassantMove(currentPosition))
 
     return validMoves
   }
@@ -70,6 +72,17 @@ class Pawn(override val color: Color, val boardInspector: BoardInspector) :
 
     return if (isNextPositionEmpty && isNextNextPositionEmpty) {
       setOf(DoublePawnMove(currentPosition, nextNextPosition))
+    } else {
+      emptySet()
+    }
+  }
+
+  private fun generateEnPassantMove(
+    currentPosition: Position,
+  ): Set<EnPassantMove> {
+    val nextPosition = boardInspector.accessEnPassant()
+    return if (nextPosition != null) {
+      setOf(EnPassantMove(currentPosition, nextPosition))
     } else {
       emptySet()
     }

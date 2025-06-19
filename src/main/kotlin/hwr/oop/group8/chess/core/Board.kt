@@ -153,6 +153,9 @@ class Board(
     } else {
       enPassant = null
     }
+    if (move.enPassantCapture() != null) {
+      getSquare(move.enPassantCapture()!!).setPiece(null)
+    }
   }
 
   private fun applySingleMove(singleMove: SingleMove) {
@@ -173,6 +176,8 @@ class Board(
     castlingLogic.isCastlingAllowed(color)
 
   override fun getCurrentTurn(): Color = turn
+  override fun accessEnPassant(): Position? = enPassant
+
   override fun setEnPassant(position: Position?) {
     enPassant = position
   }
