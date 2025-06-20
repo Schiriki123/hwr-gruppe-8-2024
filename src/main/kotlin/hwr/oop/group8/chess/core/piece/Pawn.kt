@@ -35,87 +35,85 @@ class Pawn(override val color: Color, val boardInspector: BoardInspector) :
   }
 
   override fun getValidMoveDestinations(): Set<Move> {
-    val currentPosition = boardInspector.findPositionOfPiece(this)
-
-    val validMoves: MutableSet<Move> = mutableSetOf()
-    validMoves.addAll(generateNormalMove(currentPosition))
-    if (currentPosition.rank == startRank) {
-      validMoves.addAll(generateDoubleMove(currentPosition))
+    val pos = boardInspector.findPositionOfPiece(this)
+    return buildSet {
+      addAll(generateNormalMoves(pos))
+      if (pos.rank == startRank) addAll(generateDoubleMove(pos))
+      addAll(generateCaptureMoves(pos))
+      addAll(generateEnPassantMove(pos))
     }
-    validMoves.addAll(generateCaptureMove(currentPosition, Direction.LEFT))
-    validMoves.addAll(generateCaptureMove(currentPosition, Direction.RIGHT))
-    validMoves.addAll(generateEnPassantMove(currentPosition))
-
-    return validMoves
   }
 
-  private fun generateNormalMove(currentPosition: Position): Set<Move> {
-    val nextPosition = currentPosition.nextPosition(forwardDirection)
-    return if (boardInspector.isSquareEmpty(nextPosition) &&
-      nextPosition.rank == promotionRank
+  private fun generateNormalMoves(pos: Position): Set<Move> =
+    assembleMoves(pos, normalTargets(pos))
+
+  private fun generateCaptureMoves(pos: Position): Set<Move> = assembleMoves(
+    pos,
+    diagonalTargets(pos).filter { hasEnemy(it) }.toSet(),
+  )
+
+  private fun generateDoubleMove(pos: Position): Set<DoublePawnMove> {
+    val next = pos.nextPosition(forwardDirection)
+    val nextNext = next.nextPosition(forwardDirection)
+
+    return if (boardInspector.isSquareEmpty(next) &&
+      boardInspector.isSquareEmpty(
+        nextNext,
+      )
     ) {
-      generatePromotionMoves(currentPosition, nextPosition)
-    } else if (boardInspector.isSquareEmpty(nextPosition)) {
-      setOf(SingleMove(currentPosition, nextPosition))
+      setOf(DoublePawnMove(pos, nextNext))
     } else {
       emptySet()
     }
   }
 
-  private fun generateDoubleMove(
-    currentPosition: Position,
-  ): Set<DoublePawnMove> {
-    val nextPosition = currentPosition.nextPosition(forwardDirection)
-    val isNextPositionEmpty = boardInspector.isSquareEmpty(nextPosition)
-    val nextNextPosition = nextPosition.nextPosition(forwardDirection)
-    val isNextNextPositionEmpty = boardInspector.isSquareEmpty(nextNextPosition)
-
-    return if (isNextPositionEmpty && isNextNextPositionEmpty) {
-      setOf(DoublePawnMove(currentPosition, nextNextPosition))
+  private fun generateEnPassantMove(pos: Position): Set<EnPassantMove> {
+    val enPassantPosition = boardInspector.accessEnPassant()
+    return if (enPassantPosition != null &&
+      diagonalTargets(pos).contains(enPassantPosition)
+    ) {
+      setOf(EnPassantMove(pos, enPassantPosition))
     } else {
       emptySet()
     }
   }
 
-  private fun generateEnPassantMove(
-    currentPosition: Position,
-  ): Set<EnPassantMove> {
-    val nextPosition = boardInspector.accessEnPassant()
-    return if (nextPosition != null) {
-      setOf(EnPassantMove(currentPosition, nextPosition))
-    } else {
-      emptySet()
-    }
-  }
-
-  private fun generateCaptureMove(
-    currentPosition: Position,
-    captureDirection: Direction,
-  ): Set<Move> {
-    if (currentPosition.hasNextPosition(captureDirection)) {
-      val nextPosition = currentPosition.nextPosition(captureDirection)
-        .nextPosition(forwardDirection)
-      val isEnemyOnTarget: Boolean =
-        boardInspector.getPieceAt(nextPosition)?.color == color.invert()
-
-      return if (isEnemyOnTarget && nextPosition.rank == promotionRank) {
-        generatePromotionMoves(currentPosition, nextPosition)
-      } else if (isEnemyOnTarget) {
-        setOf(SingleMove(currentPosition, nextPosition))
+  private fun diagonalTargets(pos: Position): Set<Position> =
+    listOf(Direction.LEFT, Direction.RIGHT).mapNotNull {
+      if (pos.hasNextPosition(it)) {
+        pos.nextPosition(it)
+          .nextPosition(forwardDirection)
       } else {
-        emptySet()
+        null
       }
-    }
-    return emptySet()
+    }.toSet()
+
+  private fun normalTargets(pos: Position): Set<Position> {
+    val next = pos.nextPosition(forwardDirection)
+    return if (boardInspector.isSquareEmpty(next)) setOf(next) else emptySet()
   }
+
+  private fun hasEnemy(pos: Position): Boolean =
+    boardInspector.getPieceAt(pos)?.color == color.invert()
+
+  private fun assembleMoves(
+    from: Position,
+    targets: Set<Position>,
+  ): Set<Move> = targets.flatMap { to ->
+    if (to.rank == promotionRank) {
+      generatePromotionMoves(from, to)
+    } else {
+      setOf(SingleMove(from, to))
+    }
+  }.toSet()
 
   private fun generatePromotionMoves(from: Position, to: Position): Set<Move> =
-    listOf(
-      PieceType.QUEEN,
-      PieceType.ROOK,
-      PieceType.BISHOP,
-      PieceType.KNIGHT,
-    ).map { promotionType -> PromotionMove(from, to, promotionType) }.toSet()
+    setOf(
+      PromotionMove(from, to, PieceType.QUEEN),
+      PromotionMove(from, to, PieceType.ROOK),
+      PromotionMove(from, to, PieceType.BISHOP),
+      PromotionMove(from, to, PieceType.KNIGHT),
+    )
 
   override fun getChar(): Char = when (color) {
     Color.WHITE -> 'P'
