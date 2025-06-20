@@ -8,6 +8,7 @@ import hwr.oop.group8.chess.core.move.SingleMove
 import hwr.oop.group8.chess.persistence.FEN
 import io.kotest.core.spec.style.AnnotationSpec
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 
 class EnPassantTest : AnnotationSpec() {
   @Test
@@ -105,5 +106,28 @@ class EnPassantTest : AnnotationSpec() {
       board.generateFENBoardString(),
     ).isEqualTo("rnbqkb1r/pp1ppppp/2P4n/8/8/8/P1PPPPPP/RNBQKBNR")
     assertThat(board.enPassant).isNull()
+  }
+
+  @Test
+  fun `Only pawn on a5 should be allowed to move En Passant`() {
+    // given
+    val board = Board(
+      FEN(
+        "rnbqkb1r/p1pppppp/7n/Pp6/8/8/1PPPPPPP/RNBQKBNR",
+        enPassant = "b6",
+      ),
+    )
+    val invalidEnPassantMove = SingleMove(
+      Position(File.D, Rank.TWO),
+      Position(File.B, Rank.SIX),
+    )
+    // when
+    assertThatThrownBy {
+      board.makeMove(invalidEnPassantMove)
+    }.message().contains("Invalid move for piece Pawn from d2 to b6")
+    // then
+    assertThat(
+      board.generateFENBoardString(),
+    ).isEqualTo("rnbqkb1r/p1pppppp/7n/Pp6/8/8/1PPPPPPP/RNBQKBNR")
   }
 }
