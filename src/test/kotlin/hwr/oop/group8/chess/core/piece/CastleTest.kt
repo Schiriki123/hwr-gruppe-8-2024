@@ -51,7 +51,7 @@ class CastleTest : AnnotationSpec() {
       SingleMove(Position(File.H, Rank.ONE), Position(File.G, Rank.ONE))
     board.makeMove(singleMove)
     assertThat(
-      board.generateFENBoardString(),
+      FEN.generateFENBoardString(board),
     ).isEqualTo("r3k2r/8/8/8/8/8/8/R3K1R1")
     assertThat(board.castle).isEqualTo("Qkq")
   }
@@ -63,7 +63,7 @@ class CastleTest : AnnotationSpec() {
       SingleMove(Position(File.A, Rank.ONE), Position(File.B, Rank.ONE))
     board.makeMove(singleMove)
     assertThat(
-      board.generateFENBoardString(),
+      FEN.generateFENBoardString(board),
     ).isEqualTo("r3k2r/8/8/8/8/8/8/1R2K2R")
     assertThat(board.castle).isEqualTo("Kkq")
   }
@@ -79,7 +79,9 @@ class CastleTest : AnnotationSpec() {
     )
     board.makeMove(singleMove)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/8/R4RK1")
+    assertThat(
+      FEN.generateFENBoardString(board),
+    ).isEqualTo("8/8/8/8/8/8/8/R4RK1")
     assertThat(board.castle).isEqualTo("kq")
   }
 
@@ -92,7 +94,9 @@ class CastleTest : AnnotationSpec() {
     )
     board.makeMove(singleMove)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/8/2KR3R")
+    assertThat(
+      FEN.generateFENBoardString(board),
+    ).isEqualTo("8/8/8/8/8/8/8/2KR3R")
     assertThat(board.castle).isEqualTo("kq")
   }
 
@@ -106,7 +110,9 @@ class CastleTest : AnnotationSpec() {
     )
     board.makeMove(singleMove)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("r4rk1/8/8/8/8/8/8/8")
+    assertThat(
+      FEN.generateFENBoardString(board),
+    ).isEqualTo("r4rk1/8/8/8/8/8/8/8")
     assertThat(board.castle).isEqualTo("KQ")
   }
 
@@ -119,7 +125,9 @@ class CastleTest : AnnotationSpec() {
     )
     board.makeMove(singleMove)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("2kr3r/8/8/8/8/8/8/8")
+    assertThat(
+      FEN.generateFENBoardString(board),
+    ).isEqualTo("2kr3r/8/8/8/8/8/8/8")
     assertThat(board.castle).isEqualTo("KQ")
   }
 
@@ -176,7 +184,7 @@ class CastleTest : AnnotationSpec() {
       board.makeMove(singleMove)
     }.message().isEqualTo("Invalid move for piece King from e1 to g1")
     assertThat(
-      board.generateFENBoardString(),
+      FEN.generateFENBoardString(board),
     ).isEqualTo("8/1k6/4r3/8/8/8/8/R3K2R")
     assertThat(board.castle).isEqualTo("KQkq")
   }
@@ -190,7 +198,7 @@ class CastleTest : AnnotationSpec() {
       board.makeMove(singleMove)
     }.message().isEqualTo("Invalid move for piece King from e1 to g1")
     assertThat(
-      board.generateFENBoardString(),
+      FEN.generateFENBoardString(board),
     ).isEqualTo("8/8/8/8/8/8/8/R3KB1R")
     assertThat(board.castle).isEqualTo("KQkq")
   }
@@ -204,7 +212,7 @@ class CastleTest : AnnotationSpec() {
       board.makeMove(singleMove)
     }.message().isEqualTo("Invalid move for piece King from e1 to c1")
     assertThat(
-      board.generateFENBoardString(),
+      FEN.generateFENBoardString(board),
     ).isEqualTo("8/8/8/8/8/8/8/RN2K2R")
     assertThat(board.castle).isEqualTo("KQkq")
   }
@@ -219,7 +227,7 @@ class CastleTest : AnnotationSpec() {
     board.makeMove(move)
     // Then
     assertThat(
-      board.generateFENBoardString(),
+      FEN.generateFENBoardString(board),
     ).isEqualTo("4k3/8/8/8/8/8/4K3/R6R")
     assertThat(board.castle).isEqualTo("-")
   }

@@ -30,7 +30,7 @@ class BoardTest : AnnotationSpec() {
         }
       }
     }
-    assertThat(board.generateFENBoardString()).isEqualTo("K7/8/8/8/8/8/8/8")
+    assertThat(FEN.generateFENBoardString(board)).isEqualTo("K7/8/8/8/8/8/8/8")
   }
 
   @Test
@@ -256,7 +256,7 @@ class BoardTest : AnnotationSpec() {
   @Test
   fun `FEN board string creation for default setup`() {
     val board = Board(FEN())
-    val fenBoardString = board.generateFENBoardString()
+    val fenBoardString = FEN.generateFENBoardString(board)
     assertThat(
       fenBoardString,
     ).isEqualTo("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
@@ -266,7 +266,7 @@ class BoardTest : AnnotationSpec() {
   fun `FEN board string with custom setup`() {
     val testString = "q4b2/8/8/1Q6/3B4/1PP4K/8/n1n1n1n1"
     val board = Board(FEN(testString))
-    val fenBoardString = board.generateFENBoardString()
+    val fenBoardString = FEN.generateFENBoardString(board)
     assertThat(fenBoardString).isEqualTo(testString)
   }
 
@@ -277,7 +277,9 @@ class BoardTest : AnnotationSpec() {
       SingleMove(Position(File.A, Rank.ONE), Position(File.A, Rank.THREE))
     assertThatThrownBy { board.makeMove(singleMove) }.message()
       .isEqualTo("Invalid move for piece Rook from a1 to a3")
-    assertThat(board.generateFENBoardString()).isEqualTo("K7/8/8/8/8/P7/8/R7")
+    assertThat(
+      FEN.generateFENBoardString(board),
+    ).isEqualTo("K7/8/8/8/8/P7/8/R7")
   }
 
   @Test
@@ -286,6 +288,6 @@ class BoardTest : AnnotationSpec() {
     val singleMove =
       SingleMove(Position(File.A, Rank.ONE), Position(File.A, Rank.THREE))
     board.makeMove(singleMove)
-    assertThat(board.generateFENBoardString()).isEqualTo("K7/8/8/8/8/R7/8/8")
+    assertThat(FEN.generateFENBoardString(board)).isEqualTo("K7/8/8/8/8/R7/8/8")
   }
 }

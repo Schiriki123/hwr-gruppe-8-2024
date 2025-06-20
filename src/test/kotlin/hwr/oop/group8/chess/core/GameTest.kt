@@ -17,7 +17,7 @@ class GameTest : AnnotationSpec() {
     // when
     game.makeMove(cliMove)
     // then
-    assertThat(game.board.generateFENBoardString())
+    assertThat(FEN.generateFENBoardString(game.board))
       .isEqualTo("R7/8/7k/8/8/8/8/K7")
   }
 
@@ -33,7 +33,7 @@ class GameTest : AnnotationSpec() {
     }.isInstanceOf(IllegalStateException::class.java).message()
       .isEqualTo("Invalid move for piece Pawn from a7 to a8")
     // then
-    assertThat(game.board.generateFENBoardString())
+    assertThat(FEN.generateFENBoardString(game.board))
       .isEqualTo("8/P7/7k/8/8/8/8/K7")
   }
 
@@ -49,7 +49,7 @@ class GameTest : AnnotationSpec() {
     }.isInstanceOf(IllegalArgumentException::class.java).message()
       .isEqualTo("Invalid promotion piece type: KING")
     // then
-    assertThat(game.board.generateFENBoardString())
+    assertThat(FEN.generateFENBoardString(game.board))
       .isEqualTo("8/P7/7k/8/8/8/8/K7")
   }
 
@@ -64,7 +64,7 @@ class GameTest : AnnotationSpec() {
       board.newStateHistory(),
     ).containsExactly("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR".hashCode())
     assertThat(board.fen).isEqualTo(FEN())
-    assertThat(board.generateFENBoardString()).isEqualTo(
+    assertThat(FEN.generateFENBoardString(board)).isEqualTo(
       "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR",
     )
     assertThat(game.id).isEqualTo(1)

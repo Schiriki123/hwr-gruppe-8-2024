@@ -35,7 +35,9 @@ class PawnTest : AnnotationSpec() {
       SingleMove(Position(File.A, Rank.SEVEN), Position(File.A, Rank.SIX))
 
     assertThatThrownBy { board.makeMove(singleMove) }
-    assertThat(board.generateFENBoardString()).isEqualTo("7k/p7/R7/8/8/8/8/K7")
+    assertThat(
+      FEN.generateFENBoardString(board),
+    ).isEqualTo("7k/p7/R7/8/8/8/8/K7")
   }
 
   @Test
@@ -45,7 +47,7 @@ class PawnTest : AnnotationSpec() {
       SingleMove(Position(File.A, Rank.SEVEN), Position(File.A, Rank.SIX))
     board.makeMove(singleMove)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/p7/8/8/8/8/k7")
+    assertThat(FEN.generateFENBoardString(board)).isEqualTo("8/8/p7/8/8/8/8/k7")
   }
 
   @Test
@@ -55,7 +57,7 @@ class PawnTest : AnnotationSpec() {
       SingleMove(Position(File.A, Rank.SIX), Position(File.A, Rank.SEVEN))
 
     assertThatThrownBy { board.makeMove(singleMove) }
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/p7/8/8/8/8/K7")
+    assertThat(FEN.generateFENBoardString(board)).isEqualTo("8/8/p7/8/8/8/8/K7")
   }
 
   @Test
@@ -65,7 +67,7 @@ class PawnTest : AnnotationSpec() {
       SingleMove(Position(File.A, Rank.SIX), Position(File.A, Rank.FOUR))
 
     assertThatThrownBy { board.makeMove(singleMove) }
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/p7/8/8/8/8/K7")
+    assertThat(FEN.generateFENBoardString(board)).isEqualTo("8/8/p7/8/8/8/8/K7")
   }
 
   @Test
@@ -75,7 +77,7 @@ class PawnTest : AnnotationSpec() {
       SingleMove(Position(File.A, Rank.SIX), Position(File.A, Rank.SEVEN))
     board.makeMove(singleMove)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("8/P7/8/8/8/8/8/K7")
+    assertThat(FEN.generateFENBoardString(board)).isEqualTo("8/P7/8/8/8/8/8/K7")
   }
 
   @Test
@@ -85,7 +87,7 @@ class PawnTest : AnnotationSpec() {
       DoublePawnMove(Position(File.A, Rank.TWO), Position(File.A, Rank.FOUR))
     board.makeMove(singleMove)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/P7/8/8/K7")
+    assertThat(FEN.generateFENBoardString(board)).isEqualTo("8/8/8/8/P7/8/8/K7")
   }
 
   @Test
@@ -95,7 +97,9 @@ class PawnTest : AnnotationSpec() {
       SingleMove(Position(File.A, Rank.TWO), Position(File.A, Rank.FOUR))
 
     assertThatThrownBy { board.makeMove(singleMove) }
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/b7/P7/K7")
+    assertThat(
+      FEN.generateFENBoardString(board),
+    ).isEqualTo("8/8/8/8/8/b7/P7/K7")
   }
 
   @Test
@@ -105,7 +109,9 @@ class PawnTest : AnnotationSpec() {
       SingleMove(Position(File.A, Rank.TWO), Position(File.C, Rank.FOUR))
 
     assertThatThrownBy { board.makeMove(singleMove) }
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/1R6/P7/K7")
+    assertThat(
+      FEN.generateFENBoardString(board),
+    ).isEqualTo("8/8/8/8/8/1R6/P7/K7")
   }
 
   @Test
@@ -115,7 +121,9 @@ class PawnTest : AnnotationSpec() {
       SingleMove(Position(File.B, Rank.TWO), Position(File.C, Rank.THREE))
 
     assertThatThrownBy { board.makeMove(singleMove) }
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/1P6/K7")
+    assertThat(
+      FEN.generateFENBoardString(board),
+    ).isEqualTo("8/8/8/8/8/8/1P6/K7")
   }
 
   @Test
@@ -125,7 +133,7 @@ class PawnTest : AnnotationSpec() {
       SingleMove(Position(File.B, Rank.TWO), Position(File.A, Rank.THREE))
 
     board.makeMove(singleMove)
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/P7/8/K7")
+    assertThat(FEN.generateFENBoardString(board)).isEqualTo("8/8/8/8/8/P7/8/K7")
   }
 
   @Test
@@ -151,6 +159,8 @@ class PawnTest : AnnotationSpec() {
       "Invalid piece character: x",
     )
 
-    assertThat(board.generateFENBoardString()).isEqualTo("8/P5kp/8/8/8/8/8/K7")
+    assertThat(
+      FEN.generateFENBoardString(board),
+    ).isEqualTo("8/P5kp/8/8/8/8/8/K7")
   }
 }

@@ -29,7 +29,9 @@ class BishopTest : AnnotationSpec() {
       SingleMove(Position(File.A, Rank.EIGHT), Position(File.E, Rank.FOUR))
     board.makeMove(singleMove)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/4B3/8/8/K7")
+    assertThat(
+      FEN.generateFENBoardString(board),
+    ).isEqualTo("8/8/8/8/4B3/8/8/K7")
   }
 
   @Test

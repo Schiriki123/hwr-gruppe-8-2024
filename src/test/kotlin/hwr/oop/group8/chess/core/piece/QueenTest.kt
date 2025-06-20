@@ -29,7 +29,7 @@ class QueenTest : AnnotationSpec() {
     val singleMove =
       SingleMove(Position(File.A, Rank.EIGHT), Position(File.A, Rank.TWO))
     board.makeMove(singleMove)
-    assertThat(board.generateFENBoardString()).isEqualTo("7K/8/8/8/8/8/Q7/8")
+    assertThat(FEN.generateFENBoardString(board)).isEqualTo("7K/8/8/8/8/8/Q7/8")
   }
 
   @Test
@@ -38,7 +38,7 @@ class QueenTest : AnnotationSpec() {
     val singleMove =
       SingleMove(Position(File.A, Rank.TWO), Position(File.A, Rank.EIGHT))
     board.makeMove(singleMove)
-    assertThat(board.generateFENBoardString()).isEqualTo("Q6K/8/8/8/8/8/8/8")
+    assertThat(FEN.generateFENBoardString(board)).isEqualTo("Q6K/8/8/8/8/8/8/8")
   }
 
   @Test
@@ -47,7 +47,7 @@ class QueenTest : AnnotationSpec() {
     val singleMove =
       SingleMove(Position(File.A, Rank.EIGHT), Position(File.H, Rank.ONE))
     board.makeMove(singleMove)
-    assertThat(board.generateFENBoardString()).isEqualTo("7K/8/8/8/8/8/8/7Q")
+    assertThat(FEN.generateFENBoardString(board)).isEqualTo("7K/8/8/8/8/8/8/7Q")
   }
 
   @Test
@@ -56,7 +56,9 @@ class QueenTest : AnnotationSpec() {
     val singleMove =
       SingleMove(Position(File.H, Rank.ONE), Position(File.D, Rank.FIVE))
     board.makeMove(singleMove)
-    assertThat(board.generateFENBoardString()).isEqualTo("7K/8/8/3Q4/8/8/8/8")
+    assertThat(
+      FEN.generateFENBoardString(board),
+    ).isEqualTo("7K/8/8/3Q4/8/8/8/8")
   }
 
   @Test
@@ -65,7 +67,7 @@ class QueenTest : AnnotationSpec() {
     val singleMove =
       SingleMove(Position(File.D, Rank.FIVE), Position(File.G, Rank.EIGHT))
     board.makeMove(singleMove)
-    assertThat(board.generateFENBoardString()).isEqualTo("6QK/8/8/8/8/8/8/8")
+    assertThat(FEN.generateFENBoardString(board)).isEqualTo("6QK/8/8/8/8/8/8/8")
   }
 
   @Test
@@ -74,7 +76,7 @@ class QueenTest : AnnotationSpec() {
     val singleMove =
       SingleMove(Position(File.G, Rank.EIGHT), Position(File.A, Rank.TWO))
     board.makeMove(singleMove)
-    assertThat(board.generateFENBoardString()).isEqualTo("7K/8/8/8/8/8/Q7/8")
+    assertThat(FEN.generateFENBoardString(board)).isEqualTo("7K/8/8/8/8/8/Q7/8")
   }
 
   @Test
@@ -102,7 +104,7 @@ class QueenTest : AnnotationSpec() {
       SingleMove(Position(File.A, Rank.EIGHT), Position(File.A, Rank.TWO))
     board.makeMove(singleMove)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/Q7/K7")
+    assertThat(FEN.generateFENBoardString(board)).isEqualTo("8/8/8/8/8/8/Q7/K7")
   }
 
   @Test
@@ -121,6 +123,8 @@ class QueenTest : AnnotationSpec() {
       SingleMove(Position(File.A, Rank.EIGHT), Position(File.G, Rank.TWO))
     board.makeMove(singleMove)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/6Q1/K7")
+    assertThat(
+      FEN.generateFENBoardString(board),
+    ).isEqualTo("8/8/8/8/8/8/6Q1/K7")
   }
 }

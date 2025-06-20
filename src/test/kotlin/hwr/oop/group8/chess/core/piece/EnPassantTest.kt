@@ -29,7 +29,7 @@ class EnPassantTest : AnnotationSpec() {
     // then
     assertThat(board.enPassant).isEqualTo(Position(File.E, Rank.SIX))
     assertThat(
-      board.generateFENBoardString(),
+      FEN.generateFENBoardString(board),
     ).isEqualTo("rnbqkbnr/pppp1pp1/8/3Pp2p/8/8/PPP1PPPP/RNBQKBNR")
   }
 
@@ -47,7 +47,7 @@ class EnPassantTest : AnnotationSpec() {
     // then
     assertThat(board.enPassant).isEqualTo(Position(File.C, Rank.SIX))
     assertThat(
-      board.generateFENBoardString(),
+      FEN.generateFENBoardString(board),
     ).isEqualTo("rnbqkb1r/pp1ppppp/7n/2pP4/8/8/PPP1PPPP/RNBQKBNR")
   }
 
@@ -81,7 +81,7 @@ class EnPassantTest : AnnotationSpec() {
     board.makeMove(enPassantCapture)
     // then
     assertThat(
-      board.generateFENBoardString(),
+      FEN.generateFENBoardString(board),
     ).isEqualTo("rnbqkbnr/ppp1pppp/8/6N1/8/4p3/PPPP1PPP/RNBQKB1R")
     assertThat(board.enPassant).isNull()
   }
@@ -103,7 +103,7 @@ class EnPassantTest : AnnotationSpec() {
     board.makeMove(enPassantMove)
     // then
     assertThat(
-      board.generateFENBoardString(),
+      FEN.generateFENBoardString(board),
     ).isEqualTo("rnbqkb1r/pp1ppppp/2P4n/8/8/8/P1PPPPPP/RNBQKBNR")
     assertThat(board.enPassant).isNull()
   }
@@ -127,7 +127,7 @@ class EnPassantTest : AnnotationSpec() {
     }.message().contains("Invalid move for piece Pawn from d2 to b6")
     // then
     assertThat(
-      board.generateFENBoardString(),
+      FEN.generateFENBoardString(board),
     ).isEqualTo("rnbqkb1r/p1pppppp/7n/Pp6/8/8/1PPPPPPP/RNBQKBNR")
   }
 }

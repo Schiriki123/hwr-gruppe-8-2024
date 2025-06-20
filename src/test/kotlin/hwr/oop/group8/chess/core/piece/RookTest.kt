@@ -29,7 +29,7 @@ class RookTest : AnnotationSpec() {
       SingleMove(Position(File.A, Rank.EIGHT), Position(File.A, Rank.TWO))
     board.makeMove(singleMove)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/R7/K7")
+    assertThat(FEN.generateFENBoardString(board)).isEqualTo("8/8/8/8/8/8/R7/K7")
   }
 
   @Test
@@ -57,6 +57,6 @@ class RookTest : AnnotationSpec() {
       SingleMove(Position(File.A, Rank.EIGHT), Position(File.A, Rank.TWO))
     board.makeMove(singleMove)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/8/8/R7/K7")
+    assertThat(FEN.generateFENBoardString(board)).isEqualTo("8/8/8/8/8/8/R7/K7")
   }
 }

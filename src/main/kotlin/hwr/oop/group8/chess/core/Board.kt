@@ -189,6 +189,4 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) :
     boardAnalyser.isPositionThreatened(currentPlayer, position)
 
   fun getMap(): HashMap<Position, Square> = map
-
-  fun generateFENBoardString(): String = FEN.generateFENBoardString(this)
 }

@@ -16,7 +16,9 @@ class SpecialMovesTest : AnnotationSpec() {
     assertThatThrownBy {
       board.makeMove(singleMove)
     }.message().isEqualTo("Move would put player in check")
-    assertThat(board.generateFENBoardString()).isEqualTo("k7/1R6/8/8/8/8/K7/8")
+    assertThat(
+      FEN.generateFENBoardString(board),
+    ).isEqualTo("k7/1R6/8/8/8/8/K7/8")
     assertThat(board.turn).isEqualTo(Color.BLACK)
   }
 
@@ -28,7 +30,9 @@ class SpecialMovesTest : AnnotationSpec() {
     assertThatThrownBy { board.makeMove(singleMoveToCheck) }.message()
       .isEqualTo("Move would put player in check")
 
-    assertThat(board.generateFENBoardString()).isEqualTo("k7/8/R7/8/8/8/K7/8")
+    assertThat(
+      FEN.generateFENBoardString(board),
+    ).isEqualTo("k7/8/R7/8/8/8/K7/8")
     assertThat(board.turn).isEqualTo(Color.BLACK)
   }
 
@@ -39,7 +43,9 @@ class SpecialMovesTest : AnnotationSpec() {
     val validSingleMove =
       SingleMove(Position(File.A, Rank.EIGHT), Position(File.B, Rank.SEVEN))
     board.makeMove(validSingleMove)
-    assertThat(board.generateFENBoardString()).isEqualTo("8/1k6/R7/8/8/8/K7/8")
+    assertThat(
+      FEN.generateFENBoardString(board),
+    ).isEqualTo("8/1k6/R7/8/8/8/K7/8")
     assertThat(board.turn).isEqualTo(Color.WHITE)
   }
 
@@ -50,7 +56,9 @@ class SpecialMovesTest : AnnotationSpec() {
       SingleMove(Position(File.A, Rank.SIX), Position(File.C, Rank.SIX))
     assertThatThrownBy { board.makeMove(singleMove) }.message()
       .isEqualTo("Move would put player in check")
-    assertThat(board.generateFENBoardString()).isEqualTo("k7/8/r7/8/8/8/R7/8")
+    assertThat(
+      FEN.generateFENBoardString(board),
+    ).isEqualTo("k7/8/r7/8/8/8/R7/8")
     assertThat(board.turn).isEqualTo(Color.BLACK)
   }
 

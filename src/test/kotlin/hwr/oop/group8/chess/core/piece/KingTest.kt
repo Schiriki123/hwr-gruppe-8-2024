@@ -30,7 +30,7 @@ class KingTest : AnnotationSpec() {
       SingleMove(Position(File.A, Rank.SIX), Position(File.A, Rank.SEVEN))
 
     assertThatThrownBy { board.makeMove(singleMove) }
-    assertThat(board.generateFENBoardString()).isEqualTo("8/B7/K7/8/8/8/8/8")
+    assertThat(FEN.generateFENBoardString(board)).isEqualTo("8/B7/K7/8/8/8/8/8")
   }
 
   @Test
@@ -39,7 +39,7 @@ class KingTest : AnnotationSpec() {
     val singleMove =
       SingleMove(Position(File.D, Rank.FIVE), Position(File.C, Rank.FIVE))
     board.makeMove(singleMove)
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/2K5/8/8/8/8")
+    assertThat(FEN.generateFENBoardString(board)).isEqualTo("8/8/8/2K5/8/8/8/8")
   }
 
   @Test
@@ -48,7 +48,7 @@ class KingTest : AnnotationSpec() {
     val singleMove =
       SingleMove(Position(File.D, Rank.FIVE), Position(File.E, Rank.FIVE))
     board.makeMove(singleMove)
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/4K3/8/8/8/8")
+    assertThat(FEN.generateFENBoardString(board)).isEqualTo("8/8/8/4K3/8/8/8/8")
   }
 
   @Test
@@ -57,7 +57,7 @@ class KingTest : AnnotationSpec() {
     val singleMove =
       SingleMove(Position(File.D, Rank.FIVE), Position(File.D, Rank.FOUR))
     board.makeMove(singleMove)
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/3K4/8/8/8")
+    assertThat(FEN.generateFENBoardString(board)).isEqualTo("8/8/8/8/3K4/8/8/8")
   }
 
   @Test
@@ -66,7 +66,7 @@ class KingTest : AnnotationSpec() {
     val singleMove =
       SingleMove(Position(File.D, Rank.FIVE), Position(File.D, Rank.SIX))
     board.makeMove(singleMove)
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/3K4/8/8/8/8/8")
+    assertThat(FEN.generateFENBoardString(board)).isEqualTo("8/8/3K4/8/8/8/8/8")
   }
 
   @Test
@@ -75,7 +75,7 @@ class KingTest : AnnotationSpec() {
     val singleMove =
       SingleMove(Position(File.D, Rank.FIVE), Position(File.E, Rank.SIX))
     board.makeMove(singleMove)
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/4K3/8/8/8/8/8")
+    assertThat(FEN.generateFENBoardString(board)).isEqualTo("8/8/4K3/8/8/8/8/8")
   }
 
   @Test
@@ -84,7 +84,7 @@ class KingTest : AnnotationSpec() {
     val singleMove =
       SingleMove(Position(File.D, Rank.FIVE), Position(File.C, Rank.SIX))
     board.makeMove(singleMove)
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/2K5/8/8/8/8/8")
+    assertThat(FEN.generateFENBoardString(board)).isEqualTo("8/8/2K5/8/8/8/8/8")
   }
 
   @Test
@@ -93,7 +93,7 @@ class KingTest : AnnotationSpec() {
     val singleMove =
       SingleMove(Position(File.D, Rank.FIVE), Position(File.C, Rank.FOUR))
     board.makeMove(singleMove)
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/8/2K5/8/8/8")
+    assertThat(FEN.generateFENBoardString(board)).isEqualTo("8/8/8/8/2K5/8/8/8")
   }
 
   @Test
@@ -102,7 +102,7 @@ class KingTest : AnnotationSpec() {
     val singleMove =
       SingleMove(Position(File.C, Rank.SIX), Position(File.D, Rank.FIVE))
     board.makeMove(singleMove)
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/8/3K4/8/8/8/8")
+    assertThat(FEN.generateFENBoardString(board)).isEqualTo("8/8/8/3K4/8/8/8/8")
   }
 
   @Test
@@ -111,7 +111,7 @@ class KingTest : AnnotationSpec() {
     val singleMove =
       SingleMove(Position(File.A, Rank.SIX), Position(File.A, Rank.FOUR))
     assertThatThrownBy { board.makeMove(singleMove) }
-    assertThat(board.generateFENBoardString()).isEqualTo("8/8/K7/8/8/8/8/8")
+    assertThat(FEN.generateFENBoardString(board)).isEqualTo("8/8/K7/8/8/8/8/8")
   }
 
   @Test
@@ -120,7 +120,7 @@ class KingTest : AnnotationSpec() {
     val singleMove =
       SingleMove(Position(File.B, Rank.SIX), Position(File.A, Rank.SEVEN))
     board.makeMove(singleMove)
-    assertThat(board.generateFENBoardString()).isEqualTo("8/K7/8/8/8/8/8/8")
+    assertThat(FEN.generateFENBoardString(board)).isEqualTo("8/K7/8/8/8/8/8/8")
   }
 
   @Test
