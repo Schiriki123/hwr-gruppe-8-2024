@@ -26,9 +26,9 @@ class Board(
     private set
   var fullmoveClock: Int
     private set
-  val boardLogic: BoardLogic = BoardLogic(this)
-  val enPassantAnalyser: EnPassantAnalyser = EnPassantAnalyser(this)
-  val castlingLogic: CastlingLogic = CastlingLogic(this)
+  private val boardAnalyser: BoardAnalyser = BoardAnalyser(this)
+  private val enPassantAnalyser: EnPassantAnalyser = EnPassantAnalyser(this)
+  private val castlingLogic: CastlingLogic = CastlingLogic(this)
 
   init {
     initializeBoardFromFENString() // TODO: BoardFactory class
@@ -40,7 +40,7 @@ class Board(
     fullmoveClock = fen.fullmoveClock
     // TODO: Move to makeMove
     checkForDraw()
-    check(!boardLogic.isCheckmate()) {
+    check(!boardAnalyser.isCheckmate()) {
       "Game is over, checkmate!"
     }
   }
@@ -168,9 +168,9 @@ class Board(
     castlingLogic.updateCastlingPermission()
   }
 
-  private fun isMoveCheck(move: Move): Boolean = boardLogic.isMoveCheck(move)
+  private fun isMoveCheck(move: Move): Boolean = boardAnalyser.isMoveCheck(move)
 
-  fun isCheck(): Boolean = boardLogic.isCheck()
+  fun isCheck(): Boolean = boardAnalyser.isCheck()
 
   override fun isCastlingAllowed(color: Color): Pair<Boolean, Boolean> =
     castlingLogic.isCastlingAllowed(color)
@@ -183,7 +183,7 @@ class Board(
   }
 
   fun isPositionThreatened(currentPlayer: Color, position: Position): Boolean =
-    boardLogic.isPositionThreatened(currentPlayer, position)
+    boardAnalyser.isPositionThreatened(currentPlayer, position)
 
   private fun resetHalfMoveClock() {
     halfmoveClock = -1
