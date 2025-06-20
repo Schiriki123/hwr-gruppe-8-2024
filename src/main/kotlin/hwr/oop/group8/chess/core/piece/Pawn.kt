@@ -47,15 +47,12 @@ class Pawn(override val color: Color, val boardInspector: BoardInspector) :
   private fun generateNormalMoves(pos: Position): Set<Move> =
     assembleMoves(pos, normalTargets(pos))
 
-  private fun generateCaptureMoves(pos: Position): Set<Move> =
-    assembleMoves(
-      pos,
-      diagonalTargets(pos).filter { hasEnemy(it) }.toSet(),
-    )
+  private fun generateCaptureMoves(pos: Position): Set<Move> = assembleMoves(
+    pos,
+    diagonalTargets(pos).filter { hasEnemy(it) }.toSet(),
+  )
 
-  private fun generateDoubleMove(
-    pos: Position,
-  ): Set<DoublePawnMove> {
+  private fun generateDoubleMove(pos: Position): Set<DoublePawnMove> {
     val next = pos.nextPosition(forwardDirection)
     val nextNext = next.nextPosition(forwardDirection)
 
@@ -70,9 +67,7 @@ class Pawn(override val color: Color, val boardInspector: BoardInspector) :
     }
   }
 
-  private fun generateEnPassantMove(
-    pos: Position,
-  ): Set<EnPassantMove> {
+  private fun generateEnPassantMove(pos: Position): Set<EnPassantMove> {
     val enPassantPosition = boardInspector.accessEnPassant()
     return if (enPassantPosition != null &&
       diagonalTargets(pos).contains(enPassantPosition)
