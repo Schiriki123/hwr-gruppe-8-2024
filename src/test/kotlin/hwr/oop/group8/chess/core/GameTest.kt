@@ -61,7 +61,7 @@ class GameTest : AnnotationSpec() {
     val board = game.board
     // then
     assertThat(
-      board.stateHistory,
+      board.newStateHistory(),
     ).containsExactly("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR".hashCode())
     assertThat(board.fen).isEqualTo(FEN())
     assertThat(board.generateFENBoardString()).isEqualTo(

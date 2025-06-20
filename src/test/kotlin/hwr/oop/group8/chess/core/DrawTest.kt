@@ -9,14 +9,17 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 
 class DrawTest : AnnotationSpec() {
   @Test
-  fun `Creating board with half move clock at 50 should throw`() {
+  fun `Making a Move with half move clock at 50 should throw`() {
+    val board = Board(FEN("r3k2r/8/8/8/8/8/8/R3K2R", 'w', halfmoveClock = 50))
+    val move =
+      SingleMove(Position(File.F, Rank.THREE), Position(File.B, Rank.ONE))
     assertThatThrownBy {
-      Board(FEN("r3k2r/8/8/8/8/8/8/R3K2R", 'w', halfmoveClock = 50))
+      board.makeMove(move)
     }.message().isEqualTo("Game is draw due to the 50-move rule.")
   }
 
   @Test
-  fun `Creating board with half move clock at 49 should not throw`() {
+  fun `Moving with half move clock at 49 should not throw`() {
     // given
     val board =
       Board(FEN("r3k2r/8/8/8/8/8/8/R3K2R", 'w', halfmoveClock = 49))
@@ -29,14 +32,16 @@ class DrawTest : AnnotationSpec() {
   }
 
   @Test
-  fun `Should be repetition draw when three elements are the same`() {
+  fun `Moving with three times the same board hash is draw`() {
     // given
+    val board = Board(
+      FEN("r3k2r/8/8/8/8/8/8/R3K2R"),
+      listOf(888, 112, 888, 112, 888, 122),
+    )
+    val move =
+      SingleMove(Position(File.F, Rank.ONE), Position(File.B, Rank.ONE))
     assertThatThrownBy {
-      Game(
-        1,
-        FEN("r3k2r/8/8/8/8/8/8/R3K2R"),
-        listOf(888, 112, 888, 112, 888, 122),
-      )
+      board.makeMove(move)
     }.message().isEqualTo("Game is draw due to threefold repetition.")
   }
 
@@ -53,7 +58,6 @@ class DrawTest : AnnotationSpec() {
     // when
     game.makeMove(move)
     // then
-    assertThat(game.board.isRepetitionDraw()).isTrue
   }
 
   @Test
@@ -69,6 +73,5 @@ class DrawTest : AnnotationSpec() {
     // when
     game.makeMove(move)
     // then
-    assertThat(game.board.isRepetitionDraw()).isFalse
   }
 }

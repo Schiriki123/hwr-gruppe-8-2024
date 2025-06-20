@@ -55,9 +55,12 @@ class SpecialMovesTest : AnnotationSpec() {
   }
 
   @Test
-  fun `Checkmate message Game is over, Checkmate!`() {
+  fun `Position is be checkmate, move should not be allowed`() {
+    val board = Board(FEN("k1R5/5R2/8/8/8/8/K7/8", 'b', ""))
+    val move =
+      SingleMove(Position(File.A, Rank.EIGHT), Position(File.B, Rank.EIGHT))
     assertThatThrownBy {
-      Board(FEN("8/8/8/8/8/8/5r2/1K5r"))
+      board.makeMove(move)
     }.message().isEqualTo("Game is over, checkmate!")
   }
 

@@ -11,10 +11,8 @@ import hwr.oop.group8.chess.core.piece.Queen
 import hwr.oop.group8.chess.core.piece.Rook
 import hwr.oop.group8.chess.persistence.FEN
 
-class Board(
-  val fen: FEN,
-  val stateHistory: MutableList<Int> = mutableListOf(),
-) : BoardInspector,
+class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) :
+  BoardInspector,
   BoardInspectorEnPassant {
   private val map = HashMap<Position, Square>()
   var turn: Color
@@ -39,10 +37,6 @@ class Board(
     halfmoveClock = fen.halfmoveClock
     fullmoveClock = fen.fullmoveClock
     // TODO: Move to makeMove
-    checkForDraw()
-    check(!boardAnalyser.isCheckmate()) {
-      "Game is over, checkmate!"
-    }
   }
 
   private fun initializeBoardFromFENString() {
@@ -82,6 +76,11 @@ class Board(
   }.keys.first()
 
   fun makeMove(move: Move) {
+    checkForDraw()
+    check(!boardAnalyser.isCheckmate()) {
+      "Game is over, checkmate!"
+    }
+
     val piece = getPieceAt(move.moves().first().from)
 
     checkNotNull(piece)
@@ -108,9 +107,10 @@ class Board(
 
     if (turn == Color.BLACK) fullmoveClock++
     halfmoveClock++
-    stateHistory.add(generateFENBoardString().hashCode())
     turn = turn.invert()
   }
+
+  fun newStateHistory() = stateHistory.plus(generateFENBoardString().hashCode())
 
   private fun checkForDraw() {
     if (halfmoveClock >= 50) {
@@ -121,7 +121,7 @@ class Board(
     }
   }
 
-  fun isRepetitionDraw(): Boolean = stateHistory.groupBy { it }
+  private fun isRepetitionDraw(): Boolean = stateHistory.groupBy { it }
     .any { it.value.size >= 3 }
 
   private fun isCapture(move: Move): Boolean =
