@@ -83,7 +83,7 @@ data class FEN(
             if (lastPiece != 0) {
               builder.append(lastPiece)
             }
-            builder.append(piece.getChar())
+            builder.append(piece.toFENRepresentation())
             lastPiece = 0
           } else {
             lastPiece++

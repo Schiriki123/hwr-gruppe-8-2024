@@ -7,7 +7,7 @@ import hwr.oop.group8.chess.core.move.SingleMove
 
 class Bishop(override val color: Color, val boardInspector: BoardInspector) :
   Piece {
-  override fun getValidMoveDestinations(): Set<SingleMove> {
+  override fun getValidMove(): Set<SingleMove> {
     val directions = setOf(
       Direction.BOTTOM_RIGHT,
       Direction.BOTTOM_LEFT,
@@ -21,7 +21,7 @@ class Bishop(override val color: Color, val boardInspector: BoardInspector) :
     return validDestinations.toSet()
   }
 
-  override fun getChar(): Char = when (color) {
+  override fun toFENRepresentation(): Char = when (color) {
     Color.WHITE -> 'B'
     Color.BLACK -> 'b'
   }

@@ -18,8 +18,8 @@ class KnightTest : AnnotationSpec() {
     val boardInspector = Board(FEN("8/8/8/8/8/8/8/K7", 'w', ""))
     val whiteKnight = Knight(Color.WHITE, boardInspector)
     val blackKnight = Knight(Color.BLACK, boardInspector)
-    assertThat(whiteKnight.getChar()).isEqualTo('N')
-    assertThat(blackKnight.getChar()).isEqualTo('n')
+    assertThat(whiteKnight.toFENRepresentation()).isEqualTo('N')
+    assertThat(blackKnight.toFENRepresentation()).isEqualTo('n')
     assertThat(whiteKnight.getType()).isEqualTo(PieceType.KNIGHT)
   }
 
@@ -185,7 +185,7 @@ class KnightTest : AnnotationSpec() {
     val board = Board(FEN("8/6n1/8/7p/8/8/8/k7", 'b', ""))
     val startPosition = Position(File.G, Rank.SEVEN)
     val validMoveDestinationsOfKnight =
-      board.getPieceAt(startPosition)!!.getValidMoveDestinations()
+      board.getPieceAt(startPosition)!!.getValidMove()
 
     assertThat(validMoveDestinationsOfKnight).containsExactly(
       SingleMove(startPosition, Position(File.E, Rank.EIGHT)),
@@ -199,7 +199,7 @@ class KnightTest : AnnotationSpec() {
     val board = Board(FEN("K7/8/8/8/3p4/8/2N5/R7", castle = ""))
     val startPosition = Position(File.C, Rank.TWO)
     val validMoveDestinationOfKnight =
-      board.getPieceAt(startPosition)!!.getValidMoveDestinations()
+      board.getPieceAt(startPosition)!!.getValidMove()
 
     assertThat(validMoveDestinationOfKnight).containsExactly(
       SingleMove(startPosition, Position(File.E, Rank.THREE)),

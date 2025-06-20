@@ -9,7 +9,7 @@ import hwr.oop.group8.chess.core.move.SingleMove
 
 class King(override val color: Color, val boardInspector: BoardInspector) :
   Piece {
-  override fun getValidMoveDestinations(): Set<Move> {
+  override fun getValidMove(): Set<Move> {
     val validSingleMoves: MutableSet<Move> = mutableSetOf()
     val directions = setOf(
       Direction.TOP,
@@ -48,7 +48,7 @@ class King(override val color: Color, val boardInspector: BoardInspector) :
     return validSingleMoves.toSet()
   }
 
-  override fun getChar(): Char = when (color) {
+  override fun toFENRepresentation(): Char = when (color) {
     Color.WHITE -> 'K'
     Color.BLACK -> 'k'
   }

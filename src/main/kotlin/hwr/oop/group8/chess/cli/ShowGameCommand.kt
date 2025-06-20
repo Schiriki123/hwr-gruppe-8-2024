@@ -32,7 +32,7 @@ class ShowGameCommand(private val persistencePort: PersistencePort) :
     for (rank in Rank.entries.reversed()) {
       for (file in File.entries) {
         val piece = board.getPieceAt(Position(file, rank))
-        builder.append(piece?.getChar() ?: '.')
+        builder.append(piece?.toFENRepresentation() ?: '.')
       }
       builder.append("${System.lineSeparator()}")
     }
@@ -52,9 +52,9 @@ class ShowGameCommand(private val persistencePort: PersistencePort) :
         val piece = boardInspector.getPieceAt(position)
         piece?.let { piece ->
           if (piece.color == Color.WHITE) {
-            whitePieces.deleteAt(whitePieces.indexOf(piece.getChar()))
+            whitePieces.deleteAt(whitePieces.indexOf(piece.toFENRepresentation()))
           } else {
-            blackPieces.deleteAt(blackPieces.indexOf(piece.getChar()))
+            blackPieces.deleteAt(blackPieces.indexOf(piece.toFENRepresentation()))
           }
         }
       }

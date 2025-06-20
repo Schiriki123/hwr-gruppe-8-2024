@@ -46,7 +46,7 @@ class BoardAnalyser(val board: Board) { // TODO: Use BoardInspector interface
   fun isCheckmate(): Boolean {
     val allPiecesCurrentPlayer = getAllPiecesOfCurrentPlayer()
     allPiecesCurrentPlayer.forEach { piece ->
-      val possibleMoves = piece.getValidMoveDestinations()
+      val possibleMoves = piece.getValidMove()
       // Check if any of the possible moves would put the player in check
       possibleMoves.forEach { move ->
         if (isMoveCheck(move)) {
@@ -64,7 +64,7 @@ class BoardAnalyser(val board: Board) { // TODO: Use BoardInspector interface
       board.getMap().values.mapNotNull { it.getPiece() }.toSet()
     val possibleMovesOfOpponent: Set<Move> = allPieces
       .filter { it.color != currentPlayer }
-      .flatMap { it.getValidMoveDestinations() }
+      .flatMap { it.getValidMove() }
       .toSet()
     return possibleMovesOfOpponent.any { it.moves().first().to == position }
   }

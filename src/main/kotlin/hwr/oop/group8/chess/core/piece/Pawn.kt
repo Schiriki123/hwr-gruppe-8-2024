@@ -34,7 +34,7 @@ class Pawn(override val color: Color, val boardInspector: BoardInspector) :
     }
   }
 
-  override fun getValidMoveDestinations(): Set<Move> {
+  override fun getValidMove(): Set<Move> {
     val pos = boardInspector.findPositionOfPiece(this)
     return buildSet {
       addAll(generateNormalMoves(pos))
@@ -115,7 +115,7 @@ class Pawn(override val color: Color, val boardInspector: BoardInspector) :
       PromotionMove(from, to, PieceType.KNIGHT),
     )
 
-  override fun getChar(): Char = when (color) {
+  override fun toFENRepresentation(): Char = when (color) {
     Color.WHITE -> 'P'
     Color.BLACK -> 'p'
   }

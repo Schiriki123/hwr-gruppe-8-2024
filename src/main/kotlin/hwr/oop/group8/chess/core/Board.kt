@@ -34,7 +34,6 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) :
     enPassant = fen.enPassant()
     halfmoveClock = fen.halfmoveClock
     fullmoveClock = fen.fullmoveClock
-    // TODO: Move to makeMove
   }
 
   private fun initializeBoardFromFENString() {
@@ -132,7 +131,7 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) :
     checkNotNull(piece)
     check(piece.color == turn) { "It's not your turn" }
 
-    val matchingMove = piece.getValidMoveDestinations().find { validMoves ->
+    val matchingMove = piece.getValidMove().find { validMoves ->
       validMoves.moves().first() == move.moves()
         .first() &&
         validMoves.promotesTo() == move.promotesTo()

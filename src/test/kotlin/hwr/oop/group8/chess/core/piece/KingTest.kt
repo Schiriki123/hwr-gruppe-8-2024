@@ -18,8 +18,8 @@ class KingTest : AnnotationSpec() {
     val boardInspector = Board(FEN("8/8/8/8/8/8/8/K7", 'w', ""))
     val whiteKing = King(Color.WHITE, boardInspector)
     val blackKing = King(Color.BLACK, boardInspector)
-    assertThat(whiteKing.getChar()).isEqualTo('K')
-    assertThat(blackKing.getChar()).isEqualTo('k')
+    assertThat(whiteKing.toFENRepresentation()).isEqualTo('K')
+    assertThat(blackKing.toFENRepresentation()).isEqualTo('k')
     assertThat(whiteKing.getType()).isEqualTo(PieceType.KING)
   }
 
@@ -128,7 +128,7 @@ class KingTest : AnnotationSpec() {
     val board = Board(FEN("r3k2r/8/8/8/8/8/1K6/8", 'b'))
     val startPosition = Position(File.E, Rank.EIGHT)
     val king = board.getPieceAt(startPosition) as King
-    val possibleMoves = king.getValidMoveDestinations()
+    val possibleMoves = king.getValidMove()
 
     assertThat(possibleMoves).containsExactlyInAnyOrder(
       SingleMove(startPosition, Position(File.D, Rank.EIGHT)),

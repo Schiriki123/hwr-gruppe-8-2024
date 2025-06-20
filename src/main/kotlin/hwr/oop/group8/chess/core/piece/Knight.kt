@@ -7,7 +7,7 @@ import hwr.oop.group8.chess.core.move.SingleMove
 
 class Knight(override val color: Color, val boardInspector: BoardInspector) :
   Piece {
-  override fun getValidMoveDestinations(): Set<SingleMove> {
+  override fun getValidMove(): Set<SingleMove> {
     val validDestinations: MutableSet<SingleMove> = mutableSetOf()
     val currentPosition = boardInspector.findPositionOfPiece(this)
 
@@ -36,7 +36,7 @@ class Knight(override val color: Color, val boardInspector: BoardInspector) :
     return validDestinations
   }
 
-  override fun getChar(): Char = when (color) {
+  override fun toFENRepresentation(): Char = when (color) {
     Color.WHITE -> 'N'
     Color.BLACK -> 'n'
   }
