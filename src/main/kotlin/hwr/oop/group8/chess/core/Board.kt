@@ -66,52 +66,6 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) :
     map[position] = Square(piece)
   }
 
-  fun getSquare(position: Position): Square = map.getValue(position)
-
-  override fun getPieceAt(position: Position): Piece? =
-    getSquare(position).getPiece()
-
-  override fun findPositionOfPiece(piece: Piece): Position = map.filterValues {
-    it.getPiece() === piece
-  }.keys.first()
-
-  fun makeMove(move: Move) {
-    checkForDraw()
-    check(!boardAnalyser.isCheckmate()) {
-      "Game is over, checkmate!"
-    }
-
-    val piece = getPieceAt(move.moves().first().from)
-
-    checkNotNull(piece)
-    check(piece.color == turn) { "It's not your turn" }
-
-    val matchingMove = piece.getValidMoveDestinations().find { validMoves ->
-      validMoves.moves().first() == move.moves().first() &&
-        validMoves.promotesTo() == move.promotesTo()
-    }
-
-    checkNotNull(matchingMove) {
-      "Invalid move for piece ${piece::class.simpleName} from ${
-        move.moves().first().from
-      } to ${move.moves().first().to}"
-    }
-
-    check(isMoveCheck(matchingMove)) { "Move would put player in check" }
-
-    if (piece.getType() == PieceType.PAWN || isCapture(move)) {
-      resetHalfMoveClock()
-    }
-
-    applyMoves(matchingMove, piece)
-
-    if (turn == Color.BLACK) fullmoveClock++
-    halfmoveClock++
-    turn = turn.invert()
-  }
-
-  fun newStateHistory() = stateHistory.plus(generateFENBoardString().hashCode())
-
   private fun checkForDraw() {
     if (halfmoveClock >= 50) {
       throw IllegalStateException("Game is draw due to the 50-move rule.")
@@ -169,6 +123,55 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) :
   }
 
   private fun isMoveCheck(move: Move): Boolean = boardAnalyser.isMoveCheck(move)
+  fun getSquare(position: Position): Square = map.getValue(position)
+
+  private fun resetHalfMoveClock() {
+    halfmoveClock = -1
+  }
+
+  override fun getPieceAt(position: Position): Piece? =
+    getSquare(position).getPiece()
+
+  override fun findPositionOfPiece(piece: Piece): Position = map.filterValues {
+    it.getPiece() === piece
+  }.keys.first()
+
+  fun makeMove(move: Move) {
+    checkForDraw()
+    check(!boardAnalyser.isCheckmate()) {
+      "Game is over, checkmate!"
+    }
+
+    val piece = getPieceAt(move.moves().first().from)
+
+    checkNotNull(piece)
+    check(piece.color == turn) { "It's not your turn" }
+
+    val matchingMove = piece.getValidMoveDestinations().find { validMoves ->
+      validMoves.moves().first() == move.moves().first() &&
+        validMoves.promotesTo() == move.promotesTo()
+    }
+
+    checkNotNull(matchingMove) {
+      "Invalid move for piece ${piece::class.simpleName} from ${
+        move.moves().first().from
+      } to ${move.moves().first().to}"
+    }
+
+    check(isMoveCheck(matchingMove)) { "Move would put player in check" }
+
+    if (piece.getType() == PieceType.PAWN || isCapture(move)) {
+      resetHalfMoveClock()
+    }
+
+    applyMoves(matchingMove, piece)
+
+    if (turn == Color.BLACK) fullmoveClock++
+    halfmoveClock++
+    turn = turn.invert()
+  }
+
+  fun newStateHistory() = stateHistory.plus(FEN.boardStateHash(this))
 
   fun isCheck(): Boolean = boardAnalyser.isCheck()
 
@@ -184,10 +187,6 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) :
 
   fun isPositionThreatened(currentPlayer: Color, position: Position): Boolean =
     boardAnalyser.isPositionThreatened(currentPlayer, position)
-
-  private fun resetHalfMoveClock() {
-    halfmoveClock = -1
-  }
 
   fun getMap(): HashMap<Position, Square> = map
 

@@ -96,6 +96,9 @@ data class FEN(
       return builder.toString().dropLast(1)
     }
 
+    fun boardStateHash(board: Board): Int =
+      generateFENBoardString(board).hashCode()
+
     fun getFEN(board: Board): FEN = FEN(
       generateFENBoardString(board),
       if (board.turn == Color.WHITE) 'w' else 'b',
