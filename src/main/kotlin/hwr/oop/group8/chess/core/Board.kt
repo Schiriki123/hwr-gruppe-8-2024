@@ -12,8 +12,7 @@ import hwr.oop.group8.chess.core.piece.Rook
 import hwr.oop.group8.chess.persistence.FEN
 
 class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) :
-  BoardInspector,
-  BoardInspectorEnPassant {
+  BoardInspector {
   private val map = HashMap<Position, Square>()
   var turn: Color
     private set
@@ -25,8 +24,7 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) :
   var fullmoveClock: Int
     private set
   private val boardAnalyser: BoardAnalyser = BoardAnalyser(this)
-  private val enPassantAnalyser: EnPassantAnalyser = EnPassantAnalyser(this)
-  private val castlingLogic: CastlingLogic = CastlingLogic(this)
+  private val castling: Castling = Castling(this)
 
   init {
     initializeBoardFromFENString() // TODO: BoardFactory class
@@ -66,18 +64,6 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) :
     map[position] = Square(piece)
   }
 
-  private fun checkForDraw() {
-    if (halfmoveClock >= 50) {
-      throw IllegalStateException("Game is draw due to the 50-move rule.")
-    }
-    if (isRepetitionDraw()) {
-      throw IllegalStateException("Game is draw due to threefold repetition.")
-    }
-  }
-
-  private fun isRepetitionDraw(): Boolean = stateHistory.groupBy { it }
-    .any { it.value.size >= 3 }
-
   private fun isCapture(move: Move): Boolean =
     !isSquareEmpty(move.moves().first().to)
 
@@ -102,10 +88,10 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) :
       val promotionPiece = generatePromotionPiece(pieceType, piece.color)
       toSquare.setPiece(promotionPiece)
     }
-    if (move.isDoublePawnMove()) {
-      enPassantAnalyser.updateAllowedEnPassant(move as DoublePawnMove)
+    enPassant = if (move.isDoublePawnMove()) {
+      allowedEnPassantTarget(move as DoublePawnMove)
     } else {
-      enPassant = null
+      null
     }
     if (move.enPassantCapture() != null) {
       getSquare(move.enPassantCapture()!!).setPiece(null)
@@ -119,10 +105,9 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) :
     checkNotNull(piece) { "No piece found at ${singleMove.from}" }
     toSquare.setPiece(piece)
     fromSquare.setPiece(null)
-    castlingLogic.updateCastlingPermission()
+    castling.updatePermission()
   }
 
-  private fun isMoveCheck(move: Move): Boolean = boardAnalyser.isMoveCheck(move)
   fun getSquare(position: Position): Square = map.getValue(position)
 
   private fun resetHalfMoveClock() {
@@ -137,7 +122,7 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) :
   }.keys.first()
 
   fun makeMove(move: Move) {
-    checkForDraw()
+    boardAnalyser.checkForDraw()
     check(!boardAnalyser.isCheckmate()) {
       "Game is over, checkmate!"
     }
@@ -148,7 +133,8 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) :
     check(piece.color == turn) { "It's not your turn" }
 
     val matchingMove = piece.getValidMoveDestinations().find { validMoves ->
-      validMoves.moves().first() == move.moves().first() &&
+      validMoves.moves().first() == move.moves()
+        .first() &&
         validMoves.promotesTo() == move.promotesTo()
     }
 
@@ -158,7 +144,9 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) :
       } to ${move.moves().first().to}"
     }
 
-    check(isMoveCheck(matchingMove)) { "Move would put player in check" }
+    check(
+      boardAnalyser.isMoveCheck(matchingMove),
+    ) { "Move would put player in check" }
 
     if (piece.getType() == PieceType.PAWN || isCapture(move)) {
       resetHalfMoveClock()
@@ -176,13 +164,30 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) :
   fun isCheck(): Boolean = boardAnalyser.isCheck()
 
   override fun isCastlingAllowed(color: Color): Pair<Boolean, Boolean> =
-    castlingLogic.isCastlingAllowed(color)
+    castling.isAllowed(color)
 
   override fun getCurrentTurn(): Color = turn
   override fun accessEnPassant(): Position? = enPassant
 
-  override fun setEnPassant(position: Position?) {
-    enPassant = position
+  fun allowedEnPassantTarget(move: DoublePawnMove): Position? {
+    val currentTurn = getCurrentTurn()
+    return if (move.to.hasNextPosition(Direction.LEFT) &&
+      getPieceAt(move.to.left())?.color != currentTurn &&
+      getPieceAt(
+        move.to.left(),
+      )?.getType() == PieceType.PAWN
+    ) {
+      move.skippedPosition()
+    } else if (move.to.hasNextPosition(Direction.RIGHT) &&
+      getPieceAt(move.to.right())?.color != currentTurn &&
+      getPieceAt(
+        move.to.right(),
+      )?.getType() == PieceType.PAWN
+    ) {
+      move.skippedPosition()
+    } else {
+      null
+    }
   }
 
   fun isPositionThreatened(currentPlayer: Color, position: Position): Boolean =

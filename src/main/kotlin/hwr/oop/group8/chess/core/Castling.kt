@@ -2,24 +2,21 @@ package hwr.oop.group8.chess.core
 
 import hwr.oop.group8.chess.core.piece.Piece
 
-class CastlingLogic(val board: Board) {
+class Castling(val board: Board) {
 
-  fun isCastlingAllowed(color: Color): Pair<Boolean, Boolean> {
+  fun isAllowed(color: Color): Pair<Boolean, Boolean> {
     val homeRank = if (color == Color.WHITE) Rank.ONE else Rank.EIGHT
 
     if (board.isCheck()) {
       return Pair(false, false)
     }
-    val kingSideAllowed = isKingSideCastlingAllowed(homeRank, color)
-    val queenSideAllowed = isQueenSideCastlingAllowed(homeRank, color)
+    val kingSideAllowed = isKingSideAllowed(homeRank, color)
+    val queenSideAllowed = isQueenSideAllowed(homeRank, color)
 
     return Pair(queenSideAllowed, kingSideAllowed)
   }
 
-  private fun isQueenSideCastlingAllowed(
-    homeRank: Rank,
-    color: Color,
-  ): Boolean {
+  private fun isQueenSideAllowed(homeRank: Rank, color: Color): Boolean {
     val queenSide: Boolean =
       board.isSquareEmpty(Position(File.D, homeRank)) &&
         board.isSquareEmpty(Position(File.C, homeRank)) &&
@@ -30,16 +27,14 @@ class CastlingLogic(val board: Board) {
     return queenSide
   }
 
-  private fun isKingSideCastlingAllowed(
-    homeRank: Rank,
-    color: Color,
-  ): Boolean = board.isSquareEmpty(Position(File.F, homeRank)) &&
-    board.isSquareEmpty(Position(File.G, homeRank)) &&
-    board.castle.contains(if (color == Color.WHITE) "K" else "k") &&
-    !board.isPositionThreatened(color, Position(File.F, homeRank)) &&
-    !board.isPositionThreatened(color, Position(File.G, homeRank))
+  private fun isKingSideAllowed(homeRank: Rank, color: Color): Boolean =
+    board.isSquareEmpty(Position(File.F, homeRank)) &&
+      board.isSquareEmpty(Position(File.G, homeRank)) &&
+      board.castle.contains(if (color == Color.WHITE) "K" else "k") &&
+      !board.isPositionThreatened(color, Position(File.F, homeRank)) &&
+      !board.isPositionThreatened(color, Position(File.G, homeRank))
 
-  fun updateCastlingPermission() {
+  fun updatePermission() {
     if (board.castle.isEmpty()) {
       return
     }

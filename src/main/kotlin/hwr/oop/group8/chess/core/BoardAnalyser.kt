@@ -68,4 +68,16 @@ class BoardAnalyser(val board: Board) { // TODO: Use BoardInspector interface
       .toSet()
     return possibleMovesOfOpponent.any { it.moves().first().to == position }
   }
+
+  fun checkForDraw() {
+    if (board.halfmoveClock >= 50) {
+      throw IllegalStateException("Game is draw due to the 50-move rule.")
+    }
+    if (isRepetitionDraw()) {
+      throw IllegalStateException("Game is draw due to threefold repetition.")
+    }
+  }
+
+  private fun isRepetitionDraw(): Boolean =
+    board.stateHistory.groupBy { it }.any { it.value.size >= 3 }
 }
