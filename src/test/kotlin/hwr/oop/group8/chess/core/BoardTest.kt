@@ -17,6 +17,30 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 
 class BoardTest : AnnotationSpec() {
   @Test
+  fun `Trying to move piece from empty square should throw`() {
+    // given
+    val board = Board(FEN())
+    val move =
+      SingleMove(Position(File.A, Rank.FOUR), Position(File.B, Rank.FOUR))
+    // then
+    assertThatThrownBy {
+      board.makeMove(move)
+    }.message().contains("There is no piece at a4")
+  }
+
+  @Test
+  fun `Moving opponents piece should throw`() {
+    // given
+    val board = Board(FEN())
+    val move =
+      SingleMove(Position(File.A, Rank.SEVEN), Position(File.A, Rank.SIX))
+    assertThatThrownBy {
+      board.makeMove(move)
+    }.message().isEqualTo("It's not your turn")
+    // then
+  }
+
+  @Test
   fun `empty board creation, return standard fen notation-string`() {
     val board = Board(FEN("K7/8/8/8/8/8/8/8", 'w', ""))
     for (rank in Rank.entries.reversed()) {

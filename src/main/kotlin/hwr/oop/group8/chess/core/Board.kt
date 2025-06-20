@@ -4,7 +4,9 @@ import hwr.oop.group8.chess.core.move.DoublePawnMove
 import hwr.oop.group8.chess.core.move.Move
 import hwr.oop.group8.chess.core.move.SingleMove
 import hwr.oop.group8.chess.core.piece.Bishop
+import hwr.oop.group8.chess.core.piece.King
 import hwr.oop.group8.chess.core.piece.Knight
+import hwr.oop.group8.chess.core.piece.Pawn
 import hwr.oop.group8.chess.core.piece.Piece
 import hwr.oop.group8.chess.core.piece.PieceType
 import hwr.oop.group8.chess.core.piece.Queen
@@ -42,18 +44,19 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) :
       fen.getRank(rank).forEach { character ->
         if (character.isDigit()) {
           repeat(character.digitToInt()) {
-            populateRank(fileIterator, rank, null)
+            populateSquare(fileIterator, rank, null)
           }
         } else {
-          val piece = FEN.createPieceOnBoard(character, this)
-          populateRank(fileIterator, rank, piece)
+          val pieceDef = FEN.convertChar(character)
+          val piece = createPieceOnBoard(pieceDef.first, pieceDef.second)
+          populateSquare(fileIterator, rank, piece)
         }
       }
     }
     check(map.size == 64) { "Board must have exactly 64 squares." }
   }
 
-  private fun populateRank(
+  private fun populateSquare(
     fileIterator: Iterator<File>,
     rank: Rank,
     piece: Piece?,
@@ -66,25 +69,22 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) :
   private fun isCapture(move: Move): Boolean =
     !isSquareEmpty(move.moves().first().to)
 
-  private fun generatePromotionPiece(type: PieceType, color: Color): Piece =
+  private fun createPieceOnBoard(type: PieceType, color: Color): Piece =
     when (type) {
-      // TODO: boardInspector could be passed as a parameter
-      PieceType.QUEEN -> Queen(color, this)
+      PieceType.PAWN -> Pawn(color, this)
       PieceType.ROOK -> Rook(color, this)
-      PieceType.BISHOP -> Bishop(color, this)
       PieceType.KNIGHT -> Knight(color, this)
-      else -> {
-        throw IllegalArgumentException("Invalid promotion piece type: $type")
-      }
+      PieceType.BISHOP -> Bishop(color, this)
+      PieceType.QUEEN -> Queen(color, this)
+      PieceType.KING -> King(color, this)
     }
 
   private fun applyMoves(move: Move, piece: Piece) {
     move.moves().forEach { applySingleMove(it) }
     if (move.isPromotion()) {
       val toSquare = getSquare(move.moves().first().to)
-      val pieceType = move.promotesTo()
-      requireNotNull(pieceType)
-      val promotionPiece = generatePromotionPiece(pieceType, piece.color)
+      val pieceType: PieceType = move.promotesTo()!!
+      val promotionPiece = createPieceOnBoard(pieceType, piece.color)
       toSquare.setPiece(promotionPiece)
     }
     enPassant = if (move.isDoublePawnMove()) {
@@ -101,7 +101,6 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) :
     val toSquare = getSquare(singleMove.to)
     val fromSquare = getSquare(singleMove.from)
     val piece = fromSquare.getPiece()
-    checkNotNull(piece) { "No piece found at ${singleMove.from}" }
     toSquare.setPiece(piece)
     fromSquare.setPiece(null)
     castling.updatePermission()
@@ -128,7 +127,7 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) :
 
     val piece = getPieceAt(move.moves().first().from)
 
-    checkNotNull(piece)
+    checkNotNull(piece) { "There is no piece at ${move.moves().first().from}" }
     check(piece.color == turn) { "It's not your turn" }
 
     val matchingMove = piece.getValidMove().find { validMoves ->

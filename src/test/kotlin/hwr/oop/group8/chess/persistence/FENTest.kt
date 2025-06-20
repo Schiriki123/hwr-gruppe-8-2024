@@ -2,14 +2,9 @@ package hwr.oop.group8.chess.persistence
 
 import hwr.oop.group8.chess.core.Board
 import hwr.oop.group8.chess.core.Rank
-import hwr.oop.group8.chess.core.piece.Bishop
-import hwr.oop.group8.chess.core.piece.King
-import hwr.oop.group8.chess.core.piece.Knight
-import hwr.oop.group8.chess.core.piece.Piece
-import hwr.oop.group8.chess.core.piece.Queen
-import hwr.oop.group8.chess.core.piece.Rook
+import hwr.oop.group8.chess.core.piece.PieceType
 import io.kotest.core.spec.style.AnnotationSpec
-import io.kotest.matchers.types.shouldBeInstanceOf
+import io.kotest.matchers.shouldBe
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 
@@ -30,22 +25,21 @@ class FENTest : AnnotationSpec() {
 
   @Test
   fun `checking if Instance of an object belongs to the correct object`() {
-    val board = Board(FEN("K7/8/8/8/8/8/8/8", 'w', ""))
     val pieceChars =
       listOf('r', 'n', 'b', 'q', 'k', 'p', 'R', 'N', 'B', 'Q', 'K', 'P')
     assertThat(pieceChars).allSatisfy { pieceChar ->
-      val piece = FEN.createPieceOnBoard(pieceChar, board)
+      val piece = FEN.convertChar(pieceChar)
       when (pieceChar) {
-        'r', 'R' -> piece.shouldBeInstanceOf<Rook>()
-        'n', 'N' -> piece.shouldBeInstanceOf<Knight>()
-        'b', 'B' -> piece.shouldBeInstanceOf<Bishop>()
-        'q', 'Q' -> piece.shouldBeInstanceOf<Queen>()
-        'k', 'K' -> piece.shouldBeInstanceOf<King>()
-        'p', 'P' -> piece.shouldBeInstanceOf<Piece>()
+        'r', 'R' -> piece.first.shouldBe(PieceType.ROOK)
+        'n', 'N' -> piece.first.shouldBe(PieceType.KNIGHT)
+        'b', 'B' -> piece.first.shouldBe(PieceType.BISHOP)
+        'q', 'Q' -> piece.first.shouldBe(PieceType.QUEEN)
+        'k', 'K' -> piece.first.shouldBe(PieceType.KING)
+        'p', 'P' -> piece.first.shouldBe(PieceType.PAWN)
       }
     }
     assertThatThrownBy {
-      FEN.createPieceOnBoard('x', board)
+      FEN.convertChar('x')
     }.message().isEqualTo("Invalid piece character: x")
   }
 

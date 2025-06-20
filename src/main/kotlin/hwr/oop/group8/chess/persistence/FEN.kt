@@ -1,18 +1,11 @@
 package hwr.oop.group8.chess.persistence
 
 import hwr.oop.group8.chess.core.Board
-import hwr.oop.group8.chess.core.BoardInspector
 import hwr.oop.group8.chess.core.Color
 import hwr.oop.group8.chess.core.File
 import hwr.oop.group8.chess.core.Position
 import hwr.oop.group8.chess.core.Rank
-import hwr.oop.group8.chess.core.piece.Bishop
-import hwr.oop.group8.chess.core.piece.King
-import hwr.oop.group8.chess.core.piece.Knight
-import hwr.oop.group8.chess.core.piece.Pawn
-import hwr.oop.group8.chess.core.piece.Piece
-import hwr.oop.group8.chess.core.piece.Queen
-import hwr.oop.group8.chess.core.piece.Rook
+import hwr.oop.group8.chess.core.piece.PieceType
 
 data class FEN(
   private val boardString: String =
@@ -54,20 +47,20 @@ data class FEN(
   fun hashOfBoard() = boardString.hashCode()
 
   companion object {
-    fun createPieceOnBoard(pieceChar: Char, board: BoardInspector): Piece =
+    fun convertChar(pieceChar: Char): Pair<PieceType, Color> =
       when (pieceChar) {
-        'r' -> Rook(Color.BLACK, board)
-        'n' -> Knight(Color.BLACK, board)
-        'b' -> Bishop(Color.BLACK, board)
-        'q' -> Queen(Color.BLACK, board)
-        'k' -> King(Color.BLACK, board)
-        'p' -> Pawn(Color.BLACK, board)
-        'R' -> Rook(Color.WHITE, board)
-        'N' -> Knight(Color.WHITE, board)
-        'B' -> Bishop(Color.WHITE, board)
-        'Q' -> Queen(Color.WHITE, board)
-        'K' -> King(Color.WHITE, board)
-        'P' -> Pawn(Color.WHITE, board)
+        'r' -> Pair(PieceType.ROOK, Color.BLACK)
+        'k' -> Pair(PieceType.KING, Color.BLACK)
+        'q' -> Pair(PieceType.QUEEN, Color.BLACK)
+        'b' -> Pair(PieceType.BISHOP, Color.BLACK)
+        'n' -> Pair(PieceType.KNIGHT, Color.BLACK)
+        'p' -> Pair(PieceType.PAWN, Color.BLACK)
+        'R' -> Pair(PieceType.ROOK, Color.WHITE)
+        'N' -> Pair(PieceType.KNIGHT, Color.WHITE)
+        'B' -> Pair(PieceType.BISHOP, Color.WHITE)
+        'K' -> Pair(PieceType.KING, Color.WHITE)
+        'Q' -> Pair(PieceType.QUEEN, Color.WHITE)
+        'P' -> Pair(PieceType.PAWN, Color.WHITE)
         else -> throw IllegalArgumentException(
           "Invalid piece character: $pieceChar",
         )

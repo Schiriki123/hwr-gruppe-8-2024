@@ -35,27 +35,29 @@ class Castling(val board: Board) {
       !board.isPositionThreatened(color, Position(File.G, homeRank))
 
   fun updatePermission() {
-    if (board.castle.isEmpty()) {
-      return
-    }
+    update(board.turn)
+    update(board.turn.invert())
+  }
+
+  private fun update(turn: Color) {
     val homeRank =
-      if (board.turn == Color.WHITE) Rank.ONE else Rank.EIGHT
+      if (turn == Color.WHITE) Rank.ONE else Rank.EIGHT
     val kingPosition = board.getPieceAt(Position(File.E, homeRank))
     val rookPositionKingSide =
       board.getPieceAt(Position(File.H, homeRank))
     val rookPositionQueenSide =
       board.getPieceAt(Position(File.A, homeRank))
-    val kingChar = if (board.turn == Color.WHITE) "K" else "k"
-    val queenChar = if (board.turn == Color.WHITE) "Q" else "q"
+    val kingChar = if (turn == Color.WHITE) "K" else "k"
+    val queenChar = if (turn == Color.WHITE) "Q" else "q"
 
     if (kingPosition == null) {
       board.castle = board.castle.replace(kingChar, "")
       board.castle = board.castle.replace(queenChar, "")
     }
-    if (hasKingSideRookMoved(rookPositionKingSide)) {
+    if (hasKingSideRookMoved(rookPositionKingSide, turn)) {
       board.castle = board.castle.replace(kingChar, "")
     }
-    if (hasQueenSideRookMoved(rookPositionQueenSide)) {
+    if (hasQueenSideRookMoved(rookPositionQueenSide, turn)) {
       board.castle = board.castle.replace(queenChar, "")
     }
     if (board.castle.isEmpty()) {
@@ -63,9 +65,15 @@ class Castling(val board: Board) {
     }
   }
 
-  private fun hasQueenSideRookMoved(rookPositionQueenSide: Piece?): Boolean =
-    rookPositionQueenSide == null || rookPositionQueenSide.color != board.turn
+  private fun hasQueenSideRookMoved(
+    rookPositionQueenSide: Piece?,
+    turn: Color,
+  ): Boolean =
+    rookPositionQueenSide == null || rookPositionQueenSide.color != turn
 
-  private fun hasKingSideRookMoved(rookPositionKingSide: Piece?): Boolean =
-    rookPositionKingSide == null || rookPositionKingSide.color != board.turn
+  private fun hasKingSideRookMoved(
+    rookPositionKingSide: Piece?,
+    turn: Color,
+  ): Boolean =
+    rookPositionKingSide == null || rookPositionKingSide.color != turn
 }

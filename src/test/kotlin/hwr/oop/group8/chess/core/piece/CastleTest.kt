@@ -14,9 +14,8 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 
 class CastleTest : AnnotationSpec() {
 
-  @Suppress("ktlint:standard:max-line-length")
   @Test
-  fun `Castling permission is read correctly from castle string for white, castling allowed on first try, second is denied`() {
+  fun `Castle string allows white Queen side castled and denies King side`() {
     val board = Board(
       FEN(
         boardString = "r3k2r/8/8/8/8/8/8/R3K2R",
@@ -29,9 +28,23 @@ class CastleTest : AnnotationSpec() {
     assertThat(allowedCastlingForWhite.second).isFalse
   }
 
+  @Test
+  fun `Castle string allows white King side castle and denies Queen side`() {
+    val board = Board(
+      FEN(
+        boardString = "r3k2r/8/8/8/8/8/8/R3K2R",
+        castle = "Kkq",
+        turn = 'w',
+      ),
+    )
+    val allowedCastlingForWhite = board.isCastlingAllowed(Color.WHITE)
+    assertThat(allowedCastlingForWhite.first).isFalse
+    assertThat(allowedCastlingForWhite.second).isTrue
+  }
+
   @Suppress("ktlint:standard:max-line-length")
   @Test
-  fun `Castling permission is read correctly from castle string for black, castling on first try, second is denied`() {
+  fun `Castle string allows black King side castle and denies Queen side`() {
     val board = Board(
       FEN(
         boardString = "r3k2r/8/8/8/8/8/8/R3K2R",
@@ -82,7 +95,7 @@ class CastleTest : AnnotationSpec() {
     assertThat(
       FEN.generateFENBoardString(board),
     ).isEqualTo("8/8/8/8/8/8/8/R4RK1")
-    assertThat(board.castle).isEqualTo("kq")
+    assertThat(board.castle).isEqualTo("-")
   }
 
   @Test
@@ -97,7 +110,7 @@ class CastleTest : AnnotationSpec() {
     assertThat(
       FEN.generateFENBoardString(board),
     ).isEqualTo("8/8/8/8/8/8/8/2KR3R")
-    assertThat(board.castle).isEqualTo("kq")
+    assertThat(board.castle).isEqualTo("-")
   }
 
   @Test
@@ -113,7 +126,7 @@ class CastleTest : AnnotationSpec() {
     assertThat(
       FEN.generateFENBoardString(board),
     ).isEqualTo("r4rk1/8/8/8/8/8/8/8")
-    assertThat(board.castle).isEqualTo("KQ")
+    assertThat(board.castle).isEqualTo("-")
   }
 
   @Test
@@ -128,7 +141,7 @@ class CastleTest : AnnotationSpec() {
     assertThat(
       FEN.generateFENBoardString(board),
     ).isEqualTo("2kr3r/8/8/8/8/8/8/8")
-    assertThat(board.castle).isEqualTo("KQ")
+    assertThat(board.castle).isEqualTo("-")
   }
 
   @Test
@@ -230,5 +243,35 @@ class CastleTest : AnnotationSpec() {
       FEN.generateFENBoardString(board),
     ).isEqualTo("4k3/8/8/8/8/8/4K3/R6R")
     assertThat(board.castle).isEqualTo("-")
+  }
+
+  @Test
+  fun `Black tower is captured without movement, k removed from castle`() {
+    // given
+    val board = Board(FEN("rnbqkbnr/8/8/8/8/8/1B6/RN1QKBNR"))
+    val move =
+      SingleMove(Position(File.B, Rank.TWO), Position(File.H, Rank.EIGHT))
+    // when
+    board.makeMove(move)
+    // then
+    assertThat(
+      FEN.generateFENBoardString(board),
+    ).isEqualTo("rnbqkbnB/8/8/8/8/8/8/RN1QKBNR")
+    assertThat(board.castle).isEqualTo("KQq")
+  }
+
+  @Test
+  fun `Black tower is captured without movement, q removed from castle`() {
+    // given
+    val board = Board(FEN("rnbqkbnr/8/8/8/8/8/6B1/RNBQK1NR"))
+    val move =
+      SingleMove(Position(File.G, Rank.TWO), Position(File.A, Rank.EIGHT))
+    // when
+    board.makeMove(move)
+    // then
+    assertThat(
+      FEN.generateFENBoardString(board),
+    ).isEqualTo("Bnbqkbnr/8/8/8/8/8/8/RNBQK1NR")
+    assertThat(board.castle).isEqualTo("KQk")
   }
 }
