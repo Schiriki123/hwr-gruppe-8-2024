@@ -18,8 +18,8 @@ class KingTest : AnnotationSpec() {
     val boardInspector = Board(FEN("8/8/8/8/8/8/8/K7", 'w', ""))
     val whiteKing = King(Color.WHITE, boardInspector)
     val blackKing = King(Color.BLACK, boardInspector)
-    assertThat(whiteKing.toFENRepresentation()).isEqualTo('K')
-    assertThat(blackKing.toFENRepresentation()).isEqualTo('k')
+    assertThat(whiteKing.fenRepresentation()).isEqualTo('K')
+    assertThat(blackKing.fenRepresentation()).isEqualTo('k')
     assertThat(whiteKing.getType()).isEqualTo(PieceType.KING)
   }
 

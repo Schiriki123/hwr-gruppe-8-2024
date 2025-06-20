@@ -36,7 +36,7 @@ class Knight(override val color: Color, val boardInspector: BoardInspector) :
     return validDestinations
   }
 
-  override fun toFENRepresentation(): Char = when (color) {
+  override fun fenRepresentation(): Char = when (color) {
     Color.WHITE -> 'N'
     Color.BLACK -> 'n'
   }

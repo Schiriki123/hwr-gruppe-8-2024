@@ -7,6 +7,6 @@ interface Piece {
   val color: Color // TODO: Move to genColor
 
   fun getValidMove(): Set<Move>
-  fun toFENRepresentation(): Char // TODO: Extract to FEN
+  fun fenRepresentation(): Char
   fun getType(): PieceType
 }

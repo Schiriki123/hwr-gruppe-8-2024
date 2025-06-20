@@ -48,7 +48,7 @@ class King(override val color: Color, val boardInspector: BoardInspector) :
     return validSingleMoves.toSet()
   }
 
-  override fun toFENRepresentation(): Char = when (color) {
+  override fun fenRepresentation(): Char = when (color) {
     Color.WHITE -> 'K'
     Color.BLACK -> 'k'
   }

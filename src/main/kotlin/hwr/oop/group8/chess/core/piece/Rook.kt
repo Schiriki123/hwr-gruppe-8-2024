@@ -21,7 +21,7 @@ class Rook(override val color: Color, val boardInspector: BoardInspector) :
     return validDestinations.toSet()
   }
 
-  override fun toFENRepresentation(): Char = when (color) {
+  override fun fenRepresentation(): Char = when (color) {
     Color.WHITE -> 'R'
     Color.BLACK -> 'r'
   }

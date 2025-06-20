@@ -115,7 +115,7 @@ class Pawn(override val color: Color, val boardInspector: BoardInspector) :
       PromotionMove(from, to, PieceType.KNIGHT),
     )
 
-  override fun toFENRepresentation(): Char = when (color) {
+  override fun fenRepresentation(): Char = when (color) {
     Color.WHITE -> 'P'
     Color.BLACK -> 'p'
   }

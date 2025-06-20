@@ -17,8 +17,8 @@ class BishopTest : AnnotationSpec() {
     val boardInspector = Board(FEN("8/8/8/8/8/8/8/K7", 'w', ""))
     val whiteBishop = Bishop(Color.WHITE, boardInspector)
     val blackBishop = Bishop(Color.BLACK, boardInspector)
-    assertThat(whiteBishop.toFENRepresentation()).isEqualTo('B')
-    assertThat(blackBishop.toFENRepresentation()).isEqualTo('b')
+    assertThat(whiteBishop.fenRepresentation()).isEqualTo('B')
+    assertThat(blackBishop.fenRepresentation()).isEqualTo('b')
     assertThat(whiteBishop.getType()).isEqualTo(PieceType.BISHOP)
   }
 
