@@ -1,9 +1,9 @@
-package hwr.oop.group8.chess.core
+package hwr.oop.group8.chess.core.move
 
-import hwr.oop.group8.chess.core.move.CastleMove
-import hwr.oop.group8.chess.core.move.DoublePawnMove
-import hwr.oop.group8.chess.core.move.PromotionMove
-import hwr.oop.group8.chess.core.move.SingleMove
+import hwr.oop.group8.chess.core.Board
+import hwr.oop.group8.chess.core.File
+import hwr.oop.group8.chess.core.Position
+import hwr.oop.group8.chess.core.Rank
 import hwr.oop.group8.chess.core.piece.King
 import hwr.oop.group8.chess.core.piece.PieceType
 import hwr.oop.group8.chess.persistence.FEN

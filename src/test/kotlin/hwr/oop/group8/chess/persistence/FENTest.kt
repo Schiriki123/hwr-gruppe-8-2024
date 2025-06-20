@@ -70,4 +70,15 @@ class FENTest : AnnotationSpec() {
     assertThatThrownBy { FEN(halfmoveClock = -1) }
     assertThatThrownBy { FEN(fullmoveClock = 0) }
   }
+
+  @Test
+  fun `En passant null on board should be '-' in FEN`() {
+    // given
+    val board = Board(FEN(enPassant = "-"))
+    assertThat(board.enPassant).isNull()
+    // when
+    val fen = FEN.getFEN(board)
+    // then
+    assertThat(fen.enPassant).isEqualTo("-")
+  }
 }
