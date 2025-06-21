@@ -46,11 +46,11 @@ class BoardTest : AnnotationSpec() {
     for (rank in Rank.entries.reversed()) {
       for (file in File.entries) {
         val position = Position(file, rank)
-        val square = board.getSquare(position)
+        val piece = board.analyser.getPieceAt(position)
         if (rank == Rank.EIGHT && file == File.A) {
-          square.getPiece().shouldBeInstanceOf<King>()
+          piece.shouldBeInstanceOf<King>()
         } else {
-          assertThat(square.getPiece()).isNull()
+          assertThat(piece).isNull()
         }
       }
     }

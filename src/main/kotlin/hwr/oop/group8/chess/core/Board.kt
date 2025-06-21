@@ -83,7 +83,7 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) {
       toSquare.setPiece(promotionPiece)
     }
     enPassant = if (move.isDoublePawnMove()) {
-      allowedEnPassantTarget(move as DoublePawnMove)
+      analyser.allowedEnPassantTarget(move as DoublePawnMove)
     } else {
       null
     }
@@ -150,25 +150,6 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) {
   }
 
   fun newStateHistory() = stateHistory.plus(FEN.boardStateHash(this))
-
-  fun allowedEnPassantTarget(move: DoublePawnMove): Position? =
-    if (move.to.hasNextPosition(Direction.LEFT) &&
-      analyser.getPieceAt(move.to.left())?.color != turn &&
-      analyser.getPieceAt(
-        move.to.left(),
-      )?.getType() == PieceType.PAWN
-    ) {
-      move.skippedPosition()
-    } else if (move.to.hasNextPosition(Direction.RIGHT) &&
-      analyser.getPieceAt(move.to.right())?.color != turn &&
-      analyser.getPieceAt(
-        move.to.right(),
-      )?.getType() == PieceType.PAWN
-    ) {
-      move.skippedPosition()
-    } else {
-      null
-    }
 
   fun getMap(): HashMap<Position, Square> = map
 }

@@ -1,11 +1,12 @@
 package hwr.oop.group8.chess.core
 
+import hwr.oop.group8.chess.core.move.DoublePawnMove
 import hwr.oop.group8.chess.core.move.Move
 import hwr.oop.group8.chess.core.piece.Piece
 import hwr.oop.group8.chess.core.piece.PieceType
 
 class BoardAnalyser(val board: Board) : BoardInspector {
-  // TODO: Use BoardInspector interface
+  // TODO: Refactor to provide BoardAnalyser with ReadOnly Access
 
   private fun getKingPosition(): Position {
     val allPiecesOfCurrentPlayer = getAllPiecesOfCurrentPlayer()
@@ -85,6 +86,24 @@ class BoardAnalyser(val board: Board) : BoardInspector {
 
   fun isCapture(move: Move): Boolean = !isSquareEmpty(move.moves().first().to)
 
+  fun allowedEnPassantTarget(move: DoublePawnMove): Position? =
+    if (move.to.hasNextPosition(Direction.LEFT) &&
+      getPieceAt(move.to.left())?.color != board.turn &&
+      getPieceAt(
+        move.to.left(),
+      )?.getType() == PieceType.PAWN
+    ) {
+      move.skippedPosition()
+    } else if (move.to.hasNextPosition(Direction.RIGHT) &&
+      getPieceAt(move.to.right())?.color != board.turn &&
+      getPieceAt(
+        move.to.right(),
+      )?.getType() == PieceType.PAWN
+    ) {
+      move.skippedPosition()
+    } else {
+      null
+    }
   override fun getPieceAt(position: Position): Piece? =
     board.getMap().getValue(position).getPiece()
 
