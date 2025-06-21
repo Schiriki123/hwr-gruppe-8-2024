@@ -24,7 +24,7 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) {
     private set
   var fullmoveClock: Int
     private set
-  val boardAnalyser: BoardAnalyser = BoardAnalyser(this)
+  val analyser: BoardAnalyser = BoardAnalyser(this)
   private val castling: Castling = Castling(this)
 
   init {
@@ -66,16 +66,16 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) {
   }
 
   private fun isCapture(move: Move): Boolean =
-    !boardAnalyser.isSquareEmpty(move.moves().first().to)
+    !analyser.isSquareEmpty(move.moves().first().to)
 
   private fun createPieceOnBoard(type: PieceType, color: Color): Piece =
     when (type) {
-      PieceType.PAWN -> Pawn(color, boardAnalyser)
-      PieceType.ROOK -> Rook(color, boardAnalyser)
-      PieceType.KNIGHT -> Knight(color, boardAnalyser)
-      PieceType.BISHOP -> Bishop(color, boardAnalyser)
-      PieceType.QUEEN -> Queen(color, boardAnalyser)
-      PieceType.KING -> King(color, boardAnalyser)
+      PieceType.PAWN -> Pawn(color, analyser)
+      PieceType.ROOK -> Rook(color, analyser)
+      PieceType.KNIGHT -> Knight(color, analyser)
+      PieceType.BISHOP -> Bishop(color, analyser)
+      PieceType.QUEEN -> Queen(color, analyser)
+      PieceType.KING -> King(color, analyser)
     }
 
   private fun applyMoves(move: Move, piece: Piece) {
@@ -109,25 +109,18 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) {
     halfmoveClock = -1
   }
 
-  fun getPieceAt(position: Position): Piece? =
-    boardAnalyser.getPieceAt(position)
-
-  fun findPositionOfPiece(piece: Piece): Position =
-    boardAnalyser.findPositionOfPiece(piece)
-
   fun isCastlingAllowed(color: Color): Pair<Boolean, Boolean> =
     castling.isAllowed(color)
 
-  fun isSquareEmpty(position: Position) = boardAnalyser.isSquareEmpty(position)
-  fun getCurrentTurn(): Color = turn
+  fun isSquareEmpty(position: Position) = analyser.isSquareEmpty(position)
   fun getSquare(position: Position): Square = map.getValue(position)
   fun makeMove(move: Move) {
-    boardAnalyser.checkForDraw()
-    check(!boardAnalyser.isCheckmate()) {
+    analyser.checkForDraw()
+    check(!analyser.isCheckmate()) {
       "Game is over, checkmate!"
     }
 
-    val piece = getPieceAt(move.moves().first().from)
+    val piece = analyser.getPieceAt(move.moves().first().from)
 
     checkNotNull(piece) { "There is no piece at ${move.moves().first().from}" }
     check(piece.color == turn) { "It's not your turn" }
@@ -145,7 +138,7 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) {
     }
 
     check(
-      boardAnalyser.isMoveCheck(matchingMove),
+      analyser.isMoveCheck(matchingMove),
     ) { "Move would put player in check" }
 
     if (piece.getType() == PieceType.PAWN || isCapture(move)) {
@@ -161,20 +154,19 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) {
 
   fun newStateHistory() = stateHistory.plus(FEN.boardStateHash(this))
 
-  fun isCheck(): Boolean = boardAnalyser.isCheck()
+  fun isCheck(): Boolean = analyser.isCheck()
 
-  fun allowedEnPassantTarget(move: DoublePawnMove): Position? {
-    val currentTurn = getCurrentTurn()
-    return if (move.to.hasNextPosition(Direction.LEFT) &&
-      getPieceAt(move.to.left())?.color != currentTurn &&
-      getPieceAt(
+  fun allowedEnPassantTarget(move: DoublePawnMove): Position? =
+    if (move.to.hasNextPosition(Direction.LEFT) &&
+      analyser.getPieceAt(move.to.left())?.color != turn &&
+      analyser.getPieceAt(
         move.to.left(),
       )?.getType() == PieceType.PAWN
     ) {
       move.skippedPosition()
     } else if (move.to.hasNextPosition(Direction.RIGHT) &&
-      getPieceAt(move.to.right())?.color != currentTurn &&
-      getPieceAt(
+      analyser.getPieceAt(move.to.right())?.color != turn &&
+      analyser.getPieceAt(
         move.to.right(),
       )?.getType() == PieceType.PAWN
     ) {
@@ -182,10 +174,9 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) {
     } else {
       null
     }
-  }
 
   fun isPositionThreatened(currentPlayer: Color, position: Position): Boolean =
-    boardAnalyser.isPositionThreatened(currentPlayer, position)
+    analyser.isPositionThreatened(currentPlayer, position)
 
   fun getMap(): HashMap<Position, Square> = map
 }

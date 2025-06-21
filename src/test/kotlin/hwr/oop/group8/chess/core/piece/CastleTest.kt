@@ -172,7 +172,7 @@ class CastleTest : AnnotationSpec() {
       ),
     )
     val startPosition = Position(File.E, Rank.ONE)
-    val king = board.getPieceAt(startPosition) as King
+    val king = board.analyser.getPieceAt(startPosition) as King
     val possibleMoves = king.getValidMove()
 
     assertThat(board.castle).isEqualTo("K")

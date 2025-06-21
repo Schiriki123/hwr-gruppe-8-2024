@@ -9,8 +9,12 @@ class BoardAnalyser(val board: Board) : BoardInspector { // TODO: Use BoardInspe
   private fun getKingPosition(): Position {
     val allPiecesOfCurrentPlayer = getAllPiecesOfCurrentPlayer()
 
-    return allPiecesOfCurrentPlayer.first { it.getType() == PieceType.KING }
-      .let { board.findPositionOfPiece(it) }
+    return findPositionOfPiece(
+      allPiecesOfCurrentPlayer.first {
+        it.getType() ==
+          PieceType.KING
+      },
+    )
   }
 
   private fun isRepetitionDraw(): Boolean =

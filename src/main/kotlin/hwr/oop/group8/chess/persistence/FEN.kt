@@ -71,7 +71,7 @@ data class FEN(
       var lastPiece = 0
       for (rank in Rank.entries.reversed()) {
         for (file in File.entries) {
-          val piece = board.getPieceAt(Position(file, rank))
+          val piece = board.analyser.getPieceAt(Position(file, rank))
           if (piece != null) {
             if (lastPiece != 0) {
               builder.append(lastPiece)

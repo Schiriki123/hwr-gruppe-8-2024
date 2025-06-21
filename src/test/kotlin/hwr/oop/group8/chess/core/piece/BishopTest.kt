@@ -15,8 +15,8 @@ class BishopTest : AnnotationSpec() {
   @Test
   fun `Char representation of Bishop`() {
     val boardInspector = Board(FEN("8/8/8/8/8/8/8/K7", 'w', ""))
-    val whiteBishop = Bishop(Color.WHITE, boardInspector.boardAnalyser)
-    val blackBishop = Bishop(Color.BLACK, boardInspector.boardAnalyser)
+    val whiteBishop = Bishop(Color.WHITE, boardInspector.analyser)
+    val blackBishop = Bishop(Color.BLACK, boardInspector.analyser)
     assertThat(whiteBishop.fenRepresentation()).isEqualTo('B')
     assertThat(blackBishop.fenRepresentation()).isEqualTo('b')
     assertThat(whiteBishop.getType()).isEqualTo(PieceType.BISHOP)
@@ -39,7 +39,7 @@ class BishopTest : AnnotationSpec() {
     val board = Board(FEN("8/8/8/2B5/8/P3p3/8/K7", castle = ""))
     val startPosition = Position(File.C, Rank.FIVE)
     val validMoveDestinationsOfBishop =
-      board.getPieceAt(startPosition)!!.getValidMove()
+      board.analyser.getPieceAt(startPosition)!!.getValidMove()
 
     assertThat(validMoveDestinationsOfBishop).containsExactlyInAnyOrder(
       SingleMove(startPosition, Position(File.B, Rank.SIX)),
