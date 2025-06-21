@@ -79,7 +79,7 @@ class BoardAnalyser(val board: Board) : BoardInspector { // TODO: Use BoardInspe
   fun isCheck(): Boolean {
     val kingPosition = getKingPosition()
 
-    return board.isPositionThreatened(board.turn, kingPosition)
+    return isPositionThreatened(board.turn, kingPosition)
   }
 
   override fun getPieceAt(position: Position): Piece? =

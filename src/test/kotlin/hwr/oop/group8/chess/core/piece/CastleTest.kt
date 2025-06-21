@@ -66,7 +66,7 @@ class CastleTest : AnnotationSpec() {
     assertThat(
       FEN.generateFENBoardString(board),
     ).isEqualTo("r3k2r/8/8/8/8/8/8/R3K1R1")
-    assertThat(board.castle).isEqualTo("Qkq")
+    assertThat(board.castle()).isEqualTo("Qkq")
   }
 
   @Test
@@ -78,7 +78,7 @@ class CastleTest : AnnotationSpec() {
     assertThat(
       FEN.generateFENBoardString(board),
     ).isEqualTo("r3k2r/8/8/8/8/8/8/1R2K2R")
-    assertThat(board.castle).isEqualTo("Kkq")
+    assertThat(board.castle()).isEqualTo("Kkq")
   }
 
   // KING
@@ -95,7 +95,7 @@ class CastleTest : AnnotationSpec() {
     assertThat(
       FEN.generateFENBoardString(board),
     ).isEqualTo("8/8/8/8/8/8/8/R4RK1")
-    assertThat(board.castle).isEqualTo("-")
+    assertThat(board.castle()).isEqualTo("-")
   }
 
   @Test
@@ -110,7 +110,7 @@ class CastleTest : AnnotationSpec() {
     assertThat(
       FEN.generateFENBoardString(board),
     ).isEqualTo("8/8/8/8/8/8/8/2KR3R")
-    assertThat(board.castle).isEqualTo("-")
+    assertThat(board.castle()).isEqualTo("-")
   }
 
   @Test
@@ -126,7 +126,7 @@ class CastleTest : AnnotationSpec() {
     assertThat(
       FEN.generateFENBoardString(board),
     ).isEqualTo("r4rk1/8/8/8/8/8/8/8")
-    assertThat(board.castle).isEqualTo("-")
+    assertThat(board.castle()).isEqualTo("-")
   }
 
   @Test
@@ -141,7 +141,7 @@ class CastleTest : AnnotationSpec() {
     assertThat(
       FEN.generateFENBoardString(board),
     ).isEqualTo("2kr3r/8/8/8/8/8/8/8")
-    assertThat(board.castle).isEqualTo("-")
+    assertThat(board.castle()).isEqualTo("-")
   }
 
   @Test
@@ -175,7 +175,7 @@ class CastleTest : AnnotationSpec() {
     val king = board.analyser.getPieceAt(startPosition) as King
     val possibleMoves = king.getValidMove()
 
-    assertThat(board.castle).isEqualTo("K")
+    assertThat(board.castle()).isEqualTo("K")
     assertThat(
       possibleMoves,
     ).containsExactlyInAnyOrder(
@@ -199,7 +199,7 @@ class CastleTest : AnnotationSpec() {
     assertThat(
       FEN.generateFENBoardString(board),
     ).isEqualTo("8/1k6/4r3/8/8/8/8/R3K2R")
-    assertThat(board.castle).isEqualTo("KQkq")
+    assertThat(board.castle()).isEqualTo("KQkq")
   }
 
   @Test
@@ -213,7 +213,7 @@ class CastleTest : AnnotationSpec() {
     assertThat(
       FEN.generateFENBoardString(board),
     ).isEqualTo("8/8/8/8/8/8/8/R3KB1R")
-    assertThat(board.castle).isEqualTo("KQkq")
+    assertThat(board.castle()).isEqualTo("KQkq")
   }
 
   @Test
@@ -227,7 +227,7 @@ class CastleTest : AnnotationSpec() {
     assertThat(
       FEN.generateFENBoardString(board),
     ).isEqualTo("8/8/8/8/8/8/8/RN2K2R")
-    assertThat(board.castle).isEqualTo("KQkq")
+    assertThat(board.castle()).isEqualTo("KQkq")
   }
 
   @Test
@@ -242,7 +242,7 @@ class CastleTest : AnnotationSpec() {
     assertThat(
       FEN.generateFENBoardString(board),
     ).isEqualTo("4k3/8/8/8/8/8/4K3/R6R")
-    assertThat(board.castle).isEqualTo("-")
+    assertThat(board.castle()).isEqualTo("-")
   }
 
   @Test
@@ -257,7 +257,7 @@ class CastleTest : AnnotationSpec() {
     assertThat(
       FEN.generateFENBoardString(board),
     ).isEqualTo("rnbqkbnB/8/8/8/8/8/8/RN1QKBNR")
-    assertThat(board.castle).isEqualTo("KQq")
+    assertThat(board.castle()).isEqualTo("KQq")
   }
 
   @Test
@@ -272,6 +272,6 @@ class CastleTest : AnnotationSpec() {
     assertThat(
       FEN.generateFENBoardString(board),
     ).isEqualTo("Bnbqkbnr/8/8/8/8/8/8/RNBQK1NR")
-    assertThat(board.castle).isEqualTo("KQk")
+    assertThat(board.castle()).isEqualTo("KQk")
   }
 }

@@ -19,19 +19,18 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) {
     private set
   var enPassant: Position?
     private set
-  var castle: String
   var halfmoveClock: Int
     private set
   var fullmoveClock: Int
     private set
   val analyser: BoardAnalyser = BoardAnalyser(this)
-  private val castling: Castling = Castling(this)
+  private val castling: Castling
 
   init {
     initializeBoardFromFENString() // TODO: BoardFactory class
 
     turn = fen.getTurn()
-    castle = fen.castle
+    castling = Castling(this, fen.castle)
     enPassant = fen.enPassant()
     halfmoveClock = fen.halfmoveClock
     fullmoveClock = fen.fullmoveClock
@@ -111,6 +110,8 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) {
 
   fun isCastlingAllowed(color: Color): Pair<Boolean, Boolean> =
     castling.isAllowed(color)
+
+  fun castle() = castling.string()
 
   fun isSquareEmpty(position: Position) = analyser.isSquareEmpty(position)
   fun getSquare(position: Position): Square = map.getValue(position)

@@ -2,7 +2,7 @@ package hwr.oop.group8.chess.core
 
 import hwr.oop.group8.chess.core.piece.Piece
 
-class Castling(val board: Board) {
+class Castling(val board: Board, private var castleString: String) {
 
   fun isAllowed(color: Color): Pair<Boolean, Boolean> {
     val homeRank = if (color == Color.WHITE) Rank.ONE else Rank.EIGHT
@@ -16,12 +16,14 @@ class Castling(val board: Board) {
     return Pair(queenSideAllowed, kingSideAllowed)
   }
 
+  fun string() = castleString
+
   private fun isQueenSideAllowed(homeRank: Rank, color: Color): Boolean {
     val queenSide: Boolean =
       board.isSquareEmpty(Position(File.D, homeRank)) &&
         board.isSquareEmpty(Position(File.C, homeRank)) &&
         board.isSquareEmpty(Position(File.B, homeRank)) &&
-        board.castle.contains(if (color == Color.WHITE) "Q" else "q") &&
+        castleString.contains(if (color == Color.WHITE) "Q" else "q") &&
         !board.isPositionThreatened(color, Position(File.D, homeRank)) &&
         !board.isPositionThreatened(color, Position(File.C, homeRank))
     return queenSide
@@ -30,7 +32,7 @@ class Castling(val board: Board) {
   private fun isKingSideAllowed(homeRank: Rank, color: Color): Boolean =
     board.isSquareEmpty(Position(File.F, homeRank)) &&
       board.isSquareEmpty(Position(File.G, homeRank)) &&
-      board.castle.contains(if (color == Color.WHITE) "K" else "k") &&
+      castleString.contains(if (color == Color.WHITE) "K" else "k") &&
       !board.isPositionThreatened(color, Position(File.F, homeRank)) &&
       !board.isPositionThreatened(color, Position(File.G, homeRank))
 
@@ -52,17 +54,17 @@ class Castling(val board: Board) {
     val queenChar = if (turn == Color.WHITE) "Q" else "q"
 
     if (kingPosition == null) {
-      board.castle = board.castle.replace(kingChar, "")
-      board.castle = board.castle.replace(queenChar, "")
+      castleString = castleString.replace(kingChar, "")
+      castleString = castleString.replace(queenChar, "")
     }
     if (hasKingSideRookMoved(rookPositionKingSide, turn)) {
-      board.castle = board.castle.replace(kingChar, "")
+      castleString = castleString.replace(kingChar, "")
     }
     if (hasQueenSideRookMoved(rookPositionQueenSide, turn)) {
-      board.castle = board.castle.replace(queenChar, "")
+      castleString = castleString.replace(queenChar, "")
     }
-    if (board.castle.isEmpty()) {
-      board.castle = "-"
+    if (castleString.isEmpty()) {
+      castleString = "-"
     }
   }
 

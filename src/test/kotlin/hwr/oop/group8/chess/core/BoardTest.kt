@@ -154,7 +154,7 @@ class BoardTest : AnnotationSpec() {
     }
 
     assertThat(board.turn).isEqualTo(Color.WHITE)
-    assertThat(board.castle).isEqualTo("KQkq")
+    assertThat(board.castle()).isEqualTo("KQkq")
     assertThat(board.enPassant).isEqualTo(null)
     assertThat(board.halfmoveClock).isEqualTo(0)
     assertThat(board.fullmoveClock).isEqualTo(1)
@@ -162,7 +162,7 @@ class BoardTest : AnnotationSpec() {
 
   @Test
   fun `custom board initialization`() {
-    val board = Board(FEN("k7/2R4B/8/8/1q6/8/8/2Q4N", 'b', "", "-", 4, 25))
+    val board = Board(FEN("k7/2R4B/8/8/1q6/8/8/2Q4N", 'b', "-", "-", 4, 25))
     board.analyser.getPieceAt(Position(File.B, Rank.FOUR))
       .shouldBeInstanceOf<Queen>().color.shouldBe(
         Color.BLACK,
@@ -194,7 +194,7 @@ class BoardTest : AnnotationSpec() {
       )
 
     assertThat(board.turn).isEqualTo(Color.BLACK)
-    assertThat(board.castle).isEmpty()
+    assertThat(board.castle()).isEqualTo("-")
     assertThat(board.halfmoveClock).isEqualTo(4)
     assertThat(board.fullmoveClock).isEqualTo(25)
   }
@@ -202,7 +202,7 @@ class BoardTest : AnnotationSpec() {
   @Test
   fun `halfmoveclock should be 0 after capture`() {
     val board =
-      Board(FEN("8/8/8/8/8/7r/7R/k7", 'b', "", halfmoveClock = 12))
+      Board(FEN("8/8/8/8/8/7r/7R/k7", 'b', "-", halfmoveClock = 12))
     val startPosition = Position(File.H, Rank.THREE)
     val endPosition = Position(File.H, Rank.TWO)
     val testSingleMove = SingleMove(startPosition, endPosition)
@@ -213,7 +213,7 @@ class BoardTest : AnnotationSpec() {
   @Test
   fun `reset halfmoveclock after pawn move, expecting halfmoveclock to be 0`() {
     val board =
-      Board(FEN("8/8/8/8/8/1p6/8/k7", 'b', "", halfmoveClock = 12))
+      Board(FEN("8/8/8/8/8/1p6/8/k7", 'b', "-", halfmoveClock = 12))
     val startPosition = Position(File.B, Rank.THREE)
     val endPosition = Position(File.B, Rank.TWO)
     val testSingleMove = SingleMove(startPosition, endPosition)
@@ -224,7 +224,7 @@ class BoardTest : AnnotationSpec() {
   @Test
   fun `increase halfmoveclock expecting halfmoveclock to be 13 `() {
     val board =
-      Board(FEN("r7/8/8/8/8/8/8/k7", 'b', "", halfmoveClock = 12))
+      Board(FEN("r7/8/8/8/8/8/8/k7", 'b', "-", halfmoveClock = 12))
     val startPosition = Position(File.A, Rank.EIGHT)
     val endPosition = Position(File.A, Rank.SEVEN)
     val testSingleMove = SingleMove(startPosition, endPosition)
@@ -235,7 +235,7 @@ class BoardTest : AnnotationSpec() {
   @Test
   fun `increase fullmove clock expecting fullmove to be 13 `() {
     val board =
-      Board(FEN("r7/8/8/8/8/8/8/k7", 'b', "", fullmoveClock = 12))
+      Board(FEN("r7/8/8/8/8/8/8/k7", 'b', "-", fullmoveClock = 12))
     val startPosition = Position(File.A, Rank.EIGHT)
     val endPosition = Position(File.A, Rank.SEVEN)
     val testSingleMove = SingleMove(startPosition, endPosition)
@@ -246,7 +246,7 @@ class BoardTest : AnnotationSpec() {
   @Test
   fun `do not increase fullmove clock expecting fullmove to be 12 `() {
     val board =
-      Board(FEN("R7/8/8/8/8/8/8/K7", 'w', "", fullmoveClock = 12))
+      Board(FEN("R7/8/8/8/8/8/8/K7", 'w', "-", fullmoveClock = 12))
     val startPosition = Position(File.A, Rank.EIGHT)
     val endPosition = Position(File.A, Rank.SEVEN)
     val testSingleMove = SingleMove(startPosition, endPosition)
@@ -256,7 +256,7 @@ class BoardTest : AnnotationSpec() {
 
   @Test
   fun `Piece movement, rook move e4 to e8 + no exception thrown `() {
-    val board = Board(FEN("8/8/8/8/4R3/8/8/K7", 'w', ""))
+    val board = Board(FEN("8/8/8/8/4R3/8/8/K7", 'w', "-"))
     val startPosition = Position(File.E, Rank.FOUR)
     val endPosition = Position(File.E, Rank.EIGHT)
     val testSingleMove = SingleMove(startPosition, endPosition)
@@ -296,7 +296,7 @@ class BoardTest : AnnotationSpec() {
 
   @Test
   fun `Piece moves on ally, exception expected`() {
-    val board = Board(FEN("K7/8/8/8/8/P7/8/R7", castle = ""))
+    val board = Board(FEN("K7/8/8/8/8/P7/8/R7", castle = "-"))
     val singleMove =
       SingleMove(Position(File.A, Rank.ONE), Position(File.A, Rank.THREE))
     assertThatThrownBy { board.makeMove(singleMove) }.message()
@@ -308,7 +308,7 @@ class BoardTest : AnnotationSpec() {
 
   @Test
   fun `Capture Piece, rook captures pawn, expecting valid move`() {
-    val board = Board(FEN("K7/8/8/8/8/p7/8/R7", castle = ""))
+    val board = Board(FEN("K7/8/8/8/8/p7/8/R7", castle = "-"))
     val singleMove =
       SingleMove(Position(File.A, Rank.ONE), Position(File.A, Rank.THREE))
     board.makeMove(singleMove)
