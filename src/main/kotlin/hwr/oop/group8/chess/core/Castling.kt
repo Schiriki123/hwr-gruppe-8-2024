@@ -2,7 +2,7 @@ package hwr.oop.group8.chess.core
 
 import hwr.oop.group8.chess.core.piece.Piece
 
-class Castling(val board: Board, private var castleString: String) {
+class Castling(val board: BoardAnalyser, private var castleString: String) {
 
   fun isAllowed(color: Color): Pair<Boolean, Boolean> {
     val homeRank = if (color == Color.WHITE) Rank.ONE else Rank.EIGHT
@@ -37,19 +37,19 @@ class Castling(val board: Board, private var castleString: String) {
       !board.isPositionThreatened(color, Position(File.G, homeRank))
 
   fun updatePermission() {
-    update(board.turn)
-    update(board.turn.invert())
+    update(board.getCurrentTurn())
+    update(board.getCurrentTurn().invert())
   }
 
   private fun update(turn: Color) {
     val homeRank =
       if (turn == Color.WHITE) Rank.ONE else Rank.EIGHT
     val kingPosition =
-      board.analyser.getPieceAt(Position(File.E, homeRank))
+      board.getPieceAt(Position(File.E, homeRank))
     val rookPositionKingSide =
-      board.analyser.getPieceAt(Position(File.H, homeRank))
+      board.getPieceAt(Position(File.H, homeRank))
     val rookPositionQueenSide =
-      board.analyser.getPieceAt(Position(File.A, homeRank))
+      board.getPieceAt(Position(File.A, homeRank))
     val kingChar = if (turn == Color.WHITE) "K" else "k"
     val queenChar = if (turn == Color.WHITE) "Q" else "q"
 

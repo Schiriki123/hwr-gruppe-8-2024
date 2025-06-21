@@ -4,7 +4,8 @@ import hwr.oop.group8.chess.core.move.Move
 import hwr.oop.group8.chess.core.piece.Piece
 import hwr.oop.group8.chess.core.piece.PieceType
 
-class BoardAnalyser(val board: Board) : BoardInspector { // TODO: Use BoardInspector interface
+class BoardAnalyser(val board: Board) : BoardInspector {
+  // TODO: Use BoardInspector interface
 
   private fun getKingPosition(): Position {
     val allPiecesOfCurrentPlayer = getAllPiecesOfCurrentPlayer()

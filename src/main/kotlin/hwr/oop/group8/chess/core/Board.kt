@@ -30,7 +30,7 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) {
     initializeBoardFromFENString() // TODO: BoardFactory class
 
     turn = fen.getTurn()
-    castling = Castling(this, fen.castle)
+    castling = Castling(analyser, fen.castle)
     enPassant = fen.enPassant()
     halfmoveClock = fen.halfmoveClock
     fullmoveClock = fen.fullmoveClock
@@ -113,7 +113,6 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) {
 
   fun castle() = castling.string()
 
-  fun isSquareEmpty(position: Position) = analyser.isSquareEmpty(position)
   fun getSquare(position: Position): Square = map.getValue(position)
   fun makeMove(move: Move) {
     analyser.checkForDraw()
@@ -155,8 +154,6 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) {
 
   fun newStateHistory() = stateHistory.plus(FEN.boardStateHash(this))
 
-  fun isCheck(): Boolean = analyser.isCheck()
-
   fun allowedEnPassantTarget(move: DoublePawnMove): Position? =
     if (move.to.hasNextPosition(Direction.LEFT) &&
       analyser.getPieceAt(move.to.left())?.color != turn &&
@@ -175,9 +172,6 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) {
     } else {
       null
     }
-
-  fun isPositionThreatened(currentPlayer: Color, position: Position): Boolean =
-    analyser.isPositionThreatened(currentPlayer, position)
 
   fun getMap(): HashMap<Position, Square> = map
 }
