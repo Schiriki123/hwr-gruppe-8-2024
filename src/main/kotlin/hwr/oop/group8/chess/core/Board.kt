@@ -111,11 +111,10 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) :
   }
 
   override fun getPieceAt(position: Position): Piece? =
-    getSquare(position).getPiece()
+    boardAnalyser.getPieceAt(position)
 
-  override fun findPositionOfPiece(piece: Piece): Position = map.filterValues {
-    it.getPiece() === piece
-  }.keys.first()
+  override fun findPositionOfPiece(piece: Piece): Position =
+    boardAnalyser.findPositionOfPiece(piece)
 
   override fun isCastlingAllowed(color: Color): Pair<Boolean, Boolean> =
     castling.isAllowed(color)
