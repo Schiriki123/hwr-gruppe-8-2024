@@ -23,14 +23,12 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) {
     private set
   var fullmoveClock: Int
     private set
-  val analyser: BoardAnalyser = BoardAnalyser(this)
-  private val castling: Castling
+  val analyser: BoardAnalyser = BoardAnalyser(this, fen.castle)
 
   init {
     initializeBoardFromFENString() // TODO: BoardFactory class
 
     turn = fen.getTurn()
-    castling = Castling(analyser, fen.castle)
     enPassant = fen.enPassant()
     halfmoveClock = fen.halfmoveClock
     fullmoveClock = fen.fullmoveClock
@@ -98,17 +96,14 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) {
     val piece = fromSquare.getPiece()
     toSquare.setPiece(piece)
     fromSquare.setPiece(null)
-    castling.updatePermission()
+    analyser.castling.updatePermission()
   }
 
   private fun resetHalfMoveClock() {
     halfmoveClock = -1
   }
 
-  fun isCastlingAllowed(color: Color): Pair<Boolean, Boolean> =
-    castling.isAllowed(color)
-
-  fun castle() = castling.string()
+  fun castle() = analyser.castling.string()
 
   fun getSquare(position: Position): Square = map.getValue(position)
   fun makeMove(move: Move) {

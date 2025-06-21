@@ -5,7 +5,7 @@ import hwr.oop.group8.chess.core.move.Move
 import hwr.oop.group8.chess.core.piece.Piece
 import hwr.oop.group8.chess.core.piece.PieceType
 
-class BoardAnalyser(val board: Board) : BoardInspector {
+class BoardAnalyser(val board: Board, val castle: String) : BoardInspector {
   // TODO: Refactor to provide BoardAnalyser with ReadOnly Access
 
   private fun getKingPosition(): Position {
@@ -27,6 +27,7 @@ class BoardAnalyser(val board: Board) : BoardInspector {
       .filter { it.color == board.turn }
       .toSet()
 
+  val castling = Castling(this, castle)
   fun isCheckmate(): Boolean {
     val allPiecesCurrentPlayer = getAllPiecesOfCurrentPlayer()
     allPiecesCurrentPlayer.forEach { piece ->
@@ -104,6 +105,7 @@ class BoardAnalyser(val board: Board) : BoardInspector {
     } else {
       null
     }
+
   override fun getPieceAt(position: Position): Piece? =
     board.getMap().getValue(position).getPiece()
 
@@ -115,5 +117,5 @@ class BoardAnalyser(val board: Board) : BoardInspector {
   override fun getCurrentTurn(): Color = board.turn
   override fun accessEnPassant(): Position? = board.enPassant
   override fun isCastlingAllowed(color: Color): Pair<Boolean, Boolean> =
-    board.isCastlingAllowed(color)
+    castling.isAllowed(color)
 }

@@ -23,7 +23,7 @@ class CastleTest : AnnotationSpec() {
         turn = 'w',
       ),
     )
-    val allowedCastlingForWhite = board.isCastlingAllowed(Color.WHITE)
+    val allowedCastlingForWhite = board.analyser.isCastlingAllowed(Color.WHITE)
     assertThat(allowedCastlingForWhite.first).isTrue
     assertThat(allowedCastlingForWhite.second).isFalse
   }
@@ -37,7 +37,7 @@ class CastleTest : AnnotationSpec() {
         turn = 'w',
       ),
     )
-    val allowedCastlingForWhite = board.isCastlingAllowed(Color.WHITE)
+    val allowedCastlingForWhite = board.analyser.isCastlingAllowed(Color.WHITE)
     assertThat(allowedCastlingForWhite.first).isFalse
     assertThat(allowedCastlingForWhite.second).isTrue
   }
@@ -52,7 +52,7 @@ class CastleTest : AnnotationSpec() {
         turn = 'b',
       ),
     )
-    val allowedCastlingForBlack = board.isCastlingAllowed(Color.BLACK)
+    val allowedCastlingForBlack = board.analyser.isCastlingAllowed(Color.BLACK)
     assertThat(allowedCastlingForBlack.first).isFalse
     assertThat(allowedCastlingForBlack.second).isTrue
   }
