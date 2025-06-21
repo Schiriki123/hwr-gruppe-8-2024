@@ -11,12 +11,12 @@ import hwr.oop.group8.chess.core.move.Move
 import hwr.oop.group8.chess.core.move.PromotionMove
 import hwr.oop.group8.chess.core.move.SingleMove
 
-class Pawn(override val color: Color, val boardInspector: BoardInspector) :
-  Piece {
+class Pawn(val color: Color, val boardInspector: BoardInspector) : Piece {
 
   val startRank: Rank
   val forwardDirection: Direction
   val promotionRank: Rank
+  override fun color(): Color = color
 
   init {
     when (color) {
@@ -34,7 +34,7 @@ class Pawn(override val color: Color, val boardInspector: BoardInspector) :
     }
   }
 
-  override fun getValidMoveDestinations(): Set<Move> {
+  override fun getValidMove(): Set<Move> {
     val pos = boardInspector.findPositionOfPiece(this)
     return buildSet {
       addAll(generateNormalMoves(pos))
@@ -94,7 +94,7 @@ class Pawn(override val color: Color, val boardInspector: BoardInspector) :
   }
 
   private fun hasEnemy(pos: Position): Boolean =
-    boardInspector.getPieceAt(pos)?.color == color.invert()
+    boardInspector.getPieceAt(pos)?.color() == color.invert()
 
   private fun assembleMoves(
     from: Position,
@@ -115,7 +115,7 @@ class Pawn(override val color: Color, val boardInspector: BoardInspector) :
       PromotionMove(from, to, PieceType.KNIGHT),
     )
 
-  override fun getChar(): Char = when (color) {
+  override fun fenRepresentation(): Char = when (color) {
     Color.WHITE -> 'P'
     Color.BLACK -> 'p'
   }

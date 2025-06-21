@@ -22,9 +22,9 @@ class ShowGameCommand(private val persistencePort: PersistencePort) :
     val game = persistencePort.loadGame(gameId)
     println("Loading game with id $gameId...")
     println("Current board:")
-    printBoard(game.board)
+    printBoard(game.board.analyser)
     println("Current turn: ${game.getFen().getTurn()}")
-    printCapturedPieces(game.board)
+    printCapturedPieces(game.board.analyser)
   }
 
   private fun printBoard(board: BoardInspector) {
@@ -32,7 +32,7 @@ class ShowGameCommand(private val persistencePort: PersistencePort) :
     for (rank in Rank.entries.reversed()) {
       for (file in File.entries) {
         val piece = board.getPieceAt(Position(file, rank))
-        builder.append(piece?.getChar() ?: '.')
+        builder.append(piece?.fenRepresentation() ?: '.')
       }
       builder.append("${System.lineSeparator()}")
     }
@@ -51,10 +51,14 @@ class ShowGameCommand(private val persistencePort: PersistencePort) :
         val position = Position(file, rank)
         val piece = boardInspector.getPieceAt(position)
         piece?.let { piece ->
-          if (piece.color == Color.WHITE) {
-            whitePieces.deleteAt(whitePieces.indexOf(piece.getChar()))
+          if (piece.color() == Color.WHITE) {
+            whitePieces.deleteAt(
+              whitePieces.indexOf(piece.fenRepresentation()),
+            )
           } else {
-            blackPieces.deleteAt(blackPieces.indexOf(piece.getChar()))
+            blackPieces.deleteAt(
+              blackPieces.indexOf(piece.fenRepresentation()),
+            )
           }
         }
       }

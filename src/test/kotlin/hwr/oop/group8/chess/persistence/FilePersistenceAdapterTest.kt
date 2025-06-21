@@ -339,7 +339,7 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
     val sut = FilePersistenceAdapter(tempFile.toFile())
     val game = sut.loadGame(1)
     // then
-    assertThat(game.board.stateHistory).contains(
+    assertThat(game.board.newStateHistory()).contains(
       1230,
       1230,
       123212,

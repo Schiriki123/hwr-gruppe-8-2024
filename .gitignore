@@ -34,3 +34,4 @@ build/
 /.mvn/wrapper/maven-wrapper.jar
 /.env/
 /games.csv
+/arcmutate-licence.txt

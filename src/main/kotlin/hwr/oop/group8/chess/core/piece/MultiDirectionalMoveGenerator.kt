@@ -6,9 +6,9 @@ import hwr.oop.group8.chess.core.Position
 import hwr.oop.group8.chess.core.move.SingleMove
 
 class MultiDirectionalMoveGenerator(
-  val piece: Piece,
-  val boardInspector: BoardInspector,
-  val directions: Set<Direction>,
+  private val piece: Piece,
+  private val boardInspector: BoardInspector,
+  private val directions: Set<Direction>,
 ) {
   fun getValidMoveDestinations(): Set<SingleMove> = directions.flatMap { dir ->
     collectMovesInDirection(dir)
@@ -33,7 +33,7 @@ class MultiDirectionalMoveGenerator(
     return if (nextPiece == null) {
       moves.add(SingleMove(currentPosition, pos))
       false
-    } else if (nextPiece.color != piece.color) {
+    } else if (nextPiece.color() != piece.color()) {
       moves.add(SingleMove(currentPosition, pos))
       true
     } else {

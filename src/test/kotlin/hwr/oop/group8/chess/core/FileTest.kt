@@ -2,6 +2,7 @@ package hwr.oop.group8.chess.core
 
 import io.kotest.core.spec.style.AnnotationSpec
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 
 class FileTest : AnnotationSpec() {
 
@@ -43,5 +44,15 @@ class FileTest : AnnotationSpec() {
     val previousFile = fileH.left()
     // then
     assertThat(previousFile).isEqualTo(File.D)
+  }
+
+  @Test
+  fun `Creating File from 'x' should throw`() {
+    // given
+    val x = 'x'
+    // then
+    assertThatThrownBy {
+      File.fromChar(x)
+    }
   }
 }

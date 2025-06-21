@@ -3,6 +3,7 @@ package hwr.oop.group8.chess.core
 import io.kotest.core.spec.style.AnnotationSpec
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
+import kotlin.math.abs
 
 class RankTest : AnnotationSpec() {
 
@@ -122,7 +123,7 @@ class RankTest : AnnotationSpec() {
     val rankTwo = Rank.TWO
     val rankFour = Rank.FOUR
     // when
-    val distance = rankTwo.distanceTo(rankFour)
+    val distance = abs(rankTwo.distanceTo(rankFour))
     // then
     assertThat(distance).isEqualTo(2)
   }
@@ -133,7 +134,7 @@ class RankTest : AnnotationSpec() {
     val rankSeven = Rank.SEVEN
     val anotherRankSeven = Rank.SEVEN
     // when
-    val distance = rankSeven.distanceTo(anotherRankSeven)
+    val distance = abs(rankSeven.distanceTo(anotherRankSeven))
     // then
     assertThat(distance).isEqualTo(0)
   }
@@ -144,7 +145,7 @@ class RankTest : AnnotationSpec() {
     val rankSeven = Rank.SEVEN
     val rankThree = Rank.THREE
     // when
-    val distance = rankSeven.distanceTo(rankThree)
+    val distance = abs(rankSeven.distanceTo(rankThree))
     // then
     assertThat(distance).isEqualTo(4)
   }

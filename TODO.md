@@ -3,12 +3,14 @@
 - [ ] Code cleanup
 - [x] castling
 - [x] Pawn promotion
-- [ ] en passant
-- [ ] draw
+- [x] en passant
+- [x] draw
 - [x] Persistence
 - [x] CLI
   - [x] Create new game
   - [x] Print board
+  - [ ] Use clikt
+- [ ] Custom Exceptions
 
 ### Nice to have
 - [ ] Players
