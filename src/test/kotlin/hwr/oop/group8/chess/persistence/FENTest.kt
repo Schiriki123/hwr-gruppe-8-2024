@@ -46,7 +46,7 @@ class FENTest : AnnotationSpec() {
   @Test
   fun `Default board should generate correct fen string`() {
     // given
-    val board = Board(FEN())
+    val board = Board.factory(FEN())
     // when
     val fenString = FEN.generateFENBoardString(board)
     // then
@@ -68,7 +68,7 @@ class FENTest : AnnotationSpec() {
   @Test
   fun `En passant null on board should be '-' in FEN`() {
     // given
-    val board = Board(FEN(enPassant = "-"))
+    val board = Board.factory(FEN(enPassant = "-"))
     assertThat(board.enPassant).isNull()
     // when
     val fen = FEN.getFEN(board)

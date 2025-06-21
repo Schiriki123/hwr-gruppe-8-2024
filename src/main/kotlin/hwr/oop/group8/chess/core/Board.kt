@@ -13,7 +13,7 @@ import hwr.oop.group8.chess.core.piece.Queen
 import hwr.oop.group8.chess.core.piece.Rook
 import hwr.oop.group8.chess.persistence.FEN
 
-class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) {
+class Board private constructor(val fen: FEN, val stateHistory: List<Int>) {
   private val map = HashMap<Position, Square>()
   var turn: Color
     private set
@@ -24,6 +24,11 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) {
   var fullmoveClock: Int
     private set
   val analyser: BoardAnalyser = BoardAnalyser(this, fen.castle)
+
+  companion object {
+    fun factory(fen: FEN, stateHistory: List<Int> = emptyList()): Board =
+      Board(fen, stateHistory)
+  }
 
   init {
     initializeBoardFromFENString() // TODO: BoardFactory class

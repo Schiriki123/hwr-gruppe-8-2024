@@ -14,7 +14,7 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 class BishopTest : AnnotationSpec() {
   @Test
   fun `Char representation of Bishop`() {
-    val boardInspector = Board(FEN("8/8/8/8/8/8/8/K7", 'w', ""))
+    val boardInspector = Board.factory(FEN("8/8/8/8/8/8/8/K7", 'w', ""))
     val whiteBishop = Bishop(Color.WHITE, boardInspector.analyser)
     val blackBishop = Bishop(Color.BLACK, boardInspector.analyser)
     assertThat(whiteBishop.fenRepresentation()).isEqualTo('B')
@@ -24,7 +24,7 @@ class BishopTest : AnnotationSpec() {
 
   @Test
   fun `Bishop movement on empty board`() {
-    val board = Board(FEN("B7/8/8/8/8/8/8/K7", 'w', ""))
+    val board = Board.factory(FEN("B7/8/8/8/8/8/8/K7", 'w', ""))
     val singleMove =
       SingleMove(Position(File.A, Rank.EIGHT), Position(File.E, Rank.FOUR))
     board.makeMove(singleMove)
@@ -36,7 +36,7 @@ class BishopTest : AnnotationSpec() {
 
   @Test
   fun `Bishop capture move set generation`() {
-    val board = Board(FEN("8/8/8/2B5/8/P3p3/8/K7", castle = ""))
+    val board = Board.factory(FEN("8/8/8/2B5/8/P3p3/8/K7", castle = ""))
     val startPosition = Position(File.C, Rank.FIVE)
     val validMoveDestinationsOfBishop =
       board.analyser.getPieceAt(startPosition)!!.getValidMove()
@@ -55,7 +55,7 @@ class BishopTest : AnnotationSpec() {
 
   @Test
   fun `Bishop movement with blocked path`() {
-    val board = Board(FEN("B7/8/8/8/4r3/8/8/K7", 'w', ""))
+    val board = Board.factory(FEN("B7/8/8/8/4r3/8/8/K7", 'w', ""))
     val singleMove =
       SingleMove(Position(File.A, Rank.EIGHT), Position(File.G, Rank.TWO))
     assertThatThrownBy { board.makeMove(singleMove) }
@@ -64,7 +64,7 @@ class BishopTest : AnnotationSpec() {
 
   @Test
   fun `Invalid move, expection exception`() {
-    val board = Board(FEN("B7/8/8/8/4r3/8/8/K7", 'w', ""))
+    val board = Board.factory(FEN("B7/8/8/8/4r3/8/8/K7", 'w', ""))
     val singleMove =
       SingleMove(Position(File.A, Rank.EIGHT), Position(File.A, Rank.TWO))
     assertThatThrownBy { board.makeMove(singleMove) }

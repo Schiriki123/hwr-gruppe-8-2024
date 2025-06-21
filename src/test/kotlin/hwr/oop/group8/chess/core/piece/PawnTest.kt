@@ -17,7 +17,7 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 class PawnTest : AnnotationSpec() {
   @Test
   fun `Right representation of Pawn attributes`() {
-    val boardInspector = Board(FEN("8/8/8/8/8/8/8/K7", 'w', ""))
+    val boardInspector = Board.factory(FEN("8/8/8/8/8/8/8/K7", 'w', ""))
     val whitePawn = Pawn(Color.WHITE, boardInspector.analyser)
     val blackPawn = Pawn(Color.BLACK, boardInspector.analyser)
     assertThat(whitePawn.fenRepresentation()).isEqualTo('P')
@@ -30,7 +30,7 @@ class PawnTest : AnnotationSpec() {
 
   @Test
   fun `Pawn movement block path`() {
-    val board = Board(FEN("7k/p7/R7/8/8/8/8/K7", 'b', ""))
+    val board = Board.factory(FEN("7k/p7/R7/8/8/8/8/K7", 'b', ""))
     val singleMove =
       SingleMove(Position(File.A, Rank.SEVEN), Position(File.A, Rank.SIX))
 
@@ -42,7 +42,7 @@ class PawnTest : AnnotationSpec() {
 
   @Test
   fun `Pawn movement on empty board`() {
-    val board = Board(FEN("8/p7/8/8/8/8/8/k7", 'b', ""))
+    val board = Board.factory(FEN("8/p7/8/8/8/8/8/k7", 'b', ""))
     val singleMove =
       SingleMove(Position(File.A, Rank.SEVEN), Position(File.A, Rank.SIX))
     board.makeMove(singleMove)
@@ -52,7 +52,7 @@ class PawnTest : AnnotationSpec() {
 
   @Test
   fun `Backwards pawn movement`() {
-    val board = Board(FEN("8/8/p7/8/8/8/8/K7", 'w', ""))
+    val board = Board.factory(FEN("8/8/p7/8/8/8/8/K7", 'w', ""))
     val singleMove =
       SingleMove(Position(File.A, Rank.SIX), Position(File.A, Rank.SEVEN))
 
@@ -62,7 +62,7 @@ class PawnTest : AnnotationSpec() {
 
   @Test
   fun `Invalid double move, expecting exception`() {
-    val board = Board(FEN("8/8/p7/8/8/8/8/K7", 'w', ""))
+    val board = Board.factory(FEN("8/8/p7/8/8/8/8/K7", 'w', ""))
     val singleMove =
       SingleMove(Position(File.A, Rank.SIX), Position(File.A, Rank.FOUR))
 
@@ -72,7 +72,7 @@ class PawnTest : AnnotationSpec() {
 
   @Test
   fun `White pawn movement on empty board`() {
-    val board = Board(FEN("8/8/P7/8/8/8/8/K7", 'w', ""))
+    val board = Board.factory(FEN("8/8/P7/8/8/8/8/K7", 'w', ""))
     val singleMove =
       SingleMove(Position(File.A, Rank.SIX), Position(File.A, Rank.SEVEN))
     board.makeMove(singleMove)
@@ -82,7 +82,7 @@ class PawnTest : AnnotationSpec() {
 
   @Test
   fun `Valid double move`() {
-    val board = Board(FEN("8/8/8/8/8/8/P7/K7", 'w', ""))
+    val board = Board.factory(FEN("8/8/8/8/8/8/P7/K7", 'w', ""))
     val singleMove =
       DoublePawnMove(Position(File.A, Rank.TWO), Position(File.A, Rank.FOUR))
     board.makeMove(singleMove)
@@ -92,7 +92,7 @@ class PawnTest : AnnotationSpec() {
 
   @Test
   fun `Valid double move with blocked path`() {
-    val board = Board(FEN("8/8/8/8/8/b7/P7/K7", 'w', ""))
+    val board = Board.factory(FEN("8/8/8/8/8/b7/P7/K7", 'w', ""))
     val singleMove =
       SingleMove(Position(File.A, Rank.TWO), Position(File.A, Rank.FOUR))
 
@@ -104,7 +104,7 @@ class PawnTest : AnnotationSpec() {
 
   @Test
   fun `Invalid diagonal 2 move with white pawn, expecting exception`() {
-    val board = Board(FEN("8/8/8/8/8/1R6/P7/K7", 'w', ""))
+    val board = Board.factory(FEN("8/8/8/8/8/1R6/P7/K7", 'w', ""))
     val singleMove =
       SingleMove(Position(File.A, Rank.TWO), Position(File.C, Rank.FOUR))
 
@@ -116,7 +116,7 @@ class PawnTest : AnnotationSpec() {
 
   @Test
   fun `Diagonal move without capture`() {
-    val board = Board(FEN("8/8/8/8/8/8/1P6/K7", 'w', ""))
+    val board = Board.factory(FEN("8/8/8/8/8/8/1P6/K7", 'w', ""))
     val singleMove =
       SingleMove(Position(File.B, Rank.TWO), Position(File.C, Rank.THREE))
 
@@ -128,7 +128,7 @@ class PawnTest : AnnotationSpec() {
 
   @Test
   fun `Pawn capture`() {
-    val board = Board(FEN("8/8/8/8/8/r7/1P6/K7", 'w', ""))
+    val board = Board.factory(FEN("8/8/8/8/8/r7/1P6/K7", 'w', ""))
     val singleMove =
       SingleMove(Position(File.B, Rank.TWO), Position(File.A, Rank.THREE))
 
@@ -138,7 +138,7 @@ class PawnTest : AnnotationSpec() {
 
   @Test
   fun `Pawn movement with blocked path`() {
-    val board = Board(FEN("8/8/8/8/8/p7/P7/K7", 'w', ""))
+    val board = Board.factory(FEN("8/8/8/8/8/p7/P7/K7", 'w', ""))
     val singleMove =
       SingleMove(Position(File.A, Rank.TWO), Position(File.A, Rank.THREE))
 
@@ -148,7 +148,7 @@ class PawnTest : AnnotationSpec() {
   @Suppress("ktlint:standard:max-line-length")
   @Test
   fun `Pawn promotion with illegal character should throw, but original game state is restored`() {
-    val board = Board(FEN("8/P5kp/8/8/8/8/8/K7", 'w', ""))
+    val board = Board.factory(FEN("8/P5kp/8/8/8/8/8/K7", 'w', ""))
     assertThatThrownBy {
       PromotionMove(
         Position(File.A, Rank.SEVEN),

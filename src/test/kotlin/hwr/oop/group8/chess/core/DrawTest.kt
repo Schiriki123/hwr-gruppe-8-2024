@@ -10,7 +10,9 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 class DrawTest : AnnotationSpec() {
   @Test
   fun `Making a Move with half move clock at 50 should throw`() {
-    val board = Board(FEN("r3k2r/8/8/8/8/8/8/R3K2R", 'w', halfmoveClock = 50))
+    val board = Board.factory(
+      FEN("r3k2r/8/8/8/8/8/8/R3K2R", 'w', halfmoveClock = 50),
+    )
     val move =
       SingleMove(Position(File.F, Rank.THREE), Position(File.B, Rank.ONE))
     assertThatThrownBy {
@@ -22,7 +24,7 @@ class DrawTest : AnnotationSpec() {
   fun `Moving with half move clock at 49 should not throw`() {
     // given
     val board =
-      Board(FEN("r3k2r/8/8/8/8/8/8/R3K2R", 'w', halfmoveClock = 49))
+      Board.factory(FEN("r3k2r/8/8/8/8/8/8/R3K2R", 'w', halfmoveClock = 49))
     val move =
       SingleMove(Position(File.A, Rank.ONE), Position(File.B, Rank.ONE))
     // when
@@ -34,7 +36,7 @@ class DrawTest : AnnotationSpec() {
   @Test
   fun `Moving with three times the same board hash is draw`() {
     // given
-    val board = Board(
+    val board = Board.factory(
       FEN("r3k2r/8/8/8/8/8/8/R3K2R"),
       listOf(888, 112, 888, 112, 888, 122),
     )
