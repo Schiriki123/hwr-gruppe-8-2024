@@ -106,8 +106,6 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) :
     castling.updatePermission()
   }
 
-  fun getSquare(position: Position): Square = map.getValue(position)
-
   private fun resetHalfMoveClock() {
     halfmoveClock = -1
   }
@@ -119,6 +117,12 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) :
     it.getPiece() === piece
   }.keys.first()
 
+  override fun isCastlingAllowed(color: Color): Pair<Boolean, Boolean> =
+    castling.isAllowed(color)
+
+  override fun getCurrentTurn(): Color = turn
+  override fun accessEnPassant(): Position? = enPassant
+  fun getSquare(position: Position): Square = map.getValue(position)
   fun makeMove(move: Move) {
     boardAnalyser.checkForDraw()
     check(!boardAnalyser.isCheckmate()) {
@@ -160,12 +164,6 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) :
   fun newStateHistory() = stateHistory.plus(FEN.boardStateHash(this))
 
   fun isCheck(): Boolean = boardAnalyser.isCheck()
-
-  override fun isCastlingAllowed(color: Color): Pair<Boolean, Boolean> =
-    castling.isAllowed(color)
-
-  override fun getCurrentTurn(): Color = turn
-  override fun accessEnPassant(): Position? = enPassant
 
   fun allowedEnPassantTarget(move: DoublePawnMove): Position? {
     val currentTurn = getCurrentTurn()

@@ -46,16 +46,13 @@ class BoardAnalyser(val board: Board) { // TODO: Use BoardInspector interface
   fun isCheckmate(): Boolean {
     val allPiecesCurrentPlayer = getAllPiecesOfCurrentPlayer()
     allPiecesCurrentPlayer.forEach { piece ->
-      val possibleMoves = piece.getValidMove()
-      // Check if any of the possible moves would put the player in check
-      possibleMoves.forEach { move ->
+      val possibleMovesOfPiece = piece.getValidMove()
+      possibleMovesOfPiece.forEach { move ->
         if (isMoveCheck(move)) {
-          // If any move is valid and does not put the player in check, return false
           return false
         }
       }
     }
-    // If no valid moves are found, return true
     return true
   }
 
