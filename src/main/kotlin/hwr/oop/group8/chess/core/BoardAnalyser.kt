@@ -83,6 +83,8 @@ class BoardAnalyser(val board: Board) : BoardInspector {
     return isPositionThreatened(board.turn, kingPosition)
   }
 
+  fun isCapture(move: Move): Boolean = !isSquareEmpty(move.moves().first().to)
+
   override fun getPieceAt(position: Position): Piece? =
     board.getMap().getValue(position).getPiece()
 

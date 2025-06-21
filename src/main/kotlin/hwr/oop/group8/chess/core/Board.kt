@@ -64,9 +64,6 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) {
     map[position] = Square(piece)
   }
 
-  private fun isCapture(move: Move): Boolean =
-    !analyser.isSquareEmpty(move.moves().first().to)
-
   private fun createPieceOnBoard(type: PieceType, color: Color): Piece =
     when (type) {
       PieceType.PAWN -> Pawn(color, analyser)
@@ -141,7 +138,7 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) {
       analyser.isMoveCheck(matchingMove),
     ) { "Move would put player in check" }
 
-    if (piece.getType() == PieceType.PAWN || isCapture(move)) {
+    if (piece.getType() == PieceType.PAWN || analyser.isCapture(move)) {
       resetHalfMoveClock()
     }
 
