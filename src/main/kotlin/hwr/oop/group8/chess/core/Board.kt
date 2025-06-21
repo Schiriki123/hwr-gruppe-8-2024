@@ -13,30 +13,30 @@ import hwr.oop.group8.chess.core.piece.Queen
 import hwr.oop.group8.chess.core.piece.Rook
 import hwr.oop.group8.chess.persistence.FEN
 
-class Board private constructor(val fen: FEN, val stateHistory: List<Int>) {
+class Board private constructor(
+  val fen: FEN,
+  var turn: Color,
+  var enPassant: Position?,
+  var halfmoveClock: Int,
+  var fullmoveClock: Int,
+  val stateHistory: List<Int>,
+) {
   private val map = HashMap<Position, Square>()
-  var turn: Color
-    private set
-  var enPassant: Position?
-    private set
-  var halfmoveClock: Int
-    private set
-  var fullmoveClock: Int
-    private set
   val analyser: BoardAnalyser = BoardAnalyser(this, fen.castle)
 
   companion object {
-    fun factory(fen: FEN, stateHistory: List<Int> = emptyList()): Board =
-      Board(fen, stateHistory)
+    fun factory(fen: FEN, stateHistory: List<Int> = emptyList()): Board = Board(
+      fen,
+      fen.getTurn(),
+      fen.enPassant(),
+      fen.halfmoveClock,
+      fen.fullmoveClock,
+      stateHistory,
+    )
   }
 
   init {
     initializeBoardFromFENString() // TODO: BoardFactory class
-
-    turn = fen.getTurn()
-    enPassant = fen.enPassant()
-    halfmoveClock = fen.halfmoveClock
-    fullmoveClock = fen.fullmoveClock
   }
 
   private fun initializeBoardFromFENString() {
@@ -122,27 +122,27 @@ class Board private constructor(val fen: FEN, val stateHistory: List<Int>) {
     checkNotNull(piece) { "There is no piece at ${move.moves().first().from}" }
     check(piece.color() == turn) { "It's not your turn" }
 
-    val matchingMove = piece.getValidMove().find { validMoves ->
+    val selectedMove = piece.getValidMove().find { validMoves ->
       validMoves.moves().first() == move.moves()
         .first() &&
         validMoves.promotesTo() == move.promotesTo()
     }
 
-    checkNotNull(matchingMove) {
+    checkNotNull(selectedMove) {
       "Invalid move for piece ${piece::class.simpleName} from ${
         move.moves().first().from
       } to ${move.moves().first().to}"
     }
 
-    check(
-      analyser.isMoveCheck(matchingMove),
-    ) { "Move would put player in check" }
+    check(analyser.isMoveCheck(selectedMove)) {
+      "Move would put player in check"
+    }
 
     if (piece.getType() == PieceType.PAWN || analyser.isCapture(move)) {
       resetHalfMoveClock()
     }
 
-    applyMoves(matchingMove, piece)
+    applyMoves(selectedMove, piece)
 
     if (turn == Color.BLACK) fullmoveClock++
     halfmoveClock++
