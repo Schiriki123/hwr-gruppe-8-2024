@@ -36,7 +36,7 @@ class Board private constructor(
   }
 
   init {
-    initializeBoardFromFENString() // TODO: BoardFactory class
+    initializeBoardFromFENString()
   }
 
   private fun initializeBoardFromFENString() {
