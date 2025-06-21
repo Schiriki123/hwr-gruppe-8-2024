@@ -51,7 +51,7 @@ class ShowGameCommand(private val persistencePort: PersistencePort) :
         val position = Position(file, rank)
         val piece = boardInspector.getPieceAt(position)
         piece?.let { piece ->
-          if (piece.color == Color.WHITE) {
+          if (piece.color() == Color.WHITE) {
             whitePieces.deleteAt(
               whitePieces.indexOf(piece.fenRepresentation()),
             )

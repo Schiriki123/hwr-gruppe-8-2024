@@ -72,11 +72,11 @@ class Castling(val board: BoardAnalyser, private var castleString: String) {
     rookPositionQueenSide: Piece?,
     turn: Color,
   ): Boolean =
-    rookPositionQueenSide == null || rookPositionQueenSide.color != turn
+    rookPositionQueenSide == null || rookPositionQueenSide.color() != turn
 
   private fun hasKingSideRookMoved(
     rookPositionKingSide: Piece?,
     turn: Color,
   ): Boolean =
-    rookPositionKingSide == null || rookPositionKingSide.color != turn
+    rookPositionKingSide == null || rookPositionKingSide.color() != turn
 }

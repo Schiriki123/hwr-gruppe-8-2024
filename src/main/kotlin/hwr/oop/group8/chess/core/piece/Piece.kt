@@ -4,8 +4,7 @@ import hwr.oop.group8.chess.core.Color
 import hwr.oop.group8.chess.core.move.Move
 
 interface Piece {
-  val color: Color // TODO: Move to genColor
-
+  fun color(): Color
   fun getValidMove(): Set<Move>
   fun fenRepresentation(): Char
   fun getType(): PieceType

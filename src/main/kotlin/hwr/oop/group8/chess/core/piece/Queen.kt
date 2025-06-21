@@ -5,8 +5,8 @@ import hwr.oop.group8.chess.core.Color
 import hwr.oop.group8.chess.core.Direction
 import hwr.oop.group8.chess.core.move.SingleMove
 
-class Queen(override val color: Color, val boardInspector: BoardInspector) :
-  Piece {
+class Queen(val color: Color, val boardInspector: BoardInspector) : Piece {
+  override fun color(): Color = color
   override fun getValidMove(): Set<SingleMove> {
     val directions = setOf(
       Direction.BOTTOM,

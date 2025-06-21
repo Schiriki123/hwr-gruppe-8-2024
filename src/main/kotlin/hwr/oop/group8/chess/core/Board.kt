@@ -77,7 +77,7 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) {
     if (move.isPromotion()) {
       val toSquare = getSquare(move.moves().first().to)
       val pieceType: PieceType = move.promotesTo()!!
-      val promotionPiece = createPieceOnBoard(pieceType, piece.color)
+      val promotionPiece = createPieceOnBoard(pieceType, piece.color())
       toSquare.setPiece(promotionPiece)
     }
     enPassant = if (move.isDoublePawnMove()) {
@@ -115,7 +115,7 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) {
     val piece = analyser.getPieceAt(move.moves().first().from)
 
     checkNotNull(piece) { "There is no piece at ${move.moves().first().from}" }
-    check(piece.color == turn) { "It's not your turn" }
+    check(piece.color() == turn) { "It's not your turn" }
 
     val matchingMove = piece.getValidMove().find { validMoves ->
       validMoves.moves().first() == move.moves()

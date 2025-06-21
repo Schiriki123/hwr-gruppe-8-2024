@@ -5,8 +5,8 @@ import hwr.oop.group8.chess.core.Color
 import hwr.oop.group8.chess.core.Direction
 import hwr.oop.group8.chess.core.move.SingleMove
 
-class Knight(override val color: Color, val boardInspector: BoardInspector) :
-  Piece {
+class Knight(val color: Color, val boardInspector: BoardInspector) : Piece {
+  override fun color(): Color = color
   override fun getValidMove(): Set<SingleMove> {
     val validDestinations: MutableSet<SingleMove> = mutableSetOf()
     val currentPosition = boardInspector.findPositionOfPiece(this)
@@ -25,7 +25,7 @@ class Knight(override val color: Color, val boardInspector: BoardInspector) :
       try {
         val newPosition =
           currentPosition.nextPosition(pair.first).nextPosition(pair.second)
-        if (boardInspector.getPieceAt(newPosition)?.color == color) {
+        if (boardInspector.getPieceAt(newPosition)?.color() == color) {
           continue
         }
         validDestinations.add(SingleMove(currentPosition, newPosition))

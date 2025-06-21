@@ -33,7 +33,7 @@ class MultiDirectionalMoveGenerator(
     return if (nextPiece == null) {
       moves.add(SingleMove(currentPosition, pos))
       false
-    } else if (nextPiece.color != piece.color) {
+    } else if (nextPiece.color() != piece.color()) {
       moves.add(SingleMove(currentPosition, pos))
       true
     } else {

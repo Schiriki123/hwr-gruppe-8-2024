@@ -24,7 +24,7 @@ class BoardAnalyser(val board: Board, val castle: String) : BoardInspector {
 
   private fun getAllPiecesOfCurrentPlayer(): Set<Piece> =
     board.getMap().values.mapNotNull { it.getPiece() }
-      .filter { it.color == board.turn }
+      .filter { it.color() == board.turn }
       .toSet()
 
   val castling = Castling(this, castle)
@@ -45,7 +45,7 @@ class BoardAnalyser(val board: Board, val castle: String) : BoardInspector {
     val allPieces: Set<Piece> =
       board.getMap().values.mapNotNull { it.getPiece() }.toSet()
     val possibleMovesOfOpponent: Set<Move> = allPieces
-      .filter { it.color != currentPlayer }
+      .filter { it.color() != currentPlayer }
       .flatMap { it.getValidMove() }
       .toSet()
     return possibleMovesOfOpponent.any { it.moves().first().to == position }
@@ -89,14 +89,14 @@ class BoardAnalyser(val board: Board, val castle: String) : BoardInspector {
 
   fun allowedEnPassantTarget(move: DoublePawnMove): Position? =
     if (move.to.hasNextPosition(Direction.LEFT) &&
-      getPieceAt(move.to.left())?.color != board.turn &&
+      getPieceAt(move.to.left())?.color() != board.turn &&
       getPieceAt(
         move.to.left(),
       )?.getType() == PieceType.PAWN
     ) {
       move.skippedPosition()
     } else if (move.to.hasNextPosition(Direction.RIGHT) &&
-      getPieceAt(move.to.right())?.color != board.turn &&
+      getPieceAt(move.to.right())?.color() != board.turn &&
       getPieceAt(
         move.to.right(),
       )?.getType() == PieceType.PAWN

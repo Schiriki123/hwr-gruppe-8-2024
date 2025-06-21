@@ -5,8 +5,9 @@ import hwr.oop.group8.chess.core.Color
 import hwr.oop.group8.chess.core.Direction
 import hwr.oop.group8.chess.core.move.SingleMove
 
-class Bishop(override val color: Color, val boardInspector: BoardInspector) :
-  Piece {
+class Bishop(val color: Color, val boardInspector: BoardInspector) : Piece {
+  override fun color(): Color = color
+
   override fun getValidMove(): Set<SingleMove> {
     val directions = setOf(
       Direction.BOTTOM_RIGHT,

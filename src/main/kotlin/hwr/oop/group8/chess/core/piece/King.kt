@@ -7,8 +7,9 @@ import hwr.oop.group8.chess.core.move.CastleMove
 import hwr.oop.group8.chess.core.move.Move
 import hwr.oop.group8.chess.core.move.SingleMove
 
-class King(override val color: Color, val boardInspector: BoardInspector) :
-  Piece {
+class King(val color: Color, val boardInspector: BoardInspector) : Piece {
+  override fun color(): Color = color
+
   override fun getValidMove(): Set<Move> {
     val validSingleMoves: MutableSet<Move> = mutableSetOf()
     val directions = setOf(
@@ -29,7 +30,7 @@ class King(override val color: Color, val boardInspector: BoardInspector) :
         val nextPiece = boardInspector.getPieceAt(nextPosition)
 
         // Check if the next position is empty or occupied by an opponent's piece
-        if (nextPiece == null || nextPiece.color != color) {
+        if (nextPiece == null || nextPiece.color() != color) {
           validSingleMoves.add(SingleMove(currentPosition, nextPosition))
         }
       }
