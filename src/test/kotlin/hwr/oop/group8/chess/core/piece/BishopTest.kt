@@ -15,8 +15,8 @@ class BishopTest : AnnotationSpec() {
   @Test
   fun `Char representation of Bishop`() {
     val boardInspector = Board(FEN("8/8/8/8/8/8/8/K7", 'w', ""))
-    val whiteBishop = Bishop(Color.WHITE, boardInspector)
-    val blackBishop = Bishop(Color.BLACK, boardInspector)
+    val whiteBishop = Bishop(Color.WHITE, boardInspector.boardAnalyser)
+    val blackBishop = Bishop(Color.BLACK, boardInspector.boardAnalyser)
     assertThat(whiteBishop.fenRepresentation()).isEqualTo('B')
     assertThat(blackBishop.fenRepresentation()).isEqualTo('b')
     assertThat(whiteBishop.getType()).isEqualTo(PieceType.BISHOP)

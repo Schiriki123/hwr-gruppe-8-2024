@@ -16,8 +16,8 @@ class KingTest : AnnotationSpec() {
   @Test
   fun `Char representation for King`() {
     val boardInspector = Board(FEN("8/8/8/8/8/8/8/K7", 'w', ""))
-    val whiteKing = King(Color.WHITE, boardInspector)
-    val blackKing = King(Color.BLACK, boardInspector)
+    val whiteKing = King(Color.WHITE, boardInspector.boardAnalyser)
+    val blackKing = King(Color.BLACK, boardInspector.boardAnalyser)
     assertThat(whiteKing.fenRepresentation()).isEqualTo('K')
     assertThat(blackKing.fenRepresentation()).isEqualTo('k')
     assertThat(whiteKing.getType()).isEqualTo(PieceType.KING)

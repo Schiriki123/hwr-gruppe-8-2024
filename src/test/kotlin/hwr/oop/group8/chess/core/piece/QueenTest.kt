@@ -16,8 +16,8 @@ class QueenTest : AnnotationSpec() {
   @Test
   fun `char representation`() {
     val boardInspector = Board(FEN("8/8/8/8/8/8/8/K7", 'w', ""))
-    val whiteQueen = Queen(Color.WHITE, boardInspector)
-    val blackQueen = Queen(Color.BLACK, boardInspector)
+    val whiteQueen = Queen(Color.WHITE, boardInspector.boardAnalyser)
+    val blackQueen = Queen(Color.BLACK, boardInspector.boardAnalyser)
     assertThat(whiteQueen.fenRepresentation()).isEqualTo('Q')
     assertThat(blackQueen.fenRepresentation()).isEqualTo('q')
     assertThat(whiteQueen.getType()).isEqualTo(PieceType.QUEEN)

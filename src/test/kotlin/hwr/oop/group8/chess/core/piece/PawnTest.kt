@@ -18,8 +18,8 @@ class PawnTest : AnnotationSpec() {
   @Test
   fun `Right representation of Pawn attributes`() {
     val boardInspector = Board(FEN("8/8/8/8/8/8/8/K7", 'w', ""))
-    val whitePawn = Pawn(Color.WHITE, boardInspector)
-    val blackPawn = Pawn(Color.BLACK, boardInspector)
+    val whitePawn = Pawn(Color.WHITE, boardInspector.boardAnalyser)
+    val blackPawn = Pawn(Color.BLACK, boardInspector.boardAnalyser)
     assertThat(whitePawn.fenRepresentation()).isEqualTo('P')
     assertThat(blackPawn.fenRepresentation()).isEqualTo('p')
     assertThat(whitePawn.getType()).isEqualTo(PieceType.PAWN)

@@ -13,8 +13,7 @@ import hwr.oop.group8.chess.core.piece.Queen
 import hwr.oop.group8.chess.core.piece.Rook
 import hwr.oop.group8.chess.persistence.FEN
 
-class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) :
-  BoardInspector {
+class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) {
   private val map = HashMap<Position, Square>()
   var turn: Color
     private set
@@ -25,7 +24,7 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) :
     private set
   var fullmoveClock: Int
     private set
-  private val boardAnalyser: BoardAnalyser = BoardAnalyser(this)
+  val boardAnalyser: BoardAnalyser = BoardAnalyser(this)
   private val castling: Castling = Castling(this)
 
   init {
@@ -67,16 +66,16 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) :
   }
 
   private fun isCapture(move: Move): Boolean =
-    !isSquareEmpty(move.moves().first().to)
+    !boardAnalyser.isSquareEmpty(move.moves().first().to)
 
   private fun createPieceOnBoard(type: PieceType, color: Color): Piece =
     when (type) {
-      PieceType.PAWN -> Pawn(color, this)
-      PieceType.ROOK -> Rook(color, this)
-      PieceType.KNIGHT -> Knight(color, this)
-      PieceType.BISHOP -> Bishop(color, this)
-      PieceType.QUEEN -> Queen(color, this)
-      PieceType.KING -> King(color, this)
+      PieceType.PAWN -> Pawn(color, boardAnalyser)
+      PieceType.ROOK -> Rook(color, boardAnalyser)
+      PieceType.KNIGHT -> Knight(color, boardAnalyser)
+      PieceType.BISHOP -> Bishop(color, boardAnalyser)
+      PieceType.QUEEN -> Queen(color, boardAnalyser)
+      PieceType.KING -> King(color, boardAnalyser)
     }
 
   private fun applyMoves(move: Move, piece: Piece) {
@@ -110,17 +109,17 @@ class Board(val fen: FEN, val stateHistory: List<Int> = emptyList()) :
     halfmoveClock = -1
   }
 
-  override fun getPieceAt(position: Position): Piece? =
+  fun getPieceAt(position: Position): Piece? =
     boardAnalyser.getPieceAt(position)
 
-  override fun findPositionOfPiece(piece: Piece): Position =
+  fun findPositionOfPiece(piece: Piece): Position =
     boardAnalyser.findPositionOfPiece(piece)
 
-  override fun isCastlingAllowed(color: Color): Pair<Boolean, Boolean> =
+  fun isCastlingAllowed(color: Color): Pair<Boolean, Boolean> =
     castling.isAllowed(color)
 
-  override fun getCurrentTurn(): Color = turn
-  override fun accessEnPassant(): Position? = enPassant
+  fun isSquareEmpty(position: Position) = boardAnalyser.isSquareEmpty(position)
+  fun getCurrentTurn(): Color = turn
   fun getSquare(position: Position): Square = map.getValue(position)
   fun makeMove(move: Move) {
     boardAnalyser.checkForDraw()

@@ -22,9 +22,9 @@ class ShowGameCommand(private val persistencePort: PersistencePort) :
     val game = persistencePort.loadGame(gameId)
     println("Loading game with id $gameId...")
     println("Current board:")
-    printBoard(game.board)
+    printBoard(game.board.boardAnalyser)
     println("Current turn: ${game.getFen().getTurn()}")
-    printCapturedPieces(game.board)
+    printCapturedPieces(game.board.boardAnalyser)
   }
 
   private fun printBoard(board: BoardInspector) {
