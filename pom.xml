@@ -28,6 +28,7 @@
     <maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version>
     <pitest.version>1.19.4</pitest.version>
     <kotest-extensions-pitest.version>1.2.0</kotest-extensions-pitest.version>
+    <clikt.version>5.0.3</clikt.version>
   </properties>
 
   <repositories>
@@ -66,6 +67,11 @@
       <artifactId>assertj-core</artifactId>
       <version>${assertj-core.version}</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.github.ajalt.clikt</groupId>
+      <artifactId>clikt-jvm</artifactId>
+      <version>${clikt.version}</version>
     </dependency>
   </dependencies>
 

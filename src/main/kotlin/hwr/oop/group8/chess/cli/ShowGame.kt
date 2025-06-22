@@ -1,5 +1,8 @@
 package hwr.oop.group8.chess.cli
 
+import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.parameters.arguments.argument
+import com.github.ajalt.clikt.parameters.types.int
 import hwr.oop.group8.chess.core.BoardInspector
 import hwr.oop.group8.chess.core.Color
 import hwr.oop.group8.chess.core.File
@@ -7,23 +10,14 @@ import hwr.oop.group8.chess.core.Position
 import hwr.oop.group8.chess.core.Rank
 import hwr.oop.group8.chess.persistence.PersistencePort
 
-class ShowGameCommand(private val persistencePort: PersistencePort) :
-  CliCommand {
-  override fun matches(args: List<String>): Boolean {
-    if (args.size != 3) return false
-    val firstTwoArgsMatch = args.subList(0, 2) == listOf("show", "game")
-    val thirdArgIsNumber = args[2].toIntOrNull() != null
-
-    return firstTwoArgsMatch && thirdArgIsNumber
-  }
-
-  override fun handle(args: List<String>) {
-    val gameId = args[2].toInt()
-    val game = persistencePort.loadGame(gameId)
-    println("Loading game with id $gameId...")
-    println("Current board:")
+class ShowGame(private val port: PersistencePort) : CliktCommand() {
+  val gameId: Int by argument("Game ID").int()
+  override fun run() {
+    val game = port.loadGame(gameId)
+    echo("Loading game with id $gameId...")
+    echo("Current board:")
     printBoard(game.board.analyser)
-    println("Current turn: ${game.getFen().getTurn()}")
+    echo("Current turn: ${game.getFen().getTurn()}")
     printCapturedPieces(game.board.analyser)
   }
 
@@ -36,7 +30,7 @@ class ShowGameCommand(private val persistencePort: PersistencePort) :
       }
       builder.append("${System.lineSeparator()}")
     }
-    println(builder.toString().trim())
+    echo(builder.toString().trim())
   }
 
   private fun printCapturedPieces(boardInspector: BoardInspector) {
@@ -63,7 +57,7 @@ class ShowGameCommand(private val persistencePort: PersistencePort) :
         }
       }
     }
-    println(
+    echo(
       """
         White's captures: $blackPieces
         Black's captures: $whitePieces
