@@ -9,7 +9,7 @@
 - [x] CLI
   - [x] Create new game
   - [x] Print board
-  - [ ] Use clikt
+  - [x] Use clikt
 - [ ] Custom Exceptions
 
 ### Nice to have
