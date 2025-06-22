@@ -14,7 +14,7 @@ import org.assertj.core.api.Assertions.assertThat
 class PawnPromotionTest : AnnotationSpec() {
   @Test
   fun `Pawn promotes to queen`() {
-    val board = Board(FEN("8/P7/8/8/8/8/8/K7", 'w', ""))
+    val board = Board.factory(FEN("8/P7/8/8/8/8/8/K7", 'w', ""))
     val move: Move =
       PromotionMove(
         Position(File.A, Rank.SEVEN),
@@ -23,12 +23,12 @@ class PawnPromotionTest : AnnotationSpec() {
       )
     board.makeMove(move)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("Q7/8/8/8/8/8/8/K7")
+    assertThat(FEN.generateFENBoardString(board)).isEqualTo("Q7/8/8/8/8/8/8/K7")
   }
 
   @Test
   fun `Pawn with queen promotion and movement`() {
-    val board = Board(FEN("8/P5kp/8/8/8/8/8/K7", 'w', ""))
+    val board = Board.factory(FEN("8/P5kp/8/8/8/8/8/K7", 'w', ""))
     var move: Move =
       PromotionMove(
         Position(File.A, Rank.SEVEN),
@@ -39,7 +39,9 @@ class PawnPromotionTest : AnnotationSpec() {
     // Pawn promotes
     board.makeMove(move)
 
-    assertThat(board.generateFENBoardString()).isEqualTo("Q7/6kp/8/8/8/8/8/K7")
+    assertThat(
+      FEN.generateFENBoardString(board),
+    ).isEqualTo("Q7/6kp/8/8/8/8/8/K7")
 
     // Black Moves
     move =
@@ -52,13 +54,13 @@ class PawnPromotionTest : AnnotationSpec() {
     board.makeMove(move)
 
     assertThat(
-      board.generateFENBoardString(),
+      FEN.generateFENBoardString(board),
     ).isEqualTo("8/6k1/7p/8/8/8/Q7/K7")
   }
 
   @Test
   fun `Black pawn with knight promotion and movement`() {
-    val board = Board(FEN("k7/8/8/8/8/8/7p/K7", 'b', ""))
+    val board = Board.factory(FEN("k7/8/8/8/8/8/7p/K7", 'b', ""))
     var move: Move =
       PromotionMove(
         Position(File.H, Rank.TWO),
@@ -79,12 +81,14 @@ class PawnPromotionTest : AnnotationSpec() {
     move =
       SingleMove(Position(File.H, Rank.ONE), Position(File.F, Rank.TWO))
     board.makeMove(move)
-    assertThat(board.generateFENBoardString()).isEqualTo("k7/8/8/8/8/8/K4n2/8")
+    assertThat(
+      FEN.generateFENBoardString(board),
+    ).isEqualTo("k7/8/8/8/8/8/K4n2/8")
   }
 
   @Test
   fun `Black pawn with bishop promotion and movement`() {
-    val board = Board(FEN("k7/8/8/8/8/8/7p/K7", 'b', ""))
+    val board = Board.factory(FEN("k7/8/8/8/8/8/7p/K7", 'b', ""))
     var move: Move =
       PromotionMove(
         Position(File.H, Rank.TWO),
@@ -103,12 +107,14 @@ class PawnPromotionTest : AnnotationSpec() {
     )
     move = SingleMove(Position(File.H, Rank.ONE), Position(File.F, Rank.THREE))
     board.makeMove(move)
-    assertThat(board.generateFENBoardString()).isEqualTo("k7/8/8/8/8/5b2/K7/8")
+    assertThat(
+      FEN.generateFENBoardString(board),
+    ).isEqualTo("k7/8/8/8/8/5b2/K7/8")
   }
 
   @Test
   fun `Black pawn with rook promotion and movement`() {
-    val board = Board(FEN("k7/8/8/8/8/8/7p/K7", 'b', ""))
+    val board = Board.factory(FEN("k7/8/8/8/8/8/7p/K7", 'b', ""))
     var move: Move =
       PromotionMove(
         Position(File.H, Rank.TWO),
@@ -129,13 +135,15 @@ class PawnPromotionTest : AnnotationSpec() {
     move =
       SingleMove(Position(File.H, Rank.ONE), Position(File.H, Rank.FOUR))
     board.makeMove(move)
-    assertThat(board.generateFENBoardString()).isEqualTo("k7/8/8/8/7r/8/K7/8")
+    assertThat(
+      FEN.generateFENBoardString(board),
+    ).isEqualTo("k7/8/8/8/7r/8/K7/8")
   }
 
   @Test
   fun `Capture during promotion`() {
     // given
-    val board = Board(FEN("1n6/P7/8/8/8/8/8/K7", castle = ""))
+    val board = Board.factory(FEN("1n6/P7/8/8/8/8/8/K7", castle = ""))
     val move: Move =
       PromotionMove(
         Position(File.A, Rank.SEVEN),
@@ -145,6 +153,8 @@ class PawnPromotionTest : AnnotationSpec() {
     // when
     board.makeMove(move)
     // then
-    assertThat(board.generateFENBoardString()).isEqualTo("1B6/8/8/8/8/8/8/K7")
+    assertThat(
+      FEN.generateFENBoardString(board),
+    ).isEqualTo("1B6/8/8/8/8/8/8/K7")
   }
 }

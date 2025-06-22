@@ -4,154 +4,86 @@ import hwr.oop.group8.chess.core.move.DoublePawnMove
 import hwr.oop.group8.chess.core.move.Move
 import hwr.oop.group8.chess.core.move.SingleMove
 import hwr.oop.group8.chess.core.piece.Bishop
+import hwr.oop.group8.chess.core.piece.King
 import hwr.oop.group8.chess.core.piece.Knight
+import hwr.oop.group8.chess.core.piece.Pawn
 import hwr.oop.group8.chess.core.piece.Piece
 import hwr.oop.group8.chess.core.piece.PieceType
 import hwr.oop.group8.chess.core.piece.Queen
 import hwr.oop.group8.chess.core.piece.Rook
 import hwr.oop.group8.chess.persistence.FEN
 
-class Board(
-  val fen: FEN,
-  val stateHistory: MutableList<Int> = mutableListOf(),
-) : BoardInspector,
-  BoardInspectorEnPassant {
-  private val map = HashMap<Position, Square>()
-  var turn: Color
-    private set
-  var enPassant: Position?
-    private set
-  var castle: String
-  var halfmoveClock: Int
-    private set
-  var fullmoveClock: Int
-    private set
-  val boardLogic: BoardLogic = BoardLogic(this)
-  val enPassantAnalyser: EnPassantAnalyser = EnPassantAnalyser(this)
-  val castlingLogic: CastlingLogic = CastlingLogic(this)
+class Board private constructor(
+  private val fen: FEN,
+  val stateHistory: List<Int>,
+) {
+  val analyser: BoardAnalyser = BoardAnalyser(this, fen.castle)
+  private var turn: Color = fen.getTurn()
+  private var enPassant: Position? = fen.enPassant()
+  private var halfmoveClock: Int = fen.halfmoveClock
+  private var fullmoveClock: Int = fen.fullmoveClock
+  private val map: Map<Position, Square> = buildMap {
 
-  init {
-    initializeBoardFromFENString() // TODO: BoardFactory class
+    fun putOnSquare(piece: Piece?, rank: Rank, fileIterator: Iterator<File>) {
+      check(fileIterator.hasNext()) {
+        "File iterator should have next element."
+      }
+      put(Position(fileIterator.next(), rank), Square(piece))
+    }
 
-    turn = fen.getTurn()
-    castle = fen.castle
-    enPassant = fen.enPassant()
-    halfmoveClock = fen.halfmoveClock
-    fullmoveClock = fen.fullmoveClock
-    // TODO: Move to makeMove
-    checkForDraw()
-    check(!boardLogic.isCheckmate()) {
-      "Game is over, checkmate!"
+    fun fenCharToDomain(c: Char, fileIterator: Iterator<File>, rank: Rank) {
+      if (c.isDigit()) {
+        repeat(c.digitToInt()) {
+          putOnSquare(null, rank, fileIterator)
+        }
+      } else {
+        val typeAndColor = FEN.translatePiece(c)
+        val p = createPieceOnBoard(typeAndColor.first, typeAndColor.second)
+        putOnSquare(p, rank, fileIterator)
+      }
+    }
+
+    for (rank in Rank.entries) {
+      val fileIterator = File.entries.iterator()
+      fen.getRank(rank).forEach { c ->
+        fenCharToDomain(c, fileIterator, rank)
+      }
     }
   }
 
-  private fun initializeBoardFromFENString() {
-    for (rank in Rank.entries) {
-      val fileIterator = File.entries.iterator()
-      fen.getRank(rank).forEach { character ->
-        if (character.isDigit()) {
-          repeat(character.digitToInt()) {
-            populateRank(fileIterator, rank, null)
-          }
-        } else {
-          val piece = FEN.createPieceOnBoard(character, this)
-          populateRank(fileIterator, rank, piece)
-        }
-      }
-    }
+  init {
     check(map.size == 64) { "Board must have exactly 64 squares." }
   }
 
-  private fun populateRank(
-    fileIterator: Iterator<File>,
-    rank: Rank,
-    piece: Piece?,
-  ) {
-    check(fileIterator.hasNext()) { "File iterator should have next element." }
-    val position = Position(fileIterator.next(), rank)
-    map[position] = Square(piece)
+  companion object {
+    fun factory(fen: FEN, stateHistory: List<Int> = emptyList()): Board = Board(
+      fen,
+      stateHistory,
+    )
   }
 
-  fun getSquare(position: Position): Square = map.getValue(position)
-
-  override fun getPieceAt(position: Position): Piece? =
-    getSquare(position).getPiece()
-
-  override fun findPositionOfPiece(piece: Piece): Position = map.filterValues {
-    it.getPiece() === piece
-  }.keys.first()
-
-  fun makeMove(move: Move) {
-    val piece = getPieceAt(move.moves().first().from)
-
-    checkNotNull(piece)
-    check(piece.color == turn) { "It's not your turn" }
-
-    val matchingMove = piece.getValidMoveDestinations().find { validMoves ->
-      validMoves.moves().first() == move.moves().first() &&
-        validMoves.promotesTo() == move.promotesTo()
-    }
-
-    checkNotNull(matchingMove) {
-      "Invalid move for piece ${piece::class.simpleName} from ${
-        move.moves().first().from
-      } to ${move.moves().first().to}"
-    }
-
-    check(isMoveCheck(matchingMove)) { "Move would put player in check" }
-
-    if (piece.getType() == PieceType.PAWN || isCapture(move)) {
-      resetHalfMoveClock()
-    }
-
-    applyMoves(matchingMove, piece)
-
-    if (turn == Color.BLACK) fullmoveClock++
-    halfmoveClock++
-    stateHistory.add(generateFENBoardString().hashCode())
-    turn = turn.invert()
-  }
-
-  private fun checkForDraw() {
-    if (halfmoveClock >= 50) {
-      throw IllegalStateException("Game is draw due to the 50-move rule.")
-    }
-    if (isRepetitionDraw()) {
-      throw IllegalStateException("Game is draw due to threefold repetition.")
-    }
-  }
-
-  fun isRepetitionDraw(): Boolean = stateHistory.groupBy { it }
-    .any { it.value.size >= 3 }
-
-  private fun isCapture(move: Move): Boolean =
-    !isSquareEmpty(move.moves().first().to)
-
-  private fun generatePromotionPiece(type: PieceType, color: Color): Piece =
+  private fun createPieceOnBoard(type: PieceType, color: Color): Piece =
     when (type) {
-      // TODO: boardInspector could be passed as a parameter
-      PieceType.QUEEN -> Queen(color, this)
-      PieceType.ROOK -> Rook(color, this)
-      PieceType.BISHOP -> Bishop(color, this)
-      PieceType.KNIGHT -> Knight(color, this)
-      else -> {
-        throw IllegalArgumentException("Invalid promotion piece type: $type")
-      }
+      PieceType.PAWN -> Pawn(color, analyser)
+      PieceType.ROOK -> Rook(color, analyser)
+      PieceType.KNIGHT -> Knight(color, analyser)
+      PieceType.BISHOP -> Bishop(color, analyser)
+      PieceType.QUEEN -> Queen(color, analyser)
+      PieceType.KING -> King(color, analyser)
     }
 
   private fun applyMoves(move: Move, piece: Piece) {
     move.moves().forEach { applySingleMove(it) }
     if (move.isPromotion()) {
       val toSquare = getSquare(move.moves().first().to)
-      val pieceType = move.promotesTo()
-      requireNotNull(pieceType)
-      val promotionPiece = generatePromotionPiece(pieceType, piece.color)
+      val pieceType: PieceType = move.promotesTo()!!
+      val promotionPiece = createPieceOnBoard(pieceType, piece.color())
       toSquare.setPiece(promotionPiece)
     }
-    if (move.isDoublePawnMove()) {
-      enPassantAnalyser.updateAllowedEnPassant(move as DoublePawnMove)
+    enPassant = if (move.isDoublePawnMove()) {
+      analyser.allowedEnPassantTarget(move as DoublePawnMove)
     } else {
-      enPassant = null
+      null
     }
     if (move.enPassantCapture() != null) {
       getSquare(move.enPassantCapture()!!).setPiece(null)
@@ -162,34 +94,61 @@ class Board(
     val toSquare = getSquare(singleMove.to)
     val fromSquare = getSquare(singleMove.from)
     val piece = fromSquare.getPiece()
-    checkNotNull(piece) { "No piece found at ${singleMove.from}" }
     toSquare.setPiece(piece)
     fromSquare.setPiece(null)
-    castlingLogic.updateCastlingPermission()
+    analyser.castling.updatePermission()
   }
-
-  private fun isMoveCheck(move: Move): Boolean = boardLogic.isMoveCheck(move)
-
-  fun isCheck(): Boolean = boardLogic.isCheck()
-
-  override fun isCastlingAllowed(color: Color): Pair<Boolean, Boolean> =
-    castlingLogic.isCastlingAllowed(color)
-
-  override fun getCurrentTurn(): Color = turn
-  override fun accessEnPassant(): Position? = enPassant
-
-  override fun setEnPassant(position: Position?) {
-    enPassant = position
-  }
-
-  fun isPositionThreatened(currentPlayer: Color, position: Position): Boolean =
-    boardLogic.isPositionThreatened(currentPlayer, position)
 
   private fun resetHalfMoveClock() {
     halfmoveClock = -1
   }
 
-  fun getMap(): HashMap<Position, Square> = map
+  fun castle() = analyser.castling.string()
 
-  fun generateFENBoardString(): String = FEN.generateFENBoardString(this)
+  fun getSquare(position: Position): Square = map.getValue(position)
+  fun makeMove(move: Move) {
+    analyser.checkForDraw()
+    check(!analyser.isCheckmate()) {
+      "Game is over, checkmate!"
+    }
+
+    val piece = analyser.getPieceAt(move.moves().first().from)
+
+    checkNotNull(piece) { "There is no piece at ${move.moves().first().from}" }
+    check(piece.color() == turn) { "It's not your turn" }
+
+    val selectedMove = piece.getValidMove().find { validMoves ->
+      validMoves.moves().first() == move.moves()
+        .first() &&
+        validMoves.promotesTo() == move.promotesTo()
+    }
+
+    checkNotNull(selectedMove) {
+      "Invalid move for piece ${piece::class.simpleName} from ${
+        move.moves().first().from
+      } to ${move.moves().first().to}"
+    }
+
+    check(analyser.isMoveCheck(selectedMove)) {
+      "Move would put player in check"
+    }
+
+    if (piece.getType() == PieceType.PAWN || analyser.isCapture(move)) {
+      resetHalfMoveClock()
+    }
+
+    applyMoves(selectedMove, piece)
+
+    if (turn == Color.BLACK) fullmoveClock++
+    halfmoveClock++
+    turn = turn.invert()
+  }
+
+  fun newStateHistory() = stateHistory.plus(FEN.boardStateHash(this))
+
+  fun getMap(): Map<Position, Square> = map
+  fun turn() = turn
+  fun enPassant() = enPassant
+  fun halfmoveClock() = halfmoveClock
+  fun fullmoveClock() = fullmoveClock
 }

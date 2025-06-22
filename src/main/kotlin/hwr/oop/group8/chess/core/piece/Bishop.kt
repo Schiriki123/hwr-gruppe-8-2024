@@ -5,9 +5,10 @@ import hwr.oop.group8.chess.core.Color
 import hwr.oop.group8.chess.core.Direction
 import hwr.oop.group8.chess.core.move.SingleMove
 
-class Bishop(override val color: Color, val boardInspector: BoardInspector) :
-  Piece {
-  override fun getValidMoveDestinations(): Set<SingleMove> {
+class Bishop(val color: Color, val boardInspector: BoardInspector) : Piece {
+  override fun color(): Color = color
+
+  override fun getValidMove(): Set<SingleMove> {
     val directions = setOf(
       Direction.BOTTOM_RIGHT,
       Direction.BOTTOM_LEFT,
@@ -21,7 +22,7 @@ class Bishop(override val color: Color, val boardInspector: BoardInspector) :
     return validDestinations.toSet()
   }
 
-  override fun getChar(): Char = when (color) {
+  override fun fenRepresentation(): Char = when (color) {
     Color.WHITE -> 'B'
     Color.BLACK -> 'b'
   }

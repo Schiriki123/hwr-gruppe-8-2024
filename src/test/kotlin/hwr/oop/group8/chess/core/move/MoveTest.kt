@@ -1,9 +1,9 @@
-package hwr.oop.group8.chess.core
+package hwr.oop.group8.chess.core.move
 
-import hwr.oop.group8.chess.core.move.CastleMove
-import hwr.oop.group8.chess.core.move.DoublePawnMove
-import hwr.oop.group8.chess.core.move.PromotionMove
-import hwr.oop.group8.chess.core.move.SingleMove
+import hwr.oop.group8.chess.core.Board
+import hwr.oop.group8.chess.core.File
+import hwr.oop.group8.chess.core.Position
+import hwr.oop.group8.chess.core.Rank
 import hwr.oop.group8.chess.core.piece.King
 import hwr.oop.group8.chess.core.piece.PieceType
 import hwr.oop.group8.chess.persistence.FEN
@@ -41,9 +41,9 @@ class MoveTest : AnnotationSpec() {
 
   @Test
   fun `Test king side castle move creation, assert that storage is correct`() {
-    val board = Board(FEN("k7/8/8/8/8/8/8/R3KBNR", 'w', "KQ"))
+    val board = Board.factory(FEN("k7/8/8/8/8/8/8/R3KBNR", 'w', "KQ"))
     val from = Position(File.E, Rank.ONE)
-    val castleMove = CastleMove(board.getPieceAt(from) as King, true)
+    val castleMove = CastleMove(board.analyser.getPieceAt(from) as King, true)
 
     assertThat(castleMove.promotesTo()).isNull()
     assertThat(castleMove.isKingSideCastle).isTrue
@@ -52,9 +52,9 @@ class MoveTest : AnnotationSpec() {
 
   @Test
   fun `Test queen side castle move creation, assert that storage is correct`() {
-    val board = Board(FEN("k7/8/8/8/8/8/8/R3K2R", 'w', "KQ"))
+    val board = Board.factory(FEN("k7/8/8/8/8/8/8/R3K2R", 'w', "KQ"))
     val from = Position(File.E, Rank.ONE)
-    val castleMove = CastleMove(board.getPieceAt(from) as King, false)
+    val castleMove = CastleMove(board.analyser.getPieceAt(from) as King, false)
 
     assertThat(castleMove.promotesTo()).isNull()
     assertThat(castleMove.isKingSideCastle).isFalse

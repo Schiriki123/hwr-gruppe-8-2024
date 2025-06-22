@@ -7,7 +7,7 @@ class FilePersistenceAdapter(val file: File) : PersistencePort {
   override fun saveGame(game: Game, updateExistingGame: Boolean) {
     val lines = file.readLines()
     val gameFenString = game.getFen().toString()
-    val stateHistory = game.board.stateHistory.joinToString(" ")
+    val stateHistory = game.board.newStateHistory().joinToString(" ")
     val gameLineContent = "${game.id},$gameFenString,$stateHistory"
     val updatedLines: List<String>
 
@@ -55,13 +55,13 @@ class FilePersistenceAdapter(val file: File) : PersistencePort {
     return games.map { (id, fenString, history) ->
       Game(
         id,
-        createFENObject(fenString),
+        createFEN(fenString),
         history.split(" ").map { it.toInt() },
       )
     }
   }
 
-  private fun createFENObject(fenLine: String): FEN {
+  private fun createFEN(fenLine: String): FEN {
     val part = fenLine.split(" ")
     val boardString = part.first()
     val turn: Char = part[1].first()

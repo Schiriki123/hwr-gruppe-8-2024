@@ -14,7 +14,7 @@ class EnPassantTest : AnnotationSpec() {
   @Test
   fun `After double pawn move, en passant e6 should be in FEN`() {
     // given
-    val board = Board(
+    val board = Board.factory(
       FEN(
         "rnbqkbnr/ppppppp1/8/3P3p/8/8/PPP1PPPP/RNBQKBNR",
         'b',
@@ -27,9 +27,9 @@ class EnPassantTest : AnnotationSpec() {
     // when
     board.makeMove(moveThatAllowsEnPassant)
     // then
-    assertThat(board.enPassant).isEqualTo(Position(File.E, Rank.SIX))
+    assertThat(board.enPassant()).isEqualTo(Position(File.E, Rank.SIX))
     assertThat(
-      board.generateFENBoardString(),
+      FEN.generateFENBoardString(board),
     ).isEqualTo("rnbqkbnr/pppp1pp1/8/3Pp2p/8/8/PPP1PPPP/RNBQKBNR")
   }
 
@@ -37,7 +37,9 @@ class EnPassantTest : AnnotationSpec() {
   fun `After double pawn move of black pawn c6 should be in en passant`() {
     // given
     val board =
-      Board(FEN("rnbqkb1r/pppppppp/7n/3P4/8/8/PPP1PPPP/RNBQKBNR", 'b'))
+      Board.factory(
+        FEN("rnbqkb1r/pppppppp/7n/3P4/8/8/PPP1PPPP/RNBQKBNR", 'b'),
+      )
     val moveThatAllowsEnPassant = SingleMove(
       Position(File.C, Rank.SEVEN),
       Position(File.C, Rank.FIVE),
@@ -45,28 +47,28 @@ class EnPassantTest : AnnotationSpec() {
     // when
     board.makeMove(moveThatAllowsEnPassant)
     // then
-    assertThat(board.enPassant).isEqualTo(Position(File.C, Rank.SIX))
+    assertThat(board.enPassant()).isEqualTo(Position(File.C, Rank.SIX))
     assertThat(
-      board.generateFENBoardString(),
+      FEN.generateFENBoardString(board),
     ).isEqualTo("rnbqkb1r/pp1ppppp/7n/2pP4/8/8/PPP1PPPP/RNBQKBNR")
   }
 
   @Test
   fun `After move en passant should be cleared`() {
     // given
-    val board = Board(FEN(enPassant = "e6"))
+    val board = Board.factory(FEN(enPassant = "e6"))
     val move = SingleMove(Position.fromString("a2"), Position.fromString("a3"))
     // when
     board.makeMove(move)
     // then
-    assertThat(board.enPassant).isNull()
-    assertThat(FEN.getFEN(board).enPassant).isEqualTo("-")
+    assertThat(board.enPassant()).isNull()
+    assertThat(FEN.getFEN(board).enPassant()).isNull()
   }
 
   @Test
   fun `Black En passant move should be allowed, white pawn pawn captured`() {
     // given
-    val board = Board(
+    val board = Board.factory(
       FEN(
         "rnbqkbnr/ppp1pppp/8/6N1/3pP3/8/PPPP1PPP/RNBQKB1R",
         'b',
@@ -81,15 +83,15 @@ class EnPassantTest : AnnotationSpec() {
     board.makeMove(enPassantCapture)
     // then
     assertThat(
-      board.generateFENBoardString(),
+      FEN.generateFENBoardString(board),
     ).isEqualTo("rnbqkbnr/ppp1pppp/8/6N1/8/4p3/PPPP1PPP/RNBQKB1R")
-    assertThat(board.enPassant).isNull()
+    assertThat(board.enPassant()).isNull()
   }
 
   @Test
   fun `White en passant move should be allowed, black pawn is captured`() {
     // given
-    val board = Board(
+    val board = Board.factory(
       FEN(
         "rnbqkb1r/pp1ppppp/7n/1Pp5/8/8/P1PPPPPP/RNBQKBNR",
         enPassant = "c6",
@@ -103,15 +105,15 @@ class EnPassantTest : AnnotationSpec() {
     board.makeMove(enPassantMove)
     // then
     assertThat(
-      board.generateFENBoardString(),
+      FEN.generateFENBoardString(board),
     ).isEqualTo("rnbqkb1r/pp1ppppp/2P4n/8/8/8/P1PPPPPP/RNBQKBNR")
-    assertThat(board.enPassant).isNull()
+    assertThat(board.enPassant()).isNull()
   }
 
   @Test
   fun `Only pawn on a5 should be allowed to move En Passant`() {
     // given
-    val board = Board(
+    val board = Board.factory(
       FEN(
         "rnbqkb1r/p1pppppp/7n/Pp6/8/8/1PPPPPPP/RNBQKBNR",
         enPassant = "b6",
@@ -127,7 +129,7 @@ class EnPassantTest : AnnotationSpec() {
     }.message().contains("Invalid move for piece Pawn from d2 to b6")
     // then
     assertThat(
-      board.generateFENBoardString(),
+      FEN.generateFENBoardString(board),
     ).isEqualTo("rnbqkb1r/p1pppppp/7n/Pp6/8/8/1PPPPPPP/RNBQKBNR")
   }
 }
