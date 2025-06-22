@@ -73,6 +73,6 @@ class FENTest : AnnotationSpec() {
     // when
     val fen = FEN.getFEN(board)
     // then
-    assertThat(fen.enPassant).isEqualTo("-")
+    assertThat(fen.enPassant()).isNull()
   }
 }

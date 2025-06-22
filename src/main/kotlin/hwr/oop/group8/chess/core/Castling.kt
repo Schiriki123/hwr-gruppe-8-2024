@@ -2,7 +2,10 @@ package hwr.oop.group8.chess.core
 
 import hwr.oop.group8.chess.core.piece.Piece
 
-class Castling(val board: BoardAnalyser, private var castleString: String) {
+class Castling(
+  private val board: BoardAnalyser,
+  private var castleString: String,
+) {
 
   fun isAllowed(color: Color): Pair<Boolean, Boolean> {
     val homeRank = if (color == Color.WHITE) Rank.ONE else Rank.EIGHT

@@ -12,7 +12,7 @@ data class FEN(
     "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR",
   private val turn: Char = 'w',
   val castle: String = "KQkq",
-  val enPassant: String = "-",
+  private val enPassant: String = "-",
   val halfmoveClock: Int = 0,
   val fullmoveClock: Int = 1,
 ) {

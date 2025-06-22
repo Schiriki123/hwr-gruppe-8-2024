@@ -62,7 +62,7 @@ class EnPassantTest : AnnotationSpec() {
     board.makeMove(move)
     // then
     assertThat(board.enPassant()).isNull()
-    assertThat(FEN.getFEN(board).enPassant).isEqualTo("-")
+    assertThat(FEN.getFEN(board).enPassant()).isNull()
   }
 
   @Test

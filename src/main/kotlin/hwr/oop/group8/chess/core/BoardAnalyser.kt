@@ -5,11 +5,13 @@ import hwr.oop.group8.chess.core.move.Move
 import hwr.oop.group8.chess.core.piece.Piece
 import hwr.oop.group8.chess.core.piece.PieceType
 
-class BoardAnalyser(val board: Board, val castle: String) : BoardInspector {
+class BoardAnalyser(private val board: Board, castle: String) :
+  BoardInspector {
   // TODO: Refactor to provide BoardAnalyser with ReadOnly Access
 
+  val castling = Castling(this, castle)
   private fun getKingPosition(): Position {
-    val allPiecesOfCurrentPlayer = getAllPiecesOfCurrentPlayer()
+    val allPiecesOfCurrentPlayer = getAllPieces(board.turn())
 
     return findPositionOfPiece(
       allPiecesOfCurrentPlayer.first {
@@ -22,14 +24,13 @@ class BoardAnalyser(val board: Board, val castle: String) : BoardInspector {
   private fun isRepetitionDraw(): Boolean =
     board.stateHistory.groupBy { it }.any { it.value.size >= 3 }
 
-  private fun getAllPiecesOfCurrentPlayer(): Set<Piece> =
+  private fun getAllPieces(player: Color): Set<Piece> =
     board.getMap().values.mapNotNull { it.getPiece() }
-      .filter { it.color() == board.turn() }
+      .filter { it.color() == player }
       .toSet()
 
-  val castling = Castling(this, castle)
   fun isCheckmate(): Boolean {
-    val allPiecesCurrentPlayer = getAllPiecesOfCurrentPlayer()
+    val allPiecesCurrentPlayer = getAllPieces(board.turn())
     allPiecesCurrentPlayer.forEach { piece ->
       val possibleMovesOfPiece = piece.getValidMove()
       possibleMovesOfPiece.forEach { move ->
@@ -42,12 +43,10 @@ class BoardAnalyser(val board: Board, val castle: String) : BoardInspector {
   }
 
   fun isPositionThreatened(currentPlayer: Color, position: Position): Boolean {
-    val allPieces: Set<Piece> =
-      board.getMap().values.mapNotNull { it.getPiece() }.toSet()
-    val possibleMovesOfOpponent: Set<Move> = allPieces
-      .filter { it.color() != currentPlayer }
-      .flatMap { it.getValidMove() }
-      .toSet()
+    val allPiecesOfOpponent: Set<Piece> = getAllPieces(currentPlayer.invert())
+    val possibleMovesOfOpponent: Set<Move> =
+      allPiecesOfOpponent.flatMap { it.getValidMove() }
+        .toSet()
     return possibleMovesOfOpponent.any { it.moves().first().to == position }
   }
 
