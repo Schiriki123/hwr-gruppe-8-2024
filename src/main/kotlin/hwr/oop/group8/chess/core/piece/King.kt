@@ -10,7 +10,7 @@ import hwr.oop.group8.chess.core.move.SingleMove
 class King(val color: Color, val boardInspector: BoardInspector) : Piece {
   override fun color(): Color = color
 
-  override fun getValidMove(): Set<Move> {
+  override fun validMoves(): Set<Move> {
     val validSingleMoves: MutableSet<Move> = mutableSetOf()
     val directions = setOf(
       Direction.TOP,
@@ -23,11 +23,11 @@ class King(val color: Color, val boardInspector: BoardInspector) : Piece {
       Direction.BOTTOM_RIGHT,
     )
 
-    val currentPosition = boardInspector.findPositionOfPiece(this)
+    val currentPosition = boardInspector.positionOfPiece(this)
     for (dir in directions) {
       if (currentPosition.hasNextPosition(dir)) {
         val nextPosition = currentPosition.nextPosition(dir)
-        val nextPiece = boardInspector.getPieceAt(nextPosition)
+        val nextPiece = boardInspector.pieceAt(nextPosition)
 
         // Check if the next position is empty or occupied by an opponent's piece
         if (nextPiece == null || nextPiece.color() != color) {
@@ -36,7 +36,7 @@ class King(val color: Color, val boardInspector: BoardInspector) : Piece {
       }
     }
 
-    if (boardInspector.getCurrentTurn() == color) {
+    if (boardInspector.currentTurn() == color) {
       val castling = boardInspector.isCastlingAllowed(color)
 
       if (castling.first) {
@@ -54,5 +54,5 @@ class King(val color: Color, val boardInspector: BoardInspector) : Piece {
     Color.BLACK -> 'k'
   }
 
-  override fun getType(): PieceType = PieceType.KING
+  override fun pieceType(): PieceType = PieceType.KING
 }

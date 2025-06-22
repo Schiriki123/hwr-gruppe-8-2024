@@ -7,9 +7,9 @@ import hwr.oop.group8.chess.core.move.SingleMove
 
 class Knight(val color: Color, val boardInspector: BoardInspector) : Piece {
   override fun color(): Color = color
-  override fun getValidMove(): Set<SingleMove> {
+  override fun validMoves(): Set<SingleMove> {
     val validDestinations: MutableSet<SingleMove> = mutableSetOf()
-    val currentPosition = boardInspector.findPositionOfPiece(this)
+    val currentPosition = boardInspector.positionOfPiece(this)
 
     val possibleDestination = listOf(
       Pair(Direction.TOP_RIGHT, Direction.RIGHT),
@@ -25,7 +25,7 @@ class Knight(val color: Color, val boardInspector: BoardInspector) : Piece {
       try {
         val newPosition =
           currentPosition.nextPosition(pair.first).nextPosition(pair.second)
-        if (boardInspector.getPieceAt(newPosition)?.color() == color) {
+        if (boardInspector.pieceAt(newPosition)?.color() == color) {
           continue
         }
         validDestinations.add(SingleMove(currentPosition, newPosition))
@@ -41,5 +41,5 @@ class Knight(val color: Color, val boardInspector: BoardInspector) : Piece {
     Color.BLACK -> 'n'
   }
 
-  override fun getType(): PieceType = PieceType.KNIGHT
+  override fun pieceType(): PieceType = PieceType.KNIGHT
 }

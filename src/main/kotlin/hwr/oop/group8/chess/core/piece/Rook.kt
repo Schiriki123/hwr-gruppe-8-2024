@@ -7,7 +7,7 @@ import hwr.oop.group8.chess.core.move.SingleMove
 
 class Rook(val color: Color, val boardInspector: BoardInspector) : Piece {
   override fun color(): Color = color
-  override fun getValidMove(): Set<SingleMove> {
+  override fun validMoves(): Set<SingleMove> {
     val directions = setOf(
       Direction.BOTTOM,
       Direction.TOP,
@@ -16,7 +16,7 @@ class Rook(val color: Color, val boardInspector: BoardInspector) : Piece {
     )
     val rookMovement =
       MultiDirectionalMoveGenerator(this, boardInspector, directions)
-    val validDestinations = rookMovement.getValidMoveDestinations().toSet()
+    val validDestinations = rookMovement.validMoves().toSet()
 
     return validDestinations.toSet()
   }
@@ -26,5 +26,5 @@ class Rook(val color: Color, val boardInspector: BoardInspector) : Piece {
     Color.BLACK -> 'r'
   }
 
-  override fun getType(): PieceType = PieceType.ROOK
+  override fun pieceType(): PieceType = PieceType.ROOK
 }

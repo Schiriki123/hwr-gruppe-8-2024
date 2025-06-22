@@ -34,8 +34,8 @@ class Pawn(val color: Color, val boardInspector: BoardInspector) : Piece {
     }
   }
 
-  override fun getValidMove(): Set<Move> {
-    val pos = boardInspector.findPositionOfPiece(this)
+  override fun validMoves(): Set<Move> {
+    val pos = boardInspector.positionOfPiece(this)
     return buildSet {
       addAll(generateNormalMoves(pos))
       if (pos.rank == startRank) addAll(generateDoubleMove(pos))
@@ -94,7 +94,7 @@ class Pawn(val color: Color, val boardInspector: BoardInspector) : Piece {
   }
 
   private fun hasEnemy(pos: Position): Boolean =
-    boardInspector.getPieceAt(pos)?.color() == color.invert()
+    boardInspector.pieceAt(pos)?.color() == color.invert()
 
   private fun assembleMoves(
     from: Position,
@@ -120,5 +120,5 @@ class Pawn(val color: Color, val boardInspector: BoardInspector) : Piece {
     Color.BLACK -> 'p'
   }
 
-  override fun getType(): PieceType = PieceType.PAWN
+  override fun pieceType(): PieceType = PieceType.PAWN
 }

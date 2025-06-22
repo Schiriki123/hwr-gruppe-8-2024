@@ -20,7 +20,7 @@ class QueenTest : AnnotationSpec() {
     val blackQueen = Queen(Color.BLACK, boardInspector.analyser)
     assertThat(whiteQueen.fenRepresentation()).isEqualTo('Q')
     assertThat(blackQueen.fenRepresentation()).isEqualTo('q')
-    assertThat(whiteQueen.getType()).isEqualTo(PieceType.QUEEN)
+    assertThat(whiteQueen.pieceType()).isEqualTo(PieceType.QUEEN)
   }
 
   @Test

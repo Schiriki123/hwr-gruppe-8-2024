@@ -4,15 +4,15 @@ import io.kotest.core.spec.style.AnnotationSpec
 import io.kotest.extensions.system.captureStandardOut
 import org.assertj.core.api.Assertions.assertThat
 import java.io.File
+import kotlin.math.abs
 import kotlin.random.Random
 
 class MainTest : AnnotationSpec() {
-
   @Test
   fun `Create game, assert that is was created, delete game`() {
-    val testGameID = Random(System.currentTimeMillis()).nextInt()
+    val testGameID = abs(Random(System.currentTimeMillis()).nextInt())
     val output = captureStandardOut {
-      main(arrayOf("new", "game", "$testGameID"))
+      main(arrayOf("new-game", "$testGameID"))
     }.trim()
     assertThat(output).contains("New game with id $testGameID created.")
     assertThat(File("games.csv").readLines().last()).isEqualTo(
@@ -21,7 +21,7 @@ class MainTest : AnnotationSpec() {
     )
 
     val deleteOutput = captureStandardOut {
-      main(arrayOf("delete", "game", "$testGameID"))
+      main(arrayOf("delete-game", "$testGameID"))
     }.trim()
     assertThat(deleteOutput).contains("Game with ID $testGameID deleted.")
   }

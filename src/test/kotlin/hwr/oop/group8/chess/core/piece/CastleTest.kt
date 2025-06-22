@@ -42,7 +42,6 @@ class CastleTest : AnnotationSpec() {
     assertThat(allowedCastlingForWhite.second).isTrue
   }
 
-  @Suppress("ktlint:standard:max-line-length")
   @Test
   fun `Castle string allows black King side castle and denies Queen side`() {
     val board = Board.factory(
@@ -172,8 +171,8 @@ class CastleTest : AnnotationSpec() {
       ),
     )
     val startPosition = Position(File.E, Rank.ONE)
-    val king = board.analyser.getPieceAt(startPosition) as King
-    val possibleMoves = king.getValidMove()
+    val king = board.analyser.pieceAt(startPosition) as King
+    val possibleMoves = king.validMoves()
 
     assertThat(board.castle()).isEqualTo("K")
     assertThat(

@@ -20,7 +20,7 @@ class KingTest : AnnotationSpec() {
     val blackKing = King(Color.BLACK, boardInspector.analyser)
     assertThat(whiteKing.fenRepresentation()).isEqualTo('K')
     assertThat(blackKing.fenRepresentation()).isEqualTo('k')
-    assertThat(whiteKing.getType()).isEqualTo(PieceType.KING)
+    assertThat(whiteKing.pieceType()).isEqualTo(PieceType.KING)
   }
 
   @Test
@@ -127,8 +127,8 @@ class KingTest : AnnotationSpec() {
   fun `Movement set generation for black king`() {
     val board = Board.factory(FEN("r3k2r/8/8/8/8/8/1K6/8", 'b'))
     val startPosition = Position(File.E, Rank.EIGHT)
-    val king = board.analyser.getPieceAt(startPosition) as King
-    val possibleMoves = king.getValidMove()
+    val king = board.analyser.pieceAt(startPosition) as King
+    val possibleMoves = king.validMoves()
 
     assertThat(possibleMoves).containsExactlyInAnyOrder(
       SingleMove(startPosition, Position(File.D, Rank.EIGHT)),

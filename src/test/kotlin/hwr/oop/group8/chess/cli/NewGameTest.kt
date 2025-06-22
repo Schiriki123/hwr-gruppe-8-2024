@@ -1,30 +1,26 @@
 package hwr.oop.group8.chess.cli
 
+import com.github.ajalt.clikt.testing.test
 import hwr.oop.group8.chess.persistence.FEN
 import io.kotest.core.spec.style.AnnotationSpec
-import io.kotest.extensions.system.captureStandardOut
 import org.assertj.core.api.Assertions.assertThat
 
-class NewGameCommandTest : AnnotationSpec() {
+class NewGameTest : AnnotationSpec() {
   @Test
   fun `Use cli to create new game`() {
     // given
     val adapterMock = PersistentAdapterMock()
-    val cli = Cli(
-      adapterMock,
-    )
+    val cli = NewGame(adapterMock)
 
     // when
-    val output = captureStandardOut {
-      val args = listOf("new", "game", "1")
-      cli.handle(args)
-    }.trim()
+    val args = listOf("1")
+    val result = cli.test(args)
 
     // then
     val game = adapterMock.savedGame()
     requireNotNull(game)
     assertThat(game.id).isEqualTo(1)
-    assertThat(game.getFen()).isEqualTo(FEN())
-    assertThat(output).contains("New game with id 1 created.")
+    assertThat(game.fen()).isEqualTo(FEN())
+    assertThat(result.stdout).contains("New game with id 1 created.")
   }
 }

@@ -39,7 +39,7 @@ data class FEN(
     Position.fromString(enPassant)
   }
 
-  fun getRank(rank: Rank): String =
+  fun rankRepresentation(rank: Rank): String =
     boardString.split("/").reversed()[rank.toInt() - 1]
 
   fun getTurn(): Color = if (turn == 'w') Color.WHITE else Color.BLACK
@@ -71,7 +71,7 @@ data class FEN(
       var lastPiece = 0
       for (rank in Rank.entries.reversed()) {
         for (file in File.entries) {
-          val piece = board.analyser.getPieceAt(Position(file, rank))
+          val piece = board.analyser.pieceAt(Position(file, rank))
           if (piece != null) {
             if (lastPiece != 0) {
               builder.append(lastPiece)
@@ -92,7 +92,7 @@ data class FEN(
     fun boardStateHash(board: Board): Int =
       generateFENBoardString(board).hashCode()
 
-    fun getFEN(board: Board): FEN = FEN(
+    fun to(board: Board): FEN = FEN(
       generateFENBoardString(board),
       if (board.turn() == Color.WHITE) 'w' else 'b',
       board.castle(),

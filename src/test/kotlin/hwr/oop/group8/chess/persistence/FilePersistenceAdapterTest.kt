@@ -36,16 +36,16 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
     )
 
     val sut = FilePersistenceAdapter(tempFile.toFile())
-    val result: FEN = sut.loadGame(1).getFen()
+    val result: FEN = sut.loadGame(1).fen()
 
-    assertThat(result.getRank(Rank.EIGHT)).isEqualTo("rnbqkb1r")
-    assertThat(result.getRank(Rank.SEVEN)).isEqualTo("pppppppp")
-    assertThat(result.getRank(Rank.SIX)).isEqualTo("8")
-    assertThat(result.getRank(Rank.FIVE)).isEqualTo("8")
-    assertThat(result.getRank(Rank.FOUR)).isEqualTo("8")
-    assertThat(result.getRank(Rank.THREE)).isEqualTo("8")
-    assertThat(result.getRank(Rank.TWO)).isEqualTo("PPPPPPPP")
-    assertThat(result.getRank(Rank.ONE)).isEqualTo("RNBQKB1R")
+    assertThat(result.rankRepresentation(Rank.EIGHT)).isEqualTo("rnbqkb1r")
+    assertThat(result.rankRepresentation(Rank.SEVEN)).isEqualTo("pppppppp")
+    assertThat(result.rankRepresentation(Rank.SIX)).isEqualTo("8")
+    assertThat(result.rankRepresentation(Rank.FIVE)).isEqualTo("8")
+    assertThat(result.rankRepresentation(Rank.FOUR)).isEqualTo("8")
+    assertThat(result.rankRepresentation(Rank.THREE)).isEqualTo("8")
+    assertThat(result.rankRepresentation(Rank.TWO)).isEqualTo("PPPPPPPP")
+    assertThat(result.rankRepresentation(Rank.ONE)).isEqualTo("RNBQKB1R")
     assertThat(result.getTurn()).isEqualTo(Color.WHITE)
     assertThat(result.castle).isEqualTo("KQkq")
     assertThat(result.halfmoveClock).isEqualTo(0)
@@ -92,16 +92,16 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
     )
 
     val sut = FilePersistenceAdapter(tempFile.toFile())
-    val result: FEN = sut.loadGame(2).getFen()
+    val result: FEN = sut.loadGame(2).fen()
 
-    assertThat(result.getRank(Rank.EIGHT)).isEqualTo("r3k2r")
-    assertThat(result.getRank(Rank.SEVEN)).isEqualTo("p1ppqpb1")
-    assertThat(result.getRank(Rank.SIX)).isEqualTo("bn2pnp1")
-    assertThat(result.getRank(Rank.FIVE)).isEqualTo("3PN3")
-    assertThat(result.getRank(Rank.FOUR)).isEqualTo("1p2P3")
-    assertThat(result.getRank(Rank.THREE)).isEqualTo("2N2Q1p")
-    assertThat(result.getRank(Rank.TWO)).isEqualTo("PPPBBPPP")
-    assertThat(result.getRank(Rank.ONE)).isEqualTo("R3K2R")
+    assertThat(result.rankRepresentation(Rank.EIGHT)).isEqualTo("r3k2r")
+    assertThat(result.rankRepresentation(Rank.SEVEN)).isEqualTo("p1ppqpb1")
+    assertThat(result.rankRepresentation(Rank.SIX)).isEqualTo("bn2pnp1")
+    assertThat(result.rankRepresentation(Rank.FIVE)).isEqualTo("3PN3")
+    assertThat(result.rankRepresentation(Rank.FOUR)).isEqualTo("1p2P3")
+    assertThat(result.rankRepresentation(Rank.THREE)).isEqualTo("2N2Q1p")
+    assertThat(result.rankRepresentation(Rank.TWO)).isEqualTo("PPPBBPPP")
+    assertThat(result.rankRepresentation(Rank.ONE)).isEqualTo("R3K2R")
     assertThat(result.getTurn()).isEqualTo(Color.BLACK)
     assertThat(result.castle).isEqualTo("KQkq")
     assertThat(result.halfmoveClock).isEqualTo(0)
@@ -139,7 +139,7 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
       result,
     ).isEqualTo(
       "1,rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1," +
-        initialGame.getFen().hashOfBoard(),
+        initialGame.fen().hashOfBoard(),
     )
 
     tempFile.deleteExisting()
@@ -247,9 +247,9 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
 
     assertThat(games).hasSize(2)
     assertThat(games[0].id).isEqualTo(1)
-    assertThat(games[0].getFen().getTurn()).isEqualTo(Color.WHITE)
+    assertThat(games[0].fen().getTurn()).isEqualTo(Color.WHITE)
     assertThat(games[1].id).isEqualTo(3)
-    assertThat(games[1].getFen().getTurn()).isEqualTo(Color.BLACK)
+    assertThat(games[1].fen().getTurn()).isEqualTo(Color.BLACK)
 
     tempFile.deleteExisting()
   }
@@ -321,7 +321,7 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
     )
     val sut = FilePersistenceAdapter(tempFile.toFile())
     // when
-    val result = sut.loadGame(1).getFen()
+    val result = sut.loadGame(1).fen()
     // then
     assertThat(result.castle).isEqualTo("-")
   }
@@ -358,7 +358,7 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
     val result = tempFile.readText()
     assertThat(result).isEqualTo(
       "1,rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1," +
-        game.getFen().hashOfBoard(),
+        game.fen().hashOfBoard(),
     )
   }
 
@@ -377,7 +377,7 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
     // then
     assertThat(result).isEqualTo(
       "1,rnbqkbnr/pppppppp/8/8/8/P7/1PPPPPPP/RNBQKBNR b KQkq - 0 1," +
-        "1234 5678 91011 " + game.getFen().hashOfBoard(),
+        "1234 5678 91011 " + game.fen().hashOfBoard(),
     )
   }
 }

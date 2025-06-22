@@ -13,14 +13,14 @@ class FENTest : AnnotationSpec() {
   fun `getRank from default board`() {
     val fen = FEN()
 
-    assertThat(fen.getRank(Rank.EIGHT)).isEqualTo("rnbqkbnr")
-    assertThat(fen.getRank(Rank.SEVEN)).isEqualTo("pppppppp")
-    assertThat(fen.getRank(Rank.SIX)).isEqualTo("8")
-    assertThat(fen.getRank(Rank.FIVE)).isEqualTo("8")
-    assertThat(fen.getRank(Rank.FOUR)).isEqualTo("8")
-    assertThat(fen.getRank(Rank.THREE)).isEqualTo("8")
-    assertThat(fen.getRank(Rank.TWO)).isEqualTo("PPPPPPPP")
-    assertThat(fen.getRank(Rank.ONE)).isEqualTo("RNBQKBNR")
+    assertThat(fen.rankRepresentation(Rank.EIGHT)).isEqualTo("rnbqkbnr")
+    assertThat(fen.rankRepresentation(Rank.SEVEN)).isEqualTo("pppppppp")
+    assertThat(fen.rankRepresentation(Rank.SIX)).isEqualTo("8")
+    assertThat(fen.rankRepresentation(Rank.FIVE)).isEqualTo("8")
+    assertThat(fen.rankRepresentation(Rank.FOUR)).isEqualTo("8")
+    assertThat(fen.rankRepresentation(Rank.THREE)).isEqualTo("8")
+    assertThat(fen.rankRepresentation(Rank.TWO)).isEqualTo("PPPPPPPP")
+    assertThat(fen.rankRepresentation(Rank.ONE)).isEqualTo("RNBQKBNR")
   }
 
   @Test
@@ -71,7 +71,7 @@ class FENTest : AnnotationSpec() {
     val board = Board.factory(FEN(enPassant = "-"))
     assertThat(board.enPassant()).isNull()
     // when
-    val fen = FEN.getFEN(board)
+    val fen = FEN.to(board)
     // then
     assertThat(fen.enPassant()).isNull()
   }

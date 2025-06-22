@@ -10,13 +10,13 @@ class MultiDirectionalMoveGenerator(
   private val boardInspector: BoardInspector,
   private val directions: Set<Direction>,
 ) {
-  fun getValidMoveDestinations(): Set<SingleMove> = directions.flatMap { dir ->
+  fun validMoves(): Set<SingleMove> = directions.flatMap { dir ->
     collectMovesInDirection(dir)
   }.toSet()
 
   private fun collectMovesInDirection(dir: Direction): Set<SingleMove> {
     val moves = mutableSetOf<SingleMove>()
-    var pos = boardInspector.findPositionOfPiece(piece)
+    var pos = boardInspector.positionOfPiece(piece)
     while (pos.hasNextPosition(dir)) {
       pos = pos.nextPosition(dir)
       if (reachedPiece(moves, pos)) break
@@ -28,8 +28,8 @@ class MultiDirectionalMoveGenerator(
     moves: MutableSet<SingleMove>,
     pos: Position,
   ): Boolean {
-    val currentPosition = boardInspector.findPositionOfPiece(piece)
-    val nextPiece = boardInspector.getPieceAt(pos)
+    val currentPosition = boardInspector.positionOfPiece(piece)
+    val nextPiece = boardInspector.pieceAt(pos)
     return if (nextPiece == null) {
       moves.add(SingleMove(currentPosition, pos))
       false

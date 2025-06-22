@@ -10,7 +10,7 @@ data class Game(
 ) {
   val board: Board = Board.factory(fen, stateHistory)
 
-  fun getFen(): FEN = FEN.getFEN(board)
+  fun fen(): FEN = FEN.to(board)
   fun makeMove(move: CliMove) {
     board.makeMove(move.toDomainMove())
   }
