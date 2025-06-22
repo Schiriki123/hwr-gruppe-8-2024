@@ -28,7 +28,7 @@ class FENTest : AnnotationSpec() {
     val pieceChars =
       listOf('r', 'n', 'b', 'q', 'k', 'p', 'R', 'N', 'B', 'Q', 'K', 'P')
     assertThat(pieceChars).allSatisfy { pieceChar ->
-      val piece = FEN.convertChar(pieceChar)
+      val piece = FEN.translatePiece(pieceChar)
       when (pieceChar) {
         'r', 'R' -> piece.first.shouldBe(PieceType.ROOK)
         'n', 'N' -> piece.first.shouldBe(PieceType.KNIGHT)
@@ -39,7 +39,7 @@ class FENTest : AnnotationSpec() {
       }
     }
     assertThatThrownBy {
-      FEN.convertChar('x')
+      FEN.translatePiece('x')
     }.message().isEqualTo("Invalid piece character: x")
   }
 

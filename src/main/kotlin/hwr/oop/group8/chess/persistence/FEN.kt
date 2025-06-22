@@ -47,7 +47,7 @@ data class FEN(
   fun hashOfBoard() = boardString.hashCode()
 
   companion object {
-    fun convertChar(pieceChar: Char): Pair<PieceType, Color> =
+    fun translatePiece(pieceChar: Char): Pair<PieceType, Color> =
       when (pieceChar) {
         'r' -> Pair(PieceType.ROOK, Color.BLACK)
         'k' -> Pair(PieceType.KING, Color.BLACK)

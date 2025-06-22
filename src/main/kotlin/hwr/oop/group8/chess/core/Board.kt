@@ -23,21 +23,23 @@ class Board private constructor(
   private var halfmoveClock: Int = fen.halfmoveClock
   private var fullmoveClock: Int = fen.fullmoveClock
   private val map: Map<Position, Square> = buildMap {
+
+    fun putOnSquare(piece: Piece?, rank: Rank, fileIterator: Iterator<File>) {
+      check(fileIterator.hasNext()) {
+        "File iterator should have next element."
+      }
+      put(Position(fileIterator.next(), rank), Square(piece))
+    }
+
     fun fenCharToDomain(c: Char, fileIterator: Iterator<File>, rank: Rank) {
       if (c.isDigit()) {
         repeat(c.digitToInt()) {
-          check(fileIterator.hasNext()) {
-            "File iterator should have next element."
-          }
-          put(Position(fileIterator.next(), rank), Square(null))
+          putOnSquare(null, rank, fileIterator)
         }
       } else {
-        check(fileIterator.hasNext()) {
-          "File iterator should have next element."
-        }
-        val d = FEN.convertChar(c)
-        val p = createPieceOnBoard(d.first, d.second)
-        put(Position(fileIterator.next(), rank), Square(p))
+        val typeAndColor = FEN.translatePiece(c)
+        val p = createPieceOnBoard(typeAndColor.first, typeAndColor.second)
+        putOnSquare(p, rank, fileIterator)
       }
     }
 
