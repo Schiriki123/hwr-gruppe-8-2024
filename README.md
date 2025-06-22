@@ -42,7 +42,7 @@ just build
 Our project is a program that simulates the popular board game known as chess. Our intended goal is, that  
 two players can play against each other only using the command line interface (cli).
 
-The game features all possible rules found in chess, like en passante, castling and pawn promotion. You can play
+The game features all possible rules found in chess, like en passant, castling and pawn promotion. You can play
 together with another player and every move you make the current board is saved, so you can resume the game
 at any point.
 

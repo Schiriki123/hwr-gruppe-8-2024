@@ -42,7 +42,6 @@ class CastleTest : AnnotationSpec() {
     assertThat(allowedCastlingForWhite.second).isTrue
   }
 
-  @Suppress("ktlint:standard:max-line-length")
   @Test
   fun `Castle string allows black King side castle and denies Queen side`() {
     val board = Board.factory(

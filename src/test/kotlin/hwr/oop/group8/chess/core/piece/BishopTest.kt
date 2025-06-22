@@ -63,7 +63,7 @@ class BishopTest : AnnotationSpec() {
   }
 
   @Test
-  fun `Invalid move, expection exception`() {
+  fun `Invalid move, exception exception`() {
     val board = Board.factory(FEN("B7/8/8/8/4r3/8/8/K7", 'w', ""))
     val singleMove =
       SingleMove(Position(File.A, Rank.EIGHT), Position(File.A, Rank.TWO))
