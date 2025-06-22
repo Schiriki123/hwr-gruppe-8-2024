@@ -15,56 +15,49 @@ import hwr.oop.group8.chess.persistence.FEN
 
 class Board private constructor(
   private val fen: FEN,
-  private var turn: Color,
-  private var enPassant: Position?,
-  private var halfmoveClock: Int,
-  private var fullmoveClock: Int,
   val stateHistory: List<Int>,
 ) {
-  private val map = HashMap<Position, Square>()
   val analyser: BoardAnalyser = BoardAnalyser(this, fen.castle)
+  private var turn: Color = fen.getTurn()
+  private var enPassant: Position? = fen.enPassant()
+  private var halfmoveClock: Int = fen.halfmoveClock
+  private var fullmoveClock: Int = fen.fullmoveClock
+  private val map: Map<Position, Square> = buildMap {
+    fun fenCharToDomain(c: Char, fileIterator: Iterator<File>, rank: Rank) {
+      if (c.isDigit()) {
+        repeat(c.digitToInt()) {
+          check(fileIterator.hasNext()) {
+            "File iterator should have next element."
+          }
+          put(Position(fileIterator.next(), rank), Square(null))
+        }
+      } else {
+        check(fileIterator.hasNext()) {
+          "File iterator should have next element."
+        }
+        val d = FEN.convertChar(c)
+        val p = createPieceOnBoard(d.first, d.second)
+        put(Position(fileIterator.next(), rank), Square(p))
+      }
+    }
+
+    for (rank in Rank.entries) {
+      val fileIterator = File.entries.iterator()
+      fen.getRank(rank).forEach { c ->
+        fenCharToDomain(c, fileIterator, rank)
+      }
+    }
+  }
 
   init {
-    initializeBoardFromFENString()
+    check(map.size == 64) { "Board must have exactly 64 squares." }
   }
 
   companion object {
     fun factory(fen: FEN, stateHistory: List<Int> = emptyList()): Board = Board(
       fen,
-      fen.getTurn(),
-      fen.enPassant(),
-      fen.halfmoveClock,
-      fen.fullmoveClock,
       stateHistory,
     )
-  }
-
-  private fun initializeBoardFromFENString() {
-    for (rank in Rank.entries) {
-      val fileIterator = File.entries.iterator()
-      fen.getRank(rank).forEach { character ->
-        if (character.isDigit()) {
-          repeat(character.digitToInt()) {
-            populateSquare(fileIterator, rank, null)
-          }
-        } else {
-          val pieceDef = FEN.convertChar(character)
-          val piece = createPieceOnBoard(pieceDef.first, pieceDef.second)
-          populateSquare(fileIterator, rank, piece)
-        }
-      }
-    }
-    check(map.size == 64) { "Board must have exactly 64 squares." }
-  }
-
-  private fun populateSquare(
-    fileIterator: Iterator<File>,
-    rank: Rank,
-    piece: Piece?,
-  ) {
-    check(fileIterator.hasNext()) { "File iterator should have next element." }
-    val position = Position(fileIterator.next(), rank)
-    map[position] = Square(piece)
   }
 
   private fun createPieceOnBoard(type: PieceType, color: Color): Piece =
@@ -151,7 +144,7 @@ class Board private constructor(
 
   fun newStateHistory() = stateHistory.plus(FEN.boardStateHash(this))
 
-  fun getMap(): HashMap<Position, Square> = map
+  fun getMap(): Map<Position, Square> = map
   fun turn() = turn
   fun enPassant() = enPassant
   fun halfmoveClock() = halfmoveClock
