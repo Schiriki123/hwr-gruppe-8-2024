@@ -19,7 +19,7 @@ class SpecialMovesTest : AnnotationSpec() {
     assertThat(
       FEN.generateFENBoardString(board),
     ).isEqualTo("k7/1R6/8/8/8/8/K7/8")
-    assertThat(board.turn).isEqualTo(Color.BLACK)
+    assertThat(board.turn()).isEqualTo(Color.BLACK)
   }
 
   @Test
@@ -33,7 +33,7 @@ class SpecialMovesTest : AnnotationSpec() {
     assertThat(
       FEN.generateFENBoardString(board),
     ).isEqualTo("k7/8/R7/8/8/8/K7/8")
-    assertThat(board.turn).isEqualTo(Color.BLACK)
+    assertThat(board.turn()).isEqualTo(Color.BLACK)
   }
 
   @Test
@@ -46,7 +46,7 @@ class SpecialMovesTest : AnnotationSpec() {
     assertThat(
       FEN.generateFENBoardString(board),
     ).isEqualTo("8/1k6/R7/8/8/8/K7/8")
-    assertThat(board.turn).isEqualTo(Color.WHITE)
+    assertThat(board.turn()).isEqualTo(Color.WHITE)
   }
 
   @Test
@@ -59,7 +59,7 @@ class SpecialMovesTest : AnnotationSpec() {
     assertThat(
       FEN.generateFENBoardString(board),
     ).isEqualTo("k7/8/r7/8/8/8/R7/8")
-    assertThat(board.turn).isEqualTo(Color.BLACK)
+    assertThat(board.turn()).isEqualTo(Color.BLACK)
   }
 
   @Test
@@ -78,6 +78,6 @@ class SpecialMovesTest : AnnotationSpec() {
     val singleMove =
       SingleMove(Position(File.H, Rank.ONE), Position(File.G, Rank.ONE))
     board.makeMove(singleMove)
-    assertThat(board.turn).isEqualTo(Color.BLACK)
+    assertThat(board.turn()).isEqualTo(Color.BLACK)
   }
 }

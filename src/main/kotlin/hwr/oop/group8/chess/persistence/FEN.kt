@@ -94,11 +94,11 @@ data class FEN(
 
     fun getFEN(board: Board): FEN = FEN(
       generateFENBoardString(board),
-      if (board.turn == Color.WHITE) 'w' else 'b',
+      if (board.turn() == Color.WHITE) 'w' else 'b',
       board.castle(),
-      board.enPassant?.toString() ?: "-",
-      board.halfmoveClock,
-      board.fullmoveClock,
+      board.enPassant()?.toString() ?: "-",
+      board.halfmoveClock(),
+      board.fullmoveClock(),
     )
   }
 

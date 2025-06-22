@@ -30,7 +30,7 @@ class DrawTest : AnnotationSpec() {
     // when
     board.makeMove(move)
     // then
-    assertThat(board.halfmoveClock).isEqualTo(50)
+    assertThat(board.halfmoveClock()).isEqualTo(50)
   }
 
   @Test

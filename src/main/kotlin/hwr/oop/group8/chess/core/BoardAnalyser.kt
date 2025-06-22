@@ -24,7 +24,7 @@ class BoardAnalyser(val board: Board, val castle: String) : BoardInspector {
 
   private fun getAllPiecesOfCurrentPlayer(): Set<Piece> =
     board.getMap().values.mapNotNull { it.getPiece() }
-      .filter { it.color() == board.turn }
+      .filter { it.color() == board.turn() }
       .toSet()
 
   val castling = Castling(this, castle)
@@ -52,7 +52,7 @@ class BoardAnalyser(val board: Board, val castle: String) : BoardInspector {
   }
 
   fun checkForDraw() {
-    if (board.halfmoveClock >= 50) {
+    if (board.halfmoveClock() >= 50) {
       throw IllegalStateException("Game is draw due to the 50-move rule.")
     }
     if (isRepetitionDraw()) {
@@ -82,21 +82,21 @@ class BoardAnalyser(val board: Board, val castle: String) : BoardInspector {
   fun isCheck(): Boolean {
     val kingPosition = getKingPosition()
 
-    return isPositionThreatened(board.turn, kingPosition)
+    return isPositionThreatened(board.turn(), kingPosition)
   }
 
   fun isCapture(move: Move): Boolean = !isSquareEmpty(move.moves().first().to)
 
   fun allowedEnPassantTarget(move: DoublePawnMove): Position? =
     if (move.to.hasNextPosition(Direction.LEFT) &&
-      getPieceAt(move.to.left())?.color() != board.turn &&
+      getPieceAt(move.to.left())?.color() != board.turn() &&
       getPieceAt(
         move.to.left(),
       )?.getType() == PieceType.PAWN
     ) {
       move.skippedPosition()
     } else if (move.to.hasNextPosition(Direction.RIGHT) &&
-      getPieceAt(move.to.right())?.color() != board.turn &&
+      getPieceAt(move.to.right())?.color() != board.turn() &&
       getPieceAt(
         move.to.right(),
       )?.getType() == PieceType.PAWN
@@ -114,8 +114,8 @@ class BoardAnalyser(val board: Board, val castle: String) : BoardInspector {
       it.getPiece() === piece
     }.keys.first()
 
-  override fun getCurrentTurn(): Color = board.turn
-  override fun accessEnPassant(): Position? = board.enPassant
+  override fun getCurrentTurn(): Color = board.turn()
+  override fun accessEnPassant(): Position? = board.enPassant()
   override fun isCastlingAllowed(color: Color): Pair<Boolean, Boolean> =
     castling.isAllowed(color)
 }

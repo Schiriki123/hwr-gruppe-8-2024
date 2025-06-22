@@ -69,7 +69,7 @@ class FENTest : AnnotationSpec() {
   fun `En passant null on board should be '-' in FEN`() {
     // given
     val board = Board.factory(FEN(enPassant = "-"))
-    assertThat(board.enPassant).isNull()
+    assertThat(board.enPassant()).isNull()
     // when
     val fen = FEN.getFEN(board)
     // then

@@ -14,15 +14,19 @@ import hwr.oop.group8.chess.core.piece.Rook
 import hwr.oop.group8.chess.persistence.FEN
 
 class Board private constructor(
-  val fen: FEN,
-  var turn: Color,
-  var enPassant: Position?,
-  var halfmoveClock: Int,
-  var fullmoveClock: Int,
+  private val fen: FEN,
+  private var turn: Color,
+  private var enPassant: Position?,
+  private var halfmoveClock: Int,
+  private var fullmoveClock: Int,
   val stateHistory: List<Int>,
 ) {
   private val map = HashMap<Position, Square>()
   val analyser: BoardAnalyser = BoardAnalyser(this, fen.castle)
+
+  init {
+    initializeBoardFromFENString()
+  }
 
   companion object {
     fun factory(fen: FEN, stateHistory: List<Int> = emptyList()): Board = Board(
@@ -33,10 +37,6 @@ class Board private constructor(
       fen.fullmoveClock,
       stateHistory,
     )
-  }
-
-  init {
-    initializeBoardFromFENString()
   }
 
   private fun initializeBoardFromFENString() {
@@ -152,4 +152,8 @@ class Board private constructor(
   fun newStateHistory() = stateHistory.plus(FEN.boardStateHash(this))
 
   fun getMap(): HashMap<Position, Square> = map
+  fun turn() = turn
+  fun enPassant() = enPassant
+  fun halfmoveClock() = halfmoveClock
+  fun fullmoveClock() = fullmoveClock
 }

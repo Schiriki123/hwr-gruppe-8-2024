@@ -153,11 +153,11 @@ class BoardTest : AnnotationSpec() {
         )
     }
 
-    assertThat(board.turn).isEqualTo(Color.WHITE)
+    assertThat(board.turn()).isEqualTo(Color.WHITE)
     assertThat(board.castle()).isEqualTo("KQkq")
-    assertThat(board.enPassant).isEqualTo(null)
-    assertThat(board.halfmoveClock).isEqualTo(0)
-    assertThat(board.fullmoveClock).isEqualTo(1)
+    assertThat(board.enPassant()).isEqualTo(null)
+    assertThat(board.halfmoveClock()).isEqualTo(0)
+    assertThat(board.fullmoveClock()).isEqualTo(1)
   }
 
   @Test
@@ -195,10 +195,10 @@ class BoardTest : AnnotationSpec() {
         Color.WHITE,
       )
 
-    assertThat(board.turn).isEqualTo(Color.BLACK)
+    assertThat(board.turn()).isEqualTo(Color.BLACK)
     assertThat(board.castle()).isEqualTo("-")
-    assertThat(board.halfmoveClock).isEqualTo(4)
-    assertThat(board.fullmoveClock).isEqualTo(25)
+    assertThat(board.halfmoveClock()).isEqualTo(4)
+    assertThat(board.fullmoveClock()).isEqualTo(25)
   }
 
   @Test
@@ -209,7 +209,7 @@ class BoardTest : AnnotationSpec() {
     val endPosition = Position(File.H, Rank.TWO)
     val testSingleMove = SingleMove(startPosition, endPosition)
     board.makeMove(testSingleMove)
-    assertThat(board.halfmoveClock).isEqualTo(0)
+    assertThat(board.halfmoveClock()).isEqualTo(0)
   }
 
   @Test
@@ -220,7 +220,7 @@ class BoardTest : AnnotationSpec() {
     val endPosition = Position(File.B, Rank.TWO)
     val testSingleMove = SingleMove(startPosition, endPosition)
     board.makeMove(testSingleMove)
-    assertThat(board.halfmoveClock).isEqualTo(0)
+    assertThat(board.halfmoveClock()).isEqualTo(0)
   }
 
   @Test
@@ -231,7 +231,7 @@ class BoardTest : AnnotationSpec() {
     val endPosition = Position(File.A, Rank.SEVEN)
     val testSingleMove = SingleMove(startPosition, endPosition)
     board.makeMove(testSingleMove)
-    assertThat(board.halfmoveClock).isEqualTo(13)
+    assertThat(board.halfmoveClock()).isEqualTo(13)
   }
 
   @Test
@@ -242,7 +242,7 @@ class BoardTest : AnnotationSpec() {
     val endPosition = Position(File.A, Rank.SEVEN)
     val testSingleMove = SingleMove(startPosition, endPosition)
     board.makeMove(testSingleMove)
-    assertThat(board.fullmoveClock).isEqualTo(13)
+    assertThat(board.fullmoveClock()).isEqualTo(13)
   }
 
   @Test
@@ -253,7 +253,7 @@ class BoardTest : AnnotationSpec() {
     val endPosition = Position(File.A, Rank.SEVEN)
     val testSingleMove = SingleMove(startPosition, endPosition)
     board.makeMove(testSingleMove)
-    assertThat(board.fullmoveClock).isEqualTo(12)
+    assertThat(board.fullmoveClock()).isEqualTo(12)
   }
 
   @Test

@@ -27,7 +27,7 @@ class EnPassantTest : AnnotationSpec() {
     // when
     board.makeMove(moveThatAllowsEnPassant)
     // then
-    assertThat(board.enPassant).isEqualTo(Position(File.E, Rank.SIX))
+    assertThat(board.enPassant()).isEqualTo(Position(File.E, Rank.SIX))
     assertThat(
       FEN.generateFENBoardString(board),
     ).isEqualTo("rnbqkbnr/pppp1pp1/8/3Pp2p/8/8/PPP1PPPP/RNBQKBNR")
@@ -47,7 +47,7 @@ class EnPassantTest : AnnotationSpec() {
     // when
     board.makeMove(moveThatAllowsEnPassant)
     // then
-    assertThat(board.enPassant).isEqualTo(Position(File.C, Rank.SIX))
+    assertThat(board.enPassant()).isEqualTo(Position(File.C, Rank.SIX))
     assertThat(
       FEN.generateFENBoardString(board),
     ).isEqualTo("rnbqkb1r/pp1ppppp/7n/2pP4/8/8/PPP1PPPP/RNBQKBNR")
@@ -61,7 +61,7 @@ class EnPassantTest : AnnotationSpec() {
     // when
     board.makeMove(move)
     // then
-    assertThat(board.enPassant).isNull()
+    assertThat(board.enPassant()).isNull()
     assertThat(FEN.getFEN(board).enPassant).isEqualTo("-")
   }
 
@@ -85,7 +85,7 @@ class EnPassantTest : AnnotationSpec() {
     assertThat(
       FEN.generateFENBoardString(board),
     ).isEqualTo("rnbqkbnr/ppp1pppp/8/6N1/8/4p3/PPPP1PPP/RNBQKB1R")
-    assertThat(board.enPassant).isNull()
+    assertThat(board.enPassant()).isNull()
   }
 
   @Test
@@ -107,7 +107,7 @@ class EnPassantTest : AnnotationSpec() {
     assertThat(
       FEN.generateFENBoardString(board),
     ).isEqualTo("rnbqkb1r/pp1ppppp/2P4n/8/8/8/P1PPPPPP/RNBQKBNR")
-    assertThat(board.enPassant).isNull()
+    assertThat(board.enPassant()).isNull()
   }
 
   @Test
