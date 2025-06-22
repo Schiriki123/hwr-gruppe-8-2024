@@ -22,7 +22,7 @@ class PawnTest : AnnotationSpec() {
     val blackPawn = Pawn(Color.BLACK, boardInspector.analyser)
     assertThat(whitePawn.fenRepresentation()).isEqualTo('P')
     assertThat(blackPawn.fenRepresentation()).isEqualTo('p')
-    assertThat(whitePawn.getType()).isEqualTo(PieceType.PAWN)
+    assertThat(whitePawn.pieceType()).isEqualTo(PieceType.PAWN)
     assertThat(whitePawn.startRank).isEqualTo(Rank.TWO)
     assertThat(whitePawn.forwardDirection).isEqualTo(Direction.TOP)
     assertThat(whitePawn.promotionRank).isEqualTo(Rank.EIGHT)

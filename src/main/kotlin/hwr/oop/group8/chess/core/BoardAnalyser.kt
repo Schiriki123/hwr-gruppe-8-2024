@@ -11,11 +11,11 @@ class BoardAnalyser(private val board: Board, castle: String) :
 
   val castling = Castling(this, castle)
   private fun getKingPosition(): Position {
-    val allPiecesOfCurrentPlayer = getAllPieces(board.turn())
+    val allPiecesOfCurrentPlayer = allPieces(board.turn())
 
-    return findPositionOfPiece(
+    return positionOfPiece(
       allPiecesOfCurrentPlayer.first {
-        it.getType() ==
+        it.pieceType() ==
           PieceType.KING
       },
     )
@@ -24,15 +24,15 @@ class BoardAnalyser(private val board: Board, castle: String) :
   private fun isRepetitionDraw(): Boolean =
     board.stateHistory.groupBy { it }.any { it.value.size >= 3 }
 
-  private fun getAllPieces(player: Color): Set<Piece> =
-    board.getMap().values.mapNotNull { it.getPiece() }
+  private fun allPieces(player: Color): Set<Piece> =
+    board.map().values.mapNotNull { it.getPiece() }
       .filter { it.color() == player }
       .toSet()
 
   fun isCheckmate(): Boolean {
-    val allPiecesCurrentPlayer = getAllPieces(board.turn())
+    val allPiecesCurrentPlayer = allPieces(board.turn())
     allPiecesCurrentPlayer.forEach { piece ->
-      val possibleMovesOfPiece = piece.getValidMove()
+      val possibleMovesOfPiece = piece.validMoves()
       possibleMovesOfPiece.forEach { move ->
         if (isMoveCheck(move)) {
           return false
@@ -43,9 +43,9 @@ class BoardAnalyser(private val board: Board, castle: String) :
   }
 
   fun isPositionThreatened(currentPlayer: Color, position: Position): Boolean {
-    val allPiecesOfOpponent: Set<Piece> = getAllPieces(currentPlayer.invert())
+    val allPiecesOfOpponent: Set<Piece> = allPieces(currentPlayer.invert())
     val possibleMovesOfOpponent: Set<Move> =
-      allPiecesOfOpponent.flatMap { it.getValidMove() }
+      allPiecesOfOpponent.flatMap { it.validMoves() }
         .toSet()
     return possibleMovesOfOpponent.any { it.moves().first().to == position }
   }
@@ -88,32 +88,32 @@ class BoardAnalyser(private val board: Board, castle: String) :
 
   fun allowedEnPassantTarget(move: DoublePawnMove): Position? =
     if (move.to.hasNextPosition(Direction.LEFT) &&
-      getPieceAt(move.to.left())?.color() != board.turn() &&
-      getPieceAt(
+      pieceAt(move.to.left())?.color() != board.turn() &&
+      pieceAt(
         move.to.left(),
-      )?.getType() == PieceType.PAWN
+      )?.pieceType() == PieceType.PAWN
     ) {
       move.skippedPosition()
     } else if (move.to.hasNextPosition(Direction.RIGHT) &&
-      getPieceAt(move.to.right())?.color() != board.turn() &&
-      getPieceAt(
+      pieceAt(move.to.right())?.color() != board.turn() &&
+      pieceAt(
         move.to.right(),
-      )?.getType() == PieceType.PAWN
+      )?.pieceType() == PieceType.PAWN
     ) {
       move.skippedPosition()
     } else {
       null
     }
 
-  override fun getPieceAt(position: Position): Piece? =
-    board.getMap().getValue(position).getPiece()
+  override fun pieceAt(position: Position): Piece? =
+    board.map().getValue(position).getPiece()
 
-  override fun findPositionOfPiece(piece: Piece): Position =
-    board.getMap().filterValues {
+  override fun positionOfPiece(piece: Piece): Position =
+    board.map().filterValues {
       it.getPiece() === piece
     }.keys.first()
 
-  override fun getCurrentTurn(): Color = board.turn()
+  override fun currentTurn(): Color = board.turn()
   override fun accessEnPassant(): Position? = board.enPassant()
   override fun isCastlingAllowed(color: Color): Pair<Boolean, Boolean> =
     castling.isAllowed(color)

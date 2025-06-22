@@ -40,19 +40,19 @@ class Castling(
       !board.isPositionThreatened(color, Position(File.G, homeRank))
 
   fun updatePermission() {
-    update(board.getCurrentTurn())
-    update(board.getCurrentTurn().invert())
+    update(board.currentTurn())
+    update(board.currentTurn().invert())
   }
 
   private fun update(turn: Color) {
     val homeRank =
       if (turn == Color.WHITE) Rank.ONE else Rank.EIGHT
     val kingPosition =
-      board.getPieceAt(Position(File.E, homeRank))
+      board.pieceAt(Position(File.E, homeRank))
     val rookPositionKingSide =
-      board.getPieceAt(Position(File.H, homeRank))
+      board.pieceAt(Position(File.H, homeRank))
     val rookPositionQueenSide =
-      board.getPieceAt(Position(File.A, homeRank))
+      board.pieceAt(Position(File.A, homeRank))
     val kingChar = if (turn == Color.WHITE) "K" else "k"
     val queenChar = if (turn == Color.WHITE) "Q" else "q"
 

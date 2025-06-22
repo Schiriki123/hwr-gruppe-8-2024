@@ -45,7 +45,7 @@ class Board private constructor(
 
     for (rank in Rank.entries) {
       val fileIterator = File.entries.iterator()
-      fen.getRank(rank).forEach { c ->
+      fen.rankRepresentation(rank).forEach { c ->
         fenCharToDomain(c, fileIterator, rank)
       }
     }
@@ -112,12 +112,12 @@ class Board private constructor(
       "Game is over, checkmate!"
     }
 
-    val piece = analyser.getPieceAt(move.moves().first().from)
+    val piece = analyser.pieceAt(move.moves().first().from)
 
     checkNotNull(piece) { "There is no piece at ${move.moves().first().from}" }
     check(piece.color() == turn) { "It's not your turn" }
 
-    val selectedMove = piece.getValidMove().find { validMoves ->
+    val selectedMove = piece.validMoves().find { validMoves ->
       validMoves.moves().first() == move.moves()
         .first() &&
         validMoves.promotesTo() == move.promotesTo()
@@ -133,7 +133,7 @@ class Board private constructor(
       "Move would put player in check"
     }
 
-    if (piece.getType() == PieceType.PAWN || analyser.isCapture(move)) {
+    if (piece.pieceType() == PieceType.PAWN || analyser.isCapture(move)) {
       resetHalfMoveClock()
     }
 
@@ -146,7 +146,7 @@ class Board private constructor(
 
   fun newStateHistory() = stateHistory.plus(FEN.boardStateHash(this))
 
-  fun getMap(): Map<Position, Square> = map
+  fun map(): Map<Position, Square> = map
   fun turn() = turn
   fun enPassant() = enPassant
   fun halfmoveClock() = halfmoveClock

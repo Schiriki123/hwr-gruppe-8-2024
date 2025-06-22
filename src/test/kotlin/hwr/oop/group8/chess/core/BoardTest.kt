@@ -46,7 +46,7 @@ class BoardTest : AnnotationSpec() {
     for (rank in Rank.entries.reversed()) {
       for (file in File.entries) {
         val position = Position(file, rank)
-        val piece = board.analyser.getPieceAt(position)
+        val piece = board.analyser.pieceAt(position)
         if (rank == Rank.EIGHT && file == File.A) {
           piece.shouldBeInstanceOf<King>()
         } else {
@@ -60,7 +60,7 @@ class BoardTest : AnnotationSpec() {
   @Test
   fun `create map with size 64, return map`() {
     val board = Board.factory(FEN("K7/8/8/8/8/8/8/8", 'w', ""))
-    val map = board.getMap()
+    val map = board.map()
 
     for (rank in Rank.entries) {
       for (file in File.entries) {
@@ -74,80 +74,80 @@ class BoardTest : AnnotationSpec() {
   @Test
   fun `create board with default setup, return board with start arrangement`() {
     val board = Board.factory(FEN())
-    board.analyser.getPieceAt(Position(File.A, Rank.ONE))
+    board.analyser.pieceAt(Position(File.A, Rank.ONE))
       .shouldBeInstanceOf<Rook>().color.shouldBe(
         Color.WHITE,
       )
-    board.analyser.getPieceAt(Position(File.B, Rank.ONE))
+    board.analyser.pieceAt(Position(File.B, Rank.ONE))
       .shouldBeInstanceOf<Knight>().color.shouldBe(
         Color.WHITE,
       )
-    board.analyser.getPieceAt(Position(File.C, Rank.ONE))
+    board.analyser.pieceAt(Position(File.C, Rank.ONE))
       .shouldBeInstanceOf<Bishop>().color.shouldBe(
         Color.WHITE,
       )
-    board.analyser.getPieceAt(Position(File.D, Rank.ONE))
+    board.analyser.pieceAt(Position(File.D, Rank.ONE))
       .shouldBeInstanceOf<Queen>().color.shouldBe(
         Color.WHITE,
       )
-    board.analyser.getPieceAt(Position(File.E, Rank.ONE))
+    board.analyser.pieceAt(Position(File.E, Rank.ONE))
       .shouldBeInstanceOf<King>().color.shouldBe(
         Color.WHITE,
       )
-    board.analyser.getPieceAt(Position(File.F, Rank.ONE))
+    board.analyser.pieceAt(Position(File.F, Rank.ONE))
       .shouldBeInstanceOf<Bishop>().color.shouldBe(
         Color.WHITE,
       )
-    board.analyser.getPieceAt(Position(File.G, Rank.ONE))
+    board.analyser.pieceAt(Position(File.G, Rank.ONE))
       .shouldBeInstanceOf<Knight>().color.shouldBe(
         Color.WHITE,
       )
-    board.analyser.getPieceAt(Position(File.H, Rank.ONE))
+    board.analyser.pieceAt(Position(File.H, Rank.ONE))
       .shouldBeInstanceOf<Rook>().color.shouldBe(
         Color.WHITE,
       )
     for (i in File.entries) {
-      board.analyser.getPieceAt(Position(i, Rank.TWO))
+      board.analyser.pieceAt(Position(i, Rank.TWO))
         .shouldBeInstanceOf<Pawn>().color.shouldBe(
           Color.WHITE,
         )
     }
 
     // Black pieces
-    board.analyser.getPieceAt(Position(File.A, Rank.EIGHT))
+    board.analyser.pieceAt(Position(File.A, Rank.EIGHT))
       .shouldBeInstanceOf<Rook>().color.shouldBe(
         Color.BLACK,
       )
-    board.analyser.getPieceAt(Position(File.B, Rank.EIGHT))
+    board.analyser.pieceAt(Position(File.B, Rank.EIGHT))
       .shouldBeInstanceOf<Knight>().color.shouldBe(
         Color.BLACK,
       )
-    board.analyser.getPieceAt(Position(File.C, Rank.EIGHT))
+    board.analyser.pieceAt(Position(File.C, Rank.EIGHT))
       .shouldBeInstanceOf<Bishop>().color.shouldBe(
         Color.BLACK,
       )
-    board.analyser.getPieceAt(Position(File.D, Rank.EIGHT))
+    board.analyser.pieceAt(Position(File.D, Rank.EIGHT))
       .shouldBeInstanceOf<Queen>().color.shouldBe(
         Color.BLACK,
       )
-    board.analyser.getPieceAt(Position(File.E, Rank.EIGHT))
+    board.analyser.pieceAt(Position(File.E, Rank.EIGHT))
       .shouldBeInstanceOf<King>().color.shouldBe(
         Color.BLACK,
       )
-    board.analyser.getPieceAt(Position(File.F, Rank.EIGHT))
+    board.analyser.pieceAt(Position(File.F, Rank.EIGHT))
       .shouldBeInstanceOf<Bishop>().color.shouldBe(
         Color.BLACK,
       )
-    board.analyser.getPieceAt(Position(File.G, Rank.EIGHT))
+    board.analyser.pieceAt(Position(File.G, Rank.EIGHT))
       .shouldBeInstanceOf<Knight>().color.shouldBe(
         Color.BLACK,
       )
-    board.analyser.getPieceAt(Position(File.H, Rank.EIGHT))
+    board.analyser.pieceAt(Position(File.H, Rank.EIGHT))
       .shouldBeInstanceOf<Rook>().color.shouldBe(
         Color.BLACK,
       )
     for (i in File.entries) {
-      board.analyser.getPieceAt(Position(i, Rank.SEVEN))
+      board.analyser.pieceAt(Position(i, Rank.SEVEN))
         .shouldBeInstanceOf<Pawn>().color.shouldBe(
           Color.BLACK,
         )
@@ -165,32 +165,32 @@ class BoardTest : AnnotationSpec() {
     val board = Board.factory(
       FEN("k7/2R4B/8/8/1q6/8/8/2Q4N", 'b', "-", "-", 4, 25),
     )
-    board.analyser.getPieceAt(Position(File.B, Rank.FOUR))
+    board.analyser.pieceAt(Position(File.B, Rank.FOUR))
       .shouldBeInstanceOf<Queen>().color.shouldBe(
         Color.BLACK,
       )
 
-    board.analyser.getPieceAt(Position(File.A, Rank.EIGHT))
+    board.analyser.pieceAt(Position(File.A, Rank.EIGHT))
       .shouldBeInstanceOf<King>().color.shouldBe(
         Color.BLACK,
       )
 
-    board.analyser.getPieceAt(Position(File.H, Rank.SEVEN))
+    board.analyser.pieceAt(Position(File.H, Rank.SEVEN))
       .shouldBeInstanceOf<Bishop>().color.shouldBe(
         Color.WHITE,
       )
 
-    board.analyser.getPieceAt(Position(File.C, Rank.SEVEN))
+    board.analyser.pieceAt(Position(File.C, Rank.SEVEN))
       .shouldBeInstanceOf<Rook>().color.shouldBe(
         Color.WHITE,
       )
 
-    board.analyser.getPieceAt(Position(File.C, Rank.ONE))
+    board.analyser.pieceAt(Position(File.C, Rank.ONE))
       .shouldBeInstanceOf<Queen>().color.shouldBe(
         Color.WHITE,
       )
 
-    board.analyser.getPieceAt(Position(File.H, Rank.ONE))
+    board.analyser.pieceAt(Position(File.H, Rank.ONE))
       .shouldBeInstanceOf<Knight>().color.shouldBe(
         Color.WHITE,
       )

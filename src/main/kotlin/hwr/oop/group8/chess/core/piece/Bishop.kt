@@ -8,7 +8,7 @@ import hwr.oop.group8.chess.core.move.SingleMove
 class Bishop(val color: Color, val boardInspector: BoardInspector) : Piece {
   override fun color(): Color = color
 
-  override fun getValidMove(): Set<SingleMove> {
+  override fun validMoves(): Set<SingleMove> {
     val directions = setOf(
       Direction.BOTTOM_RIGHT,
       Direction.BOTTOM_LEFT,
@@ -17,7 +17,7 @@ class Bishop(val color: Color, val boardInspector: BoardInspector) : Piece {
     )
     val bishopMovement =
       MultiDirectionalMoveGenerator(this, boardInspector, directions)
-    val validDestinations = bishopMovement.getValidMoveDestinations().toSet()
+    val validDestinations = bishopMovement.validMoves().toSet()
 
     return validDestinations.toSet()
   }
@@ -27,5 +27,5 @@ class Bishop(val color: Color, val boardInspector: BoardInspector) : Piece {
     Color.BLACK -> 'b'
   }
 
-  override fun getType(): PieceType = PieceType.BISHOP
+  override fun pieceType(): PieceType = PieceType.BISHOP
 }

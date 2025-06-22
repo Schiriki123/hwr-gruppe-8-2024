@@ -9,7 +9,7 @@ class ListGames(private val port: PersistencePort) : CliktCommand() {
     val games = port.loadAllGames()
     echo("List of games:")
     for (game in games) {
-      echo("Game ID: ${game.id}, Current turn: ${game.getFen().getTurn()}")
+      echo("Game ID: ${game.id}, Current turn: ${game.fen().getTurn()}")
     }
   }
 }

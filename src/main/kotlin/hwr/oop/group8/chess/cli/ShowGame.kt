@@ -17,7 +17,7 @@ class ShowGame(private val port: PersistencePort) : CliktCommand() {
     echo("Loading game with id $gameId...")
     echo("Current board:")
     printBoard(game.board.analyser)
-    echo("Current turn: ${game.getFen().getTurn()}")
+    echo("Current turn: ${game.fen().getTurn()}")
     printCapturedPieces(game.board.analyser)
   }
 
@@ -25,7 +25,7 @@ class ShowGame(private val port: PersistencePort) : CliktCommand() {
     val builder = StringBuilder()
     for (rank in Rank.entries.reversed()) {
       for (file in File.entries) {
-        val piece = board.getPieceAt(Position(file, rank))
+        val piece = board.pieceAt(Position(file, rank))
         builder.append(piece?.fenRepresentation() ?: '.')
       }
       builder.append("${System.lineSeparator()}")
@@ -43,7 +43,7 @@ class ShowGame(private val port: PersistencePort) : CliktCommand() {
     for (rank in Rank.entries) {
       for (file in File.entries) {
         val position = Position(file, rank)
-        val piece = boardInspector.getPieceAt(position)
+        val piece = boardInspector.pieceAt(position)
         piece?.let { piece ->
           if (piece.color() == Color.WHITE) {
             whitePieces.deleteAt(
