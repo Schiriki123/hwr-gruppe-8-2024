@@ -300,7 +300,7 @@ class FilePersistenceAdapterTest : AnnotationSpec() {
     // when
     assertThatThrownBy {
       sut.deleteGame(3)
-    }.isInstanceOf(CouldNotDeleteGameException::class.java)
+    }.isInstanceOf(PersistenceError.CouldNotDeleteGameException::class.java)
       .hasMessageContaining("Game with id 3 does not exist")
     // then
     val remainingGames = sut.loadAllGames()

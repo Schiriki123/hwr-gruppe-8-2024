@@ -1,8 +1,8 @@
 package hwr.oop.group8.chess.cli
 
 import hwr.oop.group8.chess.core.Game
-import hwr.oop.group8.chess.persistence.CouldNotDeleteGameException
 import hwr.oop.group8.chess.persistence.FEN
+import hwr.oop.group8.chess.persistence.PersistenceError
 import hwr.oop.group8.chess.persistence.PersistencePort
 
 class PersistentAdapterMock : PersistencePort {
@@ -25,7 +25,7 @@ class PersistentAdapterMock : PersistencePort {
     if (game?.id == id) {
       game = null
     } else {
-      throw CouldNotDeleteGameException("Game with id $id does not exist")
+      throw PersistenceError.CouldNotDeleteGameException("Game with id $id does not exist")
     }
   }
 

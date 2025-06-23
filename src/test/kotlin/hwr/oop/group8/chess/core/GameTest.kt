@@ -30,7 +30,8 @@ class GameTest : AnnotationSpec() {
     // when
     assertThatThrownBy {
       game.makeMove(cliMove)
-    }.isInstanceOf(IllegalStateException::class.java).message()
+    }.isInstanceOf(IllegalMove.InvalidMoveForPieceException::class.java)
+      .message()
       .isEqualTo("Invalid move for piece Pawn from a7 to a8")
     // then
     assertThat(FEN.generateFENBoardString(game.board))

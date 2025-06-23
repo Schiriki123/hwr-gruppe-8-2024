@@ -7,5 +7,5 @@ interface PersistencePort { // Split to different interfaces if needed
   fun deleteGame(id: Int)
   fun loadAllGames(): List<Game>
   fun loadGame(id: Int): Game = loadAllGames().find { it.id == id }
-    ?: throw CouldNotLoadGameException("Could not load game with id $id")
+    ?: throw PersistenceError.CouldNotLoadGameException("Could not load game with id $id")
 }

@@ -7,8 +7,6 @@ import hwr.oop.group8.chess.core.piece.PieceType
 
 class BoardAnalyser(private val board: Board, castle: String) :
   BoardInspector {
-  // TODO: Refactor to provide BoardAnalyser with ReadOnly Access
-
   val castling = Castling(this, castle)
   private fun getKingPosition(): Position {
     val allPiecesOfCurrentPlayer = allPieces(board.turn())
@@ -34,7 +32,7 @@ class BoardAnalyser(private val board: Board, castle: String) :
     allPiecesCurrentPlayer.forEach { piece ->
       val possibleMovesOfPiece = piece.validMoves()
       possibleMovesOfPiece.forEach { move ->
-        if (isMoveCheck(move)) {
+        if (!isMoveCheck(move)) {
           return false
         }
       }
@@ -52,10 +50,12 @@ class BoardAnalyser(private val board: Board, castle: String) :
 
   fun checkForDraw() {
     if (board.halfmoveClock() >= 50) {
-      throw IllegalStateException("Game is draw due to the 50-move rule.")
+      throw IllegalMove.DrawException("Game is draw due to the 50-move rule.")
     }
     if (isRepetitionDraw()) {
-      throw IllegalStateException("Game is draw due to threefold repetition.")
+      throw IllegalMove.DrawException(
+        "Game is draw due to threefold repetition.",
+      )
     }
   }
 
@@ -75,7 +75,7 @@ class BoardAnalyser(private val board: Board, castle: String) :
     fromSquare.setPiece(movedPiece)
     toSquare.setPiece(pieceOnTargetSquare)
 
-    return !doesMovePutInCheck
+    return doesMovePutInCheck
   }
 
   fun isCheck(): Boolean {

@@ -1,5 +1,6 @@
 package hwr.oop.group8.chess.core
 
+import hwr.oop.group8.chess.core.IllegalMove.CheckmateException
 import hwr.oop.group8.chess.core.move.DoublePawnMove
 import hwr.oop.group8.chess.core.move.Move
 import hwr.oop.group8.chess.core.move.SingleMove
@@ -108,14 +109,12 @@ class Board private constructor(
   fun getSquare(position: Position): Square = map.getValue(position)
   fun makeMove(move: Move) {
     analyser.checkForDraw()
-    check(!analyser.isCheckmate()) {
-      "Game is over, checkmate!"
-    }
+    if (analyser.isCheckmate()) throw CheckmateException()
 
     val piece = analyser.pieceAt(move.moves().first().from)
 
-    checkNotNull(piece) { "There is no piece at ${move.moves().first().from}" }
-    check(piece.color() == turn) { "It's not your turn" }
+    if (piece == null) throw IllegalMove.NoPieceException(move)
+    if (piece.color() != turn) throw IllegalMove.OutOfTurnException()
 
     val selectedMove = piece.validMoves().find { validMoves ->
       validMoves.moves().first() == move.moves()
@@ -123,15 +122,14 @@ class Board private constructor(
         validMoves.promotesTo() == move.promotesTo()
     }
 
-    checkNotNull(selectedMove) {
-      "Invalid move for piece ${piece::class.simpleName} from ${
-        move.moves().first().from
-      } to ${move.moves().first().to}"
+    if (selectedMove == null) {
+      throw IllegalMove.InvalidMoveForPieceException(
+        piece,
+        move,
+      )
     }
 
-    check(analyser.isMoveCheck(selectedMove)) {
-      "Move would put player in check"
-    }
+    if (analyser.isMoveCheck(selectedMove)) throw IllegalMove.MoveToCheck()
 
     if (piece.pieceType() == PieceType.PAWN || analyser.isCapture(move)) {
       resetHalfMoveClock()
