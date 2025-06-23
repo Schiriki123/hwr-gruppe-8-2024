@@ -41,7 +41,9 @@ class FilePersistenceAdapter(val file: File) : PersistencePort {
     val lines = file.readLines()
     val updatedLines = lines.filterNot { it.startsWith("$id,") }
     if (lines.size == updatedLines.size) {
-      throw CouldNotDeleteGameException("Game with id $id does not exist")
+      throw CouldNotDeleteGameException(
+        "Game with id $id does not exist",
+      )
     }
     file.writeText(updatedLines.joinToString("${System.lineSeparator()}"))
   }

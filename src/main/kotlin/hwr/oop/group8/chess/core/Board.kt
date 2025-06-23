@@ -1,5 +1,12 @@
 package hwr.oop.group8.chess.core
 
+import hwr.oop.group8.chess.core.exceptions.CheckmateException
+import hwr.oop.group8.chess.core.exceptions.FileToShortException
+import hwr.oop.group8.chess.core.exceptions.InvalidBoardSizeException
+import hwr.oop.group8.chess.core.exceptions.InvalidMoveForPieceException
+import hwr.oop.group8.chess.core.exceptions.MoveToCheck
+import hwr.oop.group8.chess.core.exceptions.NoPieceException
+import hwr.oop.group8.chess.core.exceptions.OutOfTurnException
 import hwr.oop.group8.chess.core.move.DoublePawnMove
 import hwr.oop.group8.chess.core.move.Move
 import hwr.oop.group8.chess.core.move.SingleMove
@@ -17,7 +24,7 @@ class Board private constructor(
   private val fen: FEN,
   val stateHistory: List<Int>,
 ) {
-  val analyser: BoardAnalyser = BoardAnalyser(this, fen.castle)
+  val analyser: BoardAnalyser = BoardAnalyser(this, fen.castle) { this.map }
   private var turn: Color = fen.getTurn()
   private var enPassant: Position? = fen.enPassant()
   private var halfmoveClock: Int = fen.halfmoveClock
@@ -25,9 +32,7 @@ class Board private constructor(
   private val map: Map<Position, Square> = buildMap {
 
     fun putOnSquare(piece: Piece?, rank: Rank, fileIterator: Iterator<File>) {
-      check(fileIterator.hasNext()) {
-        "File iterator should have next element."
-      }
+      if (!fileIterator.hasNext()) throw FileToShortException()
       put(Position(fileIterator.next(), rank), Square(piece))
     }
 
@@ -52,7 +57,7 @@ class Board private constructor(
   }
 
   init {
-    check(map.size == 64) { "Board must have exactly 64 squares." }
+    if (map.size != 64) throw InvalidBoardSizeException()
   }
 
   companion object {
@@ -85,8 +90,8 @@ class Board private constructor(
     } else {
       null
     }
-    if (move.enPassantCapture() != null) {
-      getSquare(move.enPassantCapture()!!).setPiece(null)
+    if (move.specialCapture() != null) {
+      getSquare(move.specialCapture()!!).setPiece(null)
     }
   }
 
@@ -103,19 +108,17 @@ class Board private constructor(
     halfmoveClock = -1
   }
 
+  private fun getSquare(position: Position): Square = map.getValue(position)
   fun castle() = analyser.castling.string()
 
-  fun getSquare(position: Position): Square = map.getValue(position)
   fun makeMove(move: Move) {
     analyser.checkForDraw()
-    check(!analyser.isCheckmate()) {
-      "Game is over, checkmate!"
-    }
+    if (analyser.isCheckmate()) throw CheckmateException()
 
     val piece = analyser.pieceAt(move.moves().first().from)
 
-    checkNotNull(piece) { "There is no piece at ${move.moves().first().from}" }
-    check(piece.color() == turn) { "It's not your turn" }
+    if (piece == null) throw NoPieceException(move)
+    if (piece.color() != turn) throw OutOfTurnException()
 
     val selectedMove = piece.validMoves().find { validMoves ->
       validMoves.moves().first() == move.moves()
@@ -123,15 +126,14 @@ class Board private constructor(
         validMoves.promotesTo() == move.promotesTo()
     }
 
-    checkNotNull(selectedMove) {
-      "Invalid move for piece ${piece::class.simpleName} from ${
-        move.moves().first().from
-      } to ${move.moves().first().to}"
+    if (selectedMove == null) {
+      throw InvalidMoveForPieceException(
+        piece,
+        move,
+      )
     }
 
-    check(analyser.isMoveCheck(selectedMove)) {
-      "Move would put player in check"
-    }
+    if (analyser.isMoveCheck(selectedMove)) throw MoveToCheck()
 
     if (piece.pieceType() == PieceType.PAWN || analyser.isCapture(move)) {
       resetHalfMoveClock()
@@ -146,7 +148,6 @@ class Board private constructor(
 
   fun newStateHistory() = stateHistory.plus(FEN.boardStateHash(this))
 
-  fun map(): Map<Position, Square> = map
   fun turn() = turn
   fun enPassant() = enPassant
   fun halfmoveClock() = halfmoveClock
