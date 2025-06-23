@@ -1,6 +1,7 @@
 package hwr.oop.group8.chess.core
 
 import hwr.oop.group8.chess.cli.CliMove
+import hwr.oop.group8.chess.core.exceptions.IllegalMove
 import hwr.oop.group8.chess.persistence.FEN
 import io.kotest.core.spec.style.AnnotationSpec
 import org.assertj.core.api.Assertions.assertThat

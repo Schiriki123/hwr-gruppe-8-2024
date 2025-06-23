@@ -9,5 +9,5 @@ interface Move {
   fun promotesTo(): PieceType? = null
   fun isPromotion(): Boolean = false
   fun isDoublePawnMove(): Boolean = false
-  fun enPassantCapture(): Position? = null
+  fun specialCapture(): Position? = null
 }

@@ -1,4 +1,4 @@
-package hwr.oop.group8.chess.core
+package hwr.oop.group8.chess.core.exceptions
 
 import hwr.oop.group8.chess.core.move.Move
 import hwr.oop.group8.chess.core.piece.Piece

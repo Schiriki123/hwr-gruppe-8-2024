@@ -1,6 +1,8 @@
 package hwr.oop.group8.chess.core
 
-import hwr.oop.group8.chess.core.IllegalMove.CheckmateException
+import hwr.oop.group8.chess.core.exceptions.BoardInit
+import hwr.oop.group8.chess.core.exceptions.IllegalMove
+import hwr.oop.group8.chess.core.exceptions.IllegalMove.CheckmateException
 import hwr.oop.group8.chess.core.move.DoublePawnMove
 import hwr.oop.group8.chess.core.move.Move
 import hwr.oop.group8.chess.core.move.SingleMove
@@ -26,9 +28,7 @@ class Board private constructor(
   private val map: Map<Position, Square> = buildMap {
 
     fun putOnSquare(piece: Piece?, rank: Rank, fileIterator: Iterator<File>) {
-      check(fileIterator.hasNext()) {
-        "File iterator should have next element."
-      }
+      if (!fileIterator.hasNext()) throw BoardInit.FileToShortException()
       put(Position(fileIterator.next(), rank), Square(piece))
     }
 
@@ -53,7 +53,7 @@ class Board private constructor(
   }
 
   init {
-    check(map.size == 64) { "Board must have exactly 64 squares." }
+    if (map.size != 64) throw BoardInit.InvalidBoardSizeException()
   }
 
   companion object {
@@ -86,8 +86,8 @@ class Board private constructor(
     } else {
       null
     }
-    if (move.enPassantCapture() != null) {
-      getSquare(move.enPassantCapture()!!).setPiece(null)
+    if (move.specialCapture() != null) {
+      getSquare(move.specialCapture()!!).setPiece(null)
     }
   }
 
