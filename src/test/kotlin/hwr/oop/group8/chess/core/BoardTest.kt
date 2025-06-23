@@ -58,20 +58,6 @@ class BoardTest : AnnotationSpec() {
   }
 
   @Test
-  fun `create map with size 64, return map`() {
-    val board = Board.factory(FEN("K7/8/8/8/8/8/8/8", 'w', ""))
-    val map = board.map()
-
-    for (rank in Rank.entries) {
-      for (file in File.entries) {
-        val position = Position(file, rank)
-        assertThat(map[position]).isNotNull
-      }
-    }
-    assertThat(map.size).isEqualTo(64)
-  }
-
-  @Test
   fun `create board with default setup, return board with start arrangement`() {
     val board = Board.factory(FEN())
     board.analyser.pieceAt(Position(File.A, Rank.ONE))

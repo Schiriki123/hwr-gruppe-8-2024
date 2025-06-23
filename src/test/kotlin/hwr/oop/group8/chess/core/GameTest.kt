@@ -1,7 +1,7 @@
 package hwr.oop.group8.chess.core
 
 import hwr.oop.group8.chess.cli.CliMove
-import hwr.oop.group8.chess.core.exceptions.IllegalMove
+import hwr.oop.group8.chess.core.exceptions.InvalidMoveForPieceException
 import hwr.oop.group8.chess.persistence.FEN
 import io.kotest.core.spec.style.AnnotationSpec
 import org.assertj.core.api.Assertions.assertThat
@@ -31,7 +31,7 @@ class GameTest : AnnotationSpec() {
     // when
     assertThatThrownBy {
       game.makeMove(cliMove)
-    }.isInstanceOf(IllegalMove.InvalidMoveForPieceException::class.java)
+    }.isInstanceOf(InvalidMoveForPieceException::class.java)
       .message()
       .isEqualTo("Invalid move for piece Pawn from a7 to a8")
     // then

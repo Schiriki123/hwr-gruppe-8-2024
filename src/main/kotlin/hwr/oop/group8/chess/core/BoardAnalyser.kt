@@ -1,13 +1,16 @@
 package hwr.oop.group8.chess.core
 
-import hwr.oop.group8.chess.core.exceptions.IllegalMove
+import hwr.oop.group8.chess.core.exceptions.DrawException
 import hwr.oop.group8.chess.core.move.DoublePawnMove
 import hwr.oop.group8.chess.core.move.Move
 import hwr.oop.group8.chess.core.piece.Piece
 import hwr.oop.group8.chess.core.piece.PieceType
 
-class BoardAnalyser(private val board: Board, castle: String) :
-  BoardInspector {
+class BoardAnalyser(
+  private val board: Board,
+  castle: String,
+  private val map: () -> Map<Position, Square>,
+) : BoardInspector {
   val castling = Castling(this, castle)
   private fun getKingPosition(): Position {
     val allPiecesOfCurrentPlayer = allPieces(board.turn())
@@ -24,7 +27,7 @@ class BoardAnalyser(private val board: Board, castle: String) :
     board.stateHistory.groupBy { it }.any { it.value.size >= 3 }
 
   private fun allPieces(player: Color): Set<Piece> =
-    board.map().values.mapNotNull { it.getPiece() }
+    map().values.mapNotNull { it.getPiece() }
       .filter { it.color() == player }
       .toSet()
 
@@ -49,21 +52,10 @@ class BoardAnalyser(private val board: Board, castle: String) :
     return possibleMovesOfOpponent.any { it.moves().first().to == position }
   }
 
-  fun checkForDraw() {
-    if (board.halfmoveClock() >= 50) {
-      throw IllegalMove.DrawException("Game is draw due to the 50-move rule.")
-    }
-    if (isRepetitionDraw()) {
-      throw IllegalMove.DrawException(
-        "Game is draw due to threefold repetition.",
-      )
-    }
-  }
-
   fun isMoveCheck(move: Move): Boolean {
     // Simulate the move
-    val fromSquare = board.getSquare(move.moves().first().from)
-    val toSquare = board.getSquare(move.moves().first().to)
+    val fromSquare = map().getValue(move.moves().first().from)
+    val toSquare = map().getValue(move.moves().first().to)
     val movedPiece = fromSquare.getPiece()
     val pieceOnTargetSquare = toSquare.getPiece()
     toSquare.setPiece(movedPiece)
@@ -87,6 +79,17 @@ class BoardAnalyser(private val board: Board, castle: String) :
 
   fun isCapture(move: Move): Boolean = !isSquareEmpty(move.moves().first().to)
 
+  fun checkForDraw() {
+    if (board.halfmoveClock() >= 50) {
+      throw DrawException("Game is draw due to the 50-move rule.")
+    }
+    if (isRepetitionDraw()) {
+      throw DrawException(
+        "Game is draw due to threefold repetition.",
+      )
+    }
+  }
+
   fun allowedEnPassantTarget(move: DoublePawnMove): Position? =
     if (move.to.hasNextPosition(Direction.LEFT) &&
       pieceAt(move.to.left())?.color() != board.turn() &&
@@ -107,12 +110,11 @@ class BoardAnalyser(private val board: Board, castle: String) :
     }
 
   override fun pieceAt(position: Position): Piece? =
-    board.map().getValue(position).getPiece()
+    map().getValue(position).getPiece()
 
-  override fun positionOfPiece(piece: Piece): Position =
-    board.map().filterValues {
-      it.getPiece() === piece
-    }.keys.first()
+  override fun positionOfPiece(piece: Piece): Position = map().filterValues {
+    it.getPiece() === piece
+  }.keys.first()
 
   override fun currentTurn(): Color = board.turn()
   override fun accessEnPassant(): Position? = board.enPassant()

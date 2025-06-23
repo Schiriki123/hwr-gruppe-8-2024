@@ -2,8 +2,8 @@ package hwr.oop.group8.chess.cli
 
 import com.github.ajalt.clikt.testing.test
 import hwr.oop.group8.chess.core.Game
+import hwr.oop.group8.chess.persistence.CouldNotDeleteGameException
 import hwr.oop.group8.chess.persistence.FEN
-import hwr.oop.group8.chess.persistence.PersistenceError
 import io.kotest.core.spec.style.AnnotationSpec
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
@@ -39,7 +39,7 @@ class DeleteGameTest : AnnotationSpec() {
     // then
     assertThatThrownBy {
       cli.test(args)
-    }.isInstanceOf(PersistenceError.CouldNotDeleteGameException::class.java)
+    }.isInstanceOf(CouldNotDeleteGameException::class.java)
       .hasMessageContaining("Game with id 1 does not exist")
   }
 }

@@ -13,7 +13,7 @@ class FilePersistenceAdapter(val file: File) : PersistencePort {
 
     if (updateExistingGame) {
       if (!lines.any { it.startsWith("${game.id}") }) {
-        throw PersistenceError.CouldNotSaveGameException(
+        throw CouldNotSaveGameException(
           "Game with id ${game.id} does not exist",
         )
       }
@@ -27,7 +27,7 @@ class FilePersistenceAdapter(val file: File) : PersistencePort {
       }
     } else {
       if (lines.any { it.startsWith("${game.id}") }) {
-        throw PersistenceError.CouldNotSaveGameException(
+        throw CouldNotSaveGameException(
           "Game with id ${game.id} already exists",
         )
       }
@@ -41,7 +41,7 @@ class FilePersistenceAdapter(val file: File) : PersistencePort {
     val lines = file.readLines()
     val updatedLines = lines.filterNot { it.startsWith("$id,") }
     if (lines.size == updatedLines.size) {
-      throw PersistenceError.CouldNotDeleteGameException(
+      throw CouldNotDeleteGameException(
         "Game with id $id does not exist",
       )
     }
