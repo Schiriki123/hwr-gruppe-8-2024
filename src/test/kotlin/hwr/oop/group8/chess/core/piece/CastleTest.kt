@@ -16,7 +16,7 @@ class CastleTest : AnnotationSpec() {
 
   @Test
   fun `Castle string allows white Queen side castled and denies King side`() {
-    val board = Board.factory(
+    val board = Board(
       FEN(
         boardString = "r3k2r/8/8/8/8/8/8/R3K2R",
         castle = "Qkq",
@@ -30,7 +30,7 @@ class CastleTest : AnnotationSpec() {
 
   @Test
   fun `Castle string allows white King side castle and denies Queen side`() {
-    val board = Board.factory(
+    val board = Board(
       FEN(
         boardString = "r3k2r/8/8/8/8/8/8/R3K2R",
         castle = "Kkq",
@@ -44,7 +44,7 @@ class CastleTest : AnnotationSpec() {
 
   @Test
   fun `Castle string allows black King side castle and denies Queen side`() {
-    val board = Board.factory(
+    val board = Board(
       FEN(
         boardString = "r3k2r/8/8/8/8/8/8/R3K2R",
         castle = "Qk",
@@ -58,7 +58,7 @@ class CastleTest : AnnotationSpec() {
 
   @Test
   fun `Move king side tower should remove K from castle`() {
-    val board = Board.factory(FEN("r3k2r/8/8/8/8/8/8/R3K2R"))
+    val board = Board(FEN("r3k2r/8/8/8/8/8/8/R3K2R"))
     val singleMove =
       SingleMove(Position(File.H, Rank.ONE), Position(File.G, Rank.ONE))
     board.makeMove(singleMove)
@@ -70,7 +70,7 @@ class CastleTest : AnnotationSpec() {
 
   @Test
   fun `Move queen side tower should remove Q from castle`() {
-    val board = Board.factory(FEN("r3k2r/8/8/8/8/8/8/R3K2R"))
+    val board = Board(FEN("r3k2r/8/8/8/8/8/8/R3K2R"))
     val singleMove =
       SingleMove(Position(File.A, Rank.ONE), Position(File.B, Rank.ONE))
     board.makeMove(singleMove)
@@ -83,7 +83,7 @@ class CastleTest : AnnotationSpec() {
   // KING
   @Test
   fun `Castle king side for white`() {
-    val board = Board.factory(FEN("8/8/8/8/8/8/8/R3K2R"))
+    val board = Board(FEN("8/8/8/8/8/8/8/R3K2R"))
     // King side castle
     val singleMove = SingleMove(
       Position(File.E, Rank.ONE),
@@ -99,7 +99,7 @@ class CastleTest : AnnotationSpec() {
 
   @Test
   fun `Castle queen side for white`() {
-    val board = Board.factory(FEN("8/8/8/8/8/8/8/R3K2R"))
+    val board = Board(FEN("8/8/8/8/8/8/8/R3K2R"))
     val singleMove = SingleMove(
       Position(File.E, Rank.ONE),
       Position(File.C, Rank.ONE),
@@ -114,7 +114,7 @@ class CastleTest : AnnotationSpec() {
 
   @Test
   fun `Castle king side for black`() {
-    val board = Board.factory(FEN("r3k2r/8/8/8/8/8/8/8", 'b'))
+    val board = Board(FEN("r3k2r/8/8/8/8/8/8/8", 'b'))
     // King side castle
     val singleMove = SingleMove(
       Position(File.E, Rank.EIGHT),
@@ -130,7 +130,7 @@ class CastleTest : AnnotationSpec() {
 
   @Test
   fun `Castle queen side for black`() {
-    val board = Board.factory(FEN("r3k2r/8/8/8/8/8/8/8", 'b'))
+    val board = Board(FEN("r3k2r/8/8/8/8/8/8/8", 'b'))
     val singleMove = SingleMove(
       Position(File.E, Rank.EIGHT),
       Position(File.C, Rank.EIGHT),
@@ -145,7 +145,7 @@ class CastleTest : AnnotationSpec() {
 
   @Test
   fun `Invalid castle with movement through check, expecting exception`() {
-    val board = Board.factory(FEN("8/8/5r2/8/8/8/8/R3K2R"))
+    val board = Board(FEN("8/8/5r2/8/8/8/8/R3K2R"))
     val singleMove =
       SingleMove(Position(File.E, Rank.ONE), Position(File.G, Rank.ONE))
     assertThatThrownBy {
@@ -155,7 +155,7 @@ class CastleTest : AnnotationSpec() {
 
   @Test
   fun `Check that castling is not allowed if piece was moved`() {
-    val board = Board.factory(FEN("8/k7/8/8/8/8/8/R3K2R", 'w'))
+    val board = Board(FEN("8/k7/8/8/8/8/8/R3K2R", 'w'))
     // Move the rook
     board.makeMove(
       SingleMove(
@@ -189,7 +189,7 @@ class CastleTest : AnnotationSpec() {
 
   @Test
   fun `Try to castle from chess`() {
-    val board = Board.factory(FEN("8/1k6/4r3/8/8/8/8/R3K2R"))
+    val board = Board(FEN("8/1k6/4r3/8/8/8/8/R3K2R"))
     val singleMove =
       SingleMove(Position(File.E, Rank.ONE), Position(File.G, Rank.ONE))
     assertThatThrownBy {
@@ -203,7 +203,7 @@ class CastleTest : AnnotationSpec() {
 
   @Test
   fun `Try to castle with blocked path king side`() {
-    val board = Board.factory(FEN("8/8/8/8/8/8/8/R3KB1R"))
+    val board = Board(FEN("8/8/8/8/8/8/8/R3KB1R"))
     val singleMove =
       SingleMove(Position(File.E, Rank.ONE), Position(File.G, Rank.ONE))
     assertThatThrownBy {
@@ -217,7 +217,7 @@ class CastleTest : AnnotationSpec() {
 
   @Test
   fun `Try to castle with blocked path queen side`() {
-    val board = Board.factory(FEN("8/8/8/8/8/8/8/RN2K2R"))
+    val board = Board(FEN("8/8/8/8/8/8/8/RN2K2R"))
     val singleMove =
       SingleMove(Position(File.E, Rank.ONE), Position(File.C, Rank.ONE))
     assertThatThrownBy {
@@ -232,7 +232,7 @@ class CastleTest : AnnotationSpec() {
   @Test
   fun `Removing last castling permission should write '-' to file`() {
     // Given
-    val board = Board.factory(FEN("4k3/8/8/8/8/8/8/R3K2R", 'w', "KQ"))
+    val board = Board(FEN("4k3/8/8/8/8/8/8/R3K2R", 'w', "KQ"))
     // When
     val move =
       SingleMove(Position(File.E, Rank.ONE), Position(File.E, Rank.TWO))
@@ -247,7 +247,7 @@ class CastleTest : AnnotationSpec() {
   @Test
   fun `Black tower is captured without movement, k removed from castle`() {
     // given
-    val board = Board.factory(FEN("rnbqkbnr/8/8/8/8/8/1B6/RN1QKBNR"))
+    val board = Board(FEN("rnbqkbnr/8/8/8/8/8/1B6/RN1QKBNR"))
     val move =
       SingleMove(Position(File.B, Rank.TWO), Position(File.H, Rank.EIGHT))
     // when
@@ -262,7 +262,7 @@ class CastleTest : AnnotationSpec() {
   @Test
   fun `Black tower is captured without movement, q removed from castle`() {
     // given
-    val board = Board.factory(FEN("rnbqkbnr/8/8/8/8/8/6B1/RNBQK1NR"))
+    val board = Board(FEN("rnbqkbnr/8/8/8/8/8/6B1/RNBQK1NR"))
     val move =
       SingleMove(Position(File.G, Rank.TWO), Position(File.A, Rank.EIGHT))
     // when

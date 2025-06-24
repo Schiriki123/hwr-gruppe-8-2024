@@ -15,7 +15,7 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 class KingTest : AnnotationSpec() {
   @Test
   fun `Char representation for King`() {
-    val boardInspector = Board.factory(FEN("8/8/8/8/8/8/8/K7", 'w', ""))
+    val boardInspector = Board(FEN("8/8/8/8/8/8/8/K7", 'w', ""))
     val whiteKing = King(Color.WHITE, boardInspector.analyser)
     val blackKing = King(Color.BLACK, boardInspector.analyser)
     assertThat(whiteKing.fenRepresentation()).isEqualTo('K')
@@ -25,7 +25,7 @@ class KingTest : AnnotationSpec() {
 
   @Test
   fun `King movement block path`() {
-    val board = Board.factory(FEN("8/B7/K7/8/8/8/8/8", 'w', ""))
+    val board = Board(FEN("8/B7/K7/8/8/8/8/8", 'w', ""))
     val singleMove =
       SingleMove(Position(File.A, Rank.SIX), Position(File.A, Rank.SEVEN))
 
@@ -35,7 +35,7 @@ class KingTest : AnnotationSpec() {
 
   @Test
   fun `King movement on empty board left`() {
-    val board = Board.factory(FEN("8/8/8/3K4/8/8/8/8", 'w', ""))
+    val board = Board(FEN("8/8/8/3K4/8/8/8/8", 'w', ""))
     val singleMove =
       SingleMove(Position(File.D, Rank.FIVE), Position(File.C, Rank.FIVE))
     board.makeMove(singleMove)
@@ -44,7 +44,7 @@ class KingTest : AnnotationSpec() {
 
   @Test
   fun `King movement on empty board right`() {
-    val board = Board.factory(FEN("8/8/8/3K4/8/8/8/8", 'w', ""))
+    val board = Board(FEN("8/8/8/3K4/8/8/8/8", 'w', ""))
     val singleMove =
       SingleMove(Position(File.D, Rank.FIVE), Position(File.E, Rank.FIVE))
     board.makeMove(singleMove)
@@ -53,7 +53,7 @@ class KingTest : AnnotationSpec() {
 
   @Test
   fun `King movement on empty board down`() {
-    val board = Board.factory(FEN("8/8/8/3K4/8/8/8/8", 'w', ""))
+    val board = Board(FEN("8/8/8/3K4/8/8/8/8", 'w', ""))
     val singleMove =
       SingleMove(Position(File.D, Rank.FIVE), Position(File.D, Rank.FOUR))
     board.makeMove(singleMove)
@@ -62,7 +62,7 @@ class KingTest : AnnotationSpec() {
 
   @Test
   fun `King movement on empty board up`() {
-    val board = Board.factory(FEN("8/8/8/3K4/8/8/8/8", 'w', ""))
+    val board = Board(FEN("8/8/8/3K4/8/8/8/8", 'w', ""))
     val singleMove =
       SingleMove(Position(File.D, Rank.FIVE), Position(File.D, Rank.SIX))
     board.makeMove(singleMove)
@@ -71,7 +71,7 @@ class KingTest : AnnotationSpec() {
 
   @Test
   fun `King movement on empty board top right`() {
-    val board = Board.factory(FEN("8/8/8/3K4/8/8/8/8", 'w', ""))
+    val board = Board(FEN("8/8/8/3K4/8/8/8/8", 'w', ""))
     val singleMove =
       SingleMove(Position(File.D, Rank.FIVE), Position(File.E, Rank.SIX))
     board.makeMove(singleMove)
@@ -80,7 +80,7 @@ class KingTest : AnnotationSpec() {
 
   @Test
   fun `King movement on empty board top left`() {
-    val board = Board.factory(FEN("8/8/8/3K4/8/8/8/8", 'w', ""))
+    val board = Board(FEN("8/8/8/3K4/8/8/8/8", 'w', ""))
     val singleMove =
       SingleMove(Position(File.D, Rank.FIVE), Position(File.C, Rank.SIX))
     board.makeMove(singleMove)
@@ -89,7 +89,7 @@ class KingTest : AnnotationSpec() {
 
   @Test
   fun `King movement on empty board bottom left`() {
-    val board = Board.factory(FEN("8/8/8/3K4/8/8/8/8", 'w', ""))
+    val board = Board(FEN("8/8/8/3K4/8/8/8/8", 'w', ""))
     val singleMove =
       SingleMove(Position(File.D, Rank.FIVE), Position(File.C, Rank.FOUR))
     board.makeMove(singleMove)
@@ -98,7 +98,7 @@ class KingTest : AnnotationSpec() {
 
   @Test
   fun `King movement on empty board bottom right`() {
-    val board = Board.factory(FEN("8/8/2K5/8/8/8/8/8", 'w', ""))
+    val board = Board(FEN("8/8/2K5/8/8/8/8/8", 'w', ""))
     val singleMove =
       SingleMove(Position(File.C, Rank.SIX), Position(File.D, Rank.FIVE))
     board.makeMove(singleMove)
@@ -107,7 +107,7 @@ class KingTest : AnnotationSpec() {
 
   @Test
   fun `Invalid double move, expecting exception`() {
-    val board = Board.factory(FEN("8/8/K7/8/8/8/8/8", 'w', ""))
+    val board = Board(FEN("8/8/K7/8/8/8/8/8", 'w', ""))
     val singleMove =
       SingleMove(Position(File.A, Rank.SIX), Position(File.A, Rank.FOUR))
     assertThatThrownBy { board.makeMove(singleMove) }
@@ -116,7 +116,7 @@ class KingTest : AnnotationSpec() {
 
   @Test
   fun `King movement to capture`() {
-    val board = Board.factory(FEN("8/p7/1K6/8/8/8/8/8", 'w', ""))
+    val board = Board(FEN("8/p7/1K6/8/8/8/8/8", 'w', ""))
     val singleMove =
       SingleMove(Position(File.B, Rank.SIX), Position(File.A, Rank.SEVEN))
     board.makeMove(singleMove)
@@ -125,7 +125,7 @@ class KingTest : AnnotationSpec() {
 
   @Test
   fun `Movement set generation for black king`() {
-    val board = Board.factory(FEN("r3k2r/8/8/8/8/8/1K6/8", 'b'))
+    val board = Board(FEN("r3k2r/8/8/8/8/8/1K6/8", 'b'))
     val startPosition = Position(File.E, Rank.EIGHT)
     val king = board.analyser.pieceAt(startPosition) as King
     val possibleMoves = king.validMoves()

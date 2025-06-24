@@ -14,7 +14,7 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 class RookTest : AnnotationSpec() {
   @Test
   fun `char representation`() {
-    val boardInspector = Board.factory(FEN("8/8/8/8/8/8/8/K7", 'w', ""))
+    val boardInspector = Board(FEN("8/8/8/8/8/8/8/K7", 'w', ""))
     val whiteRook = Rook(Color.WHITE, boardInspector.analyser)
     val blackRook = Rook(Color.BLACK, boardInspector.analyser)
     assertThat(whiteRook.fenRepresentation()).isEqualTo('R')
@@ -24,7 +24,7 @@ class RookTest : AnnotationSpec() {
 
   @Test
   fun `Rook movement on empty board from a8 to a2`() {
-    val board = Board.factory(FEN("R7/8/8/8/8/8/8/K7", 'w', ""))
+    val board = Board(FEN("R7/8/8/8/8/8/8/K7", 'w', ""))
     val singleMove =
       SingleMove(Position(File.A, Rank.EIGHT), Position(File.A, Rank.TWO))
     board.makeMove(singleMove)
@@ -34,7 +34,7 @@ class RookTest : AnnotationSpec() {
 
   @Test
   fun `invalid rook movement`() {
-    val board = Board.factory(FEN("R7/8/8/8/8/8/8/K7", 'w', ""))
+    val board = Board(FEN("R7/8/8/8/8/8/8/K7", 'w', ""))
     val singleMove =
       SingleMove(Position(File.A, Rank.EIGHT), Position(File.B, Rank.TWO))
     assertThatThrownBy { board.makeMove(singleMove) }
@@ -43,7 +43,7 @@ class RookTest : AnnotationSpec() {
 
   @Test
   fun `Rook movement with path blocked by pawn`() {
-    val board = Board.factory(FEN("R7/8/8/8/8/8/P7/1K6"))
+    val board = Board(FEN("R7/8/8/8/8/8/P7/1K6"))
     val singleMove =
       SingleMove(Position(File.A, Rank.EIGHT), Position(File.A, Rank.ONE))
     assertThatThrownBy { board.makeMove(singleMove) }
@@ -52,7 +52,7 @@ class RookTest : AnnotationSpec() {
 
   @Test
   fun `capture piece with rook`() {
-    val board = Board.factory(FEN("R7/8/8/8/8/8/p7/K7", 'w', ""))
+    val board = Board(FEN("R7/8/8/8/8/8/p7/K7", 'w', ""))
     val singleMove =
       SingleMove(Position(File.A, Rank.EIGHT), Position(File.A, Rank.TWO))
     board.makeMove(singleMove)

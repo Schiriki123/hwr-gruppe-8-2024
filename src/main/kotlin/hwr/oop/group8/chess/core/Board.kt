@@ -20,9 +20,9 @@ import hwr.oop.group8.chess.core.piece.Queen
 import hwr.oop.group8.chess.core.piece.Rook
 import hwr.oop.group8.chess.persistence.FEN
 
-class Board private constructor(
+class Board(
   private val fen: FEN,
-  val stateHistory: List<Int>,
+  val stateHistory: List<Int> = listOf(fen.hashOfBoard()),
 ) {
   val analyser: BoardAnalyser = BoardAnalyser(this, fen.castle) { this.map }
   private var turn: Color = fen.getTurn()
@@ -58,13 +58,6 @@ class Board private constructor(
 
   init {
     if (map.size != 64) throw InvalidBoardSizeException()
-  }
-
-  companion object {
-    fun factory(fen: FEN, stateHistory: List<Int> = emptyList()): Board = Board(
-      fen,
-      stateHistory,
-    )
   }
 
   private fun createPieceOnBoard(type: PieceType, color: Color): Piece =

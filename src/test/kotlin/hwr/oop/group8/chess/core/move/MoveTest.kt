@@ -41,7 +41,7 @@ class MoveTest : AnnotationSpec() {
 
   @Test
   fun `Test king side castle move creation, assert that storage is correct`() {
-    val board = Board.factory(FEN("k7/8/8/8/8/8/8/R3KBNR", 'w', "KQ"))
+    val board = Board(FEN("k7/8/8/8/8/8/8/R3KBNR", 'w', "KQ"))
     val from = Position(File.E, Rank.ONE)
     val castleMove = CastleMove(board.analyser.pieceAt(from) as King, true)
 
@@ -52,7 +52,7 @@ class MoveTest : AnnotationSpec() {
 
   @Test
   fun `Test queen side castle move creation, assert that storage is correct`() {
-    val board = Board.factory(FEN("k7/8/8/8/8/8/8/R3K2R", 'w', "KQ"))
+    val board = Board(FEN("k7/8/8/8/8/8/8/R3K2R", 'w', "KQ"))
     val from = Position(File.E, Rank.ONE)
     val castleMove = CastleMove(board.analyser.pieceAt(from) as King, false)
 
