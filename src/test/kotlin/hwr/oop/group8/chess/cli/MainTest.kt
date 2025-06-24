@@ -25,4 +25,32 @@ class MainTest : AnnotationSpec() {
     }.trim()
     assertThat(deleteOutput).contains("Game with ID $testGameID deleted.")
   }
+
+  @Test
+  fun `Making invalid move should be caught`() {
+    // given
+    val testGameID = abs(Random(System.currentTimeMillis()).nextInt())
+    main(arrayOf("new-game", "$testGameID"))
+
+    // when
+    val output = captureStandardOut {
+      main(arrayOf("make-move", "$testGameID", "e2", "e5"))
+    }.trim()
+    // then
+    assertThat(
+      output,
+    ).isEqualTo("ILLEGAL MOVE: Invalid move for piece Pawn from e2 to e5")
+  }
+
+  @Test
+  fun `Loading non existing game should be caught`() {
+    val testGameID = abs(Random(System.currentTimeMillis()).nextInt())
+    val output = captureStandardOut {
+      main(arrayOf("show-game", "$testGameID"))
+    }.trim()
+
+    assertThat(
+      output,
+    ).isEqualTo("INVALID ID: Could not load game with id $testGameID")
+  }
 }

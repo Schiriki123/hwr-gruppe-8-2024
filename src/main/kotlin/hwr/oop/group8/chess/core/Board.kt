@@ -1,10 +1,5 @@
 package hwr.oop.group8.chess.core
 
-import hwr.oop.group8.chess.core.exceptions.CheckmateException
-import hwr.oop.group8.chess.core.exceptions.InvalidMoveForPieceException
-import hwr.oop.group8.chess.core.exceptions.MoveToCheck
-import hwr.oop.group8.chess.core.exceptions.NoPieceException
-import hwr.oop.group8.chess.core.exceptions.OutOfTurnException
 import hwr.oop.group8.chess.core.move.DoublePawnMove
 import hwr.oop.group8.chess.core.move.Move
 import hwr.oop.group8.chess.core.move.SingleMove
