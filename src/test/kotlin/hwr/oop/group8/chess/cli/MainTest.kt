@@ -40,6 +40,8 @@ class MainTest : AnnotationSpec() {
     assertThat(
       output,
     ).isEqualTo("ILLEGAL MOVE: Invalid move for piece Pawn from e2 to e5")
+
+    main(arrayOf("delete-game", "$testGameID"))
   }
 
   @Test
