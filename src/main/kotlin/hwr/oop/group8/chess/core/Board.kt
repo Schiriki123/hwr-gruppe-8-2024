@@ -1,8 +1,6 @@
 package hwr.oop.group8.chess.core
 
 import hwr.oop.group8.chess.core.exceptions.CheckmateException
-import hwr.oop.group8.chess.core.exceptions.FileToShortException
-import hwr.oop.group8.chess.core.exceptions.InvalidBoardSizeException
 import hwr.oop.group8.chess.core.exceptions.InvalidMoveForPieceException
 import hwr.oop.group8.chess.core.exceptions.MoveToCheck
 import hwr.oop.group8.chess.core.exceptions.NoPieceException
@@ -32,7 +30,9 @@ class Board(
   private val map: Map<Position, Square> = buildMap {
 
     fun putOnSquare(piece: Piece?, rank: Rank, fileIterator: Iterator<File>) {
-      if (!fileIterator.hasNext()) throw FileToShortException()
+      require(fileIterator.hasNext()) {
+        "File iterator should have next element."
+      }
       put(Position(fileIterator.next(), rank), Square(piece))
     }
 
@@ -57,7 +57,7 @@ class Board(
   }
 
   init {
-    if (map.size != 64) throw InvalidBoardSizeException()
+    require(map.size == 64) { "Board must have exactly 64 squares." }
   }
 
   private fun createPieceOnBoard(type: PieceType, color: Color): Piece =
