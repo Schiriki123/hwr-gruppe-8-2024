@@ -14,7 +14,7 @@ import org.assertj.core.api.Assertions.assertThat
 class PawnPromotionTest : AnnotationSpec() {
   @Test
   fun `Pawn promotes to queen`() {
-    val board = Board.factory(FEN("8/P7/8/8/8/8/8/K7", 'w', ""))
+    val board = Board(FEN("8/P7/8/8/8/8/8/K7", 'w', ""))
     val move: Move =
       PromotionMove(
         Position(File.A, Rank.SEVEN),
@@ -28,7 +28,7 @@ class PawnPromotionTest : AnnotationSpec() {
 
   @Test
   fun `Pawn with queen promotion and movement`() {
-    val board = Board.factory(FEN("8/P5kp/8/8/8/8/8/K7", 'w', ""))
+    val board = Board(FEN("8/P5kp/8/8/8/8/8/K7", 'w', ""))
     var move: Move =
       PromotionMove(
         Position(File.A, Rank.SEVEN),
@@ -60,7 +60,7 @@ class PawnPromotionTest : AnnotationSpec() {
 
   @Test
   fun `Black pawn with knight promotion and movement`() {
-    val board = Board.factory(FEN("k7/8/8/8/8/8/7p/K7", 'b', ""))
+    val board = Board(FEN("k7/8/8/8/8/8/7p/K7", 'b', ""))
     var move: Move =
       PromotionMove(
         Position(File.H, Rank.TWO),
@@ -88,7 +88,7 @@ class PawnPromotionTest : AnnotationSpec() {
 
   @Test
   fun `Black pawn with bishop promotion and movement`() {
-    val board = Board.factory(FEN("k7/8/8/8/8/8/7p/K7", 'b', ""))
+    val board = Board(FEN("k7/8/8/8/8/8/7p/K7", 'b', ""))
     var move: Move =
       PromotionMove(
         Position(File.H, Rank.TWO),
@@ -114,7 +114,7 @@ class PawnPromotionTest : AnnotationSpec() {
 
   @Test
   fun `Black pawn with rook promotion and movement`() {
-    val board = Board.factory(FEN("k7/8/8/8/8/8/7p/K7", 'b', ""))
+    val board = Board(FEN("k7/8/8/8/8/8/7p/K7", 'b', ""))
     var move: Move =
       PromotionMove(
         Position(File.H, Rank.TWO),
@@ -143,7 +143,7 @@ class PawnPromotionTest : AnnotationSpec() {
   @Test
   fun `Capture during promotion`() {
     // given
-    val board = Board.factory(FEN("1n6/P7/8/8/8/8/8/K7", castle = ""))
+    val board = Board(FEN("1n6/P7/8/8/8/8/8/K7", castle = ""))
     val move: Move =
       PromotionMove(
         Position(File.A, Rank.SEVEN),

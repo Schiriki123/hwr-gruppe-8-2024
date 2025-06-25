@@ -1,6 +1,5 @@
 package hwr.oop.group8.chess.core
 
-import hwr.oop.group8.chess.core.exceptions.DrawException
 import hwr.oop.group8.chess.core.move.DoublePawnMove
 import hwr.oop.group8.chess.core.move.Move
 import hwr.oop.group8.chess.core.piece.Piece

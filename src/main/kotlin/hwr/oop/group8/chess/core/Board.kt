@@ -1,12 +1,5 @@
 package hwr.oop.group8.chess.core
 
-import hwr.oop.group8.chess.core.exceptions.CheckmateException
-import hwr.oop.group8.chess.core.exceptions.FileToShortException
-import hwr.oop.group8.chess.core.exceptions.InvalidBoardSizeException
-import hwr.oop.group8.chess.core.exceptions.InvalidMoveForPieceException
-import hwr.oop.group8.chess.core.exceptions.MoveToCheck
-import hwr.oop.group8.chess.core.exceptions.NoPieceException
-import hwr.oop.group8.chess.core.exceptions.OutOfTurnException
 import hwr.oop.group8.chess.core.move.DoublePawnMove
 import hwr.oop.group8.chess.core.move.Move
 import hwr.oop.group8.chess.core.move.SingleMove
@@ -20,9 +13,9 @@ import hwr.oop.group8.chess.core.piece.Queen
 import hwr.oop.group8.chess.core.piece.Rook
 import hwr.oop.group8.chess.persistence.FEN
 
-class Board private constructor(
+class Board(
   private val fen: FEN,
-  val stateHistory: List<Int>,
+  val stateHistory: List<Int> = listOf(fen.hashOfBoard()),
 ) {
   val analyser: BoardAnalyser = BoardAnalyser(this, fen.castle) { this.map }
   private var turn: Color = fen.getTurn()
@@ -32,7 +25,9 @@ class Board private constructor(
   private val map: Map<Position, Square> = buildMap {
 
     fun putOnSquare(piece: Piece?, rank: Rank, fileIterator: Iterator<File>) {
-      if (!fileIterator.hasNext()) throw FileToShortException()
+      require(fileIterator.hasNext()) {
+        "File iterator should have next element."
+      }
       put(Position(fileIterator.next(), rank), Square(piece))
     }
 
@@ -57,14 +52,7 @@ class Board private constructor(
   }
 
   init {
-    if (map.size != 64) throw InvalidBoardSizeException()
-  }
-
-  companion object {
-    fun factory(fen: FEN, stateHistory: List<Int> = emptyList()): Board = Board(
-      fen,
-      stateHistory,
-    )
+    require(map.size == 64) { "Board must have exactly 64 squares." }
   }
 
   private fun createPieceOnBoard(type: PieceType, color: Color): Piece =

@@ -14,7 +14,7 @@ class EnPassantTest : AnnotationSpec() {
   @Test
   fun `After double pawn move, en passant e6 should be in FEN`() {
     // given
-    val board = Board.factory(
+    val board = Board(
       FEN(
         "rnbqkbnr/ppppppp1/8/3P3p/8/8/PPP1PPPP/RNBQKBNR",
         'b',
@@ -37,7 +37,7 @@ class EnPassantTest : AnnotationSpec() {
   fun `After double pawn move of black pawn c6 should be in en passant`() {
     // given
     val board =
-      Board.factory(
+      Board(
         FEN("rnbqkb1r/pppppppp/7n/3P4/8/8/PPP1PPPP/RNBQKBNR", 'b'),
       )
     val moveThatAllowsEnPassant = SingleMove(
@@ -56,7 +56,7 @@ class EnPassantTest : AnnotationSpec() {
   @Test
   fun `After move en passant should be cleared`() {
     // given
-    val board = Board.factory(FEN(enPassant = "e6"))
+    val board = Board(FEN(enPassant = "e6"))
     val move = SingleMove(Position.fromString("a2"), Position.fromString("a3"))
     // when
     board.makeMove(move)
@@ -68,7 +68,7 @@ class EnPassantTest : AnnotationSpec() {
   @Test
   fun `Black En passant move should be allowed, white pawn pawn captured`() {
     // given
-    val board = Board.factory(
+    val board = Board(
       FEN(
         "rnbqkbnr/ppp1pppp/8/6N1/3pP3/8/PPPP1PPP/RNBQKB1R",
         'b',
@@ -91,7 +91,7 @@ class EnPassantTest : AnnotationSpec() {
   @Test
   fun `White en passant move should be allowed, black pawn is captured`() {
     // given
-    val board = Board.factory(
+    val board = Board(
       FEN(
         "rnbqkb1r/pp1ppppp/7n/1Pp5/8/8/P1PPPPPP/RNBQKBNR",
         enPassant = "c6",
@@ -113,7 +113,7 @@ class EnPassantTest : AnnotationSpec() {
   @Test
   fun `Only pawn on a5 should be allowed to move En Passant`() {
     // given
-    val board = Board.factory(
+    val board = Board(
       FEN(
         "rnbqkb1r/p1pppppp/7n/Pp6/8/8/1PPPPPPP/RNBQKBNR",
         enPassant = "b6",
